@@ -66,22 +66,44 @@ const SectionFilteredSearches = props => {
       </div>
       <div className={css.filteredSearches}>
         <FilterLink
-          name="Nikes"
+          name="Full meal"
           image={imageForFilter1}
-          link="http://localhost:3000/s?pub_brand=nike"
+          link="http://localhost:3000/s?pub_size=full_meal"
         />
         <FilterLink
-          name="Yeezys"
+          name="Sweets"
           image={imageForFilter2}
-          link="http://localhost:3000/s?pub_brand=yeezy"
+          link="http://localhost:3000/s?pub_category=sweets"
         />
         <FilterLink
-          name="Converses"
+          name="Breakfast"
           image={imageForFilter3}
-          link="http://localhost:3000/s?pub_brand=converse"
+          link="http://localhost:3000/s?pub_size=breakfast"
         />
       </div>
     </div>
+  //   <div className={classes}>
+  //   <div className={css.title}>
+  //     <FormattedMessage id="SectionFilteredSearches.title" />
+  //   </div>
+  //   <div className={css.filteredSearches}>
+  //     <FilterLink
+  //       name="Asiatic"
+  //       image={imageForFilter1}
+  //       link="http://localhost:3000/s?pub_brand=asiatic"
+  //     />
+  //     <FilterLink
+  //       name="Burger"
+  //       image={imageForFilter2}
+  //       link="http://localhost:3000/s?pub_brand=yeezy"
+  //     />
+  //     <FilterLink
+  //       name="Sweets"
+  //       image={imageForFilter3}
+  //       link="http://localhost:3000/s?pub_brand=converse"
+  //     />
+  //   </div>
+  // </div>
   );
 };
 

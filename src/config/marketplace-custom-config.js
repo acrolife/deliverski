@@ -35,8 +35,8 @@
 
 export const filters = [
   {
-    id: 'category',
-    label: 'Category',
+    id: 'cuisine',
+    label: 'Cuisine',
     type: 'SelectSingleFilter',
     group: 'primary',
     queryParamNames: ['pub_category'],
@@ -49,15 +49,19 @@ export const filters = [
       // Note: label is not added through the translation files
       // to make filter customizations a bit easier.
       options: [
-        { key: 'men', label: 'Men' },
-        { key: 'women', label: 'Women' },
-        { key: 'kids', label: 'Kids' },
+        { key: 'local', label: 'Local' },
+        { key: 'fast_food', label: 'Fast food' },
+        { key: 'french', label: 'French' },
+        { key: 'asiatic', label: 'Asiatic' },
+        { key: 'vegan', label: 'Vegan' },
+        { key: 'bakery', label: 'Bakery' },
+        { key: 'other', label: 'Other' },
       ],
     },
   },
   {
-    id: 'size',
-    label: 'Size (US)',
+    id: 'category',
+    label: 'Category',
     type: 'SelectMultipleFilter',
     group: 'primary',
     queryParamNames: ['pub_size'],
@@ -73,21 +77,19 @@ export const filters = [
       // Note: label is not added through the translation files
       // to make filter customizations a bit easier.
       options: [
-        { key: '4', label: '4' },
-        { key: '5', label: '5' },
-        { key: '6', label: '6' },
-        { key: '7', label: '7' },
-        { key: '8', label: '8' },
-        { key: '9', label: '9' },
-        { key: '10', label: '10' },
-        { key: '11', label: '11' },
-        { key: '12', label: '12' },
+        { key: 'fullmeal', label: 'Full meal' },
+        { key: 'pizzas', label: 'Pizzas' },
+        { key: 'burgers', label: 'Burgers' },
+        { key: 'apetizer', label: 'Apetizer' },
+        { key: 'breakfast', label: 'Breakfast' },
+        { key: 'sweets', label: 'Sweets' },
+        { key: 'other', label: 'Other' },
       ],
     },
   },
   {
-    id: 'brand',
-    label: 'Brand',
+    id: 'restaurant',
+    label: 'Restaurant',
     type: 'SelectMultipleFilter',
     group: 'primary',
     queryParamNames: ['pub_brand'],
@@ -103,16 +105,13 @@ export const filters = [
       // Note: label is not added through the translation files
       // to make filter customizations a bit easier.
       options: [
-        { key: 'adidas', label: 'Adidas' },
-        { key: 'air_jordan', label: 'Air Jordan' },
-        { key: 'converse', label: 'Converse' },
-        { key: 'new_balance', label: 'New Balance' },
-        { key: 'nike', label: 'Nike' },
-        { key: 'puma', label: 'Puma' },
-        { key: 'ultraboost', label: 'Ultraboost' },
-        { key: 'vans', label: 'Vans' },
-        { key: 'yeezy', label: 'Yeezy' },
-        { key: 'other', label: 'Other' },
+        { key: 'restaurant1', label: 'Miam Corner' },
+        { key: 'restaurant2', label: 'Pizz\'Attitude' },
+        { key: 'restaurant3', label: 'Chic Mama' },
+        { key: 'restaurant4', label: 'Le Madly' },
+        { key: 'restaurant5', label: 'La Cabanne des neiges' },
+        { key: 'restaurant6', label: 'Le Cerf Fondue' },
+        { key: 'restaurant7', label: 'Other' },
       ],
     },
   },
@@ -128,7 +127,7 @@ export const filters = [
     // Note: unlike most prices this is not handled in subunits
     config: {
       min: 0,
-      max: 1000,
+      max: 50,
       step: 5,
     },
   },

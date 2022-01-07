@@ -364,7 +364,7 @@
   "LoadableComponentErrorBoundaryPage.description": "Il semble que l'application doive être mise à jour ! Veuillez rafraîchir la page ou retourner sur {link}.",
   "LoadableComponentErrorBoundaryPage.landingPageLink": "la page d'accueil",
   "LocationAutocompleteInput.currentLocation": "Emplacement actuel",
-  "LocationSearchForm.placeholder": "Rechercher un sauna…",
+  "LocationSearchForm.placeholder": "Rechercher un repas…",
   "LoginForm.emailInvalid": "Une adresse email valide est requise.",
   "LoginForm.emailLabel": "Email",
   "LoginForm.emailPlaceholder": "prenom.nom@exemple.fr",
