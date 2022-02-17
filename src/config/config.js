@@ -46,7 +46,12 @@ const sortSearchByDistance = false;
 //
 // In a way, 'processAlias' defines which transaction process (or processes)
 // this particular web application is able to handle.
-const transactionProcessAlias = 'flex-product-default-process/release-1';
+
+
+// Original
+// const transactionProcessAlias = 'flex-product-default-process/release-1';
+// New version
+const transactionProcessAlias = 'flex-product-default-process/dev-periods-chge';
 
 // The transaction line item code for the main unit type for listings.
 //
