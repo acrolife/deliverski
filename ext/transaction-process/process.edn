@@ -39,8 +39,6 @@
    :actions
    [{:name :action/calculate-full-refund}
     {:name :action/stripe-refund-payment}
-    ;; Keep this action last in the list of actions for
-    ;; the transition
     {:name :action/decline-stock-reservation}],
    :from :state/pending-payment,
    :to :state/payment-expired}
@@ -63,7 +61,7 @@
    :at
    {:fn/plus
     [{:fn/timepoint [:time/first-entered-state :state/delivered]}
-     {:fn/period ["P14D"]}]},
+     {:fn/period ["PT60M"]}]},
    :actions [{:name :action/stripe-create-payout}],
    :from :state/delivered,
    :to :state/received}
@@ -82,8 +80,6 @@
    :actions
    [{:name :action/calculate-full-refund}
     {:name :action/stripe-refund-payment}
-    ;; Keep this action last in the list of actions for
-    ;; the transition
     {:name :action/cancel-stock-reservation}],
    :from :state/purchased,
    :to :state/canceled}
@@ -91,12 +87,10 @@
    :at
    {:fn/plus
     [{:fn/timepoint [:time/first-entered-state :state/purchased]}
-     {:fn/period ["P14D"]}]},
+     {:fn/period ["PT180M"]}]},
    :actions
    [{:name :action/calculate-full-refund}
     {:name :action/stripe-refund-payment}
-    ;; Keep this action last in the list of actions for
-    ;; the transition
     {:name :action/cancel-stock-reservation}],
    :from :state/purchased,
    :to :state/canceled}
@@ -105,8 +99,6 @@
    :actions
    [{:name :action/calculate-full-refund}
     {:name :action/stripe-refund-payment}
-    ;; Keep this action last in the list of actions for
-    ;; the transition
     {:name :action/cancel-stock-reservation}],
    :from :state/disputed,
    :to :state/canceled}
@@ -114,12 +106,10 @@
    :at
    {:fn/plus
     [{:fn/timepoint [:time/first-entered-state :state/disputed]}
-     {:fn/period ["P60D"]}]},
+     {:fn/period ["P1D"]}]},
    :actions
    [{:name :action/calculate-full-refund}
     {:name :action/stripe-refund-payment}
-    ;; Keep this action last in the list of actions for
-    ;; the transition
     {:name :action/cancel-stock-reservation}],
    :from :state/disputed,
    :to :state/canceled}
@@ -156,7 +146,7 @@
    :at
    {:fn/plus
     [{:fn/timepoint [:time/first-entered-state :state/received]}
-     {:fn/period ["P7D"]}]},
+     {:fn/period ["P8D"]}]},
    :actions [],
    :from :state/completed,
    :to :state/reviewed}
@@ -164,7 +154,7 @@
    :at
    {:fn/plus
     [{:fn/timepoint [:time/first-entered-state :state/received]}
-     {:fn/period ["P7D"]}]},
+     {:fn/period ["P8D"]}]},
    :actions [{:name :action/publish-reviews}],
    :from :state/reviewed-by-customer,
    :to :state/reviewed}
@@ -172,15 +162,13 @@
    :at
    {:fn/plus
     [{:fn/timepoint [:time/first-entered-state :state/received]}
-     {:fn/period ["P7D"]}]},
+     {:fn/period ["P8D"]}]},
    :actions [{:name :action/publish-reviews}],
    :from :state/reviewed-by-provider,
    :to :state/reviewed}],
  :notifications
  [{:name :notification/order-receipt,
    :on :transition/confirm-payment,
-   ;; This notification is delayed to give the customer a chance to verify their
-   ;; email address, in case they are a new customer.
    :at
    {:fn/plus
     [{:fn/timepoint [:time/first-entered-state :state/purchased]}
@@ -191,14 +179,14 @@
    :on :transition/confirm-payment,
    :to :actor.role/provider,
    :template :new-order}
-  {:name :notification/shipping-reminder,
-   :on :transition/confirm-payment,
-   :at
-   {:fn/plus
-    [{:fn/timepoint [:time/first-entered-state :state/purchased]}
-     {:fn/period ["P3D"]}]},
-   :to :actor.role/provider,
-   :template :shipping-reminder}
+  ;; {:name :notification/shipping-reminder,
+  ;;  :on :transition/confirm-payment,
+  ;;  :at
+  ;;  {:fn/plus
+  ;;   [{:fn/timepoint [:time/first-entered-state :state/purchased]}
+  ;;    {:fn/period ["P3D"]}]},
+  ;;  :to :actor.role/provider,
+  ;;  :template :shipping-reminder}
   {:name :notification/order-marked-as-delivered,
    :on :transition/mark-delivered,
    :to :actor.role/customer,
@@ -208,7 +196,7 @@
    :at
    {:fn/plus
     [{:fn/timepoint [:time/first-entered-state :state/delivered]}
-     {:fn/period ["P12D"]}]},
+     {:fn/period ["PT5M"]}]},
    :to :actor.role/customer,
    :template :mark-order-received-reminder}
   {:name :notification/order-marked-as-received-from-purchased,
