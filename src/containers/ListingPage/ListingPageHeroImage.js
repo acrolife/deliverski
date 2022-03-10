@@ -387,7 +387,7 @@ export class ListingPageComponent extends Component {
                                     })
 
             const isFromSameVendor = currentShoppingCartUnwrapped.length === 0 || currentShoppingCartUnwrapped.find(item => {
-              return item.listing.id.uuid === currentListing.id.uuid
+              return item.listing.author.id.uuid === currentListing.author.id.uuid
             })
 
                   if(isFromSameVendor){
