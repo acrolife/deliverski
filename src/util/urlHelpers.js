@@ -67,6 +67,13 @@ export const createSlug = str => {
   return slug.length > 0 ? slug : 'no-slug';
 };
 
+export const pushToPath = (path) => {
+  if(typeof window !== 'undefined'){
+    document.location.href = path
+  }
+}
+
+
 /**
  * Parse float from a string
  *
