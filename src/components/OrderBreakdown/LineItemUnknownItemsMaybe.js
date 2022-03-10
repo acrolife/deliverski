@@ -14,7 +14,7 @@ import { intlShape } from '../../util/reactIntl';
 import { formatMoney } from '../../util/currency';
 import { humanizeLineItemCode } from '../../util/data';
 import { LINE_ITEMS, propTypes } from '../../util/types';
-
+import { FormattedMessage } from '../../util/reactIntl';
 import css from './OrderBreakdown.module.css';
 
 const LineItemUnknownItemsMaybe = props => {
@@ -32,17 +32,28 @@ const LineItemUnknownItemsMaybe = props => {
       {items.map((item, i) => {
         const quantity = item.quantity;
 
+        
+
         const label =
           quantity && quantity > 1
             ? `${humanizeLineItemCode(item.code)} x ${quantity}`
             : humanizeLineItemCode(item.code);
 
         const formattedTotal = formatMoney(intl, item.lineTotal);
+        const formattedUnit = formatMoney(intl, item.unitPrice);
         return (
-          <div key={`${i}-item.code`} className={css.lineItem}>
-            <span className={css.itemLabel}>{label}</span>
-            <span className={css.itemValue}>{formattedTotal}</span>
-          </div>
+          <div className={css.lineItem}>
+            <span className={css.itemLabel}>
+              <FormattedMessage id="BookingBreakdown.productUnit" values={{ quantity, formattedUnit }}/>
+            </span>
+            <span className={css.itemValue}>
+              <FormattedMessage id="BookingBreakdown.productTotal" values={{ formattedTotal }} />
+            </span>
+          </div> 
+        //   <div key={`${i}-item.code`} className={css.lineItem}>
+        //   <span className={css.itemLabel}>{label}</span>
+        //   <span className={css.itemValue}>{formattedTotal}</span>
+        // </div>
         );
       })}
     </React.Fragment>

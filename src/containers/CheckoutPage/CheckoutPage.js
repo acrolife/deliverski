@@ -299,12 +299,12 @@ export class CheckoutPageComponent extends Component {
       const transactionId = tx ? tx.id : null;
 
       // Fetch speculated transaction for showing price in order breakdown
-      const { bookingStart, bookingEnd } = pageData.bookingDates;
-      const { bookingData } = pageData;
+      // const { bookingStart, bookingEnd } = pageData.bookingDates;
+      const { orderData } = pageData;
       // Convert picked date to date that will be converted on the API as
       // a noon of correct year-month-date combo in UTC
-      const bookingStartForAPI = dateFromLocalToAPI(bookingStart);
-      const bookingEndForAPI = dateFromLocalToAPI(bookingEnd);
+      // const bookingStartForAPI = dateFromLocalToAPI(bookingStart);
+      // const bookingEndForAPI = dateFromLocalToAPI(bookingEnd);
 
       // Fetch speculated transaction for showing price in booking breakdown
       // NOTE: if unit type is line-item/units, quantity needs to be added.
@@ -318,10 +318,10 @@ export class CheckoutPageComponent extends Component {
           deliveryMethod,
           ...quantityMaybe,
           ...bookingDatesMaybe(pageData.orderData.bookingDates),
-          bookingStart: bookingStartForAPI,
-          bookingEnd: bookingEndForAPI,
-          referral: pageData.bookingData.referral,
-          bookingData,
+          // bookingStart: bookingStartForAPI,
+          // bookingEnd: bookingEndForAPI,
+          // referral: pageData.referral,
+          orderData,
           quantity
         },
         transactionId
@@ -377,9 +377,9 @@ export class CheckoutPageComponent extends Component {
       const hasPaymentIntents =
         storedTx.attributes.protectedData && storedTx.attributes.protectedData.stripePaymentIntents;
 
-      fnParams.referral = pageData.bookingData.referral;
-      fnParams.quantity = pageData.bookingData.quantity;
-      fnParams.restOfShoppingCartItems = pageData.bookingData.restOfShoppingCartItems;
+      // fnParams.referral = pageData.bookingData.referral;
+      // fnParams.quantity = pageData.bookingData.quantity;
+      fnParams.restOfShoppingCartItems = pageData.orderData.restOfShoppingCartItems;
       // If paymentIntent exists, order has been initiated previously.
       return hasPaymentIntents ? Promise.resolve(storedTx) : onInitiateOrder(fnParams, storedTx.id);
     };

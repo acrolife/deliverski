@@ -5,6 +5,7 @@ const {
 } = require('./lineItemHelpers');
 const { types } = require('sharetribe-flex-sdk');
 const { Money } = types;
+const sellingUnitType = 'line-item/quantity';
 
 // This unit type needs to be one of the following:
 // line-item/night, line-item/day or line-item/units
@@ -83,7 +84,7 @@ exports.transactionLineItems = (listing, orderData) => {
   const specialPackageNumberOfDays = listing.attributes.publicData.specialPackageNumberOfDays;
   const specialPackagePrice = listing.attributes.publicData.specialPackagePrice;
   const specialPackageExtraDayPrice = listing.attributes.publicData.specialPackageExtraDayPrice;
-  const restOfShoppingCartItems = orderData.restOfShoppingCartItems;
+  const restOfShoppingCartItems = orderData.orderData?.restOfShoppingCartItems ? orderData.orderData.restOfShoppingCartItems : orderData.restOfShoppingCartItems;
   /**
    * If you want to use pre-defined component and translations for printing the lineItems base price for order,
    * you should use one of the codes:

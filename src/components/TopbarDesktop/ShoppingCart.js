@@ -110,24 +110,24 @@ const ShoppingCartComponent = (props) => {
       const listingId = new UUID(shoppingCartItems[0].listing.id.uuid);
       const listing = shoppingCartItems[0].listing;
   
-      const bookingData = shoppingCartItems[0].checkoutValues;
+      const orderData = shoppingCartItems[0].checkoutValues;
       const restOfShoppingCartItems = [...shoppingCartItems];
       restOfShoppingCartItems.shift();
-      bookingData.restOfShoppingCartItems = restOfShoppingCartItems;
+      orderData.restOfShoppingCartItems = restOfShoppingCartItems;
 
       
-      const bookingDates = {
-       startDate: new Date(shoppingCartItems[0].checkoutValues.bookingDates.startDate),
-       endDate: new Date(shoppingCartItems[0].checkoutValues.bookingDates.endDate)
-      }
+      // const bookingDates = {
+      //  startDate: new Date(shoppingCartItems[0].checkoutValues.bookingDates.startDate),
+      //  endDate: new Date(shoppingCartItems[0].checkoutValues.bookingDates.endDate)
+      // }
   
       const initialValues = {
         listing,
-        bookingData,
-        bookingDates: bookingDates ? {
-          bookingStart: bookingDates.startDate,
-          bookingEnd: bookingDates.endDate,
-        } : {},
+        orderData,
+        // bookingDates: bookingDates ? {
+        //   bookingStart: bookingDates.startDate,
+        //   bookingEnd: bookingDates.endDate,
+        // } : {},
         confirmPaymentError: null,
       };
   

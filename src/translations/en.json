@@ -1044,5 +1044,8 @@
   "ListingPage.sameVendorModalTitle": "You need to add items from the same vendor",
   "ListingPage.clearBasket": "Clear basket",
   "ListingPage.seeSameVendorListings": "See other products from this vendor",
-  "ShoppingCart.emptyTitle": "Your shopping cart is empty 😞"
+  "ShoppingCart.emptyTitle": "Your shopping cart is empty 😞",
+  "BookingBreakdown.quantity": "{quantity, number}  {quantity, plural, one {person} other {persons}}",
+  "BookingBreakdown.productUnit": "{formattedUnit} * {quantity, number}",
+  "BookingBreakdown.productTotal": "{formattedTotal}"
 }
