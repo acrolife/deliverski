@@ -3,8 +3,14 @@ import { any, bool, func, object, number, string } from 'prop-types';
 import classNames from 'classnames';
 
 import { FormattedMessage, intlShape } from '../../../util/reactIntl';
-import { ACCOUNT_SETTINGS_PAGES } from '../../../routing/routeConfiguration';
-import { propTypes } from '../../../util/types';
+
+//import { ACCOUNT_SETTINGS_PAGES } from '../../../routing/routeConfiguration';
+import { ACCOUNT_SETTINGS_PAGES } from '../../routeConfiguration';
+//import { propTypes } from '../../../util/types';
+import { propTypes } from '../../util/types';
+
+import ShoppingCart from './ShoppingCart';
+
 import {
   Avatar,
   InlineTextButton,
@@ -16,8 +22,8 @@ import {
   NamedLink,
 } from '../../../components';
 
-import TopbarSearchForm from '../TopbarSearchForm/TopbarSearchForm';
-
+//import TopbarSearchForm from '../TopbarSearchForm/TopbarSearchForm';
+import { TopbarSearchForm } from '../../forms';
 import css from './TopbarDesktop.module.css';
 
 const TopbarDesktop = props => {
@@ -152,7 +158,13 @@ const TopbarDesktop = props => {
         </span>
       </NamedLink>
       {inboxLink}
+
+      {isAuthenticatedOrJustHydrated ? 
+      <ShoppingCart />
+      : null}
+
       {profileMenu}
+      
       {signupLink}
       {loginLink}
     </nav>

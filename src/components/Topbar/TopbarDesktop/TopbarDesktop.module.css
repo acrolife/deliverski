@@ -322,3 +322,30 @@
     }
   }
 }
+
+
+.shoppingCartWrapper{
+  @apply --TopbarDesktop_linkHover;
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  width: 3pc;
+  cursor: pointer;
+
+  @media only screen and (max-width: 768px){
+    width: 10pc;
+  }
+}
+
+.cartIcon{
+  align-self: center;
+}
+
+.mobileLabel{
+  color: var(--marketplaceColor);
+  font-weight: var(--fontWeightSemiBold);
+  font-size: 21px;
+  line-height: 24px;
+  width: 10pc;
+  margin-bottom: 11px;
+}
