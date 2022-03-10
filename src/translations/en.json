@@ -599,7 +599,7 @@
   "PrivacyPolicyPage.schemaTitle": "Privacy Policy | {siteTitle}",
   "PrivacyPolicyPage.tosTabTitle": "Terms of Service",
   "ProductOrderForm.breakdownTitle": "Order breakdown",
-  "ProductOrderForm.ctaButton": "Buy now",
+  "ProductOrderForm.ctaButton": "Add to cart",
   "ProductOrderForm.ctaButtonNoStock": "Out of stock",
   "ProductOrderForm.deliveryMethodLabel": "Delivery method",
   "ProductOrderForm.deliveryMethodRequired": "Delivery method is required",
@@ -1036,7 +1036,6 @@
   "EditListingPricingForm.pricePerItem": "Price per item",
   "EditListingPricingForm.stockRequired": "You need to complete this field",
   "ShoppingCart.searchListing": "Search products",
-  "ShoppingCart.emptyTitle": "Your shopping basket is empty 😞",
   "ShoppingCart.mobileLabel": "Your basket",
   "BookingDatesForm.addToCart": "+ Add to basket",
   "BookingDatesForm.removeFromCart": "Remove from basket",
@@ -1044,5 +1043,6 @@
   "ShoppingCart.checkout": "Checkout",
   "ListingPage.sameVendorModalTitle": "You need to add items from the same vendor",
   "ListingPage.clearBasket": "Clear basket",
-  "ListingPage.seeSameVendorListings": "See other products from this vendor"
+  "ListingPage.seeSameVendorListings": "See other products from this vendor",
+  "ShoppingCart.emptyTitle": "Your shopping cart is empty 😞"
 }
