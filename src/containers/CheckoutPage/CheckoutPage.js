@@ -517,7 +517,7 @@ export class CheckoutPageComponent extends Component {
       listingId: pageData.listing.id,
       deliveryMethod,
       ...quantityMaybe,
-      ...bookingDatesMaybe(pageData.orderData.bookingDates),
+      //...bookingDatesMaybe(pageData.orderData.bookingDates),
       ...protectedDataMaybe,
       ...optionalPaymentParams,
     };
