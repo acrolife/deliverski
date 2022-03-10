@@ -57,6 +57,11 @@ import SectionRulesMaybe from './SectionRulesMaybe';
 import SectionMapMaybe from './SectionMapMaybe';
 import css from './ListingPage.module.css';
 
+const sharetribeSdk = require('sharetribe-flex-sdk');
+const sdk = sharetribeSdk.createInstance({
+  clientId: process.env.REACT_APP_SHARETRIBE_SDK_CLIENT_ID
+});
+
 const MIN_LENGTH_FOR_LONG_WORDS_IN_TITLE = 16;
 
 const { UUID } = sdkTypes;
@@ -87,11 +92,22 @@ export class ListingPageComponent extends Component {
       pageClassNames: [],
       imageCarouselOpen: false,
       enquiryModalOpen: enquiryModalOpenForListingId === params.id,
+      referralActivated: false,
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.onContactUser = this.onContactUser.bind(this);
     this.onSubmitEnquiry = this.onSubmitEnquiry.bind(this);
+    this.handleReferralClick = this.handleReferralClick.bind(this);
+  }
+
+
+
+  
+   
+  handleReferralClick() {
+
+    this.setState({referralActivated : true})
   }
 
   handleSubmit(values) {
@@ -347,8 +363,36 @@ export class ListingPageComponent extends Component {
       const isCurrentlyClosed = currentListing.attributes.state === LISTING_STATE_CLOSED;
       if (isOwnListing || isCurrentlyClosed) {
         window.scrollTo(0, 0);
-      } else {
-        this.handleSubmit(values);
+      } else if(isProductForSale){
+
+        return sdk.currentUser.show().then(res => {
+            const currentShoppingCart = res.data.data.attributes.profile.publicData.shoppingCart ? 
+                                        res.data.data.attributes.profile.publicData.shoppingCart 
+                                        : [];
+
+                     //ADD TO CART
+
+                        const shoppingCartItem = {
+                          listing: JSON.stringify({...currentListing}),
+                          checkoutValues: JSON.stringify({...values})
+                        }
+            
+                        return sdk.currentUser.updateProfile({
+                          publicData: {
+                            shoppingCart: [...currentShoppingCart, shoppingCartItem]
+                          },
+                        }).then(res => {
+                            window.location.reload()
+                        }).catch(e => console.log(e))
+
+                                       
+
+         
+                                        
+        }).catch(e => console.log(e))
+        
+      }else{
+        this.handleSubmit(values);   //send to checkout function
       }
     };
 

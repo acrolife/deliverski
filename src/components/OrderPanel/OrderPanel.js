@@ -78,6 +78,11 @@ const OrderPanel = props => {
     lineItems,
     fetchLineItemsInProgress,
     fetchLineItemsError,
+    transactionId,
+    referral,
+    handleReferralClick,
+    referralLeftForSenderUser,
+    isProductForSale,
   } = props;
 
   const isNightly = unitType === LINE_ITEM_NIGHT;

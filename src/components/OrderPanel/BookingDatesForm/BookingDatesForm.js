@@ -111,6 +111,9 @@ export class BookingDatesFormComponent extends Component {
             lineItems,
             fetchLineItemsInProgress,
             fetchLineItemsError,
+            isProductForSale,
+            listing, 
+            form,
           } = fieldRenderProps;
           const { startDate, endDate } = values && values.bookingDates ? values.bookingDates : {};
 
@@ -236,8 +239,18 @@ export class BookingDatesFormComponent extends Component {
                 />
               </p>
               <div className={submitButtonClasses}>
-                <PrimaryButton type="submit">
-                  <FormattedMessage id="BookingDatesForm.requestToBook" />
+                {/* <PrimaryButton type="submit">
+                  <FormattedMessage id="BookingDatesForm.requestToBook" /> */}
+                <FormGroup>
+                  <FormControlLabel control={<Checkbox checked={this.state.agreed} onChange={(e) => { setAgreed(e.target.checked)}} className={css.checkbox} />} label={<p className={css.tAndCLabel}>I agree with the <a>Terms & conditions</a></p>} />
+                </FormGroup>
+
+
+                <PrimaryButton type="submit" disabled={!this.state.agreed}>
+                  {isProductForSale ? 
+                     <FormattedMessage id="BookingDatesForm.addToCart" />
+                    : <FormattedMessage id="BookingDatesForm.requestToBook" />
+                  }
                 </PrimaryButton>
               </div>
             </Form>

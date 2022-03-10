@@ -1037,5 +1037,9 @@
   "EditListingPricingForm.stockRequired": "You need to complete this field",
   "ShoppingCart.searchListing": "Search products",
   "ShoppingCart.emptyTitle": "Your shopping cart is empty 😞",
-  "ShoppingCart.mobileLabel": "Your cart"
+  "ShoppingCart.mobileLabel": "Your cart",
+  "BookingDatesForm.addToCart": "+ Add to cart",
+  "BookingDatesForm.removeFromCart": "Remove from cart",
+  "ShoppingCart.total": "Total",
+  "ShoppingCart.checkout": "Checkout"
 }
