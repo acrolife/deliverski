@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { React, useState, useEffect } from 'react';
 import { bool, func, object, string } from 'prop-types';
 import classNames from 'classnames';
+
+import { getValuesFromQueryString } from '../../../../util/urlHelpers';
 
 // Import configs and util modules
 import { FormattedMessage } from '../../../../util/reactIntl';
@@ -14,13 +16,15 @@ import { ListingLink } from '../../../../components';
 import EditListingDetailsForm from './EditListingDetailsForm';
 import css from './EditListingDetailsPanel.module.css';
 
-const EditListingDetailsPanel = props => {
 const sharetribeSdk = require('sharetribe-flex-sdk');
 const sdk = sharetribeSdk.createInstance({
   clientId: process.env.REACT_APP_SHARETRIBE_SDK_CLIENT_ID
 });
 
-const EditListingDescriptionPanel = props => {
+const EditListingDetailsPanel = props => {
+
+
+//const EditListingDescriptionPanel = props => {
   const {
     className,
     rootClassName,
@@ -97,6 +101,7 @@ const EditListingDescriptionPanel = props => {
             title: title.trim(),
             description,
             publicData: {
+              category, size, brand,
               ...isProductForSale,
               ...hostIdObj
             }
@@ -139,5 +144,5 @@ EditListingDetailsPanel.propTypes = {
   updateInProgress: bool.isRequired,
   errors: object.isRequired,
 };
-}
+//}
 export default EditListingDetailsPanel;
