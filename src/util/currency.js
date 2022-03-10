@@ -207,7 +207,7 @@ const isGoogleMathLong = value => {
  * @return {Number} converted value
  */
 export const convertMoneyToNumber = value => {
-  if (!(value instanceof Money)) {
+  if (!value.amount || !value.currency) {
     throw new Error('Value must be a Money type');
   }
   const subUnitDivisorAsDecimal = convertDivisorToDecimal(unitDivisor(value.currency));
@@ -244,7 +244,7 @@ export const convertMoneyToNumber = value => {
  * @return {String} formatted money value
  */
 export const formatMoney = (intl, value) => {
-  if (!(value instanceof Money)) {
+  if (!value.amount || !value.currency) {
     throw new Error('Value must be a Money type');
   }
   const valueAsNumber = convertMoneyToNumber(value);
