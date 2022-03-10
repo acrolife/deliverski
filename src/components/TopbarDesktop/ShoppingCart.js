@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Button } from '../../components';
 import { FormattedMessage, injectIntl, intlShape } from '../../util/reactIntl';
+//import { pushToPath } from '../../util/urlHelpers';
 import { pushToPath } from '../../util/urlHelpers';
-import css from './TopbarDesktop.module.css';
+import css from '../Topbar/TopbarDesktop/TopbarDesktop.module.css';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 const sharetribeSdk = require('sharetribe-flex-sdk');

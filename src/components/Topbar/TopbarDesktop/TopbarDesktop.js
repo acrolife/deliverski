@@ -4,12 +4,12 @@ import classNames from 'classnames';
 
 import { FormattedMessage, intlShape } from '../../../util/reactIntl';
 
-//import { ACCOUNT_SETTINGS_PAGES } from '../../../routing/routeConfiguration';
-import { ACCOUNT_SETTINGS_PAGES } from '../../routeConfiguration';
-//import { propTypes } from '../../../util/types';
-import { propTypes } from '../../util/types';
+import { ACCOUNT_SETTINGS_PAGES } from '../../../routing/routeConfiguration';
+//import { ACCOUNT_SETTINGS_PAGES } from '../../routeConfiguration';
+import { propTypes } from '../../../util/types';
+//import { propTypes } from '../../util/types';
 
-import ShoppingCart from './ShoppingCart';
+import ShoppingCart from '../../TopbarDesktop/ShoppingCart';
 
 import {
   Avatar,
@@ -22,8 +22,8 @@ import {
   NamedLink,
 } from '../../../components';
 
-//import TopbarSearchForm from '../TopbarSearchForm/TopbarSearchForm';
-import { TopbarSearchForm } from '../../forms';
+import TopbarSearchForm from '../TopbarSearchForm/TopbarSearchForm';
+//import { TopbarSearchForm } from '../../forms';
 import css from './TopbarDesktop.module.css';
 
 const TopbarDesktop = props => {

@@ -16,7 +16,7 @@ import { AvatarLarge, InlineTextButton, NamedLink, NotificationBadge } from '../
 //import { propTypes } from '../../util/types';
 //import { ensureCurrentUser } from '../../util/data';
 //import { AvatarLarge, InlineTextButton, NamedLink, NotificationBadge } from '../../components';
-import ShoppingCart from '../TopbarDesktop/ShoppingCart';
+import ShoppingCart from '../../TopbarDesktop/ShoppingCart';
 
 import css from './TopbarMobileMenu.module.css';
 
