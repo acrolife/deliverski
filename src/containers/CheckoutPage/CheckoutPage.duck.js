@@ -184,7 +184,19 @@ export const initiateOrder = (orderParams, transactionId) => (dispatch, getState
   const transitionParams = {
     ...quantityMaybe,
     ...bookingParamsMaybe,
-    ...otherOrderParams,
+    ...otherOrderParams
+  };
+  
+  const restOfShoppingCartItems = orderParams.restOfShoppingCartItems ? {
+    restOfShoppingCartItems: orderParams.restOfShoppingCartItems
+  } : {}
+
+  const bookingData = {
+    startDate: orderParams.bookingStart,
+    endDate: orderParams.bookingEnd,
+    referral: orderParams.referral,
+    quantity: orderParams.quantity,
+    ...restOfShoppingCartItems
   };
 
   const bodyParams = isTransition
@@ -326,7 +338,19 @@ export const speculateTransaction = (orderParams, transactionId) => (dispatch, g
 
   // Parameters only for client app's server
   const orderData = {
-    deliveryMethod,
+    deliveryMethod
+  };
+  
+  const restOfShoppingCartItems = orderParams.bookingData?.restOfShoppingCartItems ? {
+    restOfShoppingCartItems: orderParams.bookingData.restOfShoppingCartItems
+  } : {}
+
+  const bookingData = {
+    startDate: orderParams.bookingStart,
+    endDate: orderParams.bookingEnd,
+    referral: orderParams.referral,
+    quantity: orderParams.quantity,
+    ...restOfShoppingCartItems
   };
 
   // Parameters for Flex API

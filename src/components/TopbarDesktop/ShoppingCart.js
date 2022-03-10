@@ -1,17 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Button } from '../../components';
 import { FormattedMessage, injectIntl, intlShape } from '../../util/reactIntl';
-//import { pushToPath } from '../../util/urlHelpers';
+import { array, arrayOf, bool, func, shape, string, oneOf } from 'prop-types';
+import { propTypes } from '../../util/types';
 import { pushToPath } from '../../util/urlHelpers';
 import css from '../Topbar/TopbarDesktop/TopbarDesktop.module.css';
 import { formatMoney } from '../../util/currency';
-//import css from './TopbarDesktop.module.css';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import css from './TopbarDesktop.module.css';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { types as sdkTypes } from '../../util/sdkLoader';
 import config from '../../config';
+import routeConfiguration from '../../routeConfiguration';
+import { createResourceLocatorString, findRouteByRouteName } from '../../util/routes';
+import { sendEnquiry, fetchTransactionLineItems } from './ShoppingCart.duck';
+import { setInitialValues } from '../../containers/CheckoutPage/CheckoutPage.duck';
+import { initializeCardPaymentData } from '../../ducks/stripe.duck.js';
+import { manageDisableScrolling, isScrollingDisabled } from '../../ducks/UI.duck';
 
-
+import { createSlug } from '../../util/urlHelpers';
+const { UUID } = sdkTypes;
 const sharetribeSdk = require('sharetribe-flex-sdk');
 const sdk = sharetribeSdk.createInstance({
   clientId: process.env.REACT_APP_SHARETRIBE_SDK_CLIENT_ID
@@ -22,9 +33,14 @@ const sdk = sharetribeSdk.createInstance({
 const { Money } = sdkTypes;
 
 
-function ShoppingCart(props) {
+const ShoppingCartComponent = (props) => {
 
-    const { mobile, intl } = props;
+    const { 
+      mobile, 
+      intl,
+      callSetInitialValues
+    } = props;
+
     const [isOpen, setIsOpen] = useState(false);
     const [shoppingCartItems, setShoppingCartItems] = useState([]);
 
@@ -80,6 +96,61 @@ function ShoppingCart(props) {
         const totalAmount = amountsArray.reduce(
             (previousValue, currentValue) => previousValue + currentValue, 0);
         totalPrice = intl ? formatMoney(intl, new Money(totalAmount, config.currency)) : `${totalAmount / 100} ${config.currency}`;
+    }
+
+    // const callSetInitialValues = (setInitialValues, values, saveToSessionStorage) => {
+    //         return setInitialValues(values, saveToSessionStorage)
+    // }
+
+    const toCheckout = () => {
+    
+      const {
+        history,
+      } = props;
+      const listingId = new UUID(shoppingCartItems[0].listing.id.uuid);
+      const listing = shoppingCartItems[0].listing;
+  
+      const bookingData = shoppingCartItems[0].checkoutValues;
+      const restOfShoppingCartItems = [...shoppingCartItems];
+      restOfShoppingCartItems.shift();
+      bookingData.restOfShoppingCartItems = restOfShoppingCartItems;
+
+      
+      const bookingDates = {
+       startDate: new Date(shoppingCartItems[0].checkoutValues.bookingDates.startDate),
+       endDate: new Date(shoppingCartItems[0].checkoutValues.bookingDates.endDate)
+      }
+  
+      const initialValues = {
+        listing,
+        bookingData,
+        bookingDates: bookingDates ? {
+          bookingStart: bookingDates.startDate,
+          bookingEnd: bookingDates.endDate,
+        } : {},
+        confirmPaymentError: null,
+      };
+  
+      const saveToSessionStorage = true;
+  
+      const routes = routeConfiguration();
+      // Customize checkout page state with current listing and selected bookingDates
+      // const { setInitialValues } = findRouteByRouteName('CheckoutPage', routes);
+  
+      callSetInitialValues(setInitialValues, initialValues, saveToSessionStorage);
+  
+      // Clear previous Stripe errors from store if there is any
+      initializeCardPaymentData();
+  
+      // Redirect to CheckoutPage
+      history.push(
+        createResourceLocatorString(
+          'CheckoutPage',
+          routes,
+          { id: listing.id.uuid, slug: createSlug(listing.attributes.title) },
+          {}
+        )
+      );
     }
 
 
@@ -149,7 +220,7 @@ function ShoppingCart(props) {
                      </div>    
 
                      <br/>
-                     <Button><FormattedMessage id="ShoppingCart.checkout" /></Button>  
+                     <Button type='button' onClick={toCheckout}><FormattedMessage id="ShoppingCart.checkout" /></Button>  
                 
                 </div>  
                 }
@@ -158,6 +229,64 @@ function ShoppingCart(props) {
   )
 }
 
-export default ShoppingCart
+ShoppingCartComponent.defaultProps = {
+  unitType: config.bookingUnitType,
+  currentUser: null,
+  filterConfig: config.custom.filters,
+};
+
+ShoppingCartComponent.propTypes = {
+  // from withRouter
+  history: shape({
+    push: func.isRequired,
+  }).isRequired,
+  location: shape({
+    search: string,
+  }).isRequired,
+
+  unitType: propTypes.bookingUnitType,
+  // from injectIntl
+  intl: intlShape.isRequired,
+  isAuthenticated: bool.isRequired,
+  currentUser: propTypes.currentUser,
+  onManageDisableScrolling: func.isRequired,
+  scrollingDisabled: bool.isRequired,
+  callSetInitialValues: func.isRequired,
+  onInitializeCardPaymentData: func.isRequired,
+  filterConfig: array,
+};
+
+const mapStateToProps = state => {
+  const { isAuthenticated } = state.Auth;
+  const { currentUser } = state.user;
+
+
+
+  return {
+    isAuthenticated,
+    currentUser,
+    scrollingDisabled: isScrollingDisabled(state),
+  };
+};
+
+const mapDispatchToProps = dispatch => ({
+  onManageDisableScrolling: (componentId, disableScrolling) =>
+    dispatch(manageDisableScrolling(componentId, disableScrolling)),
+  callSetInitialValues: (setInitialValues, values, saveToSessionStorage) =>
+    dispatch(setInitialValues(values, saveToSessionStorage)),
+  onInitializeCardPaymentData: () => dispatch(initializeCardPaymentData()),
+});
+
+
+const ShoppingCart = compose(
+  withRouter,
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  injectIntl
+)(ShoppingCartComponent);
+
+export default ShoppingCart;
 
 

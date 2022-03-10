@@ -28,6 +28,7 @@ const TopbarMobileMenu = props => {
     currentUser,
     notificationCount,
     onLogout,
+    history
   } = props;
 
   const user = ensureCurrentUser(currentUser);
@@ -103,6 +104,9 @@ const TopbarMobileMenu = props => {
         </NamedLink>
         <ShoppingCart
         mobile={true}
+        history={history}
+        currentUser={currentUser}
+
         />
         <NamedLink
           className={classNames(css.navigationLink, currentPageClass('ManageListingsPage'))}
