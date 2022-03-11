@@ -35,6 +35,7 @@ const TopbarDesktop = props => {
     onLogout,
     onSearchSubmit,
     initialSearchFormValues,
+    history
   } = props;
   const [mounted, setMounted] = useState(false);
 
@@ -156,7 +157,10 @@ const TopbarDesktop = props => {
 
       {isAuthenticatedOrJustHydrated ? 
       <ShoppingCart 
-      intl={intl}/>
+      intl={intl}
+      history={history}
+      currentUser={currentUser}
+      />
       : null}
 
       {profileMenu}
