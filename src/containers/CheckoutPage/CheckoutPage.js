@@ -71,6 +71,12 @@ import StripePaymentForm from './StripePaymentForm/StripePaymentForm';
 import { storeData, storedData, clearData } from './CheckoutPageSessionHelpers';
 import css from './CheckoutPage.module.css';
 
+
+const sharetribeSdk = require('sharetribe-flex-sdk');
+const sdk = sharetribeSdk.createInstance({
+  clientId: process.env.REACT_APP_SHARETRIBE_SDK_CLIENT_ID
+});
+
 const STORAGE_KEY = 'CheckoutPage';
 
 // Stripe PaymentIntent statuses, where user actions are already completed
@@ -457,6 +463,26 @@ export class CheckoutPageComponent extends Component {
       }
     };
 
+
+        // Step 6: - remove items from basket if the case
+
+        const emptyBasktet = fnParams => {
+          const isTxWithBasket = pageData.orderData.restOfShoppingCartItems;
+          if(isTxWithBasket){
+            return sdk.currentUser.updateProfile({
+              publicData: {
+                shoppingCart: []
+              },
+            }).then(() => {
+              return fnParams;
+            }).catch(e => {
+              console.log(e)
+            })
+          }else{
+            return fnParams;
+          }
+      }
+
     // Here we create promise calls in sequence
     // This is pretty much the same as:
     // fnRequestPayment({...initialParams})
@@ -469,7 +495,8 @@ export class CheckoutPageComponent extends Component {
       fnConfirmCardPayment,
       fnConfirmPayment,
       fnSendMessage,
-      fnSavePaymentMethod
+      fnSavePaymentMethod,
+      emptyBasktet
     );
 
     // Create order aka transaction

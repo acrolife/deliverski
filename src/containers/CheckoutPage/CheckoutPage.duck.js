@@ -179,6 +179,17 @@ export const initiateOrder = (orderParams, transactionId) => (dispatch, getState
     restOfShoppingCartItems: orderParams.restOfShoppingCartItems
   } : {}
 
+
+  const metadataWithShoppingCart = orderParams.restOfShoppingCartItems ? {
+    metadata: {
+      restOfShoppingCartItems: orderParams.restOfShoppingCartItems.map(item => {
+        return (
+          JSON.stringify(item)
+        )
+      })
+    }
+  } : {}
+
   // Parameters only for client app's server
   const orderData = {
     deliveryMethod,
@@ -196,12 +207,18 @@ export const initiateOrder = (orderParams, transactionId) => (dispatch, getState
     ? {
         id: transactionId,
         transition,
-        params: transitionParams,
+        params: {
+          ...transitionParams,
+          ...metadataWithShoppingCart
+        },
       }
     : {
         processAlias: config.transactionProcessAlias,
         transition,
-        params: transitionParams,
+        params: {
+          ...transitionParams,
+        ...metadataWithShoppingCart
+      },
       };
   const queryParams = {
     include: ['booking', 'provider'],
