@@ -297,8 +297,6 @@ export class CheckoutPageComponent extends Component {
     if (shouldFetchSpeculatedTransaction) {
       const listingId = pageData.listing.id;
       const transactionId = tx ? tx.id : null;
-
-      // Fetch speculated transaction for showing price in order breakdown
       // NOTE: if unit type is line-item/units, quantity needs to be added.
       // The way to pass it to checkout page is through pageData.orderData
       const quantity = pageData.orderData?.quantity;
@@ -309,6 +307,7 @@ export class CheckoutPageComponent extends Component {
           listingId,
           deliveryMethod,
           ...quantityMaybe,
+          orderData: pageData.orderData,
           ...bookingDatesMaybe(pageData.orderData.bookingDates),
         },
         transactionId
@@ -363,7 +362,7 @@ export class CheckoutPageComponent extends Component {
       // fnParams should be { listingId, deliveryMethod, quantity?, bookingDates?, paymentMethod?/setupPaymentMethodForSaving? }
       const hasPaymentIntents =
         storedTx.attributes.protectedData && storedTx.attributes.protectedData.stripePaymentIntents;
-
+      fnParams.restOfShoppingCartItems = pageData.orderData.restOfShoppingCartItems;
       // If paymentIntent exists, order has been initiated previously.
       return hasPaymentIntents ? Promise.resolve(storedTx) : onInitiateOrder(fnParams, storedTx.id);
     };

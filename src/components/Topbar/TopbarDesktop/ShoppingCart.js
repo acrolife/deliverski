@@ -110,6 +110,9 @@ const ShoppingCartComponent = (props) => {
       // restOfShoppingCartItems.shift();
       // bookingData.restOfShoppingCartItems = restOfShoppingCartItems;
    
+      const restOfShoppingCartItems = [...shoppingCartItems];
+      restOfShoppingCartItems.shift();
+      orderData.restOfShoppingCartItems = restOfShoppingCartItems;
   
       const initialValues = {
         listing,

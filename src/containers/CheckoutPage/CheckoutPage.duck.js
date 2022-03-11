@@ -175,9 +175,14 @@ export const initiateOrder = (orderParams, transactionId) => (dispatch, getState
   const quantityMaybe = quantity ? { stockReservationQuantity: Number(quantity) } : {};
   const bookingParamsMaybe = bookingDates || {};
 
+  const restOfShoppingCartItems = orderParams.restOfShoppingCartItems ? {
+    restOfShoppingCartItems: orderParams.restOfShoppingCartItems
+  } : {}
+
   // Parameters only for client app's server
   const orderData = {
     deliveryMethod,
+    ...restOfShoppingCartItems
   };
 
   // Parameters for Flex API
@@ -324,9 +329,14 @@ export const speculateTransaction = (orderParams, transactionId) => (dispatch, g
   const quantityMaybe = quantity ? { stockReservationQuantity: Number(quantity) } : {};
   const bookingParamsMaybe = bookingDates || {};
 
+  const restOfShoppingCartItems = orderParams.orderData?.restOfShoppingCartItems ? {
+    restOfShoppingCartItems: orderParams.orderData.restOfShoppingCartItems
+  } : {}
+
   // Parameters only for client app's server
   const orderData = {
     deliveryMethod,
+    ...restOfShoppingCartItems
   };
 
   // Parameters for Flex API

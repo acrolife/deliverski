@@ -9,6 +9,7 @@ const { Money } = types;
 // This unit type needs to be one of the following:
 // line-item/night, line-item/day or line-item/units
 const lineItemUnitType = 'line-item/units';
+const sellingUnitType = 'line-item/quantity';
 const PROVIDER_COMMISSION_PERCENTAGE = -10;
 
 /** Returns collection of lineItems (max 50)
@@ -77,6 +78,9 @@ exports.transactionLineItems = (listing, orderData) => {
     ? calculateQuantityFromDates(bookingStart, bookingEnd, lineItemUnitType)
     : 1;
 
+  const restOfShoppingCartItems = orderData.restOfShoppingCartItems;
+
+
   /**
    * If you want to use pre-defined component and translations for printing the lineItems base price for order,
    * you should use one of the codes:
@@ -93,6 +97,30 @@ exports.transactionLineItems = (listing, orderData) => {
     quantity: orderQuantity,
     includeFor: ['customer', 'provider'],
   };
+
+
+  let shoppingCartItems = [];
+
+
+  if(restOfShoppingCartItems){
+
+    restOfShoppingCartItems.forEach(item => {
+
+      shoppingCartItems.push(
+        {
+          code: sellingUnitType,
+          unitPrice: new Money(item.listing.attributes.price.amount, unitPrice.currency),
+          quantity: item.checkoutValues.quantity,
+          includeFor: ['customer', 'provider'],
+        }
+      )
+
+    })
+
+  }
+
+
+    
 
   // Calculate shipping fee if applicable
   const shippingFee = isShipping
@@ -128,12 +156,12 @@ exports.transactionLineItems = (listing, orderData) => {
 
   const providerCommission = {
     code: 'line-item/provider-commission',
-    unitPrice: calculateTotalFromLineItems([order]),
+    unitPrice: calculateTotalFromLineItems([order,  ...shoppingCartItems]),
     percentage: PROVIDER_COMMISSION_PERCENTAGE,
     includeFor: ['provider'],
   };
 
-  const lineItems = [order, ...deliveryLineItem, providerCommission];
+  const lineItems = [order, ...deliveryLineItem, ...shoppingCartItems, providerCommission];
 
   return lineItems;
 };
