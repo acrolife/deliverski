@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { bool, func, object, string } from 'prop-types';
 import classNames from 'classnames';
 
@@ -13,6 +13,11 @@ import { ListingLink } from '../../../../components';
 // Import modules from this directory
 import EditListingDetailsForm from './EditListingDetailsForm';
 import css from './EditListingDetailsPanel.module.css';
+
+const sharetribeSdk = require('sharetribe-flex-sdk');
+const sdk = sharetribeSdk.createInstance({
+  clientId: process.env.REACT_APP_SHARETRIBE_SDK_CLIENT_ID
+});
 
 const EditListingDetailsPanel = props => {
   const {
@@ -29,8 +34,20 @@ const EditListingDetailsPanel = props => {
     errors,
   } = props;
 
-  const classes = classNames(rootClassName || css.root, className);
+  const [host, setHost] = useState(false);
+
+  useEffect(() => {
+    sdk.currentUser.show().then(res => {
+      if(res.data.data){
+        setHost(res.data.data)
+      }
+    }).catch(e => {
+      console.log(e)
+    })
+  }, [])
+ 
   const currentListing = ensureOwnListing(listing);
+  const classes = classNames(rootClassName || css.root, className);
   const { description, title, publicData } = currentListing.attributes;
 
   const isPublished = currentListing.id && currentListing.attributes.state !== LISTING_STATE_DRAFT;
@@ -58,10 +75,18 @@ const EditListingDetailsPanel = props => {
         saveActionMsg={submitButtonText}
         onSubmit={values => {
           const { title, description, category, size, brand } = values;
+          const hostIdObj = host ? {
+            hostId: host.id.uuid
+          } : {};
           const updateValues = {
             title: title.trim(),
             description,
-            publicData: { category, size, brand },
+            publicData: { 
+              category, 
+              size, 
+              brand,
+              ...hostIdObj 
+            },
           };
 
           onSubmit(updateValues);

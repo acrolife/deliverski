@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { bool, func, number, string } from 'prop-types';
 import { Form as FinalForm, FormSpy } from 'react-final-form';
 
@@ -13,7 +13,10 @@ import {
   FieldTextInput,
   InlineTextButton,
   PrimaryButton,
+  Modal,
+  Button
 } from '../../../components';
+import { pushToPath } from '../../../util/urlHelpers';
 
 import EstimatedCustomerBreakdownMaybe from '../EstimatedCustomerBreakdownMaybe';
 
@@ -44,8 +47,11 @@ const renderForm = formRenderProps => {
     fetchLineItemsInProgress,
     fetchLineItemsError,
     values,
-    listing
+    listing,
+    currentUser
   } = formRenderProps;
+
+  const [sameVendorWarningModalOpen, setSameVendorWarningModalOpen] = useState(false);
 
   const handleOnChange = formValues => {
     const { quantity: quantityRaw, deliveryMethod } = formValues.values;
@@ -75,33 +81,61 @@ const renderForm = formRenderProps => {
       formApi.focus('deliveryMethod');
     } else {
       e.preventDefault();
+      const currentListing = listing;
       return sdk.currentUser.show().then(res => {
         const currentShoppingCart = res.data.data.attributes.profile.publicData.shoppingCart ? 
                                     res.data.data.attributes.profile.publicData.shoppingCart 
                                     : [];
+                              
+        const currentShoppingCartUnwrapped = currentShoppingCart.map(item => {
+                                    return({
+                                        listing: JSON.parse(item.listing),
+                                        checkoutValues: JSON.parse(item.checkoutValues)
+                                      })
+                                })
+        const isFromSameVendor = currentShoppingCartUnwrapped.length === 0 || currentShoppingCartUnwrapped.find(item => {
+          return item.listing.author.id.uuid === currentListing.author.id.uuid
+        })
 
-                 //ADD TO CART
+              if(isFromSameVendor){
 
-                    const shoppingCartItem = {
-                      listing: JSON.stringify({...listing}),
-                      checkoutValues: JSON.stringify({...values})
-                    }
+                
+                      //ADD TO CART
 
-                    return sdk.currentUser.updateProfile({
-                      publicData: {
-                        shoppingCart: [...currentShoppingCart, shoppingCartItem]
-                      },
-                    }).then(res => {
-                       return window.location.reload()
-                    }).catch(e => {
-                      return console.log(e)
-                    })                  
-    }).catch(e => {
-      return console.log(e)
-    })
+                      const shoppingCartItem = {
+                        listing: JSON.stringify({...currentListing}),
+                        checkoutValues: JSON.stringify({...values})
+                      }
+          
+                      return sdk.currentUser.updateProfile({
+                        publicData: {
+                          shoppingCart: [...currentShoppingCart, shoppingCartItem]
+                        },
+                      }).then(res => {
+                          window.location.reload()
+                      }).catch(e => console.log(e))
+
+              }else{
+                  setSameVendorWarningModalOpen(true)
+              }
+                                  
+    }).catch(e => console.log(e))
+    
       // handleSubmit(e);
     }
   };
+
+
+  const clearBasket = () => {
+    return sdk.currentUser.updateProfile({
+      publicData: {
+        shoppingCart: []
+      },
+    }).then(res => {
+        window.location.reload()
+    }).catch(e => console.log(e))
+  }
+
 
   const breakdownData = {};
   const showBreakdown =
@@ -140,6 +174,22 @@ const renderForm = formRenderProps => {
 
   const submitInProgress = fetchLineItemsInProgress;
   const submitDisabled = !hasStock;
+
+
+  const currentShopCart = currentUser.attributes.profile.publicData.shoppingCart ? 
+  currentUser.attributes.profile.publicData.shoppingCart 
+  : [];
+
+  const currentShopCartUnwrapped = currentShopCart.map(item => {
+        return({
+            listing: JSON.parse(item.listing),
+            checkoutValues: JSON.parse(item.checkoutValues)
+          })
+    });
+
+
+  const hostIdOfFirstItem = currentShopCartUnwrapped.length > 0 ? currentShopCartUnwrapped[0].listing.author.id.uuid  : false;
+
 
   return (
     <Form onSubmit={handleFormSubmit}>
@@ -224,6 +274,31 @@ const renderForm = formRenderProps => {
           <FormattedMessage id="ProductOrderForm.finePrintNoStock" values={{ contactSellerLink }} />
         ) : null}
       </p>
+
+              {/* not same vendor warning */}
+
+              <Modal
+                isOpen={sameVendorWarningModalOpen}
+                onClose={() => {
+                  setSameVendorWarningModalOpen(false);
+                }}
+                onManageDisableScrolling={() => {}}
+              >
+                <center><h2><FormattedMessage id="ListingPage.sameVendorModalTitle" /></h2></center>
+
+
+                <div className={css.modalButtonsWrapper}>
+
+                  <Button type='button' className={css.modalButton} onClick={clearBasket}>
+                    <FormattedMessage id="ListingPage.clearBasket" />
+                  </Button>
+
+                  <Button type='button' className={css.modalButton} onClick={() => pushToPath(`/s?pub_hostId=${hostIdOfFirstItem}`)}>
+                      <FormattedMessage id="ListingPage.seeSameVendorListings" />
+                  </Button>
+
+                </div>
+              </Modal>
     </Form>
   );
 };

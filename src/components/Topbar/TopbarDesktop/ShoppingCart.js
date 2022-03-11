@@ -54,7 +54,7 @@ function ShoppingCart(props) {
                       shoppingCart: newShoppingCart.map(item => {
                                         return({
                                           listing: JSON.stringify({...item.listing}),
-                                          checkoutValues: JSON.stringify({...item.values})
+                                          checkoutValues: JSON.stringify({...item.checkoutValues})
                                         })
                                     })
                     },
@@ -119,8 +119,7 @@ function ShoppingCart(props) {
                          return(
                              <div className={css.cartItem}>
                                  <div>
-                                  <span><a onClick={() => pushToPath(`/l/${item.listing.attributes.title.replace(' ','-')}/${item.listing.id.uuid}`)}>{item.listing.attributes.title}</a> x {item.checkoutValues.quantity}</span> 
-                                 </div>
+                                 <span>{item.checkoutValues.quantity} x <a onClick={() => pushToPath(`/l/${item.listing.attributes.title.replace(' ','-')}/${item.listing.id.uuid}`)}>{item.listing.attributes.title}</a></span>                                 </div>
                                  <div>
                                     <DeleteOutlineIcon
                                      className={css.deleteIcon}

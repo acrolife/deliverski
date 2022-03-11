@@ -1036,10 +1036,13 @@
   "EditListingPricingForm.pricePerItem": "Price per item",
   "EditListingPricingForm.stockRequired": "You need to complete this field",
   "ShoppingCart.searchListing": "Search products",
-  "ShoppingCart.emptyTitle": "Your shopping cart is empty 😞",
-  "ShoppingCart.mobileLabel": "Your cart",
-  "BookingDatesForm.addToCart": "+ Add to cart",
-  "BookingDatesForm.removeFromCart": "Remove from cart",
+  "ShoppingCart.emptyTitle": "Your shopping basket is empty 😞",
+  "ShoppingCart.mobileLabel": "Your basket",
+  "BookingDatesForm.addToCart": "+ Add to basket",
+  "BookingDatesForm.removeFromCart": "Remove from basket",
   "ShoppingCart.total": "Total",
-  "ShoppingCart.checkout": "Checkout"
+  "ShoppingCart.checkout": "Checkout",
+  "ListingPage.sameVendorModalTitle": "You need to add items from the same vendor",
+  "ListingPage.clearBasket": "Clear basket",
+  "ListingPage.seeSameVendorListings": "See other products from this vendor"
 }

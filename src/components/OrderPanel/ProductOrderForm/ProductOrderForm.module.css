@@ -59,3 +59,28 @@
     padding: 0;
   }
 }
+
+
+.outOfStockWrapper{
+  width: 100%;
+  text-align: center;
+}
+
+.outOfStockWrapper > p {
+  font-size: 25px;
+  color: red;
+  margin-top: 5pc;
+  
+}
+
+
+
+.modalButtonsWrapper{
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2pc;
+}
+
+.modalButton{
+  width: 40%;
+}
