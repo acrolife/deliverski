@@ -19,6 +19,12 @@ import EstimatedCustomerBreakdownMaybe from '../EstimatedCustomerBreakdownMaybe'
 
 import css from './ProductOrderForm.module.css';
 
+const sharetribeSdk = require('sharetribe-flex-sdk');
+const sdk = sharetribeSdk.createInstance({
+  clientId: process.env.REACT_APP_SHARETRIBE_SDK_CLIENT_ID
+});
+
+
 const renderForm = formRenderProps => {
   const {
     // FormRenderProps from final-form
@@ -38,6 +44,7 @@ const renderForm = formRenderProps => {
     fetchLineItemsInProgress,
     fetchLineItemsError,
     values,
+    listing
   } = formRenderProps;
 
   const handleOnChange = formValues => {
@@ -67,7 +74,32 @@ const renderForm = formRenderProps => {
       formApi.blur('deliveryMethod');
       formApi.focus('deliveryMethod');
     } else {
-      handleSubmit(e);
+      e.preventDefault();
+      return sdk.currentUser.show().then(res => {
+        const currentShoppingCart = res.data.data.attributes.profile.publicData.shoppingCart ? 
+                                    res.data.data.attributes.profile.publicData.shoppingCart 
+                                    : [];
+
+                 //ADD TO CART
+
+                    const shoppingCartItem = {
+                      listing: JSON.stringify({...listing}),
+                      checkoutValues: JSON.stringify({...values})
+                    }
+
+                    return sdk.currentUser.updateProfile({
+                      publicData: {
+                        shoppingCart: [...currentShoppingCart, shoppingCartItem]
+                      },
+                    }).then(res => {
+                       return window.location.reload()
+                    }).catch(e => {
+                      return console.log(e)
+                    })                  
+    }).catch(e => {
+      return console.log(e)
+    })
+      // handleSubmit(e);
     }
   };
 
@@ -179,7 +211,7 @@ const renderForm = formRenderProps => {
       <div className={css.submitButton}>
         <PrimaryButton type="submit" inProgress={submitInProgress} disabled={submitDisabled}>
           {hasStock ? (
-            <FormattedMessage id="ProductOrderForm.ctaButton" />
+            <FormattedMessage id="BookingDatesForm.addToCart" />
           ) : (
             <FormattedMessage id="ProductOrderForm.ctaButtonNoStock" />
           )}

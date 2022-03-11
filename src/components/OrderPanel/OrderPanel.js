@@ -176,6 +176,7 @@ const OrderPanel = props => {
             lineItems={lineItems}
             fetchLineItemsInProgress={fetchLineItemsInProgress}
             fetchLineItemsError={fetchLineItemsError}
+            listing={listing}
           />
         ) : null}
       </ModalInMobile>

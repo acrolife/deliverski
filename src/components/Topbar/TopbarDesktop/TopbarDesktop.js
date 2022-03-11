@@ -155,7 +155,8 @@ const TopbarDesktop = props => {
       {inboxLink}
 
       {isAuthenticatedOrJustHydrated ? 
-      <ShoppingCart />
+      <ShoppingCart 
+      intl={intl}/>
       : null}
 
       {profileMenu}
