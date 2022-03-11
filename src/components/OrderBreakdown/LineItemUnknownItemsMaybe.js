@@ -10,19 +10,18 @@
  * component for them that can be used in the `OrderBreakdown` component.
  */
 import React from 'react';
-import { intlShape } from '../../util/reactIntl';
+import { intlShape, FormattedMessage } from '../../util/reactIntl';
 import { formatMoney } from '../../util/currency';
 import { humanizeLineItemCode } from '../../util/data';
 import { LINE_ITEMS, propTypes } from '../../util/types';
-
 import css from './OrderBreakdown.module.css';
 
 const LineItemUnknownItemsMaybe = props => {
-  const { lineItems, isProvider, intl } = props;
+  const { lineItems, isProvider, intl, transaction, restOfShoppingCartItems } = props;
 
   // resolve unknown non-reversal line items
   const allItems = lineItems.filter(item => LINE_ITEMS.indexOf(item.code) === -1 && !item.reversal);
-
+  const listing = transaction?.listing;
   const items = isProvider
     ? allItems.filter(item => item.includeFor.includes('provider'))
     : allItems.filter(item => item.includeFor.includes('customer'));
@@ -38,11 +37,35 @@ const LineItemUnknownItemsMaybe = props => {
             : humanizeLineItemCode(item.code);
 
         const formattedTotal = formatMoney(intl, item.lineTotal);
+        const formattedUnit = formatMoney(intl, item.unitPrice);
+
+
+        const isBaseItem = listing.attributes.price.amount === item.unitPrice.amount;
+        const shoppingCartItem = restOfShoppingCartItems?.find(x => {
+          return x.listing.attributes.price.amount ===  item.unitPrice?.amount
+        })
+
+
         return (
-          <div key={`${i}-item.code`} className={css.lineItem}>
-            <span className={css.itemLabel}>{label}</span>
-            <span className={css.itemValue}>{formattedTotal}</span>
-          </div>
+          <>
+          <div className={css.lineItem}>
+                <span className={css.itemLabel}>
+                  {isBaseItem ?
+                    <a href={`/l/${listing.attributes.title.replace(' ','-')}/${listing.id.uuid}`}>{listing.attributes.title}</a>
+                    :
+                    <a href={`/l/${shoppingCartItem.listing?.attributes?.title.replace(' ','-')}/${shoppingCartItem.listing.id?.uuid}`}>{shoppingCartItem?.listing.attributes?.title}</a>
+                  }
+                </span>
+              </div>
+              <div className={css.lineItem}>
+                <span className={css.itemLabel}>
+                  <FormattedMessage id="BookingBreakdown.productUnit" values={{ quantity, formattedUnit }}/>
+                </span>
+                <span className={css.itemValue}>
+                  <FormattedMessage id="BookingBreakdown.productTotal" values={{ formattedTotal }} />
+                </span>
+              </div> 
+          </>
         );
       })}
     </React.Fragment>

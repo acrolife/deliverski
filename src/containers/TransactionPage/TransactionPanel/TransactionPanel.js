@@ -321,6 +321,14 @@ export class TransactionPanelComponent extends Component {
 
     const classes = classNames(rootClassName || css.root, className);
 
+
+    const restOfShoppingCartItems = currentTransaction?.attributes.metadata.restOfShoppingCartItems ?
+    currentTransaction?.attributes.metadata.restOfShoppingCartItems.map(item => {
+      return JSON.parse(item)
+    })
+    : 
+    false;
+
     return (
       <div className={classes}>
         <div className={css.container}>
@@ -355,6 +363,7 @@ export class TransactionPanelComponent extends Component {
                 <BreakdownMaybe
                   transaction={currentTransaction}
                   transactionRole={transactionRole}
+                  restOfShoppingCartItems={restOfShoppingCartItems}
                 />
                 <DiminishedActionButtonMaybe
                   showDispute={stateData.showDispute}
@@ -413,19 +422,27 @@ export class TransactionPanelComponent extends Component {
           <div className={css.asideDesktop}>
             <div className={css.stickySection}>
               <div className={css.detailCard}>
-                <DetailCardImage
+              {restOfShoppingCartItems ?
+                  null :
+                  <DetailCardImage
                   avatarWrapperClassName={css.avatarWrapperDesktop}
                   listingTitle={listingTitle}
                   image={firstImage}
                   provider={currentProvider}
                   isCustomer={isCustomer}
                 />
-
-                <DetailCardHeadingsMaybe
-                  showDetailCardHeadings={stateData.showDetailCardHeadings}
-                  listingTitle={listingTitle}
-                  subTitle={bookingSubTitle}
-                />
+              }
+                 {restOfShoppingCartItems ?
+                    null :
+                    <DetailCardHeadingsMaybe
+                      showDetailCardHeadings={stateData.showDetailCardHeadings}
+                      listingTitle={listingTitle}
+                      subTitle={bookingSubTitle}
+                      location={location}
+                      geolocation={geolocation}
+                      showAddress={stateData.showAddress}
+                    />
+                  }
                 {stateData.showOrderPanel ? (
                   <OrderPanel
                     className={css.orderPanel}
@@ -449,6 +466,7 @@ export class TransactionPanelComponent extends Component {
                   className={css.breakdownContainer}
                   transaction={currentTransaction}
                   transactionRole={transactionRole}
+                  restOfShoppingCartItems={restOfShoppingCartItems}
                 />
 
                 {stateData.showActionButtons ? (
