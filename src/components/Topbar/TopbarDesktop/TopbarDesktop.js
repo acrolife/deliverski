@@ -4,6 +4,7 @@ import classNames from 'classnames';
 
 import { FormattedMessage, intlShape } from '../../../util/reactIntl';
 import { ACCOUNT_SETTINGS_PAGES } from '../../../routing/routeConfiguration';
+import ShoppingCart from './ShoppingCart';
 import { propTypes } from '../../../util/types';
 import {
   Avatar,
@@ -152,7 +153,13 @@ const TopbarDesktop = props => {
         </span>
       </NamedLink>
       {inboxLink}
+
+      {isAuthenticatedOrJustHydrated ? 
+      <ShoppingCart />
+      : null}
+
       {profileMenu}
+      
       {signupLink}
       {loginLink}
     </nav>

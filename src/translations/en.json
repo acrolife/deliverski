@@ -1029,5 +1029,13 @@
   "UserCard.showFullBioLink": "more",
   "UserCard.viewProfileLink": "View profile",
   "UserDisplayName.banned": "Banned user",
-  "UserDisplayName.deleted": "Deleted user"
+  "UserDisplayName.deleted": "Deleted user",
+  "LayoutWrapperAccountSettingsSideNav.referral": "Referral",
+  "TopbarDesktop.FavListingsPage": "Your favorite listings",
+  "TopbarMobileMenu.FavListingsPage": "Your favorite listings",
+  "EditListingPricingForm.pricePerItem": "Price per item",
+  "EditListingPricingForm.stockRequired": "You need to complete this field",
+  "ShoppingCart.searchListing": "Search products",
+  "ShoppingCart.emptyTitle": "Your shopping cart is empty 😞",
+  "ShoppingCart.mobileLabel": "Your cart"
 }
