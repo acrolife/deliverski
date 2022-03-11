@@ -71,12 +71,6 @@ import StripePaymentForm from './StripePaymentForm/StripePaymentForm';
 import { storeData, storedData, clearData } from './CheckoutPageSessionHelpers';
 import css from './CheckoutPage.module.css';
 
-
-const sharetribeSdk = require('sharetribe-flex-sdk');
-const sdk = sharetribeSdk.createInstance({
-  clientId: process.env.REACT_APP_SHARETRIBE_SDK_CLIENT_ID
-});
-
 const STORAGE_KEY = 'CheckoutPage';
 
 // Stripe PaymentIntent statuses, where user actions are already completed
@@ -305,14 +299,6 @@ export class CheckoutPageComponent extends Component {
       const transactionId = tx ? tx.id : null;
 
       // Fetch speculated transaction for showing price in order breakdown
-      // const { bookingStart, bookingEnd } = pageData.bookingDates;
-      const { orderData } = pageData;
-      // Convert picked date to date that will be converted on the API as
-      // a noon of correct year-month-date combo in UTC
-      // const bookingStartForAPI = dateFromLocalToAPI(bookingStart);
-      // const bookingEndForAPI = dateFromLocalToAPI(bookingEnd);
-
-      // Fetch speculated transaction for showing price in booking breakdown
       // NOTE: if unit type is line-item/units, quantity needs to be added.
       // The way to pass it to checkout page is through pageData.orderData
       const quantity = pageData.orderData?.quantity;
@@ -324,11 +310,6 @@ export class CheckoutPageComponent extends Component {
           deliveryMethod,
           ...quantityMaybe,
           ...bookingDatesMaybe(pageData.orderData.bookingDates),
-          // bookingStart: bookingStartForAPI,
-          // bookingEnd: bookingEndForAPI,
-          // referral: pageData.referral,
-          orderData,
-          quantity
         },
         transactionId
       );
@@ -383,9 +364,6 @@ export class CheckoutPageComponent extends Component {
       const hasPaymentIntents =
         storedTx.attributes.protectedData && storedTx.attributes.protectedData.stripePaymentIntents;
 
-      // fnParams.referral = pageData.bookingData.referral;
-      // fnParams.quantity = pageData.bookingData.quantity;
-      fnParams.restOfShoppingCartItems = pageData.orderData.restOfShoppingCartItems;
       // If paymentIntent exists, order has been initiated previously.
       return hasPaymentIntents ? Promise.resolve(storedTx) : onInitiateOrder(fnParams, storedTx.id);
     };
@@ -454,7 +432,6 @@ export class CheckoutPageComponent extends Component {
       return onConfirmPayment(fnParams);
     };
 
-
     // Step 4: send initial message
     const fnSendMessage = fnParams => {
       return onSendMessage({ ...fnParams, message });
@@ -481,26 +458,6 @@ export class CheckoutPageComponent extends Component {
       }
     };
 
-
-        // Step 6: - remove items from basket if the case
-
-        const emptyBasktet = fnParams => {
-          const isTxWithBasket = pageData.bookingData.restOfShoppingCartItems;
-          if(isTxWithBasket){
-            return sdk.currentUser.updateProfile({
-              publicData: {
-                shoppingCart: []
-              },
-            }).then(() => {
-              return fnParams;
-            }).catch(e => {
-              console.log(e)
-            })
-          }else{
-            return fnParams;
-          }
-      }
-
     // Here we create promise calls in sequence
     // This is pretty much the same as:
     // fnRequestPayment({...initialParams})
@@ -513,8 +470,7 @@ export class CheckoutPageComponent extends Component {
       fnConfirmCardPayment,
       fnConfirmPayment,
       fnSendMessage,
-      fnSavePaymentMethod,
-      emptyBasktet
+      fnSavePaymentMethod
     );
 
     // Create order aka transaction
@@ -545,7 +501,7 @@ export class CheckoutPageComponent extends Component {
       listingId: pageData.listing.id,
       deliveryMethod,
       ...quantityMaybe,
-      //...bookingDatesMaybe(pageData.orderData.bookingDates),
+      ...bookingDatesMaybe(pageData.orderData.bookingDates),
       ...protectedDataMaybe,
       ...optionalPaymentParams,
     };
@@ -718,8 +674,7 @@ export class CheckoutPageComponent extends Component {
 
     const isLoading = !this.state.dataLoaded || speculateTransactionInProgress;
 
-    //const { listing, transaction, orderData } = this.state.pageData;
-    const { listing, bookingDates, transaction, orderData } = this.state.pageData;
+    const { listing, transaction, orderData } = this.state.pageData;
     const existingTransaction = ensureTransaction(transaction);
     const speculatedTransaction = ensureTransaction(speculatedTransactionMaybe, {}, null);
     const currentListing = ensureListing(listing);

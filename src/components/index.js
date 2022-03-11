@@ -141,7 +141,3 @@ export { default as PrivacyPolicy } from './PrivacyPolicy/PrivacyPolicy';
 export { default as TermsOfService } from './TermsOfService/TermsOfService';
 export { default as Footer } from './Footer/Footer';
 export { default as Topbar } from './Topbar/Topbar';
-
-export { default as TopbarDesktop } from './Topbar/TopbarDesktop/TopbarDesktop' //'./TopbarDesktop/TopbarDesktop';
-export { default as TopbarMobileMenu } from './Topbar/TopbarMobileMenu/TopbarMobileMenu';
-//export { default as TransactionPanel } from './TransactionPanel/TransactionPanel';

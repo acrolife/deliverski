@@ -26,7 +26,6 @@ import {
   userDisplayNameAsString,
 } from '../../util/data';
 import { richText } from '../../util/richText';
-import { pushToPath } from '../../util/urlHelpers';
 import { getMarketplaceEntities } from '../../ducks/marketplaceData.duck';
 import { manageDisableScrolling, isScrollingDisabled } from '../../ducks/UI.duck';
 import { initializeCardPaymentData } from '../../ducks/stripe.duck.js';
@@ -41,9 +40,6 @@ import {
   LayoutWrapperFooter,
   Footer,
   OrderPanel,
-  BookingPanel,
-  Modal,
-  Button
 } from '../../components';
 import TopbarContainer from '../../containers/TopbarContainer/TopbarContainer';
 import NotFoundPage from '../../containers/NotFoundPage/NotFoundPage';
@@ -60,11 +56,6 @@ import SectionAuthorMaybe from './SectionAuthorMaybe';
 import SectionRulesMaybe from './SectionRulesMaybe';
 import SectionMapMaybe from './SectionMapMaybe';
 import css from './ListingPage.module.css';
-
-const sharetribeSdk = require('sharetribe-flex-sdk');
-const sdk = sharetribeSdk.createInstance({
-  clientId: process.env.REACT_APP_SHARETRIBE_SDK_CLIENT_ID
-});
 
 const MIN_LENGTH_FOR_LONG_WORDS_IN_TITLE = 16;
 
@@ -96,28 +87,11 @@ export class ListingPageComponent extends Component {
       pageClassNames: [],
       imageCarouselOpen: false,
       enquiryModalOpen: enquiryModalOpenForListingId === params.id,
-      referralActivated: false,
-      sameVendorWarningModalOpen: false
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.onContactUser = this.onContactUser.bind(this);
     this.onSubmitEnquiry = this.onSubmitEnquiry.bind(this);
-    this.handleReferralClick = this.handleReferralClick.bind(this);
-    this.setSameVendorWarningModalOpen = this.setSameVendorWarningModalOpen.bind(this);
-  }
-
-
-  setSameVendorWarningModalOpen(value) {
-    this.setState({
-      sameVendorWarningModalOpen: value
-    })
-  }
-  
-   
-  handleReferralClick() {
-
-    this.setState({referralActivated : true})
   }
 
   handleSubmit(values) {
@@ -373,66 +347,11 @@ export class ListingPageComponent extends Component {
       const isCurrentlyClosed = currentListing.attributes.state === LISTING_STATE_CLOSED;
       if (isOwnListing || isCurrentlyClosed) {
         window.scrollTo(0, 0);
-      } else if(isProductForSale){
-
-        return sdk.currentUser.show().then(res => {
-            const currentShoppingCart = res.data.data.attributes.profile.publicData.shoppingCart ? 
-                                        res.data.data.attributes.profile.publicData.shoppingCart 
-                                        : [];
-            const currentShoppingCartUnwrapped = currentShoppingCart.map(item => {
-                                        return({
-                                            listing: JSON.parse(item.listing),
-                                            checkoutValues: JSON.parse(item.checkoutValues)
-                                          })
-                                    })
-
-            const isFromSameVendor = currentShoppingCartUnwrapped.length === 0 || currentShoppingCartUnwrapped.find(item => {
-              return item.listing.author.id.uuid === currentListing.author.id.uuid
-            })
-
-                  if(isFromSameVendor){
-
-                    
-                          //ADD TO CART
-
-                          const shoppingCartItem = {
-                            listing: JSON.stringify({...currentListing}),
-                            checkoutValues: JSON.stringify({...values})
-                          }
-              
-                          return sdk.currentUser.updateProfile({
-                            publicData: {
-                              shoppingCart: [...currentShoppingCart, shoppingCartItem]
-                            },
-                          }).then(res => {
-                              window.location.reload()
-                          }).catch(e => console.log(e))
-
-                  }else{
-                      this.setSameVendorWarningModalOpen(true)
-                  }
-
-
-                                       
-
-         
-                                        
-        }).catch(e => console.log(e))
-        
-      }else{
-        this.handleSubmit(values);   //send to checkout function
+      } else {
+        this.handleSubmit(values);
       }
     };
 
-    const clearBasket = () => {
-      return sdk.currentUser.updateProfile({
-        publicData: {
-          shoppingCart: []
-        },
-      }).then(res => {
-          window.location.reload()
-      }).catch(e => console.log(e))
-    }
     const listingImages = (listing, variantName) =>
       (listing.images || [])
         .map(image => {
@@ -492,27 +411,6 @@ export class ListingPageComponent extends Component {
           <span className={css.separator}>•</span>
         </span>
       ) : null;
-
-      const referralNewUser = currentUser ? currentUser.attributes.profile.privateData.referral : false;
-      const referralSenderUser = currentUser ? currentUser.attributes.profile.privateData.referralsArray : false;
-      const referralLeftForSenderUser = referralSenderUser ? referralSenderUser.filter(item => {return item.used}).length : false;
-      const referral = referralNewUser || referralLeftForSenderUser;
-      const stock = currentListing.attributes.publicData?.stock;
-
-      const currentShopCart = currentUser.attributes.profile.publicData.shoppingCart ? 
-      currentUser.attributes.profile.publicData.shoppingCart 
-      : [];
-
-      const currentShopCartUnwrapped = currentShopCart.map(item => {
-            return({
-                listing: JSON.parse(item.listing),
-                checkoutValues: JSON.parse(item.checkoutValues)
-              })
-        });
-
-
-      const hostIdOfFirstItem = currentShopCartUnwrapped.length > 0 ? currentShopCartUnwrapped[0].listing.author.id.uuid  : false;
-
 
     return (
       <Page
@@ -619,32 +517,6 @@ export class ListingPageComponent extends Component {
                   />
                 </div>
               </div>
-
-
-              {/* not same vendor warning */}
-
-              <Modal
-                isOpen={this.state.sameVendorWarningModalOpen}
-                onClose={() => {
-                  this.setSameVendorWarningModalOpen(false);
-                }}
-                onManageDisableScrolling={onManageDisableScrolling}
-              >
-                <center><h2><FormattedMessage id="ListingPage.sameVendorModalTitle" /></h2></center>
-
-
-                <div className={css.modalButtonsWrapper}>
-
-                  <Button type='button' className={css.modalButton} onClick={clearBasket}>
-                    <FormattedMessage id="ListingPage.clearBasket" />
-                  </Button>
-
-                  <Button type='button' className={css.modalButton} onClick={() => pushToPath(`/s?pub_hostId=${hostIdOfFirstItem}&pub_isProductForSale=true`)}>
-                      <FormattedMessage id="ListingPage.seeSameVendorListings" />
-                  </Button>
-
-                </div>
-              </Modal>
             </div>
           </LayoutWrapperMain>
           <LayoutWrapperFooter>

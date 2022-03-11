@@ -67,21 +67,6 @@ export const createSlug = str => {
   return slug.length > 0 ? slug : 'no-slug';
 };
 
-export const pushToPath = (path) => {
-  if(typeof window !== 'undefined'){
-    document.location.href = path
-  }
-}
-
-export const getValuesFromQueryString = () => {
-  if(typeof window !== 'undefined'){
-    const urlSearchParams = new URLSearchParams(window.location.search);
-    const params = Object.fromEntries(urlSearchParams.entries());
-
-    return params
-  }
-}
-
 /**
  * Parse float from a string
  *

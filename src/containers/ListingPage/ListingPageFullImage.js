@@ -59,11 +59,6 @@ import SectionGallery from './SectionGallery';
 
 import css from './ListingPage.module.css';
 
-const sharetribeSdk = require('sharetribe-flex-sdk');
-const sdk = sharetribeSdk.createInstance({
-  clientId: process.env.REACT_APP_SHARETRIBE_SDK_CLIENT_ID
-});
-
 const MIN_LENGTH_FOR_LONG_WORDS_IN_TITLE = 16;
 
 const { UUID } = sdkTypes;
@@ -355,34 +350,8 @@ export class ListingPageComponent extends Component {
       const isCurrentlyClosed = currentListing.attributes.state === LISTING_STATE_CLOSED;
       if (isOwnListing || isCurrentlyClosed) {
         window.scrollTo(0, 0);
-      } else{
-
-        return sdk.currentUser.show().then(res => {
-            const currentShoppingCart = res.data.data.attributes.profile.publicData.shoppingCart ? 
-                                        res.data.data.attributes.profile.publicData.shoppingCart 
-                                        : [];
-
-                     //ADD TO CART
-
-                        const shoppingCartItem = {
-                          listing: JSON.stringify({...currentListing}),
-                          checkoutValues: JSON.stringify({...values})
-                        }
-            
-                        return sdk.currentUser.updateProfile({
-                          publicData: {
-                            shoppingCart: [...currentShoppingCart, shoppingCartItem]
-                          },
-                        }).then(res => {
-                            window.location.reload()
-                        }).catch(e => console.log(e))
-
-                                       
-
-         
-                                        
-        }).catch(e => console.log(e))
-        
+      } else {
+        this.handleSubmit(values);
       }
     };
 

@@ -185,7 +185,6 @@ class TopbarComponent extends Component {
         onLogout={this.handleLogout}
         notificationCount={notificationCount}
         currentPage={currentPage}
-        history={this.props.history}
       />
     );
 
@@ -257,7 +256,6 @@ class TopbarComponent extends Component {
             onLogout={this.handleLogout}
             onSearchSubmit={this.handleSubmit}
             appConfig={config}
-            history={this.props.history}
           />
         </div>
         <Modal

@@ -1,8 +1,6 @@
-import { React, useState, useEffect } from 'react';
+import React from 'react';
 import { bool, func, object, string } from 'prop-types';
 import classNames from 'classnames';
-
-import { getValuesFromQueryString } from '../../../../util/urlHelpers';
 
 // Import configs and util modules
 import { FormattedMessage } from '../../../../util/reactIntl';
@@ -16,15 +14,7 @@ import { ListingLink } from '../../../../components';
 import EditListingDetailsForm from './EditListingDetailsForm';
 import css from './EditListingDetailsPanel.module.css';
 
-const sharetribeSdk = require('sharetribe-flex-sdk');
-const sdk = sharetribeSdk.createInstance({
-  clientId: process.env.REACT_APP_SHARETRIBE_SDK_CLIENT_ID
-});
-
 const EditListingDetailsPanel = props => {
-
-
-//const EditListingDescriptionPanel = props => {
   const {
     className,
     rootClassName,
@@ -39,27 +29,8 @@ const EditListingDetailsPanel = props => {
     errors,
   } = props;
 
-  const [host, setHost] = useState(false);
-
-  useEffect(() => {
-    sdk.currentUser.show().then(res => {
-      if(res.data.data){
-        setHost(res.data.data)
-      }
-    }).catch(e => {
-      console.log(e)
-    })
-  }, [])
- 
-  const currentListing = ensureOwnListing(listing);
-
-  const queryStringValues = getValuesFromQueryString();
-
-  const isProduct = queryStringValues.isProductForSale === 'true' || currentListing?.attributes?.publicData?.isProductForSale === 'true';
-  const isProductForSale = isProduct ? {isProductForSale: 'true'} : {isProductForSale: 'false'};
-
-
   const classes = classNames(rootClassName || css.root, className);
+  const currentListing = ensureOwnListing(listing);
   const { description, title, publicData } = currentListing.attributes;
 
   const isPublished = currentListing.id && currentListing.attributes.state !== LISTING_STATE_DRAFT;
@@ -87,24 +58,10 @@ const EditListingDetailsPanel = props => {
         saveActionMsg={submitButtonText}
         onSubmit={values => {
           const { title, description, category, size, brand } = values;
-          //const updateValues = {
-          //  title: title.trim(),
-          //  description,
-          //  publicData: { category, size, brand },
-          //const { title, description } = values;
-
-          const hostIdObj = host ? {
-            hostId: host.id.uuid
-          } : {};
-
           const updateValues = {
             title: title.trim(),
             description,
-            publicData: {
-              category, size, brand,
-              ...isProductForSale,
-              ...hostIdObj
-            }
+            publicData: { category, size, brand },
           };
 
           onSubmit(updateValues);
@@ -144,5 +101,5 @@ EditListingDetailsPanel.propTypes = {
   updateInProgress: bool.isRequired,
   errors: object.isRequired,
 };
-//}
+
 export default EditListingDetailsPanel;

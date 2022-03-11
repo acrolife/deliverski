@@ -172,68 +172,31 @@ export const initiateOrder = (orderParams, transactionId) => (dispatch, getState
   const isPrivilegedTransition = isPrivileged(transition);
 
   const { deliveryMethod, quantity, bookingDates, ...otherOrderParams } = orderParams;
-  const quantityMaybe = quantity ? { stockReservationQuantity: Number(quantity) } : {};
+  const quantityMaybe = quantity ? { stockReservationQuantity: quantity } : {};
   const bookingParamsMaybe = bookingDates || {};
-
-
-
-  const restOfShoppingCartItems = orderParams.restOfShoppingCartItems ? {
-    restOfShoppingCartItems: orderParams.restOfShoppingCartItems
-  } : {}
-
 
   // Parameters only for client app's server
   const orderData = {
     deliveryMethod,
-    ...restOfShoppingCartItems
   };
-
-  const metadataWithShoppingCart = orderParams.restOfShoppingCartItems ? {
-    metadata: {
-      restOfShoppingCartItems: orderParams.restOfShoppingCartItems.map(item => {
-        return (
-          JSON.stringify(item)
-        )
-      })
-    }
-  } : {}
-
-
-
 
   // Parameters for Flex API
   const transitionParams = {
     ...quantityMaybe,
     ...bookingParamsMaybe,
-    ...otherOrderParams
+    ...otherOrderParams,
   };
-  
-
-
-  // const bookingData = {
-  //   startDate: orderParams.bookingStart,
-  //   endDate: orderParams.bookingEnd,
-  //   referral: orderParams.referral,
-  //   quantity: orderParams.quantity,
-  //   ...restOfShoppingCartItems
-  // };
 
   const bodyParams = isTransition
     ? {
         id: transactionId,
         transition,
-        params: {
-          ...transitionParams,
-          ...metadataWithShoppingCart
-        },
+        params: transitionParams,
       }
     : {
         processAlias: config.transactionProcessAlias,
         transition,
-        params: {
-          ...transitionParams,
-        ...metadataWithShoppingCart
-      },
+        params: transitionParams,
       };
   const queryParams = {
     include: ['booking', 'provider'],
@@ -358,22 +321,13 @@ export const speculateTransaction = (orderParams, transactionId) => (dispatch, g
   const isPrivilegedTransition = isPrivileged(transition);
 
   const { deliveryMethod, quantity, bookingDates, ...otherOrderParams } = orderParams;
-  const quantityMaybe = quantity ? { stockReservationQuantity: Number(quantity) } : {};
+  const quantityMaybe = quantity ? { stockReservationQuantity: quantity } : {};
   const bookingParamsMaybe = bookingDates || {};
-
-
-  const restOfShoppingCartItems = orderParams.bookingData?.restOfShoppingCartItems ? {
-    restOfShoppingCartItems: orderParams.bookingData.restOfShoppingCartItems
-  } : {}
 
   // Parameters only for client app's server
   const orderData = {
     deliveryMethod,
-    ...restOfShoppingCartItems
   };
-  
-
-
 
   // Parameters for Flex API
   const transitionParams = {

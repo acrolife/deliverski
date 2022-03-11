@@ -321,29 +321,6 @@ export class TransactionPanelComponent extends Component {
 
     const classes = classNames(rootClassName || css.root, className);
 
-
-    const rawCurrentDate = new Date();
-    // const currentDate = rawCurrentDate.getDate();
-    // const cancellationLimit = currentTransaction.listing.attributes.publicData.cancelLimit;
-    // const rawStartDate = currentTransaction.booking.attributes.displayStart;
-    // const rawEndDate = currentTransaction.booking.attributes.displayEnd;
-    // const bookMonth = rawStartDate.getMonth();
-    // const currentMonth = rawCurrentDate.getMonth();
-    // const startBookDate = rawStartDate.getDate();
-    // const endBookDate = rawEndDate.getDate();
-
-    // const testBookDate = 1;
-    // const testCurrentDate = 31;
-    // const testBookMonth = 5;
-    // const testCurrrentMonth = 3;
-
-    // const hours = Math.abs(rawCurrentDate - rawStartDate) / 36e5;
-    // const isButtonDisabled = hours < 336  ? true : false;
-
-    // const isButtonDisabled =  (startBookDate - currentDate > 100) && (bookMonth - currentMonth <= 1) ? true : false;
-
-    const lastTransitionAcceptOrConfirm = currentTransaction.attributes.lastTransition == "transition/accept" || currentTransaction.attributes.lastTransition ==  "transition/confirm-payment";
-    
     return (
       <div className={classes}>
         <div className={css.container}>

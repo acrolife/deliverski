@@ -5,7 +5,6 @@ const {
 } = require('./lineItemHelpers');
 const { types } = require('sharetribe-flex-sdk');
 const { Money } = types;
-const sellingUnitType = 'line-item/quantity';
 
 // This unit type needs to be one of the following:
 // line-item/night, line-item/day or line-item/units
@@ -78,13 +77,6 @@ exports.transactionLineItems = (listing, orderData) => {
     ? calculateQuantityFromDates(bookingStart, bookingEnd, lineItemUnitType)
     : 1;
 
-  const { startDate, endDate, referral, quantity } = orderData;
-
-  const isProduct = listing.attributes.publicData.isProductForSale === 'true';
-  const specialPackageNumberOfDays = listing.attributes.publicData.specialPackageNumberOfDays;
-  const specialPackagePrice = listing.attributes.publicData.specialPackagePrice;
-  const specialPackageExtraDayPrice = listing.attributes.publicData.specialPackageExtraDayPrice;
-  const restOfShoppingCartItems = orderData.orderData?.restOfShoppingCartItems ? orderData.orderData.restOfShoppingCartItems : orderData.restOfShoppingCartItems;
   /**
    * If you want to use pre-defined component and translations for printing the lineItems base price for order,
    * you should use one of the codes:
@@ -99,77 +91,8 @@ exports.transactionLineItems = (listing, orderData) => {
     code: lineItemUnitType,
     unitPrice,
     quantity: orderQuantity,
-    includeFor: ['customer', 'provider']
-    //if(totalQuantity >= specialPackageNumberOfDays){
-    //  customUnitPrice = new Money(specialPackagePrice, 'USD') 
-    //  customQuantity = 1
-    //}
-
-    // if(totalQuantity > specialPackageNumberOfDays){
-    //   customUnitPrice = new Money(specialPackagePrice, 'USD') 
-    //   customQuantity = 1
-    //   extraDays = true
-    //   extraDayPrice = new Money(specialPackageExtraDayPrice, 'USD') 
-    //   extraDaysQuantity = totalQuantity - specialPackageNumberOfDays
-    // }
-
-  }
-
-
-
-  let shoppingCartItems = [];
-
-
-  if(restOfShoppingCartItems){
-
-    restOfShoppingCartItems.forEach(item => {
-
-      shoppingCartItems.push(
-        {
-          code: sellingUnitType,
-          unitPrice: new Money(item.listing.attributes.price.amount, unitPrice.currency),
-          quantity: item.checkoutValues.quantity,
-          includeFor: ['customer', 'provider'],
-        }
-      )
-
-    })
-
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-  //const extraDaysLineItem = extraDays && isPackage ? [{
-  //    code: 'line-item/extra-day',
-  //    unitPrice: extraDayPrice,
-  //    quantity: extraDaysQuantity,
-  //    includeFor: ['customer', 'provider'],
-  //}] : []
-
-  
-  // const bookingTypeLineItem = isPackage ?
-  // {
-  //   code: 'line-item/package',
-  //   unitPrice: customUnitPrice,
-  //   quantity: customQuantity,
-  //   includeFor: ['customer', 'provider'],
-  // } :
-  // {
-  //   code: bookingUnitType,
-  //   unitPrice: new Money(unitPrice.amount, 'USD'),
-  //   quantity: calculateQuantityFromDates(startDate, endDate, bookingUnitType),
-  //   includeFor: ['customer', 'provider'],
-  // };
+    includeFor: ['customer', 'provider'],
+  };
 
   // Calculate shipping fee if applicable
   const shippingFee = isShipping
@@ -205,12 +128,12 @@ exports.transactionLineItems = (listing, orderData) => {
 
   const providerCommission = {
     code: 'line-item/provider-commission',
-    unitPrice: calculateTotalFromLineItems([order, ...shoppingCartItems]),
+    unitPrice: calculateTotalFromLineItems([order]),
     percentage: PROVIDER_COMMISSION_PERCENTAGE,
     includeFor: ['provider'],
   };
 
-  const lineItems = [order, ...shoppingCartItems, providerCommission];
+  const lineItems = [order, ...deliveryLineItem, providerCommission];
 
   return lineItems;
 };

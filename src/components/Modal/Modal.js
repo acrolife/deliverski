@@ -113,11 +113,10 @@ export class ModalComponent extends Component {
       isClosedClassName,
       isOpen,
       usePortal,
-      doubleModal
     } = this.props;
 
     const closeModalMessage = intl.formatMessage({ id: 'Modal.closeModal' });
-    const closeButtonClasses = classNames(doubleModal ? css.upperLeverClose : css.close, {
+    const closeButtonClasses = classNames(css.close, {
       [css.closeLight]: lightCloseButton,
     });
     const closeBtn = isOpen ? (

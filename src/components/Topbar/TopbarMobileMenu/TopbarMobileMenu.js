@@ -12,11 +12,6 @@ import { propTypes } from '../../../util/types';
 import { ensureCurrentUser } from '../../../util/data';
 
 import { AvatarLarge, InlineTextButton, NamedLink, NotificationBadge } from '../../../components';
-//import { ACCOUNT_SETTINGS_PAGES } from '../../routeConfiguration';
-//import { propTypes } from '../../util/types';
-//import { ensureCurrentUser } from '../../util/data';
-//import { AvatarLarge, InlineTextButton, NamedLink, NotificationBadge } from '../../components';
-import ShoppingCart from '../../TopbarDesktop/ShoppingCart';
 
 import css from './TopbarMobileMenu.module.css';
 
@@ -28,7 +23,6 @@ const TopbarMobileMenu = props => {
     currentUser,
     notificationCount,
     onLogout,
-    history
   } = props;
 
   const user = ensureCurrentUser(currentUser);
@@ -92,8 +86,6 @@ const TopbarMobileMenu = props => {
         <InlineTextButton rootClassName={css.logoutButton} onClick={onLogout}>
           <FormattedMessage id="TopbarMobileMenu.logoutLink" />
         </InlineTextButton>
-
-       
         <NamedLink
           className={classNames(css.inbox, currentPageClass('InboxPage'))}
           name="InboxPage"
@@ -102,12 +94,6 @@ const TopbarMobileMenu = props => {
           <FormattedMessage id="TopbarMobileMenu.inboxLink" />
           {notificationCountBadge}
         </NamedLink>
-        <ShoppingCart
-        mobile={true}
-        history={history}
-        currentUser={currentUser}
-
-        />
         <NamedLink
           className={classNames(css.navigationLink, currentPageClass('ManageListingsPage'))}
           name="ManageListingsPage"
