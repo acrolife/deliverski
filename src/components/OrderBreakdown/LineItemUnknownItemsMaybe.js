@@ -17,11 +17,11 @@ import { LINE_ITEMS, propTypes } from '../../util/types';
 import css from './OrderBreakdown.module.css';
 
 const LineItemUnknownItemsMaybe = props => {
-  const { lineItems, isProvider, intl, transaction, restOfShoppingCartItems } = props;
+  const { lineItems, isProvider, intl, transaction, restOfShoppingCartItems, listing } = props;
 
   // resolve unknown non-reversal line items
   const allItems = lineItems.filter(item => LINE_ITEMS.indexOf(item.code) === -1 && !item.reversal);
-  const listing = transaction?.listing;
+  const baseListing = transaction?.listing ? transaction?.listing : listing;
   const items = isProvider
     ? allItems.filter(item => item.includeFor.includes('provider'))
     : allItems.filter(item => item.includeFor.includes('customer'));
@@ -40,7 +40,7 @@ const LineItemUnknownItemsMaybe = props => {
         const formattedUnit = formatMoney(intl, item.unitPrice);
 
 
-        const isBaseItem = listing.attributes.price.amount === item.unitPrice.amount;
+        const isBaseItem = baseListing?.attributes.price.amount === item.unitPrice.amount;
         const shoppingCartItem = restOfShoppingCartItems?.find(x => {
           return x.listing.attributes.price.amount ===  item.unitPrice?.amount
         })
@@ -51,9 +51,9 @@ const LineItemUnknownItemsMaybe = props => {
           <div className={css.lineItem}>
                 <span className={css.itemLabel}>
                   {isBaseItem ?
-                    <a href={`/l/${listing.attributes.title.replace(' ','-')}/${listing.id.uuid}`}>{listing.attributes.title}</a>
+                    <a href={`/l/${baseListing?.attributes.title.replace(' ','-')}/${baseListing?.id.uuid}`}>{baseListing?.attributes.title}</a>
                     :
-                    <a href={`/l/${shoppingCartItem.listing?.attributes?.title.replace(' ','-')}/${shoppingCartItem.listing.id?.uuid}`}>{shoppingCartItem?.listing.attributes?.title}</a>
+                    <a href={`/l/${shoppingCartItem?.listing?.attributes?.title.replace(' ','-')}/${shoppingCartItem?.listing.id?.uuid}`}>{shoppingCartItem?.listing.attributes?.title}</a>
                   }
                 </span>
               </div>

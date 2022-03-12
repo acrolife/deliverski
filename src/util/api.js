@@ -40,7 +40,7 @@ const deserialize = str => {
   return transit.read(str, { typeHandlers });
 };
 
-const post = (path, body) => {
+export const post = (path, body) => {
   const url = `${apiBaseUrl()}${path}`;
   const options = {
     method: 'POST',

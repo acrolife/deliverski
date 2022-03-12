@@ -22,6 +22,7 @@ import {
 } from '../../util/data';
 import { timeOfDayFromLocalToTimeZone, minutesBetween } from '../../util/dates';
 import { createSlug } from '../../util/urlHelpers';
+import { post } from '../../util/api';
 import {
   isTransactionInitiateAmountTooLowError,
   isTransactionInitiateListingNotFoundError,
@@ -483,6 +484,19 @@ export class CheckoutPageComponent extends Component {
           }
       }
 
+
+          // Step 7: - change quantity for the rest of shopping cart items
+
+          const changeRestOfShoppingCartItemsQuantity = fnParams => {
+            const restOfShoppingCartItems = pageData.orderData.restOfShoppingCartItems;
+            return post('/api/change-all-items-quantity', {restOfShoppingCartItems}).then(resp => {
+              return fnParams;
+            }).catch(e => {
+              return fnParams;
+            })
+            
+        }
+
     // Here we create promise calls in sequence
     // This is pretty much the same as:
     // fnRequestPayment({...initialParams})
@@ -496,7 +510,8 @@ export class CheckoutPageComponent extends Component {
       fnConfirmPayment,
       fnSendMessage,
       fnSavePaymentMethod,
-      emptyBasktet
+      emptyBasktet,
+      changeRestOfShoppingCartItemsQuantity
     );
 
     // Create order aka transaction
@@ -766,6 +781,8 @@ export class CheckoutPageComponent extends Component {
           userRole="customer"
           unitType={config.lineItemUnitType}
           transaction={tx}
+          listing={currentListing}
+          restOfShoppingCartItems={this.state.pageData.orderData.restOfShoppingCartItems}
           {...txBookingMaybe}
         />
       ) : null;
@@ -923,7 +940,7 @@ export class CheckoutPageComponent extends Component {
           </div>
 
           <div className={css.detailsContainerDesktop}>
-            <AspectRatioWrapper
+            {/* <AspectRatioWrapper
               width={aspectWidth}
               height={aspectHeight}
               className={css.detailsAspectWrapper}
@@ -934,14 +951,14 @@ export class CheckoutPageComponent extends Component {
                 image={firstImage}
                 variants={variants}
               />
-            </AspectRatioWrapper>
+            </AspectRatioWrapper> */}
             <div className={css.avatarWrapper}>
               <AvatarMedium user={currentAuthor} disableProfileLink />
             </div>
-            <div className={css.detailsHeadings}>
+            {/* <div className={css.detailsHeadings}>
               <h2 className={css.detailsTitle}>{listingTitle}</h2>
               <p className={css.detailsSubtitle}>{detailsSubTitle}</p>
-            </div>
+            </div> */}
             {speculateTransactionErrorMessage}
             <h2 className={css.orderBreakdownTitle}>
               <FormattedMessage id="CheckoutPage.orderBreakdown" />
