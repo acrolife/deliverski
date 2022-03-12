@@ -108,7 +108,7 @@ exports.transactionLineItems = (listing, orderData) => {
 
       shoppingCartItems.push(
         {
-          code: sellingUnitType,
+          code: `line-item/${item.listing.id.uuid}`,
           unitPrice: new Money(item.listing.attributes.price.amount, unitPrice.currency),
           quantity: item.checkoutValues.quantity,
           includeFor: ['customer', 'provider'],

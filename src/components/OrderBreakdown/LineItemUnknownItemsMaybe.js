@@ -21,7 +21,7 @@ const LineItemUnknownItemsMaybe = props => {
 
   // resolve unknown non-reversal line items
   const allItems = lineItems.filter(item => LINE_ITEMS.indexOf(item.code) === -1 && !item.reversal);
-  const baseListing = transaction?.listing ? transaction?.listing : listing;
+  // const baseListing = transaction?.listing ? transaction?.listing : listing;
   const items = isProvider
     ? allItems.filter(item => item.includeFor.includes('provider'))
     : allItems.filter(item => item.includeFor.includes('customer'));
@@ -40,9 +40,9 @@ const LineItemUnknownItemsMaybe = props => {
         const formattedUnit = formatMoney(intl, item.unitPrice);
 
 
-        const isBaseItem = baseListing?.attributes.price.amount === item.unitPrice.amount;
+        // const isBaseItem = baseListing?.attributes.price.amount === item.unitPrice.amount;
         const shoppingCartItem = restOfShoppingCartItems?.find(x => {
-          return x.listing.attributes.price.amount ===  item.unitPrice?.amount
+          return x.listing.id.uuid ===  item.code?.replace('line-item/','')
         })
 
 
@@ -50,11 +50,11 @@ const LineItemUnknownItemsMaybe = props => {
           <>
           <div className={css.lineItem}>
                 <span className={css.itemLabel}>
-                  {isBaseItem ?
+                  {/* {isBaseItem ?
                     <a href={`/l/${baseListing?.attributes.title.replace(' ','-')}/${baseListing?.id.uuid}`}>{baseListing?.attributes.title}</a>
-                    :
+                    : */}
                     <a href={`/l/${shoppingCartItem?.listing?.attributes?.title.replace(' ','-')}/${shoppingCartItem?.listing.id?.uuid}`}>{shoppingCartItem?.listing.attributes?.title}</a>
-                  }
+                 {/* } */}
                 </span>
               </div>
               <div className={css.lineItem}>
