@@ -21,6 +21,7 @@ import { initializeCardPaymentData } from '../../../ducks/stripe.duck.js';
 import { manageDisableScrolling, isScrollingDisabled } from '../../../ducks/UI.duck';
 
 import { createSlug } from '../../../util/urlHelpers';
+const minOrderAmount = process.env.REACT_APP_MIN_CHECKOUT_AMOUNT;
 const { UUID } = sdkTypes;
 const sharetribeSdk = require('sharetribe-flex-sdk');
 const sdk = sharetribeSdk.createInstance({
@@ -85,13 +86,18 @@ const ShoppingCartComponent = (props) => {
     }
 
     let totalPrice
+    let totalOrderAmount = 0
 
     if(shoppingCartItems.length > 0 ){
         const amountsArray = shoppingCartItems.map(i => {return i.listing.attributes.price.amount * Number(i.checkoutValues.quantity)});
         const totalAmount = amountsArray.reduce(
             (previousValue, currentValue) => previousValue + currentValue, 0);
+        totalOrderAmount = totalAmount
         totalPrice = intl ? formatMoney(intl, new Money(totalAmount, config.currency)) : `${totalAmount / 100} ${config.currency}`;
     }
+
+
+    const isBelowMininumAmount = totalOrderAmount < Number(minOrderAmount) * 100;
 
     // const callSetInitialValues = (setInitialValues, values, saveToSessionStorage) => {
     //         return setInitialValues(values, saveToSessionStorage)
@@ -208,7 +214,13 @@ const ShoppingCartComponent = (props) => {
                      </div>    
 
                      <br/>
-                     <Button type='button' onClick={toCheckout}><FormattedMessage id="ShoppingCart.checkout" /></Button>  
+                     {
+                     isBelowMininumAmount ?
+                     <p className={css.infoText}>* The minimum order amount is €{minOrderAmount}</p>
+                    :
+                    null
+                    }
+                     <Button type='button' disabled={isBelowMininumAmount} onClick={toCheckout}><FormattedMessage id="ShoppingCart.checkout" /></Button>  
                 
                 </div>  
                 }

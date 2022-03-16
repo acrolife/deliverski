@@ -24,6 +24,11 @@
   }
 }
 
+
+.infoText{
+
+}
+
 /* logo */
 .logoLink {
   @apply --TopbarDesktop_linkHover;
