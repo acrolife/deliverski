@@ -1044,7 +1044,7 @@
   "ShoppingCart.checkout": "Checkout",
   "ListingPage.sameVendorModalTitle": "You need to add items from the same vendor",
   "ListingPage.clearBasket": "Clear basket",
-  "ListingPage.seeSameVendorListings": "See other products from this vendor",
+  "ListingPage.seeSameVendorListings": "See other products from the vendor",
   "BookingBreakdown.productUnit": "{formattedUnit} * {quantity, number}",
   "BookingBreakdown.productTotal": "{formattedTotal}"
 }
