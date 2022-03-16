@@ -17,6 +17,8 @@ import EditListingDeliveryForm from './EditListingDeliveryForm';
 import css from './EditListingDeliveryPanel.module.css';
 
 const { Money } = sdkTypes;
+const shippingAmount = process.env.REACT_APP_SHIPPING_FEE;
+
 
 class EditListingDeliveryPanel extends Component {
   constructor(props) {
@@ -25,7 +27,15 @@ class EditListingDeliveryPanel extends Component {
     this.getInitialValues = this.getInitialValues.bind(this);
 
     this.state = {
-      initialValues: this.getInitialValues(),
+      // initialValues: this.getInitialValues(),
+      initialValues: {
+        building: "",
+        location: {},
+        deliveryOptions: [
+            "shipping"
+        ],
+        shippingPriceInSubunitsOneItem: new Money(shippingAmount * 100, config.currency)
+      }
     };
   }
 
@@ -43,7 +53,7 @@ class EditListingDeliveryPanel extends Component {
       shippingEnabled,
       pickupEnabled,
       shippingPriceInSubunitsOneItem,
-      shippingPriceInSubunitsAdditionalItems,
+      // shippingPriceInSubunitsAdditionalItems,
     } = publicData;
     const deliveryOptions = [];
 
@@ -58,9 +68,9 @@ class EditListingDeliveryPanel extends Component {
     const shippingOneItemAsMoney = shippingPriceInSubunitsOneItem
       ? new Money(shippingPriceInSubunitsOneItem, currency)
       : null;
-    const shippingAdditionalItemsAsMoney = shippingPriceInSubunitsAdditionalItems
-      ? new Money(shippingPriceInSubunitsAdditionalItems, currency)
-      : null;
+    // const shippingAdditionalItemsAsMoney = shippingPriceInSubunitsAdditionalItems
+    //   ? new Money(shippingPriceInSubunitsAdditionalItems, currency)
+    //   : null;
     return {
       building,
       location: locationFieldsPresent
@@ -71,7 +81,7 @@ class EditListingDeliveryPanel extends Component {
         : { search: undefined, selectedPlace: undefined },
       deliveryOptions,
       shippingPriceInSubunitsOneItem: shippingOneItemAsMoney,
-      shippingPriceInSubunitsAdditionalItems: shippingAdditionalItemsAsMoney,
+      // shippingPriceInSubunitsAdditionalItems: shippingAdditionalItemsAsMoney,
     };
   }
 
@@ -103,7 +113,7 @@ class EditListingDeliveryPanel extends Component {
     ) : (
       <FormattedMessage id="EditListingDeliveryPanel.createListingTitle" />
     );
-
+      console.log(this.state.initialValues)
     return (
       <div className={classes}>
         <h1 className={css.title}>{panelTitle}</h1>
@@ -115,7 +125,7 @@ class EditListingDeliveryPanel extends Component {
               building = '',
               location,
               shippingPriceInSubunitsOneItem,
-              shippingPriceInSubunitsAdditionalItems,
+              // shippingPriceInSubunitsAdditionalItems,
               deliveryOptions,
             } = values;
 
@@ -133,8 +143,8 @@ class EditListingDeliveryPanel extends Component {
                     // Note: we only save the "amount" because currency should not differ from listing's price.
                     // Money is always dealt in subunits (e.g. cents) to avoid float calculations.
                     shippingPriceInSubunitsOneItem: shippingPriceInSubunitsOneItem.amount,
-                    shippingPriceInSubunitsAdditionalItems:
-                      shippingPriceInSubunitsAdditionalItems?.amount,
+                    // shippingPriceInSubunitsAdditionalItems:
+                    //   shippingPriceInSubunitsAdditionalItems?.amount,
                   }
                 : {};
 
@@ -152,11 +162,19 @@ class EditListingDeliveryPanel extends Component {
                 building,
                 location: { search: address, selectedPlace: { address, origin } },
                 shippingPriceInSubunitsOneItem,
-                shippingPriceInSubunitsAdditionalItems,
+                // shippingPriceInSubunitsAdditionalItems,
                 deliveryOptions,
               },
             });
-            onSubmit(updateValues);
+            // onSubmit(updateValues);
+              onSubmit({
+                geolocation: null,
+                publicData: {
+                  pickupEnabled:false,
+                  shippingEnabled:true,
+                  shippingPriceInSubunitsOneItem: shippingAmount * 100
+                }
+              })
           }}
           onChange={onChange}
           saveActionMsg={submitButtonText}
