@@ -9,6 +9,7 @@
    :privileged? true,
    :actions
    [{:name :action/update-protected-data}
+    {:name :action/privileged-update-metadata}
     {:name :action/create-pending-stock-reservation}
     {:name :action/privileged-set-line-items}
     {:name :action/stripe-create-payment-intent}],
@@ -18,6 +19,7 @@
    :privileged? true,
    :actions
    [{:name :action/update-protected-data}
+    {:name :action/privileged-update-metadata}
     {:name :action/create-pending-stock-reservation}
     {:name :action/privileged-set-line-items}
     {:name :action/stripe-create-payment-intent}],
@@ -61,7 +63,7 @@
    :at
    {:fn/plus
     [{:fn/timepoint [:time/first-entered-state :state/delivered]}
-     {:fn/period ["PT90M"]}]},
+     {:fn/period ["PT60M"]}]},
    :actions [{:name :action/stripe-create-payout}],
    :from :state/delivered,
    :to :state/received}
@@ -179,14 +181,6 @@
    :on :transition/confirm-payment,
    :to :actor.role/provider,
    :template :new-order}
-  ;; {:name :notification/shipping-reminder,
-  ;;  :on :transition/confirm-payment,
-  ;;  :at
-  ;;  {:fn/plus
-  ;;   [{:fn/timepoint [:time/first-entered-state :state/purchased]}
-  ;;    {:fn/period ["P3D"]}]},
-  ;;  :to :actor.role/provider,
-  ;;  :template :shipping-reminder}
   {:name :notification/order-marked-as-delivered,
    :on :transition/mark-delivered,
    :to :actor.role/customer,
@@ -283,3 +277,4 @@
    :on :transition/review-2-by-customer,
    :to :actor.role/provider,
    :template :review-by-other-party-published}]}
+

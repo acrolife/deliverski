@@ -132,9 +132,9 @@ const stateDescription = {
   // it is best to keep them in sync with transaction process aliases.
   
   // Original
-  // id: 'flex-product-default-process/release-1',
+  id: 'flex-product-default-process/release-1',
   // New version
-  id: 'flex-product-default-process/dev-periods-chge-90',
+  //id: 'flex-product-default-process/dev-periods-chge-90',
 
   // This 'initial' state is a starting point for new transaction
   initial: STATE_INITIAL,
