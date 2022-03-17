@@ -63,7 +63,7 @@
    :at
    {:fn/plus
     [{:fn/timepoint [:time/first-entered-state :state/delivered]}
-     {:fn/period ["PT90M"]}]},
+     {:fn/period ["PT60M"]}]},
    :actions [{:name :action/stripe-create-payout}],
    :from :state/delivered,
    :to :state/received}
@@ -277,3 +277,4 @@
    :on :transition/review-2-by-customer,
    :to :actor.role/provider,
    :template :review-by-other-party-published}]}
+
