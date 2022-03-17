@@ -128,7 +128,7 @@ exports.transactionLineItems = (listing, orderData) => {
         shippingPriceInSubunitsOneItem,
         shippingPriceInSubunitsAdditionalItems,
         currency,
-        orderQuantity
+        // orderQuantity
       )
     : null;
 
