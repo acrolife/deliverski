@@ -27,24 +27,26 @@ exports.calculateShippingFee = (
   shippingPriceInSubunitsOneItem,
   shippingPriceInSubunitsAdditionalItems,
   currency,
-  quantity
+  // quantity
 ) => {
-  if (shippingPriceInSubunitsOneItem && currency && quantity === 1) {
+  // if (shippingPriceInSubunitsOneItem && currency && quantity === 1) {
+  if (shippingPriceInSubunitsOneItem && currency) {
     return new Money(shippingPriceInSubunitsOneItem, currency);
-  } else if (
-    shippingPriceInSubunitsOneItem &&
-    shippingPriceInSubunitsAdditionalItems &&
-    currency &&
-    quantity > 1
-  ) {
-    const oneItemFee = getAmountAsDecimalJS(new Money(shippingPriceInSubunitsOneItem, currency));
-    const additionalItemsFee = getAmountAsDecimalJS(
-      new Money(shippingPriceInSubunitsAdditionalItems, currency)
-    );
-    const additionalItemsTotal = additionalItemsFee.times(quantity - 1);
-    const numericShippingFee = convertDecimalJSToNumber(oneItemFee.plus(additionalItemsTotal));
-    return new Money(numericShippingFee, currency);
-  }
+  } 
+  // else if (
+  //   shippingPriceInSubunitsOneItem &&
+  //   shippingPriceInSubunitsAdditionalItems &&
+  //   currency &&
+  //   quantity > 1
+  // ) {
+  //   const oneItemFee = getAmountAsDecimalJS(new Money(shippingPriceInSubunitsOneItem, currency));
+  //   const additionalItemsFee = getAmountAsDecimalJS(
+  //     new Money(shippingPriceInSubunitsAdditionalItems, currency)
+  //   );
+  //   const additionalItemsTotal = additionalItemsFee.times(quantity - 1);
+  //   const numericShippingFee = convertDecimalJSToNumber(oneItemFee.plus(additionalItemsTotal));
+  //   return new Money(numericShippingFee, currency);
+  // }
   return null;
 };
 
