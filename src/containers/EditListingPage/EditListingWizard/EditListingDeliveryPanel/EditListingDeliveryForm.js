@@ -114,21 +114,18 @@ export const EditListingDeliveryFormComponent = props => (
       const pickupLabel = intl.formatMessage({ id: 'EditListingDeliveryForm.pickupLabel' });
 
       const pickupClasses = classNames(css.deliveryOption, !pickupEnabled ? css.disabled : null);
-      const shippingClasses = classNames(
-        css.deliveryOption,
-        !shippingEnabled ? css.disabled : null
-      );
+      const shippingClasses = classNames(css.deliveryOption);
 
       return (
         <Form className={classes} onSubmit={handleSubmit}>
-          <FieldCheckbox
+          {/* <FieldCheckbox
             id="pickup"
             className={css.deliveryCheckbox}
             name="deliveryOptions"
             label={pickupLabel}
             value="pickup"
-          />
-          <div className={pickupClasses}>
+          /> */}
+          {/* <div className={pickupClasses}>
             {errorMessage}
             {errorMessageShowListing}
             <LocationAutocompleteInputField
@@ -172,14 +169,14 @@ export const EditListingDeliveryFormComponent = props => (
               placeholder={buildingPlaceholderMessage}
               disabled={!pickupEnabled}
             />
-          </div>
-          <FieldCheckbox
+          </div> */}
+          {/* <FieldCheckbox
             id="shipping"
             className={css.deliveryCheckbox}
             name="deliveryOptions"
             label={shippingLabel}
-            value="shipping"
-          />
+            value={"shipping"}
+          /> */}
 
           <div className={shippingClasses}>
             <FieldCurrencyInput
@@ -193,7 +190,7 @@ export const EditListingDeliveryFormComponent = props => (
                 id: 'EditListingDeliveryForm.shippingOneItemPlaceholder',
               })}
               currencyConfig={config.currencyConfig}
-              disabled={!shippingEnabled}
+              // disabled={!shippingEnabled}
               validate={
                 shippingEnabled
                   ? required(
@@ -211,9 +208,10 @@ export const EditListingDeliveryFormComponent = props => (
               // validation function) with Final Form.
               // See example: https://codesandbox.io/s/changing-field-level-validators-zc8ei
               key={shippingEnabled ? 'oneItemValidation' : 'noOneItemValidation'}
+              disabled={true}
             />
 
-            <FieldCurrencyInput
+            {/* <FieldCurrencyInput
               id="shippingPriceInSubunitsAdditionalItems"
               name="shippingPriceInSubunitsAdditionalItems"
               className={css.input}
@@ -242,7 +240,7 @@ export const EditListingDeliveryFormComponent = props => (
               // validation function) with Final Form.
               // See example: https://codesandbox.io/s/changing-field-level-validators-zc8ei
               key={shippingEnabled ? 'additionalItemsValidation' : 'noAdditionalItemsValidation'}
-            />
+            /> */}
           </div>
 
           <Button

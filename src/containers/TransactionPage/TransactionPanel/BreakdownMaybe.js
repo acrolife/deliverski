@@ -11,7 +11,7 @@ import css from './TransactionPanel.module.css';
 
 // Functional component as a helper to build OrderBreakdown
 const BreakdownMaybe = props => {
-  const { className, rootClassName, breakdownClassName, transaction, transactionRole } = props;
+  const { className, rootClassName, breakdownClassName, transaction, transactionRole, restOfShoppingCartItems } = props;
   const loaded = transaction?.id && transaction.attributes.lineItems?.length > 0;
 
   const classes = classNames(rootClassName || css.breakdownMaybe, className);
@@ -31,6 +31,7 @@ const BreakdownMaybe = props => {
         userRole={transactionRole}
         unitType={config.lineItemUnitType}
         transaction={transaction}
+        restOfShoppingCartItems={restOfShoppingCartItems}
         {...txBookingMaybe}
       />
     </div>

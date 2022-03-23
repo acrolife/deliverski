@@ -78,6 +78,7 @@ const OrderPanel = props => {
     lineItems,
     fetchLineItemsInProgress,
     fetchLineItemsError,
+    currentUser
   } = props;
 
   const isNightly = unitType === LINE_ITEM_NIGHT;
@@ -176,6 +177,8 @@ const OrderPanel = props => {
             lineItems={lineItems}
             fetchLineItemsInProgress={fetchLineItemsInProgress}
             fetchLineItemsError={fetchLineItemsError}
+            listing={listing}
+            currentUser={currentUser}
           />
         ) : null}
       </ModalInMobile>

@@ -38,7 +38,9 @@
 }
 
 .logo {
-  object-fit: contain;
+  height: 40px;
+  margin-top: -10px;
+  /* object-fit: contain; */
 }
 
 .logoutButton {

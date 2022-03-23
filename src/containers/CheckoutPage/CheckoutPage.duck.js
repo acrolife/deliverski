@@ -172,12 +172,28 @@ export const initiateOrder = (orderParams, transactionId) => (dispatch, getState
   const isPrivilegedTransition = isPrivileged(transition);
 
   const { deliveryMethod, quantity, bookingDates, ...otherOrderParams } = orderParams;
-  const quantityMaybe = quantity ? { stockReservationQuantity: quantity } : {};
+  const quantityMaybe = quantity ? { stockReservationQuantity: Number(quantity) } : {};
   const bookingParamsMaybe = bookingDates || {};
+
+  const restOfShoppingCartItems = orderParams.restOfShoppingCartItems ? {
+    restOfShoppingCartItems: orderParams.restOfShoppingCartItems
+  } : {}
+
+
+  const metadataWithShoppingCart = orderParams.restOfShoppingCartItems ? {
+    metadata: {
+      restOfShoppingCartItems: orderParams.restOfShoppingCartItems.map(item => {
+        return (
+          JSON.stringify(item)
+        )
+      })
+    }
+  } : {}
 
   // Parameters only for client app's server
   const orderData = {
     deliveryMethod,
+    ...restOfShoppingCartItems
   };
 
   // Parameters for Flex API
@@ -191,12 +207,18 @@ export const initiateOrder = (orderParams, transactionId) => (dispatch, getState
     ? {
         id: transactionId,
         transition,
-        params: transitionParams,
+        params: {
+          ...transitionParams,
+          ...metadataWithShoppingCart
+        },
       }
     : {
         processAlias: config.transactionProcessAlias,
         transition,
-        params: transitionParams,
+        params: {
+          ...transitionParams,
+        ...metadataWithShoppingCart
+      },
       };
   const queryParams = {
     include: ['booking', 'provider'],
@@ -321,12 +343,17 @@ export const speculateTransaction = (orderParams, transactionId) => (dispatch, g
   const isPrivilegedTransition = isPrivileged(transition);
 
   const { deliveryMethod, quantity, bookingDates, ...otherOrderParams } = orderParams;
-  const quantityMaybe = quantity ? { stockReservationQuantity: quantity } : {};
+  const quantityMaybe = quantity ? { stockReservationQuantity: Number(quantity) } : {};
   const bookingParamsMaybe = bookingDates || {};
+
+  const restOfShoppingCartItems = orderParams.orderData?.restOfShoppingCartItems ? {
+    restOfShoppingCartItems: orderParams.orderData.restOfShoppingCartItems
+  } : {}
 
   // Parameters only for client app's server
   const orderData = {
     deliveryMethod,
+    ...restOfShoppingCartItems
   };
 
   // Parameters for Flex API

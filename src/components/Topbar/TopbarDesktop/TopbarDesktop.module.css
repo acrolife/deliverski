@@ -24,21 +24,28 @@
   }
 }
 
+
+.infoText{
+
+}
+
 /* logo */
 .logoLink {
   @apply --TopbarDesktop_linkHover;
   flex-shrink: 0;
-  padding: 21px 24px 21px 24px;
+  /* padding: 21px 24px 21px 24px; */
+  padding: 10px 0px 10px 0px;  
   height: 100%;
 
   @media (--viewportLarge) {
-    padding: 21px 36px 21px 36px;
+    padding: 10px 0px 10px 0px;
   }
 }
 
 .logo {
   /* If height is increased, change link paddings accordingly */
-  height: 27px;
+  /* height: 27px; */
+  height: 50px;  
 
   /* Good aspect ratio should be less than 160/27 (width/height) */
   /* NOTE: extremely wide logos, need special handling. */
@@ -320,5 +327,77 @@
     & .menuItemBorder {
       background-color: var(--matterColorDark);
     }
+  }
+}
+
+
+.shoppingCartWrapper{
+  @apply --TopbarDesktop_linkHover;
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  width: 3pc;
+  cursor: pointer;
+
+  @media only screen and (max-width: 768px){
+    width: 10pc;
+    justify-content: flex-start;
+  }
+}
+
+.cartIcon{
+  align-self: center;
+}
+
+.mobileLabel{
+  color: var(--marketplaceColor);
+  font-weight: var(--fontWeightSemiBold);
+  font-size: 21px;
+  line-height: 24px;
+  margin-bottom: 11px;
+}
+
+.mobileLabel > span {
+  width: 8pc;
+}
+
+.cartItem{
+  display: flex;
+  justify-content: space-between;
+}
+
+.deleteIcon{
+  cursor: pointer;
+  margin-right: 1pc;
+  margin-bottom: 3px;
+  &:hover{
+    transform: scale(1.02);
+    color: red;
+  }
+}
+
+.cartItemsWrapper{
+  margin-top: 2pc;
+}
+
+.cartItem{
+  padding-bottom: 1pc;
+}
+
+.total{
+  display: flex;
+  border-top: 1px solid rgb(211, 211, 211);
+  justify-content: space-between;
+}
+
+.dotInfo{
+  font-size: 12px;
+  margin-top: 4px;
+  color: var(--marketplaceColor);
+
+  @media only screen and (max-width: 768px){
+    font-size: 18px;
+    margin-top: 0;
+    margin-left: 8px;
   }
 }

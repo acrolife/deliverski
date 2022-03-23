@@ -37,6 +37,8 @@ export const OrderBreakdownComponent = props => {
     booking,
     intl,
     dateType,
+    listing,
+    restOfShoppingCartItems
   } = props;
 
   const isCustomer = userRole === 'customer';
@@ -97,10 +99,19 @@ export const OrderBreakdownComponent = props => {
     <div className={classes}>
       <LineItemBookingPeriod booking={booking} unitType={unitType} dateType={dateType} />
 
-      <LineItemBasePriceMaybe lineItems={lineItems} unitType={unitType} intl={intl} />
-      <LineItemShippingFeeMaybe lineItems={lineItems} intl={intl} />
+      <LineItemBasePriceMaybe lineItems={lineItems} unitType={unitType} intl={intl}  transaction={transaction} listing={listing}/>
+
+      <LineItemUnknownItemsMaybe 
+      lineItems={lineItems} 
+      isProvider={isProvider}
+      intl={intl} 
+      transaction={transaction}
+      restOfShoppingCartItems={restOfShoppingCartItems}
+      listing={listing}
+      />
+
+<LineItemShippingFeeMaybe lineItems={lineItems} intl={intl} />
       <LineItemPickupFeeMaybe lineItems={lineItems} intl={intl} />
-      <LineItemUnknownItemsMaybe lineItems={lineItems} isProvider={isProvider} intl={intl} />
 
       <LineItemSubTotalMaybe
         lineItems={lineItems}

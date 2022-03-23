@@ -22,6 +22,7 @@ import {
 } from '../../util/data';
 import { timeOfDayFromLocalToTimeZone, minutesBetween } from '../../util/dates';
 import { createSlug } from '../../util/urlHelpers';
+import { post } from '../../util/api';
 import {
   isTransactionInitiateAmountTooLowError,
   isTransactionInitiateListingNotFoundError,
@@ -70,6 +71,12 @@ import {
 import StripePaymentForm from './StripePaymentForm/StripePaymentForm';
 import { storeData, storedData, clearData } from './CheckoutPageSessionHelpers';
 import css from './CheckoutPage.module.css';
+
+
+const sharetribeSdk = require('sharetribe-flex-sdk');
+const sdk = sharetribeSdk.createInstance({
+  clientId: process.env.REACT_APP_SHARETRIBE_SDK_CLIENT_ID
+});
 
 const STORAGE_KEY = 'CheckoutPage';
 
@@ -297,8 +304,6 @@ export class CheckoutPageComponent extends Component {
     if (shouldFetchSpeculatedTransaction) {
       const listingId = pageData.listing.id;
       const transactionId = tx ? tx.id : null;
-
-      // Fetch speculated transaction for showing price in order breakdown
       // NOTE: if unit type is line-item/units, quantity needs to be added.
       // The way to pass it to checkout page is through pageData.orderData
       const quantity = pageData.orderData?.quantity;
@@ -309,6 +314,7 @@ export class CheckoutPageComponent extends Component {
           listingId,
           deliveryMethod,
           ...quantityMaybe,
+          orderData: pageData.orderData,
           ...bookingDatesMaybe(pageData.orderData.bookingDates),
         },
         transactionId
@@ -363,7 +369,7 @@ export class CheckoutPageComponent extends Component {
       // fnParams should be { listingId, deliveryMethod, quantity?, bookingDates?, paymentMethod?/setupPaymentMethodForSaving? }
       const hasPaymentIntents =
         storedTx.attributes.protectedData && storedTx.attributes.protectedData.stripePaymentIntents;
-
+      fnParams.restOfShoppingCartItems = pageData.orderData.restOfShoppingCartItems;
       // If paymentIntent exists, order has been initiated previously.
       return hasPaymentIntents ? Promise.resolve(storedTx) : onInitiateOrder(fnParams, storedTx.id);
     };
@@ -458,6 +464,39 @@ export class CheckoutPageComponent extends Component {
       }
     };
 
+
+        // Step 6: - remove items from basket if the case
+
+        const emptyBasktet = fnParams => {
+          const isTxWithBasket = pageData.orderData.restOfShoppingCartItems;
+          if(isTxWithBasket){
+            return sdk.currentUser.updateProfile({
+              publicData: {
+                shoppingCart: []
+              },
+            }).then(() => {
+              return fnParams;
+            }).catch(e => {
+              console.log(e)
+            })
+          }else{
+            return fnParams;
+          }
+      }
+
+
+          // Step 7: - change quantity for the rest of shopping cart items
+
+          const changeRestOfShoppingCartItemsQuantity = fnParams => {
+            const restOfShoppingCartItems = pageData.orderData.restOfShoppingCartItems;
+            return post('/api/change-all-items-quantity', {restOfShoppingCartItems}).then(resp => {
+              return fnParams;
+            }).catch(e => {
+              return fnParams;
+            })
+            
+        }
+
     // Here we create promise calls in sequence
     // This is pretty much the same as:
     // fnRequestPayment({...initialParams})
@@ -470,7 +509,9 @@ export class CheckoutPageComponent extends Component {
       fnConfirmCardPayment,
       fnConfirmPayment,
       fnSendMessage,
-      fnSavePaymentMethod
+      fnSavePaymentMethod,
+      emptyBasktet,
+      changeRestOfShoppingCartItemsQuantity
     );
 
     // Create order aka transaction
@@ -740,6 +781,8 @@ export class CheckoutPageComponent extends Component {
           userRole="customer"
           unitType={config.lineItemUnitType}
           transaction={tx}
+          listing={currentListing}
+          restOfShoppingCartItems={this.state.pageData.orderData.restOfShoppingCartItems}
           {...txBookingMaybe}
         />
       ) : null;
@@ -834,7 +877,7 @@ export class CheckoutPageComponent extends Component {
             <AvatarMedium user={currentAuthor} disableProfileLink />
           </div>
           <div className={css.bookListingContainer}>
-            <div className={css.heading}>
+            {/* <div className={css.heading}>
               <h1 className={css.title}>{title}</h1>
               <div className={css.author}>
                 <FormattedMessage
@@ -842,7 +885,7 @@ export class CheckoutPageComponent extends Component {
                   values={{ name: currentAuthor.attributes.profile.displayName }}
                 />
               </div>
-            </div>
+            </div> */}
 
             <div className={css.priceBreakdownContainer}>
               {speculateTransactionErrorMessage}
@@ -897,7 +940,7 @@ export class CheckoutPageComponent extends Component {
           </div>
 
           <div className={css.detailsContainerDesktop}>
-            <AspectRatioWrapper
+            {/* <AspectRatioWrapper
               width={aspectWidth}
               height={aspectHeight}
               className={css.detailsAspectWrapper}
@@ -908,14 +951,14 @@ export class CheckoutPageComponent extends Component {
                 image={firstImage}
                 variants={variants}
               />
-            </AspectRatioWrapper>
+            </AspectRatioWrapper> */}
             <div className={css.avatarWrapper}>
               <AvatarMedium user={currentAuthor} disableProfileLink />
             </div>
-            <div className={css.detailsHeadings}>
+            {/* <div className={css.detailsHeadings}>
               <h2 className={css.detailsTitle}>{listingTitle}</h2>
               <p className={css.detailsSubtitle}>{detailsSubTitle}</p>
-            </div>
+            </div> */}
             {speculateTransactionErrorMessage}
             <h2 className={css.orderBreakdownTitle}>
               <FormattedMessage id="CheckoutPage.orderBreakdown" />

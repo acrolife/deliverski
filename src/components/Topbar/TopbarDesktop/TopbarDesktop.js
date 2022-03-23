@@ -4,6 +4,7 @@ import classNames from 'classnames';
 
 import { FormattedMessage, intlShape } from '../../../util/reactIntl';
 import { ACCOUNT_SETTINGS_PAGES } from '../../../routing/routeConfiguration';
+import ShoppingCart from './ShoppingCart';
 import { propTypes } from '../../../util/types';
 import {
   Avatar,
@@ -34,6 +35,7 @@ const TopbarDesktop = props => {
     onLogout,
     onSearchSubmit,
     initialSearchFormValues,
+    history
   } = props;
   const [mounted, setMounted] = useState(false);
 
@@ -152,7 +154,17 @@ const TopbarDesktop = props => {
         </span>
       </NamedLink>
       {inboxLink}
+
+      {isAuthenticatedOrJustHydrated ? 
+      <ShoppingCart 
+      intl={intl}
+      history={history}
+      currentUser={currentUser}
+      />
+      : null}
+
       {profileMenu}
+      
       {signupLink}
       {loginLink}
     </nav>

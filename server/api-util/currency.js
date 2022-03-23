@@ -81,9 +81,9 @@ const isGoogleMathLong = value => {
  * @return {Number} converted value
  */
 exports.getAmountAsDecimalJS = value => {
-  if (!(value instanceof Money)) {
-    throw new Error('Value must be a Money type');
-  }
+  // if (!(value instanceof Money)) {
+  //   throw new Error('Value must be a Money type');
+  // }
   let amount;
 
   if (isGoogleMathLong(value.amount)) {
