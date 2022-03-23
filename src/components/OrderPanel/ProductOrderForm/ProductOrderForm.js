@@ -99,14 +99,45 @@ const renderForm = formRenderProps => {
 
               if(isFromSameVendor){
 
-                
-                      //ADD TO CART
+                  const isAlreadyInTheBasket = currentShoppingCartUnwrapped.find(i => {
+                    return i.listing.id.uuid === currentListing.id.uuid
+                  })
+
+                  if(isAlreadyInTheBasket){
+                    // UPDATE EXISTING ITEM QUANTITY
+                    const updatedShoppingCard = currentShoppingCartUnwrapped.map(i => {
+                        if(i.listing.id.uuid === currentListing.id.uuid){
+                            i.checkoutValues.quantity = (Number(i.checkoutValues.quantity) + Number(quantity)).toString()
+                            return i
+                        }else{
+                          return i
+                        }
+
+                    })
+
+                    const stringifyUpdatedShoppingCart = updatedShoppingCard.map(item => {
+                      return({
+                        listing: JSON.stringify(item.listing),
+                        checkoutValues: JSON.stringify(item.checkoutValues)
+                      })
+                    })
+
+                    return sdk.currentUser.updateProfile({
+                      publicData: {
+                        shoppingCart: [...stringifyUpdatedShoppingCart]
+                      },
+                    }).then(res => {
+                        window.location.reload()
+                    }).catch(e => console.log(e))
+
+                  }else{
+                      //ADD NEW ITEM TO CART
 
                       const shoppingCartItem = {
                         listing: JSON.stringify({...currentListing}),
                         checkoutValues: JSON.stringify({...values})
                       }
-          
+
                       return sdk.currentUser.updateProfile({
                         publicData: {
                           shoppingCart: [...currentShoppingCart, shoppingCartItem]
@@ -114,6 +145,9 @@ const renderForm = formRenderProps => {
                       }).then(res => {
                           window.location.reload()
                       }).catch(e => console.log(e))
+                  }
+
+              
 
               }else{
                   setSameVendorWarningModalOpen(true)
