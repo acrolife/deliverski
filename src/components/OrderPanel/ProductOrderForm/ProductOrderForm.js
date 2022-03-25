@@ -265,9 +265,9 @@ const renderForm = formRenderProps => {
           label={intl.formatMessage({ id: 'ProductOrderForm.deliveryMethodLabel' })}
           validate={required(intl.formatMessage({ id: 'ProductOrderForm.deliveryMethodRequired' }))}
         >
-          <option disabled value="">
+          {/* <option disabled value="">
             {intl.formatMessage({ id: 'ProductOrderForm.selectDeliveryMethodOption' })}
-          </option>
+          </option> */}
           <option value={'pickup'}>
             {intl.formatMessage({ id: 'ProductOrderForm.pickupOption' })}
           </option>
@@ -366,11 +366,14 @@ const ProductOrderForm = props => {
   const hasOneItemLeft = currentStock && currentStock === 1;
   const quantityMaybe = hasOneItemLeft ? { quantity: '1' } : {};
   const singleDeliveryMethodAvailableMaybe =
-    shippingEnabled && !pickupEnabled
+  shippingEnabled ?
+  { deliveryMethod: 'shipping' }
+  :
+    (shippingEnabled && !pickupEnabled
       ? { deliveryMethod: 'shipping' }
       : !shippingEnabled && pickupEnabled
       ? { deliveryMethod: 'pickup' }
-      : {};
+      : {});
   const hasMultipleDeliveryMethods = pickupEnabled && shippingEnabled;
   const initialValues = { ...quantityMaybe, ...singleDeliveryMethodAvailableMaybe };
 
