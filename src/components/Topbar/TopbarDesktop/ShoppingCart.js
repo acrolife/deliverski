@@ -8,6 +8,9 @@ import { formatMoney } from '../../../util/currency';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
+
 import css from './TopbarDesktop.module.css';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -83,6 +86,71 @@ const ShoppingCartComponent = (props) => {
                   }).catch(e => console.log(e))
 
                 
+    }
+
+
+    const add = (id) => {
+      let newShoppingCart = [...shoppingCartItems]
+
+      newShoppingCart.map(item => {
+        let newItem = {...item}
+
+        if(newItem.listing.id.uuid === id){
+          newItem.checkoutValues.quantity = (Number(newItem.checkoutValues.quantity) + 1).toString();
+        }
+
+        return newItem
+      })
+
+      return sdk.currentUser.updateProfile({
+        publicData: {
+          shoppingCart: newShoppingCart.map(item => {
+                            return({
+                              listing: JSON.stringify({...item.listing}),
+                              checkoutValues: JSON.stringify({...item.checkoutValues})
+                            })
+                        })
+        },
+      }).then(res => {
+        setShoppingCartItems(newShoppingCart)
+      }).catch(e => console.log(e))
+    }
+
+    const remove = (id) => {
+      let newShoppingCart = [...shoppingCartItems];
+
+      const foundItem = newShoppingCart.find(item => {
+        return item.listing.id.uuid === id
+      });
+
+      const isQuantityOne = Number(foundItem.checkoutValues.quantity) === 1;
+      if(isQuantityOne){
+          return deleteItem(id)
+      }else{
+        newShoppingCart.map(item => {
+          let newItem = {...item}
+  
+          if(newItem.listing.id.uuid === id){
+            newItem.checkoutValues.quantity = (Number(newItem.checkoutValues.quantity) - 1).toString();
+          }
+  
+          return newItem
+        })
+  
+        return sdk.currentUser.updateProfile({
+          publicData: {
+            shoppingCart: newShoppingCart.map(item => {
+                              return({
+                                listing: JSON.stringify({...item.listing}),
+                                checkoutValues: JSON.stringify({...item.checkoutValues})
+                              })
+                          })
+          },
+        }).then(res => {
+          setShoppingCartItems(newShoppingCart)
+        }).catch(e => console.log(e))
+      }
+ 
     }
 
     let totalPrice
@@ -192,8 +260,23 @@ const ShoppingCartComponent = (props) => {
 
                          return(
                              <div className={css.cartItem}>
-                                 <div>
-                                 <span>{item.checkoutValues.quantity} x <a onClick={() => pushToPath(`/l/${item.listing.attributes.title.replace(' ','-')}/${item.listing.id.uuid}`)}>{item.listing.attributes.title}</a></span>                                 </div>
+                                 <div className={css.cartItemLeft}>
+                                    <span>
+                                      {item.checkoutValues.quantity} x <a onClick={() => pushToPath(`/l/${item.listing.attributes.title.replace(' ','-')}/${item.listing.id.uuid}`)}>{item.listing.attributes.title}</a>
+                                    </span>  
+                                    <div className={css.buttonsWrapper}>
+                                        <RemoveIcon 
+                                        className={css.quantityButton}
+                                        onClick={() => remove(item.listing.id.uuid)}
+                                        />
+                                        <AddIcon 
+                                        className={css.quantityButton}
+                                        onClick={() => add(item.listing.id.uuid)}
+                                        />
+                                    </div>                      
+                                 </div>
+
+
                                  <div>
                                     <DeleteOutlineIcon
                                      className={css.deleteIcon}
@@ -211,7 +294,9 @@ const ShoppingCartComponent = (props) => {
                         <span> <FormattedMessage id="ShoppingCart.total" /></span>
 
                         <span>{totalPrice}</span>
-                     </div>    
+                     </div>                         
+                     <p className={css.infoTextTotal}>Before delivery cost participation</p>
+   
 
                      <br/>
                      {
