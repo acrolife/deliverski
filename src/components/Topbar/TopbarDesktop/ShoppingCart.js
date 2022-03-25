@@ -221,6 +221,13 @@ const ShoppingCartComponent = (props) => {
       return item.checkoutValues.deliveryMethod === "shipping"
     })
 
+    let quantityTotal = 0;
+
+    shoppingCartItems.forEach(item => {
+      quantityTotal += Number(item.checkoutValues.quantity)
+    })
+
+
   return (
       <>
       <div className={css.shoppingCartWrapper} onClick={() => setIsOpen(true)}>
@@ -234,7 +241,7 @@ const ShoppingCartComponent = (props) => {
              }
              {shoppingCartItems.length > 0 ?
                 <div className={css.dotInfo}>
-                    {shoppingCartItems.length}
+                    {quantityTotal}
                 </div> : null
              }
       </div>
