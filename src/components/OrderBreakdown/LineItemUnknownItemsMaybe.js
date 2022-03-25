@@ -47,7 +47,7 @@ const LineItemUnknownItemsMaybe = props => {
 
 
         return (
-          <>
+          <div key={shoppingCartItem?.listing?.id?.uuid}>
           <div className={css.lineItem}>
                 <span className={css.itemLabel}>
                   {/* {isBaseItem ?
@@ -65,7 +65,7 @@ const LineItemUnknownItemsMaybe = props => {
                   <FormattedMessage id="BookingBreakdown.productTotal" values={{ formattedTotal }} />
                 </span>
               </div> 
-          </>
+          </div>
         );
       })}
     </React.Fragment>

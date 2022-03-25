@@ -1001,7 +1001,7 @@ CheckoutPageComponent.defaultProps = {
 
 CheckoutPageComponent.propTypes = {
   scrollingDisabled: bool.isRequired,
-  listing: propTypes.listing,
+  listing: object,
   orderData: object,
   fetchStripeCustomer: func.isRequired,
   stripeCustomerFetched: bool.isRequired,

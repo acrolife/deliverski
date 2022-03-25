@@ -247,6 +247,7 @@ const ShoppingCartComponent = (props) => {
       </div>
 
             <Modal
+                id='shoppingCartModal'
                 isOpen={isOpen}
                 onClose={() => {
                 setIsOpen(false);
@@ -270,7 +271,7 @@ const ShoppingCartComponent = (props) => {
                           const formattedPrice = intl ? formatMoney(intl, totalPriceOfItem) : `${totalItemAmount / 100} ${totalPriceOfItem.currency}`;
 
                          return(
-                             <div className={css.cartItem}>
+                             <div className={css.cartItem} key={item.listing.id.uuid}>
                                  <div className={css.cartItemLeft}>
                                     <span>
                                       {item.checkoutValues.quantity} x <a onClick={() => pushToPath(`/l/${item.listing.attributes.title.replace(' ','-')}/${item.listing.id.uuid}`)}>{item.listing.attributes.title}</a>
@@ -331,7 +332,6 @@ const ShoppingCartComponent = (props) => {
 }
 
 ShoppingCartComponent.defaultProps = {
-  unitType: config.bookingUnitType,
   currentUser: null,
   filterConfig: config.custom.filters,
 };
@@ -345,7 +345,6 @@ ShoppingCartComponent.propTypes = {
     search: string,
   }).isRequired,
 
-  unitType: propTypes.bookingUnitType,
   // from injectIntl
   intl: intlShape.isRequired,
   isAuthenticated: bool.isRequired,

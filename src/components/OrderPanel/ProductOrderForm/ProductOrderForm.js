@@ -312,6 +312,7 @@ const renderForm = formRenderProps => {
               {/* not same vendor warning */}
 
               <Modal
+                id='sameVendorModal'
                 isOpen={sameVendorWarningModalOpen}
                 onClose={() => {
                   setSameVendorWarningModalOpen(false);

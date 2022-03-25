@@ -125,7 +125,7 @@ AvatarComponent.defaultProps = {
 AvatarComponent.propTypes = {
   rootClassName: string,
   className: string,
-  user: oneOfType([propTypes.user, propTypes.currentUser]),
+  // user: oneOfType([propTypes.user, propTypes.currentUser]),
 
   renderSizes: string,
   disableProfileLink: bool,
