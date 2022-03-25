@@ -232,11 +232,11 @@ const ShoppingCartComponent = (props) => {
       <>
       <div className={css.shoppingCartWrapper} onClick={() => setIsOpen(true)}>
              {
-                mobile ? 
-                <span className={css.mobileLabel}>
-                    <FormattedMessage id="ShoppingCart.mobileLabel" />
-                </span> 
-                : 
+                // mobile ? 
+                // <span className={css.mobileLabel}>
+                //     <FormattedMessage id="ShoppingCart.mobileLabel" />
+                // </span> 
+                // : 
                 <ShoppingCartIcon className={css.cartIcon}/>
              }
              {shoppingCartItems.length > 0 ?

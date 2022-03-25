@@ -20,6 +20,7 @@ import {
   ModalMissingInformation,
   NamedLink,
 } from '../../components';
+import ShoppingCart from './TopbarDesktop/ShoppingCart';
 
 import MenuIcon from './MenuIcon';
 import SearchIcon from './SearchIcon';
@@ -221,14 +222,28 @@ class TopbarComponent extends Component {
           currentPage={currentPage}
         />
         <div className={classNames(mobileRootClassName || css.container, mobileClassName)}>
-          <Button
-            rootClassName={css.menu}
-            onClick={this.handleMobileMenuOpen}
-            title={intl.formatMessage({ id: 'Topbar.menuIcon' })}
-          >
-            <MenuIcon className={css.menuIcon} />
-            {notificationDot}
-          </Button>
+
+          <div className={css.mobileLeft}>
+                <Button
+                  rootClassName={css.menu}
+                  onClick={this.handleMobileMenuOpen}
+                  title={intl.formatMessage({ id: 'Topbar.menuIcon' })}
+                >
+                  <MenuIcon className={css.menuIcon} />
+                  {notificationDot}
+                </Button>
+                
+
+                <ShoppingCart
+                mobile={true}
+                history={history}
+                currentUser={currentUser}
+                />
+          </div>
+     
+
+
+
           <NamedLink
             className={css.home}
             name="LandingPage"

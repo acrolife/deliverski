@@ -18,7 +18,6 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-
   /* fill */
   background-color: var(--matterColorLight);
 
@@ -28,6 +27,11 @@
   @media (--viewportMedium) {
     display: none;
   }
+
+}
+
+.mobileLeft{
+  display: flex;
 }
 
 .home {
