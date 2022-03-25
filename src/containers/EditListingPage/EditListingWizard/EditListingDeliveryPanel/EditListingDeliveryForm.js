@@ -118,14 +118,14 @@ export const EditListingDeliveryFormComponent = props => (
 
       return (
         <Form className={classes} onSubmit={handleSubmit}>
-          {/* <FieldCheckbox
+          <FieldCheckbox
             id="pickup"
             className={css.deliveryCheckbox}
             name="deliveryOptions"
             label={pickupLabel}
             value="pickup"
-          /> */}
-          {/* <div className={pickupClasses}>
+          /> 
+           <div className={pickupClasses}>
             {errorMessage}
             {errorMessageShowListing}
             <LocationAutocompleteInputField
@@ -169,14 +169,14 @@ export const EditListingDeliveryFormComponent = props => (
               placeholder={buildingPlaceholderMessage}
               disabled={!pickupEnabled}
             />
-          </div> */}
-          {/* <FieldCheckbox
+          </div>
+          <FieldCheckbox
             id="shipping"
             className={css.deliveryCheckbox}
             name="deliveryOptions"
             label={shippingLabel}
             value={"shipping"}
-          /> */}
+          />
 
           <div className={shippingClasses}>
             <FieldCurrencyInput

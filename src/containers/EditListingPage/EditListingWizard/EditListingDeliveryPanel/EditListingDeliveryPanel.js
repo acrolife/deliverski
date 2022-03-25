@@ -27,15 +27,15 @@ class EditListingDeliveryPanel extends Component {
     this.getInitialValues = this.getInitialValues.bind(this);
 
     this.state = {
-      // initialValues: this.getInitialValues(),
-      initialValues: {
-        building: "",
-        location: {},
-        deliveryOptions: [
-            "shipping"
-        ],
-        shippingPriceInSubunitsOneItem: new Money(shippingAmount * 100, config.currency)
-      }
+      initialValues: this.getInitialValues(),
+      // initialValues: {
+      //   building: "",
+      //   location: {},
+      //   deliveryOptions: [
+      //       "shipping"
+      //   ],
+      //   shippingPriceInSubunitsOneItem: new Money(shippingAmount * 100, config.currency)
+      // }
     };
   }
 
@@ -80,7 +80,7 @@ class EditListingDeliveryPanel extends Component {
           }
         : { search: undefined, selectedPlace: undefined },
       deliveryOptions,
-      shippingPriceInSubunitsOneItem: shippingOneItemAsMoney,
+      shippingPriceInSubunitsOneItem: new Money(shippingAmount * 100, config.currency)
       // shippingPriceInSubunitsAdditionalItems: shippingAdditionalItemsAsMoney,
     };
   }
@@ -166,15 +166,15 @@ class EditListingDeliveryPanel extends Component {
                 deliveryOptions,
               },
             });
-            // onSubmit(updateValues);
-              onSubmit({
-                geolocation: null,
-                publicData: {
-                  pickupEnabled:false,
-                  shippingEnabled:true,
-                  shippingPriceInSubunitsOneItem: shippingAmount * 100
-                }
-              })
+            onSubmit(updateValues);
+              // onSubmit({
+              //   geolocation: null,
+              //   publicData: {
+              //     pickupEnabled:false,
+              //     shippingEnabled:true,
+              //     shippingPriceInSubunitsOneItem: shippingAmount * 100
+              //   }
+              // })
           }}
           onChange={onChange}
           saveActionMsg={submitButtonText}
