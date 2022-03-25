@@ -857,6 +857,16 @@ export class CheckoutPageComponent extends Component {
 
     const initalValuesForStripePayment = { name: userName, recipientName: userName };
 
+
+    const isAnyItemWithShipping = 
+    this.state.pageData.orderData?.restOfShoppingCartItems.find(item => {
+      return item.checkoutValues.deliveryMethod === "pickup"
+    }) 
+    || 
+    this.state.pageData.orderData?.deliveryMethod === "pickup";
+
+
+
     return (
       <Page {...pageProps}>
         {topbar}
@@ -964,6 +974,12 @@ export class CheckoutPageComponent extends Component {
               <FormattedMessage id="CheckoutPage.orderBreakdown" />
             </h2>
             {breakdown}
+            {
+              isAnyItemWithShipping ?
+              <p className={css.shippingWarning}>Caution! Some items need to be picked up at the restaurant</p>
+              :
+              null
+            }
           </div>
         </div>
       </Page>

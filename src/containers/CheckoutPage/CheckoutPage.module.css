@@ -1,6 +1,7 @@
 @import '../../styles/customMediaQueries.css';
 @import '../../styles/propertySets.css';
 
+
 /* Dummy Topbar */
 
 .topbar {
@@ -337,3 +338,19 @@
     margin: 0 48px;
   }
 }
+
+
+.shippingWarning{
+  font-family: var(--fontFamily);
+  font-weight: 800;
+  font-size: 14px;
+  line-height: 24px;
+
+  @media (--viewportLarge) {
+    margin: 0 48px;
+  }
+
+  margin-top: 1pc;
+  color: var(--marketplaceColor);
+}
+

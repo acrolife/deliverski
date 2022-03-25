@@ -217,6 +217,10 @@ const ShoppingCartComponent = (props) => {
     }
 
 
+    const shippingItem = shoppingCartItems.find(item => {
+      return item.checkoutValues.deliveryMethod === "shipping"
+    })
+
   return (
       <>
       <div className={css.shoppingCartWrapper} onClick={() => setIsOpen(true)}>
@@ -294,8 +298,13 @@ const ShoppingCartComponent = (props) => {
                         <span> <FormattedMessage id="ShoppingCart.total" /></span>
 
                         <span>{totalPrice}</span>
-                     </div>                         
-                     <p className={css.infoTextTotal}>Before delivery cost participation</p>
+                     </div>  
+                     {
+                       shippingItem ?
+                       <p className={css.infoTextTotal}>Before delivery cost participation</p>
+                       :
+                       null
+                     }                       
    
 
                      <br/>

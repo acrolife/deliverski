@@ -329,6 +329,13 @@ export class TransactionPanelComponent extends Component {
     : 
     false;
 
+    const isAnyItemWithShipping = 
+    restOfShoppingCartItems.find(item => {
+      return item.checkoutValues.deliveryMethod === "pickup"
+    }) 
+     || 
+     currentTransaction.attributes.protectedData.deliveryMethod === "pickup";
+
     return (
       <div className={classes}>
         <div className={css.container}>
@@ -365,6 +372,12 @@ export class TransactionPanelComponent extends Component {
                   transactionRole={transactionRole}
                   restOfShoppingCartItems={restOfShoppingCartItems}
                 />
+                  {
+                isAnyItemWithShipping ?
+                <p className={css.shippingWarningMobile}>Caution! Some items need to be picked up at the restaurant</p>
+                :
+                null
+                }
                 <DiminishedActionButtonMaybe
                   showDispute={stateData.showDispute}
                   onOpenDisputeModal={onOpenDisputeModal}
@@ -468,6 +481,13 @@ export class TransactionPanelComponent extends Component {
                   transactionRole={transactionRole}
                   restOfShoppingCartItems={restOfShoppingCartItems}
                 />
+
+                {
+                isAnyItemWithShipping ?
+                <p className={css.shippingWarning}>Caution! Some items need to be picked up at the restaurant</p>
+                :
+                null
+                }
 
                 {stateData.showActionButtons ? (
                   <div className={css.desktopActionButtons}>{actionButtons}</div>

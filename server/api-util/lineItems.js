@@ -120,10 +120,13 @@ exports.transactionLineItems = (listing, orderData) => {
   }
 
 
+  const isAnyItemWithShipping = restOfShoppingCartItems.find(item => {
+    return item.checkoutValues.deliveryMethod === "shipping"
+  })
     
 
   // Calculate shipping fee if applicable
-  const shippingFee = isShipping
+  const shippingFee = isShipping || isAnyItemWithShipping
     ? calculateShippingFee(
         shippingPriceInSubunitsOneItem,
         shippingPriceInSubunitsAdditionalItems,
