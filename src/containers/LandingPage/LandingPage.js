@@ -53,6 +53,16 @@ const LandingPageComponent = (props) => {
     )
   }
 
+  /* Example
+  // Thumbnail image for the search "card"
+class ThumbnailImage extends Component {
+  render() {
+    const { alt, ...rest } = this.props;
+    return <img alt={alt} {...rest} />;
+  }
+}
+*/
+
   // Schema for search engines (helps them to understand what this page is about)
   // http://schema.org
   // We are using JSON-LD format
