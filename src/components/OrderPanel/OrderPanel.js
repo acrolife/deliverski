@@ -179,6 +179,7 @@ const OrderPanel = props => {
             fetchLineItemsError={fetchLineItemsError}
             listing={listing}
             currentUser={currentUser}
+            history={history}
           />
         ) : null}
       </ModalInMobile>

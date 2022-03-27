@@ -48,7 +48,8 @@ const renderForm = formRenderProps => {
     fetchLineItemsError,
     values,
     listing,
-    currentUser
+    currentUser,
+    history
   } = formRenderProps;
 
   const [sameVendorWarningModalOpen, setSameVendorWarningModalOpen] = useState(false);
@@ -127,7 +128,7 @@ const renderForm = formRenderProps => {
                         shoppingCart: [...stringifyUpdatedShoppingCart]
                       },
                     }).then(res => {
-                        window.location.reload()
+                        history.push('/s')
                     }).catch(e => console.log(e))
 
                   }else{
@@ -143,7 +144,7 @@ const renderForm = formRenderProps => {
                           shoppingCart: [...currentShoppingCart, shoppingCartItem]
                         },
                       }).then(res => {
-                          window.location.reload()
+                          history.push('/s')
                       }).catch(e => console.log(e))
                   }
 
