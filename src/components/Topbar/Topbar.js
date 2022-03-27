@@ -101,7 +101,7 @@ class TopbarComponent extends Component {
 
   handleSubmit(values) {
     const { currentSearchParams } = this.props;
-    const { history } = this.props;
+    let { history } = this.props;
 
     const topbarSearchParams = () => {
       if (isMainSearchTypeKeywords(config)) {
@@ -236,7 +236,7 @@ class TopbarComponent extends Component {
 
                 <ShoppingCart
                 mobile={true}
-                history={history}
+                history={this.props.history}
                 currentUser={currentUser}
                 />
           </div>
