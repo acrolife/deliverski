@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { bool, func, number, string } from 'prop-types';
 import { Form as FinalForm, FormSpy } from 'react-final-form';
-
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import config from '../../../config';
 import { FormattedMessage, useIntl } from '../../../util/reactIntl';
 import { propTypes } from '../../../util/types';
@@ -49,10 +49,13 @@ const renderForm = formRenderProps => {
     values,
     listing,
     currentUser,
-    history
+    history,
+    pickupEnabled,
+    shippingEnabled
   } = formRenderProps;
 
   const [sameVendorWarningModalOpen, setSameVendorWarningModalOpen] = useState(false);
+  const [emptyCartModalOpen, setEmptyCartModalOpen] = useState(false);
 
   const handleOnChange = formValues => {
     const { quantity: quantityRaw, deliveryMethod } = formValues.values;
@@ -225,6 +228,36 @@ const renderForm = formRenderProps => {
 
   const hostIdOfFirstItem = currentShopCartUnwrapped.length > 0 ? currentShopCartUnwrapped[0].listing.author.id.uuid  : false;
 
+  const deliveryMethodOfItemsAdded = currentShopCartUnwrapped && currentShopCartUnwrapped.length > 0 ?
+                          currentShopCartUnwrapped[0].checkoutValues.deliveryMethod
+                          :
+                          false;
+
+  const pickup =  pickupEnabled ? [{
+    value: 'pickup',
+    label: 'ProductOrderForm.pickupOption'
+  }] 
+  :
+  [];
+  
+  const shipping = shippingEnabled ? [ {
+    value: 'shipping',
+    label: 'ProductOrderForm.shippingOption'
+  }]
+  :
+  [];
+
+  
+  const deliveryMethodsOptions = [...pickup, ...shipping];
+
+  const missingDeliveryMethod = deliveryMethodOfItemsAdded ?  
+  !(
+    !!deliveryMethodsOptions.find(x => {
+        return x.value === deliveryMethodOfItemsAdded
+        }) 
+  )
+  :
+  false;
 
   return (
     <Form onSubmit={handleFormSubmit}>
@@ -242,7 +275,7 @@ const renderForm = formRenderProps => {
           id={`${formId}.quantity`}
           className={css.quantityField}
           name="quantity"
-          disabled={!hasStock}
+          disabled={!hasStock || missingDeliveryMethod}
           label={intl.formatMessage({ id: 'ProductOrderForm.quantityLabel' })}
           validate={numberAtLeast(quantityRequiredMsg, 1)}
         >
@@ -257,7 +290,21 @@ const renderForm = formRenderProps => {
         </FieldSelect>
       )}
 
-      {hasNoStockLeft ? null : hasMultipleDeliveryMethods ? (
+      {hasNoStockLeft || missingDeliveryMethod ? 
+      (
+        missingDeliveryMethod ?
+        <p className={css.infoText}>
+          <HelpOutlineIcon 
+          className={css.helpIcon}
+          onClick={() => setEmptyCartModalOpen(true)}
+          />
+          {`This product is only available for ${deliveryMethodsOptions[0].value}, please choose ${deliveryMethodsOptions[0].value === 'pickup' ? 'shippable' : 'pickup'} items`}
+        </p>
+      :
+      null
+      )
+      : 
+      // hasMultipleDeliveryMethods ? (
         <FieldSelect
           id={`${formId}.deliveryMethod`}
           className={css.deliveryField}
@@ -266,35 +313,55 @@ const renderForm = formRenderProps => {
           label={intl.formatMessage({ id: 'ProductOrderForm.deliveryMethodLabel' })}
           validate={required(intl.formatMessage({ id: 'ProductOrderForm.deliveryMethodRequired' }))}
         >
-          {/* <option disabled value="">
+          <option disabled value="">
             {intl.formatMessage({ id: 'ProductOrderForm.selectDeliveryMethodOption' })}
-          </option> */}
-          <option value={'pickup'}>
-            {intl.formatMessage({ id: 'ProductOrderForm.pickupOption' })}
           </option>
-          <option value={'shipping'}>
-            {intl.formatMessage({ id: 'ProductOrderForm.shippingOption' })}
-          </option>
+
+          {
+            deliveryMethodOfItemsAdded ? 
+            deliveryMethodsOptions
+            .filter(o => {
+              return o.value === deliveryMethodOfItemsAdded
+            })
+            .map(i => {
+              return (
+                <option value={i.value}>
+                  {intl.formatMessage({ id: i.label })}
+                </option>
+              )
+            })
+            :
+            deliveryMethodsOptions
+            .map(i => {
+              return (
+                <option value={i.value}>
+                  {intl.formatMessage({ id: i.label })}
+                </option>
+              )
+            })
+          }          
         </FieldSelect>
-      ) : (
-        <div className={css.deliveryField}>
-          <label>{intl.formatMessage({ id: 'ProductOrderForm.deliveryMethodLabel' })}</label>
-          <p className={css.singleDeliveryMethodSelected}>
-            {values.deliveryMethod === 'shipping'
-              ? intl.formatMessage({ id: 'ProductOrderForm.shippingOption' })
-              : intl.formatMessage({ id: 'ProductOrderForm.pickupOption' })}
-          </p>
-          <FieldTextInput
-            id={`${formId}.deliveryMethod`}
-            className={css.deliveryField}
-            name="deliveryMethod"
-            type="hidden"
-          />
-        </div>
-      )}
+      // ) 
+      // : (
+      //   <div className={css.deliveryField}>
+      //     <label>{intl.formatMessage({ id: 'ProductOrderForm.deliveryMethodLabel' })}</label>
+      //     <p className={css.singleDeliveryMethodSelected}>
+      //       {values.deliveryMethod === 'shipping'
+      //         ? intl.formatMessage({ id: 'ProductOrderForm.shippingOption' })
+      //         : intl.formatMessage({ id: 'ProductOrderForm.pickupOption' })}
+      //     </p>
+      //     <FieldTextInput
+      //       id={`${formId}.deliveryMethod`}
+      //       className={css.deliveryField}
+      //       name="deliveryMethod"
+      //       type="hidden"
+      //     />
+      //   </div>
+      // )
+      }
       {breakdown}
       <div className={css.submitButton}>
-        <PrimaryButton type="submit" inProgress={submitInProgress} disabled={submitDisabled}>
+        <PrimaryButton type="submit" inProgress={submitInProgress} disabled={submitDisabled || missingDeliveryMethod}>
           {hasStock ? (
             <FormattedMessage id="BookingDatesForm.addToCart" />
           ) : (
@@ -335,6 +402,29 @@ const renderForm = formRenderProps => {
 
                 </div>
               </Modal>
+
+
+                {/* empty cart modal / when delivery method needs to change */}
+
+                <Modal
+                id='emptyCartModal'
+                isOpen={emptyCartModalOpen}
+                onClose={() => {
+                  setEmptyCartModalOpen(false);
+                }}
+                onManageDisableScrolling={() => {}}
+              >
+                <center><h2><FormattedMessage id="ListingPage.emptyCartModalTitle" values={{method: `${deliveryMethodsOptions[0].value === 'pickup' ? 'pickup' : 'ship'}`}}/></h2></center>
+
+
+          
+
+                  <Button type='button' onClick={clearBasket}>
+                    <FormattedMessage id="ListingPage.emptyCart" />
+                  </Button>
+
+          
+              </Modal>
     </Form>
   );
 };
@@ -368,9 +458,9 @@ const ProductOrderForm = props => {
   const hasOneItemLeft = currentStock && currentStock === 1;
   const quantityMaybe = hasOneItemLeft ? { quantity: '1' } : {};
   const singleDeliveryMethodAvailableMaybe =
-  shippingEnabled ?
-  { deliveryMethod: 'shipping' }
-  :
+  // shippingEnabled ?
+  // { deliveryMethod: 'shipping' }
+  // :
     (shippingEnabled && !pickupEnabled
       ? { deliveryMethod: 'shipping' }
       : !shippingEnabled && pickupEnabled
@@ -385,6 +475,8 @@ const ProductOrderForm = props => {
       hasMultipleDeliveryMethods={hasMultipleDeliveryMethods}
       {...props}
       intl={intl}
+      pickupEnabled={pickupEnabled}
+      shippingEnabled={shippingEnabled}
       render={renderForm}
     />
   );

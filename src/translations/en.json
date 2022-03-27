@@ -1043,8 +1043,10 @@
   "ShoppingCart.total": "Total",
   "ShoppingCart.checkout": "Checkout",
   "ListingPage.sameVendorModalTitle": "You need to add items from the same vendor",
+  "ListingPage.emptyCartModalTitle": "Empty your cart and make a separate order to {method}?",
   "ListingPage.clearBasket": "Clear basket",
   "ListingPage.seeSameVendorListings": "See other products from the vendor",
   "BookingBreakdown.productUnit": "{formattedUnit} * {quantity, number}",
-  "BookingBreakdown.productTotal": "{formattedTotal}"
+  "BookingBreakdown.productTotal": "{formattedTotal}",
+  "ListingPage.emptyCart": "Empty cart"
 }

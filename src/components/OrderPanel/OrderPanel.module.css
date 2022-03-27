@@ -112,6 +112,18 @@
   }
 }
 
+
+.deliveryOptions{
+  display: none;
+  @apply --marketplaceH5FontStyles;
+
+  @media (--viewportMedium) {
+    color: var(--matterColor);
+    display: block;
+    margin-top: 0;
+  }
+}
+
 .bookingForm {
   flex-grow: 1;
   display: flex;
@@ -223,4 +235,16 @@
 
 .receipt {
   flex-shrink: 0;
+}
+
+
+.pickupChip{
+  margin-top: 10px;
+  margin-left: 10px;
+  color: var(--marketplaceColor) !important;
+}
+
+.shipChip {
+  margin-top: 10px;
+  color: var(--marketplaceColor) !important;
 }
