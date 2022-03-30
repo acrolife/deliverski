@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { arrayOf, array, bool, func, node, oneOfType, shape, string } from 'prop-types';
 import classNames from 'classnames';
 import omit from 'lodash/omit';
-
+import Chip from '@mui/material/Chip';
 import config from '../../config';
 import { intlShape, injectIntl, FormattedMessage } from '../../util/reactIntl';
 import {
@@ -138,6 +138,23 @@ const OrderPanel = props => {
         <div className={css.orderHeading}>
           <h2 className={titleClasses}>{title}</h2>
           {subTitleText ? <div className={css.orderHelp}>{subTitleText}</div> : null}
+
+          <div className={css.deliveryOptions}>
+            {
+            shippingEnabled ?
+            <Chip className={css.shipChip} label="Shipping" variant="outlined" />
+            :
+            null
+            }
+
+          {
+            pickupEnabled ?
+            <Chip className={css.pickupChip} label="Pickup" variant="outlined" />
+            :
+            null
+            }
+          </div>
+
         </div>
         <p className={css.price}>{formatMoney(intl, price)}</p>
         <div className={css.author}>
@@ -179,6 +196,7 @@ const OrderPanel = props => {
             fetchLineItemsError={fetchLineItemsError}
             listing={listing}
             currentUser={currentUser}
+            history={history}
           />
         ) : null}
       </ModalInMobile>
