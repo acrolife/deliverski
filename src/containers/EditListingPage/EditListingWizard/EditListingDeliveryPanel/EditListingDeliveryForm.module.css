@@ -16,7 +16,9 @@
 .error {
   color: var(--failColor);
 }
-
+.inputShippingFee{
+  visibility: hidden;
+}
 .deliveryOption {
   margin-left: 30px;
   @media (--viewportMedium) {
