@@ -44,9 +44,12 @@ const ShoppingCartComponent = (props) => {
 
     const [isOpen, setIsOpen] = useState(false);
     const [shoppingCartItems, setShoppingCartItems] = useState([]);
+    const [currentUser, setCurrentUser] = useState(null);
+    const [notLoggedInWarning, setNotLoggedInWarning] = useState(false);
 
     useEffect(() => {
         sdk.currentUser.show().then(res => {
+            setCurrentUser(res.data.data)
             const shoppingCart = res.data.data.attributes.profile.publicData.shoppingCart;
             if(shoppingCart && shoppingCart?.length > 0){
                 setShoppingCartItems(shoppingCart.map(item => {
@@ -56,7 +59,22 @@ const ShoppingCartComponent = (props) => {
                       })
                 }))
             }
-          }).catch(e => console.log(e))
+          }).catch(e => {
+            if(typeof window !== 'undefined'){
+              const shoppingCart = JSON.parse(window.sessionStorage.getItem('shoppingCart'));
+
+              if(shoppingCart && shoppingCart?.length > 0){
+                setShoppingCartItems(shoppingCart.map(item => {
+                    return({
+                        listing: JSON.parse(item.listing),
+                        checkoutValues: JSON.parse(item.checkoutValues)
+                      })
+                }))
+            }
+
+            }
+            return console.log(e)
+          })
     },[isOpen]) 
 
 
@@ -72,18 +90,24 @@ const ShoppingCartComponent = (props) => {
                     newShoppingCart.splice(indexOfRemovingItem, 1); // 2nd parameter means remove one item only
                   }
 
-                  return sdk.currentUser.updateProfile({
-                    publicData: {
-                      shoppingCart: newShoppingCart.map(item => {
-                                        return({
-                                          listing: JSON.stringify({...item.listing}),
-                                          checkoutValues: JSON.stringify({...item.checkoutValues})
+                  if(currentUser){
+                      return sdk.currentUser.updateProfile({
+                        publicData: {
+                          shoppingCart: newShoppingCart.map(item => {
+                                            return({
+                                              listing: JSON.stringify({...item.listing}),
+                                              checkoutValues: JSON.stringify({...item.checkoutValues})
+                                            })
                                         })
-                                    })
-                    },
-                  }).then(res => {
+                        },
+                      }).then(res => {
+                        setShoppingCartItems(newShoppingCart)
+                      }).catch(e => console.log(e))
+                  }else{
+                    window.sessionStorage.setItem('shoppingCart', JSON.stringify(newShoppingCart))
                     setShoppingCartItems(newShoppingCart)
-                  }).catch(e => console.log(e))
+                  }
+
 
                 
     }
@@ -102,18 +126,24 @@ const ShoppingCartComponent = (props) => {
         return newItem
       })
 
-      return sdk.currentUser.updateProfile({
-        publicData: {
-          shoppingCart: newShoppingCart.map(item => {
-                            return({
-                              listing: JSON.stringify({...item.listing}),
-                              checkoutValues: JSON.stringify({...item.checkoutValues})
-                            })
-                        })
-        },
-      }).then(res => {
+      if(currentUser){
+        return sdk.currentUser.updateProfile({
+          publicData: {
+            shoppingCart: newShoppingCart.map(item => {
+                              return({
+                                listing: JSON.stringify({...item.listing}),
+                                checkoutValues: JSON.stringify({...item.checkoutValues})
+                              })
+                          })
+          },
+        }).then(res => {
+          setShoppingCartItems(newShoppingCart)
+        }).catch(e => console.log(e))
+      }else{
+        window.sessionStorage.setItem('shoppingCart', JSON.stringify(newShoppingCart))
         setShoppingCartItems(newShoppingCart)
-      }).catch(e => console.log(e))
+      }
+    
     }
 
     const remove = (id) => {
@@ -137,18 +167,24 @@ const ShoppingCartComponent = (props) => {
           return newItem
         })
   
-        return sdk.currentUser.updateProfile({
-          publicData: {
-            shoppingCart: newShoppingCart.map(item => {
-                              return({
-                                listing: JSON.stringify({...item.listing}),
-                                checkoutValues: JSON.stringify({...item.checkoutValues})
-                              })
-                          })
-          },
-        }).then(res => {
+        if(currentUser){
+          return sdk.currentUser.updateProfile({
+            publicData: {
+              shoppingCart: newShoppingCart.map(item => {
+                                return({
+                                  listing: JSON.stringify({...item.listing}),
+                                  checkoutValues: JSON.stringify({...item.checkoutValues})
+                                })
+                            })
+            },
+          }).then(res => {
+            setShoppingCartItems(newShoppingCart)
+          }).catch(e => console.log(e))
+        }else{
+          window.sessionStorage.setItem('shoppingCart', JSON.stringify(newShoppingCart))
           setShoppingCartItems(newShoppingCart)
-        }).catch(e => console.log(e))
+        }
+
       }
  
     }
@@ -172,7 +208,7 @@ const ShoppingCartComponent = (props) => {
     // }
 
     const toCheckout = () => {
-    
+    if(currentUser){
       const {
         history,
       } = props;
@@ -214,6 +250,10 @@ const ShoppingCartComponent = (props) => {
           {}
         )
       );
+    }else{
+      setNotLoggedInWarning(true)
+    }
+
     }
 
 
@@ -322,6 +362,18 @@ const ShoppingCartComponent = (props) => {
                     :
                     null
                     }
+
+                    {
+                      notLoggedInWarning ?
+                      
+                      <>
+                      <p className={css.notLoggedInText1}>You need to <a href='/login'>log in</a> to proceed to checkout</p>
+                      <p className={css.notLoggedInText2}>You don't have an account ? Create one in <a href='/signup'>here</a></p>
+                      </>
+                      :
+                      null
+                    }
+
                      <Button type='button' disabled={isBelowMininumAmount} onClick={toCheckout}><FormattedMessage id="ShoppingCart.checkout" /></Button>  
                 
                 </div>  

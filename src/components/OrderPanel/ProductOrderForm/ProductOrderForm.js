@@ -72,106 +72,199 @@ const renderForm = formRenderProps => {
   // In case quantity and deliveryMethod are missing focus on that select-input.
   // Otherwise continue with the default handleSubmit function.
   const handleFormSubmit = e => {
-    const { quantity, deliveryMethod } = values || {};
-    if (!quantity || quantity < 1) {
-      e.preventDefault();
-      // Blur event will show validator message
-      formApi.blur('quantity');
-      formApi.focus('quantity');
-    } else if (!deliveryMethod) {
-      e.preventDefault();
-      // Blur event will show validator message
-      formApi.blur('deliveryMethod');
-      formApi.focus('deliveryMethod');
-    } else {
-      e.preventDefault();
-      const currentListing = listing;
-      return sdk.currentUser.show().then(res => {
-        const currentShoppingCart = res.data.data.attributes.profile.publicData.shoppingCart ? 
-                                    res.data.data.attributes.profile.publicData.shoppingCart 
-                                    : [];
-                              
-        const currentShoppingCartUnwrapped = currentShoppingCart.map(item => {
-                                    return({
-                                        listing: JSON.parse(item.listing),
-                                        checkoutValues: JSON.parse(item.checkoutValues)
-                                      })
-                                })
-        const isFromSameVendor = currentShoppingCartUnwrapped.length === 0 || currentShoppingCartUnwrapped.find(item => {
-          return item.listing.author.id.uuid === currentListing.author.id.uuid
-        })
 
-              if(isFromSameVendor){
+    if(currentUser){
 
-                  const isAlreadyInTheBasket = currentShoppingCartUnwrapped.find(i => {
-                    return i.listing.id.uuid === currentListing.id.uuid
-                  })
-
-                  if(isAlreadyInTheBasket){
-                    // UPDATE EXISTING ITEM QUANTITY
-                    const updatedShoppingCard = currentShoppingCartUnwrapped.map(i => {
-                        if(i.listing.id.uuid === currentListing.id.uuid){
-                            i.checkoutValues.quantity = (Number(i.checkoutValues.quantity) + Number(quantity)).toString()
+      const { quantity, deliveryMethod } = values || {};
+      if (!quantity || quantity < 1) {
+        e.preventDefault();
+        // Blur event will show validator message
+        formApi.blur('quantity');
+        formApi.focus('quantity');
+      } else if (!deliveryMethod) {
+        e.preventDefault();
+        // Blur event will show validator message
+        formApi.blur('deliveryMethod');
+        formApi.focus('deliveryMethod');
+      } else {
+        e.preventDefault();
+        const currentListing = listing;
+        return sdk.currentUser.show().then(res => {
+          const currentShoppingCart = res.data.data.attributes.profile.publicData.shoppingCart ? 
+                                      res.data.data.attributes.profile.publicData.shoppingCart 
+                                      : [];
+                                
+          const currentShoppingCartUnwrapped = currentShoppingCart.map(item => {
+                                      return({
+                                          listing: JSON.parse(item.listing),
+                                          checkoutValues: JSON.parse(item.checkoutValues)
+                                        })
+                                  })
+          const isFromSameVendor = currentShoppingCartUnwrapped.length === 0 || currentShoppingCartUnwrapped.find(item => {
+            return item.listing.author.id.uuid === currentListing.author.id.uuid
+          })
+  
+                if(isFromSameVendor){
+  
+                    const isAlreadyInTheBasket = currentShoppingCartUnwrapped.find(i => {
+                      return i.listing.id.uuid === currentListing.id.uuid
+                    })
+  
+                    if(isAlreadyInTheBasket){
+                      // UPDATE EXISTING ITEM QUANTITY
+                      const updatedShoppingCard = currentShoppingCartUnwrapped.map(i => {
+                          if(i.listing.id.uuid === currentListing.id.uuid){
+                              i.checkoutValues.quantity = (Number(i.checkoutValues.quantity) + Number(quantity)).toString()
+                              return i
+                          }else{
                             return i
-                        }else{
-                          return i
-                        }
-
-                    })
-
-                    const stringifyUpdatedShoppingCart = updatedShoppingCard.map(item => {
-                      return({
-                        listing: JSON.stringify(item.listing),
-                        checkoutValues: JSON.stringify(item.checkoutValues)
+                          }
+  
                       })
-                    })
-
-                    return sdk.currentUser.updateProfile({
-                      publicData: {
-                        shoppingCart: [...stringifyUpdatedShoppingCart]
-                      },
-                    }).then(res => {
-                        history.push('/s')
-                    }).catch(e => console.log(e))
-
-                  }else{
-                      //ADD NEW ITEM TO CART
-
-                      const shoppingCartItem = {
-                        listing: JSON.stringify({...currentListing}),
-                        checkoutValues: JSON.stringify({...values})
-                      }
-
+  
+                      const stringifyUpdatedShoppingCart = updatedShoppingCard.map(item => {
+                        return({
+                          listing: JSON.stringify(item.listing),
+                          checkoutValues: JSON.stringify(item.checkoutValues)
+                        })
+                      })
+  
                       return sdk.currentUser.updateProfile({
                         publicData: {
-                          shoppingCart: [...currentShoppingCart, shoppingCartItem]
+                          shoppingCart: [...stringifyUpdatedShoppingCart]
                         },
                       }).then(res => {
                           history.push('/s')
                       }).catch(e => console.log(e))
-                  }
+  
+                    }else{
+                        //ADD NEW ITEM TO CART
+  
+                        const shoppingCartItem = {
+                          listing: JSON.stringify({...currentListing}),
+                          checkoutValues: JSON.stringify({...values})
+                        }
+  
+                        return sdk.currentUser.updateProfile({
+                          publicData: {
+                            shoppingCart: [...currentShoppingCart, shoppingCartItem]
+                          },
+                        }).then(res => {
+                            history.push('/s')
+                        }).catch(e => console.log(e))
+                    }
+  
+                
+  
+                }else{
+                    setSameVendorWarningModalOpen(true)
+                }
+                                    
+      }).catch(e => console.log(e))
+      
+        // handleSubmit(e);
+      }
+    }else{
+      const { quantity, deliveryMethod } = values || {};
+      if (!quantity || quantity < 1) {
+        e.preventDefault();
+        // Blur event will show validator message
+        formApi.blur('quantity');
+        formApi.focus('quantity');
+      } else if (!deliveryMethod) {
+        e.preventDefault();
+        // Blur event will show validator message
+        formApi.blur('deliveryMethod');
+        formApi.focus('deliveryMethod');
+      } else {
+        e.preventDefault();
+        const currentListing = listing;
+        
+          const currentShoppingCart = JSON.parse(window.sessionStorage.getItem('shoppingCart')) ?? [];
+                                
+          const currentShoppingCartUnwrapped = currentShoppingCart.map(item => {
+                                      return({
+                                          listing: JSON.parse(item.listing),
+                                          checkoutValues: JSON.parse(item.checkoutValues)
+                                        })
+                                  })
+          const isFromSameVendor = currentShoppingCartUnwrapped.length === 0 || currentShoppingCartUnwrapped.find(item => {
+            return item.listing.author.id.uuid === currentListing.author.id.uuid
+          })
+  
+                if(isFromSameVendor){
+  
+                    const isAlreadyInTheBasket = currentShoppingCartUnwrapped.find(i => {
+                      return i.listing.id.uuid === currentListing.id.uuid
+                    })
+  
+                    if(isAlreadyInTheBasket){
+                      // UPDATE EXISTING ITEM QUANTITY
+                      const updatedShoppingCard = currentShoppingCartUnwrapped.map(i => {
+                          if(i.listing.id.uuid === currentListing.id.uuid){
+                              i.checkoutValues.quantity = (Number(i.checkoutValues.quantity) + Number(quantity)).toString()
+                              return i
+                          }else{
+                            return i
+                          }
+  
+                      })
+  
+                      const stringifyUpdatedShoppingCart = updatedShoppingCard.map(item => {
+                        return({
+                          listing: JSON.stringify(item.listing),
+                          checkoutValues: JSON.stringify(item.checkoutValues)
+                        })
+                      })
 
-              
 
-              }else{
-                  setSameVendorWarningModalOpen(true)
-              }
-                                  
-    }).catch(e => console.log(e))
-    
-      // handleSubmit(e);
+                     window.sessionStorage.setItem('shoppingCart', JSON.stringify([...stringifyUpdatedShoppingCart]))
+  
+                     return history.push('/s')
+  
+                    }else{
+                        //ADD NEW ITEM TO CART
+  
+                        const shoppingCartItem = {
+                          listing: JSON.stringify({...currentListing}),
+                          checkoutValues: JSON.stringify({...values})
+                        }
+
+                        window.sessionStorage.setItem('shoppingCart', JSON.stringify([...currentShoppingCart, shoppingCartItem]))
+
+                        return history.push('/s')
+
+                    }
+  
+                
+  
+                }else{
+                    setSameVendorWarningModalOpen(true)
+                }
+                                    
+     
+      
+        // handleSubmit(e);
+      }
     }
+
   };
 
 
   const clearBasket = () => {
-    return sdk.currentUser.updateProfile({
-      publicData: {
-        shoppingCart: []
-      },
-    }).then(res => {
-        window.location.reload()
-    }).catch(e => console.log(e))
+    if(currentUser){
+      return sdk.currentUser.updateProfile({
+        publicData: {
+          shoppingCart: []
+        },
+      }).then(res => {
+          window.location.reload()
+      }).catch(e => console.log(e))
+    }else{
+      return window.sessionStorage.setItem('shoppingCart', JSON.stringify([]))
+
+    }
+
   }
 
 

@@ -171,6 +171,27 @@ export const login = (username, password) => (dispatch, getState, sdk) => {
     .login({ username, password })
     .then(() => dispatch(loginSuccess()))
     .then(() => dispatch(fetchCurrentUser()))
+    .then(resp => {
+      const shoppingCart = JSON.parse(window.sessionStorage.getItem('shoppingCart'));
+
+      const publicData = shoppingCart && shoppingCart?.length > 0 ? {
+          shoppingCart: shoppingCart
+      }
+      :
+      false;
+
+      if(publicData){
+        return sdk.currentUser.updateProfile({
+          publicData: publicData,
+        }).catch(e => {
+          console.log(e)
+        })
+      }else{
+        return true
+      }
+
+
+    })
     .catch(e => dispatch(loginError(storableError(e))));
 };
 
@@ -201,9 +222,19 @@ export const signup = params => (dispatch, getState, sdk) => {
   dispatch(signupRequest());
   const { email, password, firstName, lastName, ...rest } = params;
 
+  const shoppingCart = JSON.parse(window.sessionStorage.getItem('shoppingCart'));
+
+  const publicData = shoppingCart && shoppingCart?.length > 0 ? {
+    publicData: {
+      shoppingCart: shoppingCart
+    }
+  }
+  :
+  {};
+
   const createUserParams = isEmpty(rest)
-    ? { email, password, firstName, lastName }
-    : { email, password, firstName, lastName, protectedData: { ...rest } };
+    ? { email, password, firstName, lastName, ...publicData }
+    : { email, password, firstName, lastName, protectedData: { ...rest }, ...publicData };
 
   // We must login the user if signup succeeds since the API doesn't
   // do that automatically.
@@ -223,6 +254,19 @@ export const signup = params => (dispatch, getState, sdk) => {
 
 export const signupWithIdp = params => (dispatch, getState, sdk) => {
   dispatch(confirmRequest());
+
+  const shoppingCart = JSON.parse(window.sessionStorage.getItem('shoppingCart'));
+
+  const publicData = shoppingCart && shoppingCart?.length > 0 ? {
+      shoppingCart: shoppingCart
+  }
+  :
+  false;
+
+  if(publicData){
+    params.publicData = publicData;
+  }
+
   return createUserWithIdp(params)
     .then(res => {
       return dispatch(confirmSuccess());

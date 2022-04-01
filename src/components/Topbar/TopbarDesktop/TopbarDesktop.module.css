@@ -426,3 +426,16 @@
     margin-left: 4px;
   }
 }
+
+
+.notLoggedInText1{
+margin-bottom: 0;
+text-align: center;
+}
+
+
+.notLoggedInText2{
+  margin-top: 0;
+  text-align: center;
+  font-size: 13px;
+}
