@@ -307,9 +307,19 @@ const renderForm = formRenderProps => {
   const submitDisabled = !hasStock;
 
 
-  const currentShopCart = currentUser ? currentUser.attributes.profile.publicData.shoppingCart ? 
-  currentUser.attributes.profile.publicData.shoppingCart 
-  : []: [];
+  const shoppingCartFromSession = JSON.parse(window.sessionStorage.getItem('shoppingCart'));
+
+
+  const currentShopCart = currentUser ? 
+        (
+        currentUser.attributes.profile.publicData.shoppingCart ? 
+        currentUser.attributes.profile.publicData.shoppingCart 
+        : []
+        )
+  : 
+  (
+    shoppingCartFromSession ?? []
+  );
 
   const currentShopCartUnwrapped = currentShopCart.map(item => {
         return({
