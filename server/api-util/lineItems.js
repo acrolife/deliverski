@@ -10,7 +10,7 @@ const { Money } = types;
 // line-item/night, line-item/day or line-item/units
 const lineItemUnitType = 'line-item/units';
 const sellingUnitType = 'line-item/quantity';
-const PROVIDER_COMMISSION_PERCENTAGE = -10;
+const PROVIDER_COMMISSION_PERCENTAGE = - Number(process.env.REACT_APP_MARKETPLACECOMMISION);
 
 /** Returns collection of lineItems (max 50)
  *
@@ -36,6 +36,7 @@ exports.transactionLineItems = (listing, orderData) => {
   const publicData = listing.attributes.publicData;
   const unitPrice = listing.attributes.price;
   const currency = unitPrice.currency;
+  const freeShipping = listing.attributes.publicData.freeShipping;
 
   // Check delivery method and shipping prices
   const deliveryMethod = orderData && orderData.deliveryMethod;
@@ -79,6 +80,11 @@ exports.transactionLineItems = (listing, orderData) => {
     : 1;
 
   const restOfShoppingCartItems = orderData.restOfShoppingCartItems;
+
+  const providerShippingParticipation = freeShipping ? 0 : (process.env.REACT_APP_SHIPPING_PROVIDER * 100);
+  const providerShippingParticipationForMarketplaceCommision = freeShipping ? 0 : ( - process.env.REACT_APP_SHIPPING_PROVIDER * 100 );
+
+  const customerShippingParticipation = freeShipping ? 0 : process.env.REACT_APP_SHIPPING_CUSTOMER * 100;
 
 
   /**
@@ -124,11 +130,30 @@ exports.transactionLineItems = (listing, orderData) => {
     return item.checkoutValues.deliveryMethod === "shipping"
   })
     
+  
 
   // Calculate shipping fee if applicable
-  const shippingFee = isShipping || isAnyItemWithShipping
+  const shippingFeeCustomer = isShipping || isAnyItemWithShipping
     ? calculateShippingFee(
-        shippingPriceInSubunitsOneItem,
+        customerShippingParticipation,
+        shippingPriceInSubunitsAdditionalItems,
+        currency,
+        // orderQuantity
+      )
+    : null;
+
+    const shippingFeeProvider = isShipping || isAnyItemWithShipping
+    ? calculateShippingFee(
+        providerShippingParticipation,
+        shippingPriceInSubunitsAdditionalItems,
+        currency,
+        // orderQuantity
+      )
+    : null;
+
+    const shippingFeeProviderForMarketplaceCommision = isShipping || isAnyItemWithShipping
+    ? calculateShippingFee(
+        providerShippingParticipationForMarketplaceCommision,
         shippingPriceInSubunitsAdditionalItems,
         currency,
         // orderQuantity
@@ -137,34 +162,52 @@ exports.transactionLineItems = (listing, orderData) => {
 
   // Add line-item for given delivery method.
   // Note: by default, pickup considered as free.
-  const deliveryLineItem = !!shippingFee
+  const deliveryLineItems = !!shippingFeeCustomer || !!shippingFeeProvider
     ? [
         {
-          code: 'line-item/shipping-fee',
-          unitPrice: shippingFee,
+          code: 'line-item/shipping-participation',
+          unitPrice: shippingFeeCustomer,
           quantity: 1,
-          includeFor: ['customer', 'provider'],
+          includeFor: ['customer'],
+        },
+        {
+          code: 'line-item/shipping-participation',
+          unitPrice: shippingFeeProvider,
+          quantity: 1,
+          includeFor: ['provider'],
         },
       ]
-    : isPickup
+    : isPickup ? 
+              [
+                {
+                  code: 'line-item/pickup-fee',
+                  unitPrice: new Money(0, currency),
+                  quantity: 1,
+                  includeFor: ['customer', 'provider'],
+                },
+              ]
+            : [];
+
+    const deliveryLineItemForMarketplaceCommision = !!shippingFeeProviderForMarketplaceCommision
     ? [
         {
-          code: 'line-item/pickup-fee',
-          unitPrice: new Money(0, currency),
+          code: 'line-item/shipping-participation',
+          unitPrice: shippingFeeProviderForMarketplaceCommision,
           quantity: 1,
-          includeFor: ['customer', 'provider'],
+          includeFor: [ 'provider'],
         },
       ]
-    : [];
+      :
+      [];
 
   const providerCommission = {
     code: 'line-item/provider-commission',
-    unitPrice: calculateTotalFromLineItems([order,  ...shoppingCartItems]),
+    unitPrice: calculateTotalFromLineItems([order,  ...shoppingCartItems, ...deliveryLineItemForMarketplaceCommision]),
     percentage: PROVIDER_COMMISSION_PERCENTAGE,
     includeFor: ['provider'],
   };
 
-  const lineItems = [order, ...deliveryLineItem, ...shoppingCartItems, providerCommission];
+  const lineItems = [order, ...deliveryLineItems, ...shoppingCartItems, providerCommission];
 
   return lineItems;
 };

@@ -110,7 +110,7 @@ export const OrderBreakdownComponent = props => {
       listing={listing}
       />
 
-<LineItemShippingFeeMaybe lineItems={lineItems} intl={intl} />
+      <LineItemShippingFeeMaybe lineItems={lineItems} intl={intl}  userRole={userRole}/>
       <LineItemPickupFeeMaybe lineItems={lineItems} intl={intl} />
 
       <LineItemSubTotalMaybe
