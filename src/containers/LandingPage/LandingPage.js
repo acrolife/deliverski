@@ -46,13 +46,7 @@ const LandingPageComponent = (props) => {
     }
   }, [props.userProviders]);
 
-  const Test = () => {
-    return (
-      userProviders.length > 0 ? userProviders.map(e => <div key={e.id.uuid}>{e.attributes.profile.displayName}</div>)
-      : <div>'Pulling data...'</div>
-    )
-  }
-
+ 
   /* Example
   // Thumbnail image for the search "card"
 class ThumbnailImage extends Component {
@@ -106,8 +100,7 @@ class ThumbnailImage extends Component {
           <ul className={css.sections}>
             <li className={css.section}>
               <div className={css.sectionContentFirstChild}>
-                {/* <SectionFilteredSearches userProviders={userProviders} /> */}
-                <SectionFilteredSearches />
+                <SectionFilteredSearches userProviders={userProviders} />
               </div>
             </li>
             <li className={css.section}>
@@ -118,7 +111,6 @@ class ThumbnailImage extends Component {
           </ul>
         </LayoutWrapperMain>
         <LayoutWrapperFooter>
-          <Test />
           <Footer />
         </LayoutWrapperFooter>
       </LayoutSingleColumn>
@@ -146,7 +138,7 @@ LandingPageComponent.propTypes = {
 
   // from userProvider
   // userProviders: arrayOf(propTypes.user),
-  userProviders: object.isRequired,
+  userProviders: arrayOf(object.isRequired),
   showUserProvidersError: propTypes.error,
 };
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { string } from 'prop-types';
+import { PropTypes } from 'prop-types';
 import classNames from 'classnames';
 
 import { FormattedMessage } from '../../../util/reactIntl';
@@ -51,8 +51,27 @@ const FilterLink = props => {
 // Component that shows full-width section on LandingPage.
 // Inside it shows 3 "cards" that link to SearchPage with specific filters applied.
 const SectionFilteredSearches = props => {
-  const { rootClassName, className } = props;
+  const { rootClassName, className, userProviders } = props;
   const classes = classNames(rootClassName || css.root, className);
+
+  const Test = () => {
+    return (
+      userProviders.length > 0 ? userProviders.map(e => <div key={e.id.uuid}>{e.attributes.profile.displayName.toLowerCase().replace(' ', '_')}</div>)
+        : <div>'Pulling data...'</div>
+    )
+  }
+
+  const RestaurantTiles = () => {
+    return (
+      userProviders.length > 0 ? userProviders.map(e => <FilterLink
+        key={e.id.uuid}
+        name={e.attributes.profile.displayName}
+        image={imageForFilter1}
+        link={`http://localhost:3000/s?pub_restaurant=${e.attributes.profile.displayName.toLowerCase().replace(' ', '_')}`}
+      />)
+        : <div>'Pulling data...'</div>
+    )
+  }
 
   // FilterLink props:
   // - "name" is a string that defines what kind of search the link is going to make
@@ -65,53 +84,59 @@ const SectionFilteredSearches = props => {
         <FormattedMessage id="SectionFilteredSearches.title" />
       </div>
       <div className={css.filteredSearches}>
-        <FilterLink
+      < RestaurantTiles />
+
+        {/* <FilterLink
           name="Full meal"
           image={imageForFilter1}
           link="http://localhost:3000/s?pub_size=full_meal"
-        />
+        />,
         <FilterLink
           name="Sweets"
           image={imageForFilter2}
           link="http://localhost:3000/s?pub_category=sweets"
-        />
+        />,
         <FilterLink
           name="Breakfast"
           image={imageForFilter3}
           link="http://localhost:3000/s?pub_size=breakfast"
-        />
+        /> */}
+
       </div>
     </div>
-  //   <div className={classes}>
-  //   <div className={css.title}>
-  //     <FormattedMessage id="SectionFilteredSearches.title" />
-  //   </div>
-  //   <div className={css.filteredSearches}>
-  //     <FilterLink
-  //       name="Asiatic"
-  //       image={imageForFilter1}
-  //       link="http://localhost:3000/s?pub_brand=asiatic"
-  //     />
-  //     <FilterLink
-  //       name="Burger"
-  //       image={imageForFilter2}
-  //       link="http://localhost:3000/s?pub_brand=yeezy"
-  //     />
-  //     <FilterLink
-  //       name="Sweets"
-  //       image={imageForFilter3}
-  //       link="http://localhost:3000/s?pub_brand=converse"
-  //     />
-  //   </div>
-  // </div>
+    //   <div className={classes}>
+    //   <div className={css.title}>
+    //     <FormattedMessage id="SectionFilteredSearches.title" />
+    //   </div>
+    //   <div className={css.filteredSearches}>
+    //     <FilterLink
+    //       name="Asiatic"
+    //       image={imageForFilter1}
+    //       link="http://localhost:3000/s?pub_brand=asiatic"
+    //     />
+    //     <FilterLink
+    //       name="Burger"
+    //       image={imageForFilter2}
+    //       link="http://localhost:3000/s?pub_brand=yeezy"
+    //     />
+    //     <FilterLink
+    //       name="Sweets"
+    //       image={imageForFilter3}
+    //       link="http://localhost:3000/s?pub_brand=converse"
+    //     />
+    //   </div>
+    // </div>
   );
 };
 
-SectionFilteredSearches.defaultProps = { rootClassName: null, className: null };
+SectionFilteredSearches.defaultProps = { rootClassName: null, className: null, userProviders: [] };
+
+const { object, arrayOf, string } = PropTypes;
 
 SectionFilteredSearches.propTypes = {
   rootClassName: string,
   className: string,
+  userProviders: arrayOf(object.isRequired),
 };
 
 export default SectionFilteredSearches;
