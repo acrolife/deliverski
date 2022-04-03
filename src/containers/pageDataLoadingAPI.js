@@ -10,6 +10,7 @@ import { loadData as ListingPageLoader } from './ListingPage/ListingPage.duck';
 import { loadData as ManageListingsPageLoader } from './ManageListingsPage/ManageListingsPage.duck';
 import { loadData as PaymentMethodsPageLoader } from './PaymentMethodsPage/PaymentMethodsPage.duck';
 import { loadData as ProfilePageLoader } from './ProfilePage/ProfilePage.duck';
+import { loadData as LandingPageLoader } from './LandingPage/LandingPage.duck';
 import { loadData as SearchPageLoader } from './SearchPage/SearchPage.duck';
 import { loadData as StripePayoutPageLoader } from './StripePayoutPage/StripePayoutPage.duck';
 import {
@@ -46,6 +47,9 @@ const getPageDataLoadingAPI = () => {
     ProfilePage: {
       loadData: ProfilePageLoader,
     },
+    LandingPage: {
+      loadData: LandingPageLoader,
+    },    
     SearchPage: {
       loadData: SearchPageLoader,
     },

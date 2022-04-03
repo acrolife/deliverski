@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { propTypes } from '../../util/types';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -26,8 +27,35 @@ import SectionHowItWorks from './SectionHowItWorks/SectionHowItWorks';
 import SectionFilteredSearches from './SectionFilteredSearches/SectionFilteredSearches';
 import css from './LandingPage.module.css';
 
-export const LandingPageComponent = props => {
-  const { history, intl, location, scrollingDisabled } = props;
+
+const LandingPageComponent = (props) => {
+
+  const {
+    history,
+    intl,
+    location,
+    scrollingDisabled,
+
+  } = props;
+
+  const [userProviders, setUserProviders] = useState([]);
+  // 
+  useEffect(() => {
+    if (props.userProviders) {
+      setUserProviders(props.userProviders)
+    }
+  }, [props.userProviders]);
+
+ 
+  /* Example
+  // Thumbnail image for the search "card"
+class ThumbnailImage extends Component {
+  render() {
+    const { alt, ...rest } = this.props;
+    return <img alt={alt} {...rest} />;
+  }
+}
+*/
 
   // Schema for search engines (helps them to understand what this page is about)
   // http://schema.org
@@ -72,7 +100,7 @@ export const LandingPageComponent = props => {
           <ul className={css.sections}>
             <li className={css.section}>
               <div className={css.sectionContentFirstChild}>
-                <SectionFilteredSearches />
+                <SectionFilteredSearches userProviders={userProviders} />
               </div>
             </li>
             <li className={css.section}>
@@ -90,7 +118,13 @@ export const LandingPageComponent = props => {
   );
 };
 
-const { bool, object } = PropTypes;
+
+LandingPageComponent.defaultProps = {
+  userProviders: null,
+  showUserProvidersError: null,
+};
+
+const { bool, object, arrayOf } = PropTypes;
 
 LandingPageComponent.propTypes = {
   scrollingDisabled: bool.isRequired,
@@ -101,11 +135,30 @@ LandingPageComponent.propTypes = {
 
   // from injectIntl
   intl: intlShape.isRequired,
+
+  // from userProvider
+  // userProviders: arrayOf(propTypes.user),
+  userProviders: arrayOf(object.isRequired),
+  showUserProvidersError: propTypes.error,
 };
 
 const mapStateToProps = state => {
+  const {
+    userProviders,
+    showUserProvidersError,
+  } = state.LandingPage;
+
+  if (showUserProvidersError) {
+    console.log(`Error while pulling providers data: ${showUserProvidersError}`)
+  }
+
+  // DEV DEBUG
+  // console.log("userProviders", userProviders)
+
   return {
     scrollingDisabled: isScrollingDisabled(state),
+    userProviders,
+    showUserProvidersError,
   };
 };
 
