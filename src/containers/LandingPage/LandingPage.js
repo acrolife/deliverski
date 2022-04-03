@@ -152,7 +152,8 @@ const mapStateToProps = state => {
     console.log(`Error while pulling providers data: ${showUserProvidersError}`)
   }
 
-  console.log("userProviders", userProviders)
+  // DEV DEBUG
+  // console.log("userProviders", userProviders)
 
   return {
     scrollingDisabled: isScrollingDisabled(state),
