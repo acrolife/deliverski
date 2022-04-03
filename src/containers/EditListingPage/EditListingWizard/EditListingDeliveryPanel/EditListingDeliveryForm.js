@@ -182,7 +182,7 @@ export const EditListingDeliveryFormComponent = props => (
             <FieldCurrencyInput
               id="shippingPriceInSubunitsOneItem"
               name="shippingPriceInSubunitsOneItem"
-              className={css.input}
+              className={css.inputShippingFee}
               label={intl.formatMessage({
                 id: 'EditListingDeliveryForm.shippingOneItemLabel',
               })}
