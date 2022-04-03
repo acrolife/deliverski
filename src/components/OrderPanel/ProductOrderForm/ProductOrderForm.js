@@ -96,8 +96,8 @@ const renderForm = formRenderProps => {
                                 
           const currentShoppingCartUnwrapped = currentShoppingCart.map(item => {
                                       return({
-                                          listing: JSON.parse(item.listing),
-                                          checkoutValues: JSON.parse(item.checkoutValues)
+                                          listing: typeof item.listing === 'string' ? JSON.parse(item.listing) : item.listing,
+                                          checkoutValues: typeof item.checkoutValues === 'string' ? JSON.parse(item.checkoutValues) : item.checkoutValues
                                         })
                                   })
           const isFromSameVendor = currentShoppingCartUnwrapped.length === 0 || currentShoppingCartUnwrapped.find(item => {
@@ -184,8 +184,8 @@ const renderForm = formRenderProps => {
                                 
           const currentShoppingCartUnwrapped = currentShoppingCart.map(item => {
                                       return({
-                                          listing: JSON.parse(item.listing),
-                                          checkoutValues: JSON.parse(item.checkoutValues)
+                                          listing: typeof item.listing === 'string' ? JSON.parse(item.listing) : item.listing,
+                                          checkoutValues: typeof item.checkoutValues === 'string' ? JSON.parse(item.checkoutValues) : item.checkoutValues
                                         })
                                   })
           const isFromSameVendor = currentShoppingCartUnwrapped.length === 0 || currentShoppingCartUnwrapped.find(item => {
@@ -323,8 +323,8 @@ const renderForm = formRenderProps => {
 
   const currentShopCartUnwrapped = currentShopCart.map(item => {
         return({
-            listing: JSON.parse(item.listing),
-            checkoutValues: JSON.parse(item.checkoutValues)
+            listing: typeof item.listing === 'string' ? JSON.parse(item.listing) : item.listing,
+            checkoutValues: typeof item.checkoutValues === 'string' ? JSON.parse(item.checkoutValues) : item.checkoutValues
           })
     });
 
