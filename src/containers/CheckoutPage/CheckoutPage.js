@@ -900,6 +900,12 @@ export class CheckoutPageComponent extends Component {
             <div className={css.priceBreakdownContainer}>
               {speculateTransactionErrorMessage}
               {breakdown}
+              {
+              isAnyItemWithShipping ?
+              <p className={css.shippingWarning}>Caution! Some items need to be picked up at the restaurant</p>
+              :
+              null
+            }
             </div>
 
             <section className={css.paymentContainer}>
