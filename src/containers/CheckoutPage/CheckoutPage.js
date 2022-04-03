@@ -871,7 +871,7 @@ export class CheckoutPageComponent extends Component {
       <Page {...pageProps}>
         {topbar}
         <div className={css.contentContainer}>
-          <AspectRatioWrapper
+          {/* <AspectRatioWrapper
             width={aspectWidth}
             height={aspectHeight}
             className={css.aspectWrapper}
@@ -882,7 +882,7 @@ export class CheckoutPageComponent extends Component {
               image={firstImage}
               variants={variants}
             />
-          </AspectRatioWrapper>
+          </AspectRatioWrapper> */}
           <div className={classNames(css.avatarWrapper, css.avatarMobile)}>
             <AvatarMedium user={currentAuthor} disableProfileLink />
           </div>
