@@ -17,6 +17,24 @@ import { fetchCurrentUser } from '../../ducks/user.duck';
 
 const { UUID } = sdkTypes;
 
+const restaurantNameToFilterName = (name) => {
+  return name
+    .toLowerCase()
+    .replaceAll(' ', '-')
+    .replaceAll('é', 'e')
+    .replaceAll('è', 'e')
+    .replaceAll('à', 'a')
+    .replaceAll('+', '')
+    .replaceAll('\&', '')
+    .replaceAll('\'', '')
+    .replaceAll('\"', '')
+    .replaceAll('__', '_')
+    .replaceAll('__', '_')
+    .replaceAll('--', '-')
+    .replaceAll('--', '-')    
+    .trim()
+}
+
 // Return an array of image ids
 const imageIds = images => {
   // For newly uploaded image the UUID can be found from "img.imageId"
@@ -609,22 +627,18 @@ export function requestCreateListingDraft(data) {
     const imageProperty = typeof images !== 'undefined' ? { images: imageIds(images) } : {};
     let ownListingValues = { ...imageProperty, ...rest };
 
-    /*
-    // Using provider's publicData to add restaurantName and restaurantFilterName to the listing's publicData
-    const currentUser = getState().user.currentUser
-    const restaurantName = currentUser.publicData ? currentUser.publicData.restaurantName : null
-    const restaurantFilterName = restaurantName ? restaurantName.toLowerCase().trim().replace('\'', '').replace('\"', '') : null
 
-    console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
-    console.log("restaurantName", restaurantName)
-    console.log("restaurantFilterName", restaurantFilterName)
+    // Using provider's publicData to add restaurantName and restaurantFilterName (used for the SelectSingleFilter) to the listing's publicData
+    const currentUser = getState().user.currentUser
+    const restaurantName = currentUser ? currentUser.attributes.profile.publicData.restaurantName : null
+    const restaurantFilterName = restaurantName ? restaurantNameToFilterName(restaurantName) : null
+
 
     // Updating the newly created listing with the values
     ownListingValues.publicData.restaurantName = restaurantName
     ownListingValues.publicData.restaurantFilterName = restaurantFilterName
 
-    console.log("ownListingValues", ownListingValues)
-    */
+
 
     const imageVariantInfo = getImageVariantInfo();
     const queryParams = {
@@ -667,7 +681,8 @@ export function requestUpdateListing(tab, data) {
 
     // If images should be saved, create array out of the image UUIDs for the API call
     const imageProperty = typeof images !== 'undefined' ? { images: imageIds(images) } : {};
-    const ownListingUpdateValues = { id, ...imageProperty, ...rest };
+    let ownListingUpdateValues = { id, ...imageProperty, ...rest };
+
     const imageVariantInfo = getImageVariantInfo();
     const queryParams = {
       expand: true,
@@ -675,6 +690,24 @@ export function requestUpdateListing(tab, data) {
       'fields.image': imageVariantInfo.fieldsImage,
       ...imageVariantInfo.imageVariants,
     };
+
+    /*
+     Implemented in case the restaurant would change its name : any update (stock included) 
+     would also update restaurantName and restaurantFilterName in the listing publicData
+     XXX This means that a change of the retaurant name could be "solved" by a gloabl update,
+     // if this stock updates has been implemented as a global trigger of individual stocks, 
+     // using this function.
+     FIXME CAUTION ! The filter name would remain to be changed though
+    */
+    // Using provider's publicData to build restaurantName and restaurantFilterName 
+    const currentUser = getState().user.currentUser
+    const restaurantName = currentUser ? currentUser.attributes.profile.publicData.restaurantName : null
+    const restaurantFilterName = restaurantName ? restaurantNameToFilterName(restaurantName) : null
+
+    // Updating the listing publicData with restaurantName and restaurantFilterName
+    ownListingUpdateValues.publicData = {}
+    ownListingUpdateValues.publicData.restaurantName = restaurantName
+    ownListingUpdateValues.publicData.restaurantFilterName = restaurantFilterName
 
     // Note: if update values include stockUpdate, we'll do that first
     // That way we get updated currentStock info among ownListings.update
