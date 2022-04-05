@@ -93,10 +93,22 @@ class ProfileSettingsFormComponent extends Component {
           const lastNamePlaceholder = intl.formatMessage({
             id: 'ProfileSettingsForm.lastNamePlaceholder',
           });
-          const lastNameRequiredMessage = intl.formatMessage({
-            id: 'ProfileSettingsForm.lastNameRequired',
+          // const lastNameRequiredMessage = intl.formatMessage({
+          //   id: 'ProfileSettingsForm.lastNameRequired',
+          // });
+          // const lastNameRequired = validators.required(lastNameRequiredMessage);
+
+          // Restaurant's name
+          const restaurantLabel = intl.formatMessage({
+            id: 'ProfileSettingsForm.restaurantLabel',
           });
-          const lastNameRequired = validators.required(lastNameRequiredMessage);
+          const restaurantPlaceholder = intl.formatMessage({
+            id: 'ProfileSettingsForm.restaurantPlaceholder',
+          });
+          const restaurantRequiredMessage = intl.formatMessage({
+            id: 'ProfileSettingsForm.restaurantRequired',
+          });
+          const restaurantRequired = validators.required(restaurantRequiredMessage);          
 
           // Bio
           const bioLabel = intl.formatMessage({
@@ -188,6 +200,7 @@ class ProfileSettingsFormComponent extends Component {
             <Form
               className={classes}
               onSubmit={e => {
+                console.log("From profile settings, submitted values", values)
                 this.submittedValues = values;
                 handleSubmit(e);
               }}
@@ -281,11 +294,27 @@ class ProfileSettingsFormComponent extends Component {
                     id="lastName"
                     name="lastName"
                     label={lastNameLabel}
-                    placeholder={lastNamePlaceholder}
-                    validate={lastNameRequired}
+                    placeholder={lastNamePlaceholder}                   
                   />
                 </div>
+                {/* validate={lastNameRequired} */}
               </div>
+              <div className={classNames(css.sectionContainer)}>
+                <h3 className={css.sectionTitle}>
+                  <FormattedMessage id="ProfileSettingsForm.restaurantHeading" />
+                </h3>
+                <FieldTextInput
+                  type="text"
+                  id="restaurantName"
+                  name="restaurantName"
+                  label={restaurantLabel}
+                  placeholder={restaurantPlaceholder}
+                  validate={restaurantRequired}
+                />
+                <p className={css.bioInfo}>
+                  <FormattedMessage id="ProfileSettingsForm.restaurantInfo" />
+                </p>
+              </div>              
               <div className={classNames(css.sectionContainer, css.lastSection)}>
                 <h3 className={css.sectionTitle}>
                   <FormattedMessage id="ProfileSettingsForm.bioHeading" />

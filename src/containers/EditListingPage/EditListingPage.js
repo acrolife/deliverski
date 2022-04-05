@@ -356,13 +356,13 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   onUpdateListing: (tab, values) => dispatch(requestUpdateListing(tab, values)),
   onFetchBookings: params => dispatch(requestFetchBookings(params)),
   onFetchAvailabilityExceptions: params => dispatch(requestFetchAvailabilityExceptions(params)),
   onCreateAvailabilityException: params => dispatch(requestCreateAvailabilityException(params)),
   onDeleteAvailabilityException: params => dispatch(requestDeleteAvailabilityException(params)),
-  onCreateListingDraft: values => dispatch(requestCreateListingDraft(values)),
+  onCreateListingDraft: (values) => dispatch(requestCreateListingDraft(values)),
   onPublishListingDraft: listingId => dispatch(requestPublishListingDraft(listingId)),
   onImageUpload: data => dispatch(requestImageUpload(data)),
   onManageDisableScrolling: (componentId, disableScrolling) =>

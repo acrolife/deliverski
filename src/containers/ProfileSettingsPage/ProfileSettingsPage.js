@@ -24,6 +24,7 @@ import ProfileSettingsForm from './ProfileSettingsForm/ProfileSettingsForm';
 
 import { updateProfile, uploadImage } from './ProfileSettingsPage.duck';
 import css from './ProfileSettingsPage.module.css';
+import { last } from 'lodash';
 
 const onImageUploadHandler = (values, fn) => {
   const { id, imageId, file } = values;
@@ -48,16 +49,28 @@ export class ProfileSettingsPageComponent extends Component {
     } = this.props;
 
     const handleSubmit = values => {
-      const { firstName, lastName, bio: rawBio } = values;
+      const { firstName, lastName, bio: rawBio, restaurantName } = values;
 
       // Ensure that the optional bio is a string
       const bio = rawBio || '';
 
+      let lastNameValidated
+      if (!lastName || lastName === ' ') {
+        lastNameValidated = ' '
+      } else {
+        lastNameValidated = lastName.trim()
+      }
+
+      // Add our restaurant name to the user public data
+      publicData.restaurantName = restaurantName;
+
       const profile = {
         firstName: firstName.trim(),
-        lastName: lastName.trim(),
+        lastName: lastNameValidated,
         bio,
+        publicData
       };
+
       const uploadedImage = this.props.image;
 
       // Update profileImage only if file system has been accessed
@@ -71,6 +84,8 @@ export class ProfileSettingsPageComponent extends Component {
 
     const user = ensureCurrentUser(currentUser);
     const { firstName, lastName, bio } = user.attributes.profile;
+    const publicData = user.attributes.profile.publicData;
+    const restaurantName = publicData ? publicData.restaurantName : null
     const profileImageId = user.profileImage ? user.profileImage.id : null;
     const profileImage = image || { imageId: profileImageId };
 
@@ -78,7 +93,7 @@ export class ProfileSettingsPageComponent extends Component {
       <ProfileSettingsForm
         className={css.form}
         currentUser={currentUser}
-        initialValues={{ firstName, lastName, bio, profileImage: user.profileImage }}
+        initialValues={{ firstName, lastName, bio, restaurantName, profileImage: user.profileImage }}
         profileImage={profileImage}
         onImageUpload={e => onImageUploadHandler(e, onImageUpload)}
         uploadInProgress={uploadInProgress}

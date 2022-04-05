@@ -35,64 +35,11 @@
 
 export const filters = [
   {
-    id: 'cuisine',
-    label: 'Cuisine',
-    type: 'SelectSingleFilter',
-    group: 'primary',
-    queryParamNames: ['pub_category'],
-    config: {
-      // Schema type is enum for SelectSingleFilter
-      schemaType: 'enum',
-
-      // "key" is the option you see in Flex Console.
-      // "label" is set here for the UI only.
-      // Note: label is not added through the translation files
-      // to make filter customizations a bit easier.
-      options: [
-        { key: 'local', label: 'Local' },
-        { key: 'fast_food', label: 'Fast food' },
-        { key: 'french', label: 'French' },
-        { key: 'asiatic', label: 'Asiatic' },
-        { key: 'vegan', label: 'Vegan' },
-        { key: 'bakery', label: 'Bakery' },
-        { key: 'other', label: 'Other' },
-      ],
-    },
-  },
-  {
-    id: 'category',
-    label: 'Category',
-    type: 'SelectMultipleFilter',
-    group: 'primary',
-    queryParamNames: ['pub_size'],
-    config: {
-      // Schema type options: 'enum', 'multi-enum'
-      // Both types can work so that user selects multiple values when filtering search results.
-      // With "enum" the functionality will be OR-semantics (Nike OR Adidas OR Salomon)
-      // With "multi-enum" it's possible to use both AND and OR semantics with searchMode config.
-      schemaType: 'enum',
-
-      // "key" is the option you see in Flex Console.
-      // "label" is set here for the UI only.
-      // Note: label is not added through the translation files
-      // to make filter customizations a bit easier.
-      options: [
-        { key: 'fullmeal', label: 'Full meal' },
-        { key: 'pizzas', label: 'Pizzas' },
-        { key: 'burgers', label: 'Burgers' },
-        { key: 'apetizer', label: 'Apetizer' },
-        { key: 'breakfast', label: 'Breakfast' },
-        { key: 'sweets', label: 'Sweets' },
-        { key: 'other', label: 'Other' },
-      ],
-    },
-  },
-  {
     id: 'restaurant',
     label: 'Restaurant',
-    type: 'SelectMultipleFilter',
+    type: 'SelectSingleFilter',
     group: 'primary',
-    queryParamNames: ['pub_brand'],
+    queryParamNames: ['pub_restaurant'],
     config: {
       // Schema type options: 'enum', 'multi-enum'
       // Both types can work so that user selects multiple values when filtering search results.
@@ -112,6 +59,44 @@ export const filters = [
         { key: 'restaurant5', label: 'La Cabanne des neiges' },
         { key: 'restaurant6', label: 'Le Cerf Fondue' },
         { key: 'restaurant7', label: 'Other' },
+      ],
+    },
+  },
+  {
+    id: 'cuisine',
+    label: 'Cuisine',
+    type: 'SelectMultipleFilter',
+    group: 'secondary',
+    queryParamNames: ['pub_category'],
+    config: {
+      schemaType: 'enum',
+      options: [
+        { key: 'local', label: 'Local' },
+        { key: 'fast_food', label: 'Fast food' },
+        { key: 'french', label: 'French' },
+        { key: 'asiatic', label: 'Asiatic' },
+        { key: 'vegan', label: 'Vegan' },
+        { key: 'bakery', label: 'Bakery' },
+        { key: 'other', label: 'Other' },
+      ],
+    },
+  },
+  {
+    id: 'category',
+    label: 'Category',
+    type: 'SelectMultipleFilter',
+    group: 'secondary',
+    queryParamNames: ['pub_size'],
+    config: {
+      schemaType: 'enum',
+      options: [
+        { key: 'fullmeal', label: 'Full meal' },
+        { key: 'pizzas', label: 'Pizzas' },
+        { key: 'burgers', label: 'Burgers' },
+        { key: 'apetizer', label: 'Apetizer' },
+        { key: 'breakfast', label: 'Breakfast' },
+        { key: 'sweets', label: 'Sweets' },
+        { key: 'other', label: 'Other' },
       ],
     },
   },

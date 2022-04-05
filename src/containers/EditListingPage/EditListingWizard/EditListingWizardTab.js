@@ -24,9 +24,12 @@ export const DETAILS = 'details';
 export const DELIVERY = 'delivery';
 export const PRICING = 'pricing';
 export const PHOTOS = 'photos';
+// Custom fields
+// export const RESTAURANT = 'restaurant';
 
 // EditListingWizardTab component supports these tabs
-export const SUPPORTED_TABS = [DETAILS, DELIVERY, PRICING, PHOTOS];
+export const SUPPORTED_TABS = [DETAILS, DELIVERY, PRICING, PHOTOS ]
+// , RESTAURANT];
 
 const pathParamsToNextTab = (params, tab, marketplaceTabs) => {
   const nextTabIndex = marketplaceTabs.findIndex(s => s === tab) + 1;

@@ -39,13 +39,13 @@ const updateUloadedImagesState = (state, payload) => {
   );
   return duplicateImageEntities.length > 0
     ? {
-        uploadedImages: {},
-        uploadedImagesOrder: [],
-      }
+      uploadedImages: {},
+      uploadedImagesOrder: [],
+    }
     : {
-        uploadedImages,
-        uploadedImagesOrder,
-      };
+      uploadedImages,
+      uploadedImagesOrder,
+    };
 };
 
 const getImageVariantInfo = () => {
@@ -599,13 +599,32 @@ const updateStockOfListingMaybe = (listingId, stockTotals, dispatch) => {
 // create, set stock, show listing (to get updated currentStock entity)
 export function requestCreateListingDraft(data) {
   return (dispatch, getState, sdk) => {
+
+
     dispatch(createListingDraftRequest(data));
     const { stockUpdate, images, ...rest } = data;
 
     // If images should be saved, create array out of the image UUIDs for the API call
     // Note: in FTW, image upload is not happening at the same time as listing creation.
     const imageProperty = typeof images !== 'undefined' ? { images: imageIds(images) } : {};
-    const ownListingValues = { ...imageProperty, ...rest };
+    let ownListingValues = { ...imageProperty, ...rest };
+
+    /*
+    // Using provider's publicData to add restaurantName and restaurantFilterName to the listing's publicData
+    const currentUser = getState().user.currentUser
+    const restaurantName = currentUser.publicData ? currentUser.publicData.restaurantName : null
+    const restaurantFilterName = restaurantName ? restaurantName.toLowerCase().trim().replace('\'', '').replace('\"', '') : null
+
+    console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+    console.log("restaurantName", restaurantName)
+    console.log("restaurantFilterName", restaurantFilterName)
+
+    // Updating the newly created listing with the values
+    ownListingValues.publicData.restaurantName = restaurantName
+    ownListingValues.publicData.restaurantFilterName = restaurantFilterName
+
+    console.log("ownListingValues", ownListingValues)
+    */
 
     const imageVariantInfo = getImageVariantInfo();
     const queryParams = {
@@ -616,6 +635,7 @@ export function requestCreateListingDraft(data) {
     };
 
     let createDraftResponse = null;
+
     return sdk.ownListings
       .createDraft(ownListingValues, queryParams)
       .then(response => {

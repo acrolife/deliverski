@@ -169,11 +169,11 @@ const maps = {
     // When enabled, the first suggestion is "Current location" that
     // uses the browser Geolocation API to query the user's current
     // location.
-    suggestCurrentLocation: true,
+    suggestCurrentLocation: false,
 
     // Distance in meters for calculating the bounding box around the
     // current location.
-    currentLocationBoundsDistance: 1000,
+    currentLocationBoundsDistance: 2000,
 
     // This affects location search.
     // Example location can be edited in the

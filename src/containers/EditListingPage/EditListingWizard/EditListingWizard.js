@@ -30,11 +30,15 @@ import {
 import EditListingWizardTab, { DETAILS, DELIVERY, PRICING, PHOTOS } from './EditListingWizardTab';
 import css from './EditListingWizard.module.css';
 
+// Custom fields
+// import RESTAURANT from './EditListingWizardTab'
+
 // You can reorder these panels.
 // Note 1: You need to change save button translations for new listing flow
 // Note 2: Ensure that draft listing is created after the first panel
 // and listing publishing happens after last panel.
-export const TABS = [DETAILS, PRICING, DELIVERY, PHOTOS];
+export const TABS = [DETAILS, PRICING, DELIVERY, PHOTOS ];
+// , RESTAURANT];
 
 // Tabs are horizontal in small screens
 const MAX_HORIZONTAL_NAV_SCREEN_WIDTH = 1023;
@@ -52,6 +56,8 @@ const tabLabel = (intl, tab) => {
     key = 'EditListingWizard.tabLabelPricing';
   } else if (tab === PHOTOS) {
     key = 'EditListingWizard.tabLabelPhotos';
+  // } else if (tab === RESTAURANT) {
+  //   key = 'EditListingWizard.tabLabelRestaurant';
   }
 
   return intl.formatMessage({ id: key });
@@ -80,6 +86,8 @@ const tabCompleted = (tab, listing) => {
       return !!price;
     case PHOTOS:
       return images && images.length > 0;
+    // case RESTAURANT:
+    //   return !!(publicData && publicData.restaurant);
     default:
       return false;
   }
