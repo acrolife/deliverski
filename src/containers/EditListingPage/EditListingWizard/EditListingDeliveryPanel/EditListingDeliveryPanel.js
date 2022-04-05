@@ -17,7 +17,7 @@ import EditListingDeliveryForm from './EditListingDeliveryForm';
 import css from './EditListingDeliveryPanel.module.css';
 
 const { Money } = sdkTypes;
-const shippingAmount = process.env.REACT_APP_SHIPPING_FEE;
+const shippingAmount = process.env.REACT_APP_SHIPPING_CUSTOMER;
 
 
 class EditListingDeliveryPanel extends Component {
@@ -113,7 +113,7 @@ class EditListingDeliveryPanel extends Component {
     ) : (
       <FormattedMessage id="EditListingDeliveryPanel.createListingTitle" />
     );
-      console.log(this.state.initialValues)
+      // console.log(this.state.initialValues)
     return (
       <div className={classes}>
         <h1 className={css.title}>{panelTitle}</h1>
