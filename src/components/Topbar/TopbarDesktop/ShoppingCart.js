@@ -66,8 +66,8 @@ const ShoppingCartComponent = (props) => {
               if(shoppingCart && shoppingCart?.length > 0){
                 setShoppingCartItems(shoppingCart.map(item => {
                     return({
-                        listing: JSON.parse(item.listing),
-                        checkoutValues: JSON.parse(item.checkoutValues)
+                        listing: JSON.parse(typeof item.listing === 'string' ? item.listing : JSON.stringify(item.listing)),
+                        checkoutValues: JSON.parse(typeof item.checkoutValues === 'string' ? item.checkoutValues : JSON.stringify(item.checkoutValues))
                       })
                 }))
             }
