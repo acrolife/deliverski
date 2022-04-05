@@ -61,16 +61,8 @@ class CurrencyInputComponent extends Component {
       throw e;
     }
 
-    console.log('&&&&&&&&&&&&&&&&&&&&')
-    console.log("initialValueIsMoney", initialValueIsMoney)
-    console.log("input.value", input.value)
-    console.log("defaultValue", defaultValue)
-  
-
     const initialValue = initialValueIsMoney ? convertMoneyToNumber(input.value) : defaultValue;
-    console.log("initialValue", initialValue)
     const hasInitialValue = typeof initialValue === 'number' && !isNaN(initialValue);
-    console.log("hasInitialValue", hasInitialValue)
 
     // We need to handle number format - some locales use dots and some commas as decimal separator
     // TODO Figure out if this could be digged from React-Intl directly somehow
