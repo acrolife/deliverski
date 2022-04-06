@@ -170,9 +170,30 @@ export const queryListingsAuthorData = () => (dispatch, getState, sdk) => {
         }))
       const profileImages = data.data.included.filter(e => e.type === 'image')
 
+      const restaurantNameToFilter = []
+      data.data.data.map(e => e.attributes.publicData.restaurant ? restaurantNameToFilter.push([e.attributes.publicData.restaurantName, e.attributes.publicData.restaurant]) : null)
+      const restaurantNameToFilterUniques = restaurantNameToFilter.filter((v, i, a) => a.indexOf(v) === i);
+      // let restaurantNameToFilterObject = {}
+      // restaurantNameToFilter.map(e => restaurantNameToFilterObject[e[0]] = e[1])
+      // data.data.data.map(e => e.attributes.publicData.restaurant ? restaurantNameToFilter[e.attributes.publicData.restaurant] = e.attributes.publicData.restaurantName : null)
+      // for (const listing of data.data.listings) {
+      //   console.log()
+      // }
+
+
+
+
       // For each user of the above list, we try to assign a profileImage variant from a matching on the profileImage id
       // If the user doesn't have a profileImage, we set it to null
       for (const user of userProviders) {
+        // restaurant to restaurantName mapping          
+        if (user.attributes.profile.publicData.restaurantName) {
+          const restaurantName = user.attributes.profile.publicData.restaurantName
+          const indexOfrestaurantName = restaurantNameToFilterUniques.map(e => e[0]).indexOf(restaurantName)
+          user.attributes.profile.publicData.restaurant = restaurantNameToFilterUniques[indexOfrestaurantName][1]
+        }
+
+        // Profile image mapping
         const profileImageMaybe = user.profileImage ? profileImages.filter(e => e.id.uuid === (user.profileImage.id.uuid)) : null
         user.profileImage = profileImageMaybe ? ({
           id: profileImageMaybe[0].id,

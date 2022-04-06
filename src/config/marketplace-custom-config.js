@@ -52,19 +52,38 @@ export const filters = [
       // Note: label is not added through the translation files
       // to make filter customizations a bit easier.
       options: [
-        { key: 'restaurant1', label: 'Miam Corner' },
-        { key: 'restaurant2', label: 'Pizz\'Attitude' },
-        { key: 'restaurant3', label: 'Chic Mama' },
-        { key: 'restaurant4', label: 'Le Madly' },
-        { key: 'restaurant5', label: 'La Cabanne des neiges' },
-        { key: 'restaurant6', label: 'Le Cerf Fondue' },
-        { key: 'restaurant7', label: 'Other' },
+        { key: 'fox-ginger', label: 'Fox & Ginger' },
+        { key: 'legumes-et-vie', label: 'Légumes et Vie' },
+        { key: 'albert-cookies', label: 'Albert Cookies' },
+        { key: 'made-in-les-arcs', label: 'Made in Les Arcs' },
+        { key: 'fondus-de-ski', label: 'Fondus de Ski' },      
+        { key: 'mountain-cake', label: 'Mountain Cake' },        
+        { key: 'green-and-good', label: 'Green And Good' },          
+      ],
+    },
+  },
+  {
+    id: 'category',
+    label: 'Category',
+    type: 'SelectMultipleFilter',
+    group: 'secondary',
+    queryParamNames: ['pub_category'],
+    config: {
+      schemaType: 'enum',
+      options: [
+        { key: 'fullmeal', label: 'Full meal' },
+        { key: 'pizzas', label: 'Pizzas' },
+        { key: 'burgers', label: 'Burgers' },
+        { key: 'apetizer', label: 'Apetizer' },
+        { key: 'breakfast', label: 'Breakfast' },
+        { key: 'sweets', label: 'Sweets' },
+        { key: 'other', label: 'Other' },
       ],
     },
   },
   {
     id: 'cuisine',
-    label: 'Cuisine',
+    label: 'Cuisine (off)',
     type: 'SelectMultipleFilter',
     group: 'secondary',
     queryParamNames: ['pub_category'],
@@ -82,25 +101,6 @@ export const filters = [
     },
   },
   {
-    id: 'category',
-    label: 'Category',
-    type: 'SelectMultipleFilter',
-    group: 'secondary',
-    queryParamNames: ['pub_size'],
-    config: {
-      schemaType: 'enum',
-      options: [
-        { key: 'fullmeal', label: 'Full meal' },
-        { key: 'pizzas', label: 'Pizzas' },
-        { key: 'burgers', label: 'Burgers' },
-        { key: 'apetizer', label: 'Apetizer' },
-        { key: 'breakfast', label: 'Breakfast' },
-        { key: 'sweets', label: 'Sweets' },
-        { key: 'other', label: 'Other' },
-      ],
-    },
-  },
-  {
     id: 'price',
     label: 'Price',
     type: 'PriceFilter',
@@ -113,7 +113,7 @@ export const filters = [
     config: {
       min: 0,
       max: 50,
-      step: 5,
+      step: 10,
     },
   },
   {
