@@ -31,7 +31,7 @@ const restaurantNameToFilterName = (name) => {
     .replaceAll('__', '_')
     .replaceAll('__', '_')
     .replaceAll('--', '-')
-    .replaceAll('--', '-')    
+    .replaceAll('--', '-')
     .trim()
 }
 
@@ -636,7 +636,7 @@ export function requestCreateListingDraft(data) {
 
     // Updating the newly created listing with the values
     ownListingValues.publicData.restaurantName = restaurantName
-    ownListingValues.publicData.restaurantFilterName = restaurantFilterName
+    ownListingValues.publicData.restaurant = restaurantFilterName
 
 
 
@@ -692,22 +692,24 @@ export function requestUpdateListing(tab, data) {
     };
 
     /*
-     Implemented in case the restaurant would change its name : any update (stock included) 
-     would also update restaurantName and restaurantFilterName in the listing publicData
+     Implemented in case the restaurant would change its name : a stock update  
+     will update restaurantName and restaurantFilterName in the listing publicData
      XXX This means that a change of the retaurant name could be "solved" by a gloabl update,
      // if this stock updates has been implemented as a global trigger of individual stocks, 
      // using this function.
      FIXME CAUTION ! The filter name would remain to be changed though
     */
     // Using provider's publicData to build restaurantName and restaurantFilterName 
-    const currentUser = getState().user.currentUser
-    const restaurantName = currentUser ? currentUser.attributes.profile.publicData.restaurantName : null
-    const restaurantFilterName = restaurantName ? restaurantNameToFilterName(restaurantName) : null
+    if (stockUpdate) {
+      const currentUser = getState().user.currentUser
+      const restaurantName = currentUser ? currentUser.attributes.profile.publicData.restaurantName : null
+      const restaurantFilterName = restaurantName ? restaurantNameToFilterName(restaurantName) : null
 
-    // Updating the listing publicData with restaurantName and restaurantFilterName
-    ownListingUpdateValues.publicData = {}
-    ownListingUpdateValues.publicData.restaurantName = restaurantName
-    ownListingUpdateValues.publicData.restaurantFilterName = restaurantFilterName
+      // Updating the listing publicData with restaurantName and restaurantFilterName
+      ownListingUpdateValues.publicData = {}
+      ownListingUpdateValues.publicData.restaurantName = restaurantName
+      ownListingUpdateValues.publicData.restaurant = restaurantFilterName
+    }
 
     // Note: if update values include stockUpdate, we'll do that first
     // That way we get updated currentStock info among ownListings.update

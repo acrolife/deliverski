@@ -230,3 +230,7 @@ export const validSGID = message => value => {
 
 export const composeValidators = (...validators) => value =>
   validators.reduce((error, validator) => error || validator(value), VALID);
+
+  export const isFromLesArcs = (location) => {
+    return location === "Arc 1800, Les Arcs, Bourg-Saint-Maurice, Savoie 73700, France" ? VALID : message;
+  }
