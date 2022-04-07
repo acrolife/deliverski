@@ -152,8 +152,8 @@ export const queryListingsAuthorData = () => (dispatch, getState, sdk) => {
   return sdk.listings.query(params)
     .then(data => {
       // DEV DEBUG
-      console.log("From LandingPage.ducks.js")
-      console.log("data", data)
+      // console.log("From LandingPage.ducks.js")
+      // console.log("data", data)
 
       // CAUTION, the id attribute is part of the e.relationships.profileImage.data object, no need to use .id.uuid
       // Same for profile image
