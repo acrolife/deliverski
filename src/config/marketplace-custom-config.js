@@ -34,6 +34,7 @@
  */
 
 export const filters = [
+  /*
   {
     id: 'restaurant',
     label: 'Restaurant',
@@ -62,6 +63,7 @@ export const filters = [
       ],
     },
   },
+  */
   {
     id: 'category',
     label: 'Category',
@@ -112,7 +114,7 @@ export const filters = [
     // Note: unlike most prices this is not handled in subunits
     config: {
       min: 0,
-      max: 50,
+      max: 100,
       step: 10,
     },
   },
