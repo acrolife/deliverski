@@ -1053,5 +1053,6 @@
   "ListingPage.seeSameVendorListings": "See other products from the vendor",
   "BookingBreakdown.productUnit": "{formattedUnit} * {quantity, number}",
   "BookingBreakdown.productTotal": "{formattedTotal}",
-  "ListingPage.emptyCart": "Empty cart"
+  "ListingPage.emptyCart": "Empty cart",
+  "ProfileSettingsForm.scheduleTitle": "Your opening hours"
 }
