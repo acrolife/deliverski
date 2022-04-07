@@ -1,4 +1,5 @@
 
+import { JoinFull } from '@mui/icons-material';
 import { storableError } from '../../util/errors';
 // import { fetchCurrentUser } from '../../ducks/user.duck';
 // import config from '../../config';
@@ -151,12 +152,12 @@ export const queryListingsAuthorData = () => (dispatch, getState, sdk) => {
   return sdk.listings.query(params)
     .then(data => {
       // DEV DEBUG
-      // console.log("From LandingPage.ducks.js")
-      // console.log("data", data)
+      console.log("From LandingPage.ducks.js")
+      console.log("data", data)
 
       // CAUTION, the id attribute is part of the e.relationships.profileImage.data object, no need to use .id.uuid
       // Same for profile image
-      const userProviders = data.data.included
+      let userProviders = data.data.included
         .filter(e => e.type === 'user')
         .map(e => ({
           id: { uuid: e.id.uuid },
@@ -168,25 +169,39 @@ export const queryListingsAuthorData = () => (dispatch, getState, sdk) => {
           profileImage: e.relationships.profileImage.data ? e.relationships.profileImage.data : null,
           type: 'currentUser',
         }))
+
+
       const profileImages = data.data.included.filter(e => e.type === 'image')
 
-      const restaurantNameToFilter = []
+      let restaurantNameToFilter = []
       data.data.data.map(e => e.attributes.publicData.restaurant ? restaurantNameToFilter.push([e.attributes.publicData.restaurantName, e.attributes.publicData.restaurant]) : null)
-      const restaurantNameToFilterUniques = restaurantNameToFilter.filter((v, i, a) => a.indexOf(v) === i);
-      // let restaurantNameToFilterObject = {}
-      // restaurantNameToFilter.map(e => restaurantNameToFilterObject[e[0]] = e[1])
-      // data.data.data.map(e => e.attributes.publicData.restaurant ? restaurantNameToFilter[e.attributes.publicData.restaurant] = e.attributes.publicData.restaurantName : null)
-      // for (const listing of data.data.listings) {
-      //   console.log()
-      // }
+      // Filtering out the element (from listings) where restaurant or restaurantName is undefined (data from incomplete/not updated listings wrt the provider's profile)
+      restaurantNameToFilter = restaurantNameToFilter.filter(e => (e[0] !== undefined))
 
+      // Filtering duplicates won't work the classical way for an array of arrays
+      // https://www.kirupa.com/javascript/removing_duplicate_arrays_from_array.htm
+      const restaurantNameToFilterString = restaurantNameToFilter.map(JSON.stringify)
+      // .filter((value, index, self) => self.indexOf(value) == index)
+      const restaurantNameToFilterUniquesString = restaurantNameToFilterString.filter((v, i, a) => a.indexOf(v) === i);
+      const restaurantNameToFilterUniques = restaurantNameToFilterUniquesString.map(JSON.parse)
+      const restaurantNameUniques = restaurantNameToFilterUniques.map(e => e[0])
+      const restaurantUniques = restaurantNameToFilterUniques.map(e => e[1])
+     
 
-
+      // Prevent error if provider's profile's restaurant name is not sync with the listings related data
+      const userProvidersRestaurantName = userProviders.map(e => e.attributes.profile.publicData.restaurantName ? e.attributes.profile.publicData.restaurantName : null) 
+      const zeroValueAtPositionToFilterout = userProvidersRestaurantName.map(e => restaurantNameUniques.indexOf(e) + 1)
+      const indexToFilerOut = zeroValueAtPositionToFilterout.map((e,i) => !e ? i : null)
+      // Removing user from userProviders array if there's inconsistency in restaurant name/path data to prevent the home page to bug
+      // The restaurant will still display in home page, but only the updated listings will show in the restaurant X page
+      indexToFilerOut.forEach(e => e !== null ? userProviders.splice(e,1) : null)
 
       // For each user of the above list, we try to assign a profileImage variant from a matching on the profileImage id
       // If the user doesn't have a profileImage, we set it to null
       for (const user of userProviders) {
-        // restaurant to restaurantName mapping          
+        // CAUTION: Remember this special kind of for loop can only output one console log, because it is assigning it to the item
+        // restaurant to restaurantName mapping (the provider's public data contains only the restaurantName, 
+        // the restaurant property (path part) is computed in only one place; at listing creation)       
         if (user.attributes.profile.publicData.restaurantName) {
           const restaurantName = user.attributes.profile.publicData.restaurantName
           const indexOfrestaurantName = restaurantNameToFilterUniques.map(e => e[0]).indexOf(restaurantName)
