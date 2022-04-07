@@ -6,6 +6,9 @@
 
   margin-top: 0;
   margin-bottom: 0;
+  @media (--viewportMedium) {
+    margin-bottom: 2rem;
+  }
 }
 
 .filteredSearches {
