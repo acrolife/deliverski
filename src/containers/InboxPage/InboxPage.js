@@ -90,13 +90,13 @@ export const txState = (intl, tx, type) => {
   } else if (txIsDelivered(tx)) {
     return isOrder
       ? {
-          stateClassName: css.stateActionNeeded,
-          state: intl.formatMessage({ id: 'InboxPage.stateDeliveredCustomer' }),
-        }
+        stateClassName: css.stateActionNeeded,
+        state: intl.formatMessage({ id: 'InboxPage.stateDeliveredCustomer' }),
+      }
       : {
-          stateClassName: css.stateNoActionNeeded,
-          state: intl.formatMessage({ id: 'InboxPage.stateDeliveredProvider' }),
-        };
+        stateClassName: css.stateNoActionNeeded,
+        state: intl.formatMessage({ id: 'InboxPage.stateDeliveredProvider' }),
+      };
   } else if (txIsDisputed(tx)) {
     return {
       stateClassName: css.stateActionNeeded,
@@ -219,6 +219,8 @@ export const InboxPageComponent = props => {
   } = props;
   const { tab } = params;
   const ensuredCurrentUser = ensureCurrentUser(currentUser);
+  // Conditional rendering of the provider/customer UI elements
+  const isProvider = currentUser ? !!currentUser.attributes.profile.metadata.isProvider : false
 
   const validTab = tab === 'orders' || tab === 'sales';
   if (!validTab) {
@@ -279,18 +281,6 @@ export const InboxPageComponent = props => {
     {
       text: (
         <span>
-          <FormattedMessage id="InboxPage.ordersTabTitle" />
-        </span>
-      ),
-      selected: isOrders,
-      linkProps: {
-        name: 'InboxPage',
-        params: { tab: 'orders' },
-      },
-    },
-    {
-      text: (
-        <span>
           <FormattedMessage id="InboxPage.salesTabTitle" />
           {providerNotificationBadge}
         </span>
@@ -301,8 +291,20 @@ export const InboxPageComponent = props => {
         params: { tab: 'sales' },
       },
     },
+    {
+      text: (
+        <span>
+          <FormattedMessage id="InboxPage.ordersTabTitle" />
+        </span>
+      ),
+      selected: isOrders,
+      linkProps: {
+        name: 'InboxPage',
+        params: { tab: 'orders' },
+      },
+    },
   ];
-  const nav = <TabNav rootClassName={css.tabs} tabRootClassName={css.tab} tabs={tabs} />;
+  const nav = <TabNav rootClassName={css.tabs} tabRootClassName={css.tab} tabs={tabs} isProvider={isProvider} />;
 
   return (
     <Page title={title} scrollingDisabled={scrollingDisabled}>
@@ -331,7 +333,8 @@ export const InboxPageComponent = props => {
                 <IconSpinner />
               </li>
             )}
-            {noResults}
+            {isProvider && noResults}
+
           </ul>
           {pagingLinks}
         </LayoutWrapperMain>

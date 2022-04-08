@@ -1,7 +1,7 @@
 
 import { JoinFull } from '@mui/icons-material';
 import { storableError } from '../../util/errors';
-// import { fetchCurrentUser } from '../../ducks/user.duck';
+import { fetchCurrentUser } from '../../ducks/user.duck';
 // import config from '../../config';
 // import { types as sdkTypes, util as sdkUtil, createImageVariantConfig } from '../../util/sdkLoader';
 // const { UUID } = sdkTypes;
@@ -130,7 +130,6 @@ export const queryListingsAuthorData = () => (dispatch, getState, sdk) => {
   // const { aspectWidth = 1, aspectHeight = 1, variantPrefix = 'listing-card' } = config.listing;
   // const aspectRatio = aspectHeight / aspectWidth;
 
-  // dispatch(fetchCurrentUser());
   const params = {
     // id: listingId,
     include: ['author', 'author.profileImage'],
@@ -206,7 +205,7 @@ export const queryListingsAuthorData = () => (dispatch, getState, sdk) => {
           const restaurantName = user.attributes.profile.publicData.restaurantName
           const indexOfrestaurantName = restaurantNameToFilterUniques.map(e => e[0]).indexOf(restaurantName)
           user.attributes.profile.publicData.restaurant = restaurantNameToFilterUniques[indexOfrestaurantName][1]
-        }
+        }        
 
         // Profile image mapping
         const profileImageMaybe = user.profileImage ? profileImages.filter(e => e.id.uuid === (user.profileImage.id.uuid)) : null
@@ -218,6 +217,11 @@ export const queryListingsAuthorData = () => (dispatch, getState, sdk) => {
           }
         }) : null
       }
+
+      // Ordering userProviders array, user without ProfileImage at the end
+      const userProvidersWithoutProfileImage = userProviders.filter(e => !e.profileImage)
+      const userProvidersWithProfileImage = userProviders.filter(e => e.profileImage)
+      userProviders = [...userProvidersWithProfileImage, ...userProvidersWithoutProfileImage]
 
       // const urlScaledMedium = data.data.included[0].attributes.variants['scaled-medium'].url
       // return userProviders;
@@ -248,5 +252,6 @@ export const loadData = () => (dispatch, getState, sdk) => {
     // dispatch(showListing("62473d1e-0291-43a2-82e0-998c285c08c9")),
     // dispatch(showListing("62332a96-5866-423e-b119-e86796312535")),
     dispatch(queryListingsAuthorData()),
+    dispatch(fetchCurrentUser()),
   ]);
 }

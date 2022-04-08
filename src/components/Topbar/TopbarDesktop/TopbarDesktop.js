@@ -45,6 +45,9 @@ const TopbarDesktop = props => {
 
   const authenticatedOnClientSide = mounted && isAuthenticated;
   const isAuthenticatedOrJustHydrated = isAuthenticated || !mounted;
+  
+  // Conditional rendering of the provider/customer UI elements
+  const isProvider = currentUser ? !!currentUser.attributes.profile.metadata.isProvider : false
 
   const classes = classNames(rootClassName || css.root, className);
 
@@ -85,15 +88,19 @@ const TopbarDesktop = props => {
         <Avatar className={css.avatar} user={currentUser} disableProfileLink />
       </MenuLabel>
       <MenuContent className={css.profileMenuContent}>
+
+
         <MenuItem key="ManageListingsPage">
-          <NamedLink
-            className={classNames(css.yourListingsLink, currentPageClass('ManageListingsPage'))}
-            name="ManageListingsPage"
-          >
-            <span className={css.menuItemBorder} />
-            <FormattedMessage id="TopbarDesktop.yourListingsLink" />
-          </NamedLink>
+          {isProvider &&
+            <NamedLink
+              className={classNames(css.yourListingsLink, currentPageClass('ManageListingsPage'))}
+              name="ManageListingsPage"
+            >
+              <span className={css.menuItemBorder} />
+              <FormattedMessage id="TopbarDesktop.yourListingsLink" />
+            </NamedLink>}
         </MenuItem>
+
         <MenuItem key="ProfileSettingsPage">
           <NamedLink
             className={classNames(css.profileSettingsLink, currentPageClass('ProfileSettingsPage'))}
@@ -148,23 +155,26 @@ const TopbarDesktop = props => {
         />
       </NamedLink>
       {search}
-      <NamedLink className={css.createListingLink} name="NewListingPage">
-        <span className={css.createListing}>
-          <FormattedMessage id="TopbarDesktop.createListing" />
-        </span>
-      </NamedLink>
+      {
+        isProvider && <NamedLink className={css.createListingLink} name="NewListingPage">
+          <span className={css.createListing}>
+            <FormattedMessage id="TopbarDesktop.createListing" />
+          </span>
+        </NamedLink>
+      }
+
       {inboxLink}
 
-      
-      <ShoppingCart 
-      intl={intl}
-      history={history}
-      currentUser={currentUser}
+
+      <ShoppingCart
+        intl={intl}
+        history={history}
+        currentUser={currentUser}
       />
- 
+
 
       {profileMenu}
-      
+
       {signupLink}
       {loginLink}
     </nav>

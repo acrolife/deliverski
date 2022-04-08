@@ -122,3 +122,7 @@
     margin: auto 36px 0 36px;
   }
 }
+
+.content {
+  margin-top: -5rem;
+}

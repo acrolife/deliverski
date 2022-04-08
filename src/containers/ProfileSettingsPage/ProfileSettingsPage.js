@@ -83,6 +83,9 @@ export class ProfileSettingsPageComponent extends Component {
     };
 
     const user = ensureCurrentUser(currentUser);
+    // Conditional rendering of the provider/customer UI elements
+    const isProvider = currentUser ? !!currentUser.attributes.profile.metadata.isProvider : false
+
     const { firstName, lastName, bio } = user.attributes.profile;
     const publicData = user.attributes.profile.publicData;
     const restaurantName = publicData ? publicData.restaurantName : null
@@ -111,7 +114,7 @@ export class ProfileSettingsPageComponent extends Component {
         <LayoutSingleColumn>
           <LayoutWrapperTopbar>
             <TopbarContainer currentPage="ProfileSettingsPage" />
-            <UserNav selectedPageName="ProfileSettingsPage" />
+            <UserNav selectedPageName="ProfileSettingsPage" isProvider={isProvider} />
           </LayoutWrapperTopbar>
           <LayoutWrapperMain>
             <div className={css.content}>

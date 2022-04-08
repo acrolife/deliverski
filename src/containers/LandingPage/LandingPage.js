@@ -35,7 +35,7 @@ const LandingPageComponent = (props) => {
     intl,
     location,
     scrollingDisabled,
-
+    currentUser,
   } = props;
 
   const [userProviders, setUserProviders] = useState([]);
@@ -111,7 +111,7 @@ class ThumbnailImage extends Component {
           </ul>
         </LayoutWrapperMain>
         <LayoutWrapperFooter>
-          <Footer />
+          <Footer currentUser={currentUser}/>
         </LayoutWrapperFooter>
       </LayoutSingleColumn>
     </Page>
@@ -120,6 +120,7 @@ class ThumbnailImage extends Component {
 
 
 LandingPageComponent.defaultProps = {
+  currentUser: null,
   userProviders: null,
   showUserProvidersError: null,
 };
@@ -136,13 +137,16 @@ LandingPageComponent.propTypes = {
   // from injectIntl
   intl: intlShape.isRequired,
 
+  // from fetchCurrentUser in ducks
+  currentUser: propTypes.currentUser,
+
   // from userProvider
-  // userProviders: arrayOf(propTypes.user),
   userProviders: arrayOf(object.isRequired),
   showUserProvidersError: propTypes.error,
 };
 
 const mapStateToProps = state => {
+  const { currentUser } = state.user;
   const {
     userProviders,
     showUserProvidersError,
@@ -157,6 +161,7 @@ const mapStateToProps = state => {
 
   return {
     scrollingDisabled: isScrollingDisabled(state),
+    currentUser,
     userProviders,
     showUserProvidersError,
   };

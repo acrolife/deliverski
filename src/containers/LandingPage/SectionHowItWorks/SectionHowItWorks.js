@@ -48,8 +48,8 @@ const SectionHowItWorks = props => {
       </div>
 
       <div className={css.createListingLink}>
-        <NamedLink name="NewListingPage">
-          <FormattedMessage id="SectionHowItWorks.createListingLink" />
+        <NamedLink name="LoginPage" className={css.loginLink}>
+          <FormattedMessage id="SectionHowItWorks.login" />
         </NamedLink>
       </div>
     </div>

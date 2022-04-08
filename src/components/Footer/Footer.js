@@ -1,20 +1,21 @@
 import React from 'react';
-import { string } from 'prop-types';
+import { object, string } from 'prop-types';
 import { FormattedMessage, injectIntl, intlShape } from '../../util/reactIntl';
 import classNames from 'classnames';
-import { twitterPageURL } from '../../util/urlHelpers';
-import config from '../../config';
+// import { twitterPageURL } from '../../util/urlHelpers';
+// import config from '../../config';
 import {
-  IconSocialMediaFacebook,
-  IconSocialMediaInstagram,
-  IconSocialMediaTwitter,
+  // IconSocialMediaFacebook,
+  // IconSocialMediaInstagram,
+  // IconSocialMediaTwitter,
   Logo,
-  ExternalLink,
+  // ExternalLink,
   NamedLink,
 } from '../../components';
 
 import css from './Footer.module.css';
 
+/*
 const renderSocialMediaLinks = intl => {
   const { siteFacebookPage, siteInstagramPage, siteTwitterHandle } = config;
   const siteTwitterPage = twitterPageURL(siteTwitterHandle);
@@ -52,11 +53,14 @@ const renderSocialMediaLinks = intl => {
   ) : null;
   return [fbLink, twitterLink, instragramLink].filter(v => v != null);
 };
+*/
 
 const Footer = props => {
-  const { rootClassName, className, intl } = props;
-  const socialMediaLinks = renderSocialMediaLinks(intl);
+  const { rootClassName, className, currentUser, intl } = props;
+  // const socialMediaLinks = renderSocialMediaLinks(intl);
   const classes = classNames(rootClassName || css.root, className);
+  // Conditional rendering of the provider/customer UI elements
+  const isProvider = currentUser ? !!currentUser.attributes.profile.metadata.isProvider : false
 
   return (
     <div className={classes}>
@@ -81,11 +85,12 @@ const Footer = props => {
             </div>
             <div className={css.infoLinks}>
               <ul className={css.list}>
-                <li className={css.listItem}>
-                  <NamedLink name="NewListingPage" className={css.link}>
-                    <FormattedMessage id="Footer.toNewListingPage" />
-                  </NamedLink>
-                </li>
+                {isProvider &&
+                  <li className={css.listItem}>
+                    <NamedLink name="NewListingPage" className={css.link}>
+                      <FormattedMessage id="Footer.toNewListingPage" />
+                    </NamedLink>
+                  </li>}
                 <li className={css.listItem}>
                   <NamedLink name="LandingPage" to={{ hash: '#how-it-works' }} className={css.link}>
                     <FormattedMessage id="Footer.toAboutPage" />
@@ -266,12 +271,14 @@ const Footer = props => {
 Footer.defaultProps = {
   rootClassName: null,
   className: null,
+  currentUser: null,
 };
 
 Footer.propTypes = {
   rootClassName: string,
   className: string,
   intl: intlShape.isRequired,
+  currentUser: object,
 };
 
 export default injectIntl(Footer);
