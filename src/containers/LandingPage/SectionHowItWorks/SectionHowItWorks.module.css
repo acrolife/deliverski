@@ -37,7 +37,7 @@
   }
 }
 
-.createListingLink {
+.loginLink {
   margin-top: 18px;
 
   @media (--viewportMedium) {
