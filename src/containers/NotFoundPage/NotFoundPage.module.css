@@ -66,3 +66,40 @@
     margin-top: 64px;
   }
 }
+
+/* Shared animation rules */
+.animation {
+  animation-name: animationTitle;
+  animation-duration: 0.5s;
+  animation-timing-function: ease-out;
+  -webkit-animation-fill-mode: forwards;
+
+  /* visibility: hidden; */
+  opacity: 1;
+  position: relative;
+}
+
+.imgCenterParent {
+  display: flex;
+  justify-content: center;
+  padding-left: 2rem;
+  margin-top: -2rem;
+  margin-bottom: 2rem;
+}
+
+.searchCenterParent {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.searchButton {
+  @apply --marketplaceButtonStyles;
+  composes: animation;
+  animation-delay: 0.8s;
+
+  @media (--viewportMedium) {
+    display: block;
+    width: 260px;
+  }
+}

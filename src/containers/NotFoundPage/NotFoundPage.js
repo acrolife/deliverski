@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+// import config from '../../config';
 
 import routeConfiguration from '../../routing/routeConfiguration';
 import { FormattedMessage, injectIntl, intlShape } from '../../util/reactIntl';
@@ -19,9 +20,14 @@ import {
 } from '../../components';
 import TopbarContainer from '../../containers/TopbarContainer/TopbarContainer';
 
-import LocationSearchForm from './LocationSearchForm/LocationSearchForm';
+// import LocationSearchForm from './LocationSearchForm/LocationSearchForm';
+// import TopbarSearchForm from './TopbarSearchForm/TopbarSearchForm';
+// TODO if implement this serachbar, should reuse same component, not duplicate
 
 import css from './NotFoundPage.module.css';
+import LogoImage from '../../assets/logos/marmott-logo-sansfond.png';
+
+import { NamedLink, NotFoundComponent } from '../../components';
 
 export class NotFoundPageComponent extends Component {
   constructor(props) {
@@ -47,7 +53,11 @@ export class NotFoundPageComponent extends Component {
       history.push(
         createResourceLocatorString('SearchPage', routeConfiguration(), {}, searchParams)
       );
+
     };
+
+    // const initialSearchFormValues = []
+    // const appConfig = config
 
     return (
       <Page title={title} scrollingDisabled={scrollingDisabled}>
@@ -56,18 +66,7 @@ export class NotFoundPageComponent extends Component {
             <TopbarContainer />
           </LayoutWrapperTopbar>
           <LayoutWrapperMain>
-            <div className={css.root}>
-              <div className={css.content}>
-                <div className={css.number}>404</div>
-                <h1 className={css.heading}>
-                  <FormattedMessage id="NotFoundPage.heading" />
-                </h1>
-                <p className={css.description}>
-                  <FormattedMessage id="NotFoundPage.description" />
-                </p>
-                <LocationSearchForm className={css.searchForm} onSubmit={handleSearchSubmit} />
-              </div>
-            </div>
+            <NotFoundComponent />
           </LayoutWrapperMain>
           <LayoutWrapperFooter>
             <Footer />
