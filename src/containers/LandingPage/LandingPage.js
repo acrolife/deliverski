@@ -104,7 +104,7 @@ class ThumbnailImage extends Component {
               </div>
             </li>
             <li className={css.section}>
-              <div className={css.sectionContent}>
+              <div className={css.sectionContent} id={"how-it-works"}>
                 <SectionHowItWorks />
               </div>
             </li>
