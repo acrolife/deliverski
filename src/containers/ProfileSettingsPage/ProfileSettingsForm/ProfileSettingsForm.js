@@ -73,6 +73,8 @@ class ProfileSettingsFormComponent extends Component {
           } = fieldRenderProps;
 
           const user = ensureCurrentUser(currentUser);
+          // Conditional rendering of the provider/customer UI elements
+          const isProvider = currentUser ? !!currentUser.attributes.profile.metadata.isProvider : false
 
           // First name
           const firstNameLabel = intl.formatMessage({
@@ -108,7 +110,7 @@ class ProfileSettingsFormComponent extends Component {
           const restaurantRequiredMessage = intl.formatMessage({
             id: 'ProfileSettingsForm.restaurantRequired',
           });
-          const restaurantRequired = validators.required(restaurantRequiredMessage);          
+          const restaurantRequired = validators.required(restaurantRequiredMessage);
 
           // Bio
           const bioLabel = intl.formatMessage({
@@ -293,27 +295,31 @@ class ProfileSettingsFormComponent extends Component {
                     id="lastName"
                     name="lastName"
                     label={lastNameLabel}
-                    placeholder={lastNamePlaceholder}                   
+                    placeholder={lastNamePlaceholder}
                   />
                 </div>
                 {/* validate={lastNameRequired} */}
               </div>
-              <div className={classNames(css.sectionContainer)}>
-                <h3 className={css.sectionTitle}>
-                  <FormattedMessage id="ProfileSettingsForm.restaurantHeading" />
-                </h3>
-                <FieldTextInput
-                  type="text"
-                  id="restaurantName"
-                  name="restaurantName"
-                  label={restaurantLabel}
-                  placeholder={restaurantPlaceholder}
-                  validate={restaurantRequired}
-                />
-                <p className={css.bioInfo}>
-                  <FormattedMessage id="ProfileSettingsForm.restaurantInfo" />
-                </p>
-              </div>              
+
+              {isProvider &&
+                <div className={classNames(css.sectionContainer)}>
+                  <h3 className={css.sectionTitle}>
+                    <FormattedMessage id="ProfileSettingsForm.restaurantHeading" />
+                    XXX
+                  </h3>
+                  <FieldTextInput
+                    type="text"
+                    id="restaurantName"
+                    name="restaurantName"
+                    label={restaurantLabel}
+                    placeholder={restaurantPlaceholder}
+                    validate={restaurantRequired}
+                  />
+                  <p className={css.bioInfo}>
+                    <FormattedMessage id="ProfileSettingsForm.restaurantInfo" />
+                  </p>
+                </div>}
+
               <div className={classNames(css.sectionContainer, css.lastSection)}>
                 <h3 className={css.sectionTitle}>
                   <FormattedMessage id="ProfileSettingsForm.bioHeading" />

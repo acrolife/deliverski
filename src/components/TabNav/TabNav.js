@@ -35,12 +35,19 @@ Tab.propTypes = {
 };
 
 const TabNav = props => {
-  const { className, rootClassName, tabRootClassName, tabs } = props;
+  const { className, rootClassName, tabRootClassName, tabs, isProvider } = props;
   const classes = classNames(rootClassName || css.root, className);
   const tabClasses = tabRootClassName || css.tab;
+
+  // Conditional rendering of the provider/customer UI elements, based on isProvider 
+  let filteredTabs = tabs
+  if (!isProvider && tabs) {
+    filteredTabs = tabs.filter(e => e.linkProps.params.tab !== 'sales')
+  }
+
   return (
     <nav className={classes}>
-      {tabs.map((tab, index) => {
+      {filteredTabs.map((tab, index) => {
         const id = typeof tab.id === 'string' ? tab.id : `${index}`;
         return <Tab key={id} id={id} className={tabClasses} {...tab} />;
       })}

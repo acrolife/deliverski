@@ -8,7 +8,7 @@ import { LinkTabNavHorizontal } from '../../components';
 import css from './UserNav.module.css';
 
 const UserNav = props => {
-  const { className, rootClassName, selectedPageName } = props;
+  const { className, rootClassName, selectedPageName, currentUser } = props;
   const classes = classNames(rootClassName || css.root, className);
 
   const tabs = [
@@ -38,21 +38,23 @@ const UserNav = props => {
   ];
 
   return (
-    <LinkTabNavHorizontal className={classes} tabRootClassName={css.tab} tabs={tabs} skin="dark" />
+    <LinkTabNavHorizontal className={classes} tabRootClassName={css.tab} tabs={tabs} skin="dark" currentUser={currentUser} />
   );
 };
 
 UserNav.defaultProps = {
   className: null,
   rootClassName: null,
+  isProvider: false,
 };
 
-const { string } = PropTypes;
+const { string, bool } = PropTypes;
 
 UserNav.propTypes = {
   className: string,
   rootClassName: string,
   selectedPageName: string.isRequired,
+  isProvider: bool,
 };
 
 export default UserNav;

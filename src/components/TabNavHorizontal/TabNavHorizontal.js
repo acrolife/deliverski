@@ -14,9 +14,9 @@ const Tab = props => {
   const { className, disabled, text, selected, onClick, linkProps, isDark } = props;
   const darkSkinClasses = isDark
     ? classNames(css.tabContentDarkSkin, {
-        [css.selectedTabContentDarkSkin]: selected,
-        [css.disabledDarkSkin]: disabled,
-      })
+      [css.selectedTabContentDarkSkin]: selected,
+      [css.disabledDarkSkin]: disabled,
+    })
     : null;
 
   const linkClasses = classNames(
@@ -68,13 +68,20 @@ Tab.propTypes = {
 };
 
 const TabNavHorizontal = props => {
-  const { className, rootClassName, tabRootClassName, tabs, skin } = props;
+  const { className, rootClassName, tabRootClassName, tabs, skin, isProvider } = props;
+
+  // Conditional rendering of the provider/customer UI elements, based on isProvider 
+  let filteredTabs = tabs
+  if (!isProvider && tabs) {
+    filteredTabs = tabs.filter(e => e.linkProps.name !== 'ManageListingsPage')
+  }
+
   const isDark = skin === DARK_SKIN;
   const classes = classNames(rootClassName || css.root, { [css.darkSkin]: isDark }, className);
   const tabClasses = tabRootClassName || css.tab;
   return (
     <nav className={classes}>
-      {tabs.map((tab, index) => {
+      {filteredTabs.map((tab, index) => {
         const key = typeof tab.text === 'string' ? tab.text : index;
         return <Tab key={key} className={tabClasses} {...tab} isDark={isDark} />;
       })}
@@ -86,6 +93,7 @@ const TabNavHorizontal = props => {
  * A tab navigation element with buttons. Requires onClick
  * function param for tab objects passed as parameter.
  */
+
 export const ButtonTabNavHorizontal = props => <TabNavHorizontal {...props} />;
 
 ButtonTabNavHorizontal.defaultProps = {
@@ -123,6 +131,7 @@ LinkTabNavHorizontal.defaultProps = {
   tabRootClassName: null,
   tabClassName: null,
   skin: LIGHT_SKIN,
+  isProvider: false,
 };
 
 LinkTabNavHorizontal.propTypes = {
@@ -137,5 +146,7 @@ LinkTabNavHorizontal.propTypes = {
       linkProps: object.isRequired,
     })
   ).isRequired,
+  // isProvider: bool,
   skin: oneOf([LIGHT_SKIN, DARK_SKIN]),
+  isProvider: bool,
 };

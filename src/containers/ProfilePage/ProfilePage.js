@@ -70,10 +70,12 @@ export class ProfilePageComponent extends Component {
       viewport,
       intl,
     } = this.props;
+
     const ensuredCurrentUser = ensureCurrentUser(currentUser);
     const profileUser = ensureUser(user);
     const isCurrentUser =
       ensuredCurrentUser.id && profileUser.id && ensuredCurrentUser.id.uuid === profileUser.id.uuid;
+
     const displayName = profileUser.attributes.profile.displayName;
     const bio = profileUser.attributes.profile.bio;
     const hasBio = !!bio;
@@ -169,7 +171,7 @@ export class ProfilePageComponent extends Component {
     const desktopReviews = (
       <div className={css.desktopReviews}>
         <div className={css.desktopReviewsWrapper}>
-          <ButtonTabNavHorizontal className={css.desktopReviewsTabNav} tabs={desktopReviewTabs} />
+          <ButtonTabNavHorizontal className={css.desktopReviewsTabNav} tabs={desktopReviewTabs} currentUser={currentUser} />
 
           {queryReviewsError ? reviewsError : null}
 

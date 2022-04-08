@@ -210,7 +210,7 @@ class TopbarComponent extends Component {
     };
     const initialSearchFormValues = topbarSearcInitialValues();
 
-    const classes = classNames(rootClassName || css.root, className);
+    const classes = classNames(rootClassName || css.root, className);    
 
     return (
       <div className={classes}>
@@ -240,9 +240,6 @@ class TopbarComponent extends Component {
                 currentUser={currentUser}
                 />
           </div>
-     
-
-
 
           <NamedLink
             className={css.home}

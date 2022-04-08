@@ -3,6 +3,7 @@ import { updatedEntities, denormalisedEntities } from '../../util/data';
 import { storableError } from '../../util/errors';
 import { createImageVariantConfig } from '../../util/sdkLoader';
 import { parse } from '../../util/urlHelpers';
+import { fetchCurrentUser } from '../../ducks/user.duck';
 
 // Pagination page size might need to be dynamic on responsive page layouts
 // Current design has max 3 columns 42 is divisible by 2 and 3
@@ -222,6 +223,7 @@ export const queryListingsError = e => ({
 
 // Throwing error for new (loadData may need that info)
 export const queryOwnListings = queryParams => (dispatch, getState, sdk) => {
+  dispatch(fetchCurrentUser())
   dispatch(queryListingsRequest(queryParams));
 
   const { perPage, ...rest } = queryParams;

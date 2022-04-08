@@ -16,6 +16,7 @@ import {
   LayoutWrapperMain,
   LayoutWrapperFooter,
   Footer,
+  NotFoundComponent,
 } from '../../components';
 import TopbarContainer from '../../containers/TopbarContainer/TopbarContainer';
 
@@ -51,10 +52,13 @@ export class ManageListingsPageComponent extends Component {
       queryParams,
       scrollingDisabled,
       intl,
+      currentUser,
     } = this.props;
 
     const hasPaginationInfo = !!pagination && pagination.totalItems != null;
     const listingsAreLoaded = !queryInProgress && hasPaginationInfo;
+    // Conditional rendering of the provider/customer UI elements
+    const isProvider = currentUser ? !!currentUser.attributes.profile.metadata.isProvider : false
 
     const loadingResults = (
       <div className={css.messagePanel}>
@@ -88,7 +92,11 @@ export class ManageListingsPageComponent extends Component {
           />
         </h1>
       ) : (
-        noResults
+        <div className={css.content}>
+          {isProvider && noResults}
+          {!isProvider && <NotFoundComponent />}
+        </div>
+
       );
 
     const page = queryParams ? queryParams.page : 1;
@@ -166,6 +174,7 @@ ManageListingsPageComponent.defaultProps = {
   closingListingError: null,
   openingListing: null,
   openingListingError: null,
+  currentUser: null,
 };
 
 const { arrayOf, bool, func, object, shape, string } = PropTypes;
@@ -192,9 +201,13 @@ ManageListingsPageComponent.propTypes = {
 
   // from injectIntl
   intl: intlShape.isRequired,
+
+  // from fetchCurrentUser in ducks
+  currentUser: propTypes.currentUser,
 };
 
 const mapStateToProps = state => {
+  const { currentUser } = state.user;
   const {
     currentPageResultIds,
     pagination,
@@ -219,6 +232,7 @@ const mapStateToProps = state => {
     openingListingError,
     closingListing,
     closingListingError,
+    currentUser,
   };
 };
 
