@@ -329,10 +329,12 @@ export class TransactionPanelComponent extends Component {
     : 
     false;
 
+    console.log("restOfShoppingCartItems", restOfShoppingCartItems)
+
     const isAnyItemWithShipping = 
-    restOfShoppingCartItems?.find(item => {
+    restOfShoppingCartItems ? restOfShoppingCartItems.find(item => {
       return item.checkoutValues.deliveryMethod === "pickup"
-    }) 
+    }) : false 
      || 
      currentTransaction.attributes.protectedData.deliveryMethod === "pickup";
 
