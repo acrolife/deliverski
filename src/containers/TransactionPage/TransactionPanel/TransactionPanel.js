@@ -330,7 +330,7 @@ export class TransactionPanelComponent extends Component {
     false;
 
     const isAnyItemWithShipping = 
-    restOfShoppingCartItems.find(item => {
+    restOfShoppingCartItems?.find(item => {
       return item.checkoutValues.deliveryMethod === "pickup"
     }) 
      || 
