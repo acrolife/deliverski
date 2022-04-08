@@ -62,7 +62,7 @@ const Footer = props => {
     <div className={classes}>
       <div className={css.topBorderWrapper}>
         <div className={css.content}>
-          <div className={css.someLiksMobile}>{socialMediaLinks}</div>
+          {/* <div className={css.someLinksMobile}>{socialMediaLinks}</div> */}
           <div className={css.links}>
             <div className={css.organization} id="organization">
               <NamedLink name="LandingPage" className={css.logoLink}>
@@ -87,12 +87,12 @@ const Footer = props => {
                   </NamedLink>
                 </li>
                 <li className={css.listItem}>
-                  <NamedLink name="AboutPage" className={css.link}>
+                  <NamedLink name="LandingPage" to={{ hash: '#how-it-works' }} className={css.link}>
                     <FormattedMessage id="Footer.toAboutPage" />
                   </NamedLink>
                 </li>
                 <li className={css.listItem}>
-                  <NamedLink name="LandingPage" className={css.link}>
+                  <NamedLink name="LandingPage" to={{ hash: '#how-it-works' }} className={css.link}>
                     <FormattedMessage id="Footer.toFAQPage" />
                   </NamedLink>
                 </li>
@@ -102,7 +102,7 @@ const Footer = props => {
                   </NamedLink>
                 </li>
                 <li className={css.listItem}>
-                  <NamedLink name="AboutPage" to={{ hash: '#contact' }} className={css.link}>
+                  <NamedLink name="LandingPage" to={{ hash: '#how-it-works' }} className={css.link}>
                     <FormattedMessage id="Footer.toContactPage" />
                   </NamedLink>
                 </li>
@@ -227,7 +227,7 @@ const Footer = props => {
               </ul>
             </div>
             <div className={css.extraLinks}>
-              <div className={css.someLinks}>{socialMediaLinks}</div>
+              {/* <div className={css.someLinks}>{socialMediaLinks}</div> */}
               <div className={css.legalMatters}>
                 <ul className={css.tosAndPrivacy}>
                   <li>
