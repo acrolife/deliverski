@@ -116,7 +116,8 @@ const OrderPanel = props => {
     ? 'OrderPanel.perDay'
     : 'OrderPanel.perUnit';
 
-  const authorDisplayName = userDisplayNameAsString(author, '');
+  // const authorDisplayName = userDisplayNameAsString(author, '');
+  const restaurantName = author.attributes.profile.publicData.restaurantName ? author.attributes.profile.publicData.restaurantName : null;  
 
   const classes = classNames(rootClassName || css.root, className);
   const titleClasses = classNames(titleClassName || css.orderTitle);
@@ -159,7 +160,7 @@ const OrderPanel = props => {
         <p className={css.price}>{formatMoney(intl, price)}</p>
         <div className={css.author}>
           <AvatarSmall user={author} className={css.providerAvatar} />
-          <FormattedMessage id="OrderPanel.soldBy" values={{ name: authorDisplayName }} />
+          <FormattedMessage id="OrderPanel.soldBy" values={{ name: restaurantName }} />
         </div>
 
         {showBookingDatesForm ? (

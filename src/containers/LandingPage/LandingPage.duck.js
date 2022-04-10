@@ -185,15 +185,15 @@ export const queryListingsAuthorData = () => (dispatch, getState, sdk) => {
       const restaurantNameToFilterUniques = restaurantNameToFilterUniquesString.map(JSON.parse)
       const restaurantNameUniques = restaurantNameToFilterUniques.map(e => e[0])
       const restaurantUniques = restaurantNameToFilterUniques.map(e => e[1])
-     
+
 
       // Prevent error if provider's profile's restaurant name is not sync with the listings related data
-      const userProvidersRestaurantName = userProviders.map(e => e.attributes.profile.publicData.restaurantName ? e.attributes.profile.publicData.restaurantName : null) 
+      const userProvidersRestaurantName = userProviders.map(e => e.attributes.profile.publicData.restaurantName ? e.attributes.profile.publicData.restaurantName : null)
       const zeroValueAtPositionToFilterout = userProvidersRestaurantName.map(e => restaurantNameUniques.indexOf(e) + 1)
-      const indexToFilerOut = zeroValueAtPositionToFilterout.map((e,i) => !e ? i : null)
+      const indexToFilerOut = zeroValueAtPositionToFilterout.map((e, i) => !e ? i : null)
       // Removing user from userProviders array if there's inconsistency in restaurant name/path data to prevent the home page to bug
       // The restaurant will still display in home page, but only the updated listings will show in the restaurant X page
-      indexToFilerOut.forEach(e => e !== null ? userProviders.splice(e,1) : null)
+      indexToFilerOut.forEach(e => e !== null ? userProviders.splice(e, 1) : null)
 
       // For each user of the above list, we try to assign a profileImage variant from a matching on the profileImage id
       // If the user doesn't have a profileImage, we set it to null
@@ -205,7 +205,7 @@ export const queryListingsAuthorData = () => (dispatch, getState, sdk) => {
           const restaurantName = user.attributes.profile.publicData.restaurantName
           const indexOfrestaurantName = restaurantNameToFilterUniques.map(e => e[0]).indexOf(restaurantName)
           user.attributes.profile.publicData.restaurant = restaurantNameToFilterUniques[indexOfrestaurantName][1]
-        }        
+        }
 
         // Profile image mapping
         const profileImageMaybe = user.profileImage ? profileImages.filter(e => e.id.uuid === (user.profileImage.id.uuid)) : null
@@ -228,7 +228,12 @@ export const queryListingsAuthorData = () => (dispatch, getState, sdk) => {
       // DEV DEBUG
       // console.log("userProviders, from LandingPage.duck.js", userProviders)
       // dispatch(showUserProvidersData(userProviders))
-      userProviders.map(e => dispatch(showUserProvidersData(e)))
+      try {
+        userProviders.map(e => dispatch(showUserProvidersData(e)))
+      } catch (e) {
+        dispatch(showUserProvidersError(storableError(e)))
+      }
+
 
     })
     .catch(e => {

@@ -83,12 +83,12 @@ export const EditListingDeliveryFormComponent = props => (
         id: 'EditListingDeliveryForm.optionalText',
       });
 
-      const buildingMessage = intl.formatMessage(
-        { id: 'EditListingDeliveryForm.building' },
+      const locationMessage = intl.formatMessage(
+        { id: 'EditListingDeliveryForm.location' },
         { optionalText: optionalText }
       );
-      const buildingPlaceholderMessage = intl.formatMessage({
-        id: 'EditListingDeliveryForm.buildingPlaceholder',
+      const locationPlaceholderMessage = intl.formatMessage({
+        id: 'EditListingDeliveryForm.locationPlaceholder',
       });
 
       const { updateListingError, showListingsError } = fetchErrors || {};
@@ -124,8 +124,8 @@ export const EditListingDeliveryFormComponent = props => (
             name="deliveryOptions"
             label={pickupLabel}
             value="pickup"
-          /> 
-           <div className={pickupClasses}>
+          />
+          {/* <div className={pickupClasses}>
             {errorMessage}
             {errorMessageShowListing}
             <LocationAutocompleteInputField
@@ -163,13 +163,13 @@ export const EditListingDeliveryFormComponent = props => (
             <FieldTextInput
               className={css.input}
               type="text"
-              name="building"
-              id="building"
-              label={buildingMessage}
-              placeholder={buildingPlaceholderMessage}
+              name="location"
+              id="location"
+              label={locationMessage}
+              placeholder={locationPlaceholderMessage}
               disabled={!pickupEnabled}
             />
-          </div>
+          </div> */}
           <FieldCheckbox
             id="shipping"
             className={css.deliveryCheckbox}
@@ -194,10 +194,10 @@ export const EditListingDeliveryFormComponent = props => (
               validate={
                 shippingEnabled
                   ? required(
-                      intl.formatMessage({
-                        id: 'EditListingDeliveryForm.shippingOneItemRequired',
-                      })
-                    )
+                    intl.formatMessage({
+                      id: 'EditListingDeliveryForm.shippingOneItemRequired',
+                    })
+                  )
                   : null
               }
               hideErrorMessage={!shippingEnabled}

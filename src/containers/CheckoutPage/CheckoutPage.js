@@ -571,10 +571,10 @@ export class CheckoutPageComponent extends Component {
       recipientPhoneNumber,
       recipientAddressLine1,
       recipientAddressLine2,
-      recipientPostal,
-      recipientCity,
-      recipientState,
-      recipientCountry,
+      // recipientPostal,
+      // recipientCity,
+      // recipientState,
+      // recipientCountry,
     } = formValues;
 
     // Billing address is recommended.
@@ -600,23 +600,40 @@ export class CheckoutPageComponent extends Component {
       ...addressMaybe,
     };
 
+    // const shippingDetailsMaybe =
+    //   recipientName && recipientAddressLine1 && recipientPostal
+    //     ? {
+    //         shippingDetails: {
+    //           name: recipientName,
+    //           phoneNumber: recipientPhoneNumber,
+    //           address: {
+    //             city: recipientCity,
+    //             country: recipientCountry,
+    //             line1: recipientAddressLine1,
+    //             line2: recipientAddressLine2,
+    //             postalCode: recipientPostal,
+    //             state: recipientState,
+    //           },
+    //         },
+    //       }
+    //     : {};
     const shippingDetailsMaybe =
-      recipientName && recipientAddressLine1 && recipientPostal
+      recipientName && recipientAddressLine1
         ? {
             shippingDetails: {
               name: recipientName,
               phoneNumber: recipientPhoneNumber,
               address: {
-                city: recipientCity,
-                country: recipientCountry,
+                city: "Arc 1800",
+                country: "France",
                 line1: recipientAddressLine1,
                 line2: recipientAddressLine2,
-                postalCode: recipientPostal,
-                state: recipientState,
+                postalCode: "73700",
+                state: "Savoie",
               },
             },
           }
-        : {};
+        : {};    
     const requestPaymentParams = {
       pageData: this.state.pageData,
       speculatedTransaction,
@@ -720,9 +737,12 @@ export class CheckoutPageComponent extends Component {
     const speculatedTransaction = ensureTransaction(speculatedTransactionMaybe, {}, null);
     const currentListing = ensureListing(listing);
     const currentAuthor = ensureUser(currentListing.author);
+  
+    // Getting restaurantName requires a check on publiData first otherwise throws error 
+    const restaurantName = currentAuthor.attributes.profile.publicData ? currentAuthor.attributes.profile.publicData.restaurantName : null
 
     const listingTitle = currentListing.attributes.title;
-    const title = intl.formatMessage({ id: 'CheckoutPage.title' }, { listingTitle });
+    const title = intl.formatMessage({ id: 'CheckoutPage.title' }, { restaurantName });
 
     const pageProps = { title, scrollingDisabled };
     const topbar = (
@@ -887,15 +907,15 @@ export class CheckoutPageComponent extends Component {
             <AvatarMedium user={currentAuthor} disableProfileLink />
           </div>
           <div className={css.bookListingContainer}>
-            {/* <div className={css.heading}>
+            <div className={css.heading}>
               <h1 className={css.title}>{title}</h1>
               <div className={css.author}>
                 <FormattedMessage
                   id="CheckoutPage.providerInfo"
-                  values={{ name: currentAuthor.attributes.profile.displayName }}
+                  values={{ name: restaurantName }}
                 />
               </div>
-            </div> */}
+            </div>
 
             <div className={css.priceBreakdownContainer}>
               {speculateTransactionErrorMessage}
@@ -926,7 +946,7 @@ export class CheckoutPageComponent extends Component {
                   onSubmit={this.handleSubmit}
                   inProgress={this.state.submitting}
                   formId="CheckoutPagePaymentForm"
-                  authorDisplayName={currentAuthor.attributes.profile.displayName}
+                  restaurantName={restaurantName}
                   showInitialMessageInput={showInitialMessageInput}
                   initialValues={initalValuesForStripePayment}
                   initiateOrderError={initiateOrderError}

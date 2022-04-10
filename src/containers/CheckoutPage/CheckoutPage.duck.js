@@ -32,6 +32,9 @@ export const STRIPE_CUSTOMER_REQUEST = 'app/CheckoutPage/STRIPE_CUSTOMER_REQUEST
 export const STRIPE_CUSTOMER_SUCCESS = 'app/CheckoutPage/STRIPE_CUSTOMER_SUCCESS';
 export const STRIPE_CUSTOMER_ERROR = 'app/CheckoutPage/STRIPE_CUSTOMER_ERROR';
 
+export const SHOW_USER_PROFILE_CUSTOM_DATA = 'app/CheckoutPage/SHOW_USER_PROFILE_CUSTOM_DATA';
+export const SHOW_USER_PROFILE_CUSTOM_DATA_ERROR = 'app/CheckoutPage/SHOW_USER_PROFILE_CUSTOM_DATA_ERROR';
+
 // ================ Reducer ================ //
 
 const initialState = {
@@ -44,6 +47,8 @@ const initialState = {
   initiateOrderError: null,
   confirmPaymentError: null,
   stripeCustomerFetched: false,
+  userProfileCustom: {},
+  showUserProfileCustomError: null,  
 };
 
 export default function checkoutPageReducer(state = initialState, action = {}) {
@@ -96,6 +101,11 @@ export default function checkoutPageReducer(state = initialState, action = {}) {
     case STRIPE_CUSTOMER_ERROR:
       console.error(payload); // eslint-disable-line no-console
       return { ...state, stripeCustomerFetchError: payload };
+
+      case SHOW_USER_PROFILE_CUSTOM_DATA:
+        return { ...state, userProfileCustom: payload, showuserProfileCustomError: null };
+      case SHOW_USER_PROFILE_CUSTOM_DATA_ERROR:
+        return { ...state, userProfileCustom: {}, showuserProfileCustomError: payload };      
 
     default:
       return state;
@@ -154,6 +164,17 @@ export const stripeCustomerRequest = () => ({ type: STRIPE_CUSTOMER_REQUEST });
 export const stripeCustomerSuccess = () => ({ type: STRIPE_CUSTOMER_SUCCESS });
 export const stripeCustomerError = e => ({
   type: STRIPE_CUSTOMER_ERROR,
+  error: true,
+  payload: e,
+});
+
+export const showUserProfileCustomData = userProfileCustom => ({
+  type: SHOW_USER_PROFILE_CUSTOM_DATA,
+  payload: userProfileCustom,
+});
+
+export const showUserProfileCustomError = e => ({
+  type: SHOW_USER_PROFILE_CUSTOM_DATA_ERROR,
   error: true,
   payload: e,
 });
@@ -318,6 +339,50 @@ export const sendMessage = params => (dispatch, getState, sdk) => {
   }
 };
 
+// Custom implementation to get the provider publicData, and restaurantName
+/*
+export const queryListingAuthorData = (listingId) => (dispatch, getState, sdk, listingId) => {
+
+const listingId = orderParams.listingId.uuid
+
+  const params = {
+    id: listingId,
+    include: ['author'],
+  };
+
+  // return sdk.listings.show(params)
+  return sdk.listings.show(params)
+    .then(data => {
+      // DEV DEBUG
+      console.log("From CheckoutPage.ducks.js")
+      console.log("data", data)
+
+      // let userProfileCustom = data.data.included
+      //   .filter(e => e.type === 'user')
+      //   .map(e => ({
+      //     id: { uuid: e.id.uuid },
+      //     attributes: {
+      //       deleted: false,
+      //       banned: false,
+      //       profile: e.attributes.profile
+      //     },
+      //     profileImage: e.relationships.profileImage.data ? e.relationships.profileImage.data : null,
+      //     type: 'currentUser',
+      //   }))
+
+      try {
+        userProviders.map(e => dispatch(showUserProfileCustomData(e)))
+      } catch (e) {
+        dispatch(showUserProfileCustomError(storableError(e)))
+      }
+
+    })
+    .catch(e => {
+      dispatch(showListingError(storableError(e)));
+    });
+};
+*/
+
 /**
  * Initiate or transition the speculative transaction with the given
  * booking details
@@ -438,3 +503,28 @@ export const stripeCustomer = () => (dispatch, getState, sdk) => {
       dispatch(stripeCustomerError(storableError(e)));
     });
 };
+
+  /*
+export const loadData = () => (dispatch, getState, sdk) => {
+
+  // Clear state so that previously loaded data is not visible
+  // in case this page load fails.
+  // const listingId = getState().listing
+  dispatch(setInitialState());
+  queryListingAuthorData(listingId)
+
+  // return Promise.all([
+  //   // First way
+  //   // dispatch(queryUserProviders()),
+
+  //   // Second way
+  //   // testing
+  //   // dispatch(showListing("62473d1e-0291-43a2-82e0-998c285c08c9")),
+  //   // dispatch(showListing("62332a96-5866-423e-b119-e86796312535")),
+  //   dispatch(queryListingsAuthorData()),
+  //   dispatch(fetchCurrentUser()),
+  // ]);
+
+}
+
+  */
