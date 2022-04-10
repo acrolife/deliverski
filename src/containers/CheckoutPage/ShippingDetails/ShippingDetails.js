@@ -116,8 +116,8 @@ const ShippingDetails = props => {
           </option>
           {residencesFiltered.map((e, i) => {
             return (
-              <option key={i} value={`${e[1]}, #${e[0]}`}>
-                {`${e[1]}, #${e[0]}`}
+              <option key={i} value={`${e[1]} - Ref #${e[0]} Arc 1800`}>
+                {`${e[1]} - Ref #${e[0]} Arc 1800`}
               </option>
             );
           })}
