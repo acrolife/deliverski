@@ -1,5 +1,5 @@
 /**
- * A translations too that can be used to keep a translation file(s)
+ * A translations tool that can be used to keep a translation file(s)
  * up to date with one source language file.
  *
  * Possible target languages are resolved from the translation files
@@ -16,12 +16,20 @@ const chalk = require('chalk');
 
 const PATH = './src/translations/';
 
+const SOURCE_LANG = { name: 'French', code: 'fr' };
+const TARGET_LANG_NAMES = {
+  en: 'English',
+};
+
+/*
+// Original config
 const SOURCE_LANG = { name: 'English', code: 'en' };
 const TARGET_LANG_NAMES = {
   es: 'Spanish',
   de: 'German',
   fr: 'French',
 };
+*/
 
 class BreakToRun {}
 class BreakToRunWithTarget {}
