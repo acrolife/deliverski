@@ -50,7 +50,8 @@ const TabNav = props => {
 
   // Conditional rendering of the provider/customer UI elements, based on isProvider 
   let filteredTabs = tabs
-  const isInboxMenuCase = tabs ? tabs[0].linkProps.params.tab === 'sales' : false
+
+  const isInboxMenuCase = tabs ? tabs[0].linkProps.params?.tab === 'sales' : false
   if (!isProvider && isInboxMenuCase) {
     filteredTabs = tabs.filter(e => e.linkProps.params.tab !== 'sales')
   }

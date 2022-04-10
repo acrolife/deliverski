@@ -133,6 +133,7 @@
   @apply --TopbarDesktop_label;
 }
 
+
 /* Inbox */
 .inboxLink {
   @apply --TopbarDesktop_linkHover;
@@ -209,6 +210,7 @@
 }
 
 .profileMenuIsOpen {
+  border-bottom: 0 !important;
   &:hover {
     border-bottom: 0;
   }
@@ -222,6 +224,56 @@
   min-width: 276px;
   padding-top: 20px;
 }
+
+
+/* Lang menu */
+.langageMenuLabel {
+    @apply --TopbarDesktop_linkHover;
+    @apply --marketplaceH5FontStyles;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    margin: 0;
+    padding: 6 12px 6 12px;
+  
+    &:active {
+      border-bottom: 0;
+    }
+}
+
+.langageMenuContent {
+  min-width: 276px;
+  padding: 10px 0 10px 0;
+  margin-left: 10px;
+}
+
+
+.langLink {
+  @apply --TopbarDesktop_linkHoverVert;
+  @apply --marketplaceH5FontStyles;
+  height: 100%;
+  padding: 0 12px 0 12px;
+
+  &:hover {
+    color: var(--matterColorDark);
+  }
+
+  @media (--viewportMedium) {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
+
+.langageMenuIsOpen {
+  border-bottom: 0 !important;
+}
+
+.langIcon {
+  width: 2rem;  
+  /* margin-left: 10px; */
+}
+
 
 /* Authentication */
 .signupLink {
@@ -371,6 +423,7 @@
 
 .cartIcon{
   align-self: center;
+  color: var(--marketplaceColor)
 }
 
 

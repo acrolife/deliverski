@@ -13,6 +13,8 @@ import RemoveIcon from '@mui/icons-material/Remove';
 
 import css from './TopbarDesktop.module.css';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+// import ShoppingCartIcon from '@mui/icons-material/Fastfood';
+// import ShoppingCartIcon from '@mui/icons-material/ShoppingBasket';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { types as sdkTypes } from '../../../util/sdkLoader';
 import config from '../../../config';
@@ -278,6 +280,7 @@ const ShoppingCartComponent = (props) => {
                 // </span> 
                 // : 
                 <ShoppingCartIcon className={css.cartIcon}/>
+                
              }
              {shoppingCartItems.length > 0 ?
                 <div className={css.dotInfo}>

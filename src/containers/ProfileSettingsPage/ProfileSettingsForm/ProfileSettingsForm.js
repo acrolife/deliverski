@@ -268,9 +268,11 @@ class ProfileSettingsFormComponent extends Component {
                     );
                   }}
                 </Field>
-                <div className={css.tip}>
-                  <FormattedMessage id="ProfileSettingsForm.tip" />
-                </div>
+                {
+                  isProvider && <div className={css.tip}>
+                    <FormattedMessage id="ProfileSettingsForm.tip" />
+                  </div>
+                }
                 <div className={css.fileInfo}>
                   <FormattedMessage id="ProfileSettingsForm.fileInfo" />
                 </div>
@@ -305,7 +307,6 @@ class ProfileSettingsFormComponent extends Component {
                 <div className={classNames(css.sectionContainer)}>
                   <h3 className={css.sectionTitle}>
                     <FormattedMessage id="ProfileSettingsForm.restaurantHeading" />
-                    XXX
                   </h3>
                   <FieldTextInput
                     type="text"
@@ -320,7 +321,7 @@ class ProfileSettingsFormComponent extends Component {
                   </p>
                 </div>}
 
-              <div className={classNames(css.sectionContainer, css.lastSection)}>
+              {isProvider && <div className={classNames(css.sectionContainer, css.lastSection)}>
                 <h3 className={css.sectionTitle}>
                   <FormattedMessage id="ProfileSettingsForm.bioHeading" />
                 </h3>
@@ -334,7 +335,8 @@ class ProfileSettingsFormComponent extends Component {
                 <p className={css.bioInfo}>
                   <FormattedMessage id="ProfileSettingsForm.bioInfo" />
                 </p>
-              </div>
+              </div>}
+
               {submitError}
               <Button
                 className={css.submitButton}

@@ -19,9 +19,15 @@ import {
   Modal,
   ModalMissingInformation,
   NamedLink,
+  Menu,
+  MenuLabel,
+  MenuContent,
+  MenuItem,
+  ExternalLink,
 } from '../../components';
 import ShoppingCart from './TopbarDesktop/ShoppingCart';
 
+import LangIconPng from '../../assets/icons/lang-icon-en-fr.png'
 import MenuIcon from './MenuIcon';
 import SearchIcon from './SearchIcon';
 import TopbarSearchForm from './TopbarSearchForm/TopbarSearchForm';
@@ -29,6 +35,10 @@ import TopbarMobileMenu from './TopbarMobileMenu/TopbarMobileMenu';
 import TopbarDesktop from './TopbarDesktop/TopbarDesktop';
 
 import css from './Topbar.module.css';
+
+// Custom implementation of the langage switcher
+const urlSwitchLang = config.urlSwitchLang
+const langageSwitch = config.locale === 'en' ? 'Français' : 'English'
 
 const MAX_MOBILE_SCREEN_WIDTH = 768;
 
@@ -190,6 +200,23 @@ class TopbarComponent extends Component {
       />
     );
 
+    // Change profileMenuIsOpen
+    const langLink = (<Menu>
+
+      <MenuLabel className={css.langageMenuLabel} isOpenClassName={css.langageMenuIsOpen}>
+        <img className={css.langIcon} src={LangIconPng} />
+      </MenuLabel>
+
+      <MenuContent className={css.langageMenuContent}>
+        <MenuItem key="ManageListingsPage" className={css.menuItemLang}>
+          <ExternalLink href={urlSwitchLang} className={css.langLink}>
+            {langageSwitch}
+          </ExternalLink >
+        </MenuItem>
+      </MenuContent>
+    </Menu>);
+
+
     const topbarSearcInitialValues = () => {
       if (isMainSearchTypeKeywords(config)) {
         return { keywords };
@@ -202,15 +229,15 @@ class TopbarComponent extends Component {
       return {
         location: locationFieldsPresent
           ? {
-              search: address,
-              selectedPlace: { address, origin, bounds },
-            }
+            search: address,
+            selectedPlace: { address, origin, bounds },
+          }
           : null,
       };
     };
     const initialSearchFormValues = topbarSearcInitialValues();
 
-    const classes = classNames(rootClassName || css.root, className);    
+    const classes = classNames(rootClassName || css.root, className);
 
     return (
       <div className={classes}>
@@ -223,31 +250,8 @@ class TopbarComponent extends Component {
         />
         <div className={classNames(mobileRootClassName || css.container, mobileClassName)}>
 
-          <div className={css.mobileLeft}>
-                <Button
-                  rootClassName={css.menu}
-                  onClick={this.handleMobileMenuOpen}
-                  title={intl.formatMessage({ id: 'Topbar.menuIcon' })}
-                >
-                  <MenuIcon className={css.menuIcon} />
-                  {notificationDot}
-                </Button>
-                
+          {langLink}
 
-                <ShoppingCart
-                mobile={true}
-                history={this.props.history}
-                currentUser={currentUser}
-                />
-          </div>
-
-          <NamedLink
-            className={css.home}
-            name="LandingPage"
-            title={intl.formatMessage({ id: 'Topbar.logoIcon' })}
-          >
-            <Logo className={css.logo} format="mobile" />
-          </NamedLink>
           <Button
             rootClassName={css.searchMenu}
             onClick={this.handleMobileSearchOpen}
@@ -255,7 +259,37 @@ class TopbarComponent extends Component {
           >
             <SearchIcon className={css.searchMenuIcon} />
           </Button>
+
+          <NamedLink
+            className={css.home}
+            name="LandingPage"
+            title={intl.formatMessage({ id: 'Topbar.logoIcon' })}
+          >
+
+            <Logo className={css.logo} format="mobile" />
+          </NamedLink>
+
+
+          <div className={css.mobileLeft}>
+            <ShoppingCart
+              mobile={true}
+              history={this.props.history}
+              currentUser={currentUser}
+            />
+          </div>
+
+          <Button
+            rootClassName={css.menu}
+            onClick={this.handleMobileMenuOpen}
+            title={intl.formatMessage({ id: 'Topbar.menuIcon' })}
+          >
+            <MenuIcon className={css.menuIcon} />
+            {notificationDot}
+          </Button>
+
+
         </div>
+
         <div className={css.desktop}>
           <TopbarDesktop
             className={desktopClassName}

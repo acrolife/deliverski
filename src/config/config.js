@@ -8,7 +8,12 @@ const dev = process.env.REACT_APP_ENV === 'development';
 
 // If you want to change the language, remember to also change the
 // locale data and the messages in the app.js file.
-const locale = 'en';
+// const locale = 'fr';
+const locale = process.env.REACT_APP_LOCALE.toLowerCase()
+const localeSwitch = process.env.REACT_APP_LOCALE_SWITCH.toLowerCase()
+const rootUrlSwitch = process.env.REACT_APP_CANONICAL_ROOT_URL_SWITCH
+const urlSwitchLang = rootUrlSwitch + '/' + localeSwitch + '/'
+
 const i18n = {
   /*
     0: Sunday
@@ -239,6 +244,7 @@ const config = {
   env,
   dev,
   locale,
+  urlSwitchLang,
   transactionProcessAlias,
   lineItemUnitType,
   listingManagementType,

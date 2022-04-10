@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { any, bool, func, object, number, string } from 'prop-types';
 import classNames from 'classnames';
+import config from '../../../config';
 
 import { FormattedMessage, intlShape } from '../../../util/reactIntl';
 import { ACCOUNT_SETTINGS_PAGES } from '../../../routing/routeConfiguration';
@@ -15,11 +16,17 @@ import {
   MenuContent,
   MenuItem,
   NamedLink,
+  ExternalLink,
 } from '../../../components';
 
+import LangIconPng from '../../../assets/icons/lang-icon-en-fr.png'
 import TopbarSearchForm from '../TopbarSearchForm/TopbarSearchForm';
 
 import css from './TopbarDesktop.module.css';
+
+// Custom implementation of the langage switcher
+const urlSwitchLang = config.urlSwitchLang
+const langageSwitch = config.locale === 'en' ? 'Français' : 'English'
 
 const TopbarDesktop = props => {
   const {
@@ -45,7 +52,7 @@ const TopbarDesktop = props => {
 
   const authenticatedOnClientSide = mounted && isAuthenticated;
   const isAuthenticatedOrJustHydrated = isAuthenticated || !mounted;
-  
+
   // Conditional rendering of the provider/customer UI elements
   const isProvider = currentUser ? !!currentUser.attributes.profile.metadata.isProvider : false
 
@@ -75,6 +82,24 @@ const TopbarDesktop = props => {
       </span>
     </NamedLink>
   ) : null;
+
+  // Change profileMenuIsOpen
+  const langLink = (<Menu>
+
+    <MenuLabel className={css.langageMenuLabel} isOpenClassName={css.langageMenuIsOpen}>
+      {/* <FormattedMessage id="TopbarDesktop.lang" /> */}
+      <img className={css.langIcon} src={LangIconPng} />
+    </MenuLabel>
+
+    <MenuContent className={css.langageMenuContent}>
+      <MenuItem key="ManageListingsPage" className={css.menuItemLang}>
+        <ExternalLink href={urlSwitchLang} className={css.langLink}>
+          {langageSwitch}
+        </ExternalLink >
+      </MenuItem>
+    </MenuContent>
+  </Menu>);
+
 
   const currentPageClass = page => {
     const isAccountSettingsPage =
@@ -147,6 +172,9 @@ const TopbarDesktop = props => {
 
   return (
     <nav className={classes}>
+
+      {langLink}
+
       <NamedLink className={css.logoLink} name="LandingPage">
         <Logo
           format="desktop"
@@ -154,7 +182,9 @@ const TopbarDesktop = props => {
           alt={intl.formatMessage({ id: 'TopbarDesktop.logo' })}
         />
       </NamedLink>
+
       {search}
+
       {
         isProvider && <NamedLink className={css.createListingLink} name="NewListingPage">
           <span className={css.createListing}>
@@ -165,6 +195,7 @@ const TopbarDesktop = props => {
 
       {inboxLink}
 
+      {/* {langLink} */}
 
       <ShoppingCart
         intl={intl}
@@ -172,10 +203,10 @@ const TopbarDesktop = props => {
         currentUser={currentUser}
       />
 
-
       {profileMenu}
 
       {signupLink}
+
       {loginLink}
     </nav>
   );
