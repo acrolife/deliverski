@@ -126,9 +126,9 @@ exports.transactionLineItems = (listing, orderData) => {
   }
 
 
-  const isAnyItemWithShipping = restOfShoppingCartItems?.find(item => {
+  const isAnyItemWithShipping = restOfShoppingCartItems ? restOfShoppingCartItems.find(item => {
     return item.checkoutValues.deliveryMethod === "shipping"
-  })
+  }) : []
     
   
 
