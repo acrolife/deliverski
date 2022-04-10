@@ -72,11 +72,14 @@ const displayNames = (currentUser, currentProvider, currentCustomer, intl) => {
     otherUserDisplayNameString = userDisplayNameAsString(currentCustomer, '');
   }
 
+  const restaurantName = currentProvider.attributes.profile.publicData ? currentProvider.attributes.profile.publicData.restaurantName : null
+
   return {
     authorDisplayName,
     customerDisplayName,
     otherUserDisplayName,
     otherUserDisplayNameString,
+    restaurantName
   };
 };
 
@@ -175,6 +178,22 @@ export class TransactionPanelComponent extends Component {
       fetchLineItemsError,
     } = this.props;
 
+    // TODO 
+    // DEV steps to disable the Send Message feature after transition/mark-received
+    // 1. Copy in pastTransitions all transitions from 
+    // process/process.edn, 
+    // before transition/mark-received,
+    // 2. disableSendMessage = true if transaction.attributes.lastTransition is not included in the array
+    //
+    // console.log("currentUser", currentUser)
+    // console.log("transaction", transaction)
+    // const pastTransitions = ["transition/enquire", "transition/request-payment",]
+    //
+    // Conditional rendering of the provider/customer UI elements
+    // Our isProvider is computed differenty than the one of the template, based on the transaction object,
+    // so we just confirm that everthing went normal validating with our isProviderCustom
+    const isProviderCustom = currentUser ? !!currentUser.attributes.profile.metadata.isProvider : false
+
     const currentTransaction = ensureTransaction(transaction);
     const currentListing = ensureListing(currentTransaction.listing);
     const currentProvider = ensureUser(currentTransaction.provider);
@@ -195,8 +214,8 @@ export class TransactionPanelComponent extends Component {
       if (txIsEnquired(tx)) {
         const transitions = Array.isArray(nextTransitions)
           ? nextTransitions.map(transition => {
-              return transition.attributes.name;
-            })
+            return transition.attributes.name;
+          })
           : [];
         const hasCorrectNextTransition =
           transitions.length > 0 && transitions.includes(TRANSITION_REQUEST_PAYMENT_AFTER_ENQUIRY);
@@ -262,7 +281,7 @@ export class TransactionPanelComponent extends Component {
       id: 'TransactionPanel.deletedListingTitle',
     });
 
-    const { authorDisplayName, customerDisplayName, otherUserDisplayNameString } = displayNames(
+    const { authorDisplayName, customerDisplayName, restaurantName } = displayNames(
       currentUser,
       currentProvider,
       currentCustomer,
@@ -282,8 +301,8 @@ export class TransactionPanelComponent extends Component {
     const unitTranslationKey = isNightly
       ? 'TransactionPanel.perNight'
       : isDaily
-      ? 'TransactionPanel.perDay'
-      : 'TransactionPanel.perUnit';
+        ? 'TransactionPanel.perDay'
+        : 'TransactionPanel.perUnit';
 
     const price = currentListing.attributes.price;
     const bookingSubTitle = price
@@ -306,7 +325,7 @@ export class TransactionPanelComponent extends Component {
 
     const sendMessagePlaceholder = intl.formatMessage(
       { id: 'TransactionPanel.sendMessagePlaceholder' },
-      { name: otherUserDisplayNameString }
+      { restaurantName }
     );
 
     const sendingMessageNotAllowed = intl.formatMessage({
@@ -323,18 +342,18 @@ export class TransactionPanelComponent extends Component {
 
 
     const restOfShoppingCartItems = currentTransaction?.attributes.metadata.restOfShoppingCartItems ?
-    currentTransaction?.attributes.metadata.restOfShoppingCartItems.map(item => {
-      return JSON.parse(item)
-    })
-    : 
-    false;
-    
-    const isAnyItemWithShipping = 
-    restOfShoppingCartItems ? restOfShoppingCartItems.find(item => {
-      return item.checkoutValues.deliveryMethod === "pickup"
-    }) : false 
-     || 
-     currentTransaction.attributes.protectedData.deliveryMethod === "pickup";
+      currentTransaction?.attributes.metadata.restOfShoppingCartItems.map(item => {
+        return JSON.parse(item)
+      })
+      :
+      false;
+
+    const isAnyItemWithShipping =
+      restOfShoppingCartItems ? restOfShoppingCartItems.find(item => {
+        return item.checkoutValues.deliveryMethod === "pickup"
+      }) : false
+      ||
+      currentTransaction.attributes.protectedData.deliveryMethod === "pickup";
 
     return (
       <div className={classes}>
@@ -372,11 +391,11 @@ export class TransactionPanelComponent extends Component {
                   transactionRole={transactionRole}
                   restOfShoppingCartItems={restOfShoppingCartItems}
                 />
-                  {
-                isAnyItemWithShipping ?
-                <p className={css.shippingWarningMobile}>Caution! Some items need to be picked up at the restaurant</p>
-                :
-                null
+                {
+                  isAnyItemWithShipping ?
+                    <p className={css.shippingWarningMobile}>Caution! Some items need to be picked up at the restaurant</p>
+                    :
+                    null
                 }
                 <DiminishedActionButtonMaybe
                   showDispute={stateData.showDispute}
@@ -435,27 +454,27 @@ export class TransactionPanelComponent extends Component {
           <div className={css.asideDesktop}>
             <div className={css.stickySection}>
               <div className={css.detailCard}>
-              {restOfShoppingCartItems ?
+                {restOfShoppingCartItems ?
                   null :
                   <DetailCardImage
-                  avatarWrapperClassName={css.avatarWrapperDesktop}
-                  listingTitle={listingTitle}
-                  image={firstImage}
-                  provider={currentProvider}
-                  isCustomer={isCustomer}
-                />
-              }
-                 {restOfShoppingCartItems ?
-                    null :
-                    <DetailCardHeadingsMaybe
-                      showDetailCardHeadings={stateData.showDetailCardHeadings}
-                      listingTitle={listingTitle}
-                      subTitle={bookingSubTitle}
-                      location={location}
-                      geolocation={geolocation}
-                      showAddress={stateData.showAddress}
-                    />
-                  }
+                    avatarWrapperClassName={css.avatarWrapperDesktop}
+                    listingTitle={listingTitle}
+                    image={firstImage}
+                    provider={currentProvider}
+                    isCustomer={isCustomer}
+                  />
+                }
+                {restOfShoppingCartItems ?
+                  null :
+                  <DetailCardHeadingsMaybe
+                    showDetailCardHeadings={stateData.showDetailCardHeadings}
+                    listingTitle={listingTitle}
+                    subTitle={bookingSubTitle}
+                    location={location}
+                    geolocation={geolocation}
+                    showAddress={stateData.showAddress}
+                  />
+                }
                 {stateData.showOrderPanel ? (
                   <OrderPanel
                     className={css.orderPanel}
@@ -483,10 +502,10 @@ export class TransactionPanelComponent extends Component {
                 />
 
                 {
-                isAnyItemWithShipping ?
-                <p className={css.shippingWarning}>Caution! Some items need to be picked up at the restaurant</p>
-                :
-                null
+                  isAnyItemWithShipping ?
+                    <p className={css.shippingWarning}>Caution! Some items need to be picked up at the restaurant</p>
+                    :
+                    null
                 }
 
                 {stateData.showActionButtons ? (

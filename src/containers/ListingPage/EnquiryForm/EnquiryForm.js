@@ -53,7 +53,7 @@ const EnquiryFormComponent = props => (
         <Form className={classes} onSubmit={handleSubmit} enforcePagePreloadFor="OrderDetailsPage">
           <IconEnquiry className={css.icon} />
           <h2 className={css.heading}>
-            <FormattedMessage id="EnquiryForm.heading" values={{ listingTitle }} />
+            <FormattedMessage id="EnquiryForm.heading" />
           </h2>
           <FieldTextInput
             className={css.field}

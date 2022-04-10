@@ -131,7 +131,15 @@
   overflow: hidden;
   position: relative;
   white-space: nowrap;
-  text-align: center; }
+  text-align: center; 
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+
+  @media (--viewportMedium) {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
 
 .image-gallery-slide {
   left: 0;

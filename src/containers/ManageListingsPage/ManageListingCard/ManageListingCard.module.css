@@ -122,13 +122,17 @@
 }
 
 .iconWrapper {
-  padding: 0px 10px 1px 10px;
-  color: var(--matterColorLight);
+  padding: 0px 6px 0px 6px;
+  color: var(--marketplaceColor);
+  /* background-color: transparent; */
+  background-color: white;
   border-radius: 4px;
   transition: var(--transitionStyleButton);
 
   &:hover {
-    background-color: rgba(0, 0, 0, 0.7);
+    /* background-color: transparent; */
+    background-color: var(--marketplaceColor);
+    color: white;
   }
 }
 

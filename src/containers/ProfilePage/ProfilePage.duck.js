@@ -23,6 +23,9 @@ export const QUERY_REVIEWS_REQUEST = 'app/ProfilePage/QUERY_REVIEWS_REQUEST';
 export const QUERY_REVIEWS_SUCCESS = 'app/ProfilePage/QUERY_REVIEWS_SUCCESS';
 export const QUERY_REVIEWS_ERROR = 'app/ProfilePage/QUERY_REVIEWS_ERROR';
 
+export const SHOW_USER_PROFILE_CUSTOM_DATA = 'app/ProfilePage/SHOW_USER_PROFILE_CUSTOM_DATA';
+export const SHOW_USER_PROFILE_CUSTOM_DATA_ERROR = 'app/ProfilePage/SHOW_USER_PROFILE_CUSTOM_DATA_ERROR';
+
 // ================ Reducer ================ //
 
 const initialState = {
@@ -32,6 +35,8 @@ const initialState = {
   queryListingsError: null,
   reviews: [],
   queryReviewsError: null,
+  userProfileCustom: {},
+  showUserProfileCustomError: null,
 };
 
 export default function profilePageReducer(state = initialState, action = {}) {
@@ -45,7 +50,10 @@ export default function profilePageReducer(state = initialState, action = {}) {
       return state;
     case SHOW_USER_ERROR:
       return { ...state, userShowError: payload };
-
+    case SHOW_USER_PROFILE_CUSTOM_DATA:
+      return { ...state, userProfileCustom: payload, showuserProfileCustomError: null };
+    case SHOW_USER_PROFILE_CUSTOM_DATA_ERROR:
+      return { ...state, userProfileCustom: {}, showuserProfileCustomError: payload };
     case QUERY_LISTINGS_REQUEST:
       return {
         ...state,
@@ -123,6 +131,17 @@ export const queryReviewsError = e => ({
   payload: e,
 });
 
+export const showUserProfileCustomData = userProfileCustom => ({
+  type: SHOW_USER_PROFILE_CUSTOM_DATA,
+  payload: userProfileCustom,
+});
+
+export const showUserProfileCustomError = e => ({
+  type: SHOW_USER_PROFILE_CUSTOM_DATA_ERROR,
+  error: true,
+  payload: e,
+});
+
 // ================ Thunks ================ //
 
 export const queryUserListings = userId => (dispatch, getState, sdk) => {
@@ -144,12 +163,22 @@ export const queryUserListings = userId => (dispatch, getState, sdk) => {
       const listingRefs = response.data.data.map(({ id, type }) => ({ id, type }));
       dispatch(addMarketplaceEntities(response));
       dispatch(queryListingsSuccess(listingRefs));
+     
+      // Getting userProfileCustom data from the api and to the store
+      const userProfileCustom = response.data.included[0].attributes.profile          
+      try {
+        dispatch(showUserProfileCustomData(userProfileCustom))        
+      } catch (e) {
+        dispatch(showUserProfileCustomDataError(storableError(e)))
+      }
+
       return response;
     })
     .catch(e => dispatch(queryListingsError(storableError(e))));
 };
 
 export const queryUserReviews = userId => (dispatch, getState, sdk) => {
+
   sdk.reviews
     .query({
       subject_id: userId,

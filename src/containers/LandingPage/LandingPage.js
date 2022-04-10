@@ -46,6 +46,7 @@ const LandingPageComponent = (props) => {
     }
   }, [props.userProviders]);
 
+  const isLoggedIn = !currentUser
  
   /* Example
   // Thumbnail image for the search "card"
@@ -105,7 +106,7 @@ class ThumbnailImage extends Component {
             </li>
             <li className={css.section}>
               <div className={css.sectionContent} id={"how-it-works"}>
-                <SectionHowItWorks />
+                <SectionHowItWorks isLoggedIn={isLoggedIn} />
               </div>
             </li>
           </ul>
@@ -155,9 +156,6 @@ const mapStateToProps = state => {
   if (showUserProvidersError) {
     console.log(`Error while pulling providers data: ${showUserProvidersError}`)
   }
-
-  // DEV DEBUG
-  // console.log("userProviders", userProviders)
 
   return {
     scrollingDisabled: isScrollingDisabled(state),

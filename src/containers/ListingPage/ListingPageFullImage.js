@@ -110,11 +110,11 @@ export class ListingPageComponent extends Component {
     const { bookingDates, quantity: quantityRaw, deliveryMethod, ...otherOrderData } = values;
     const bookingDatesMaybe = bookingDates
       ? {
-          bookingDates: {
-            bookingStart: bookingDates.startDate,
-            bookingEnd: bookingDates.endDate,
-          },
-        }
+        bookingDates: {
+          bookingStart: bookingDates.startDate,
+          bookingEnd: bookingDates.endDate,
+        },
+      }
       : {};
 
     const initialValues = {
@@ -212,6 +212,9 @@ export class ListingPageComponent extends Component {
       fetchLineItemsInProgress,
       fetchLineItemsError,
     } = this.props;
+
+    // Conditional rendering of the provider/customer UI elements
+    // const isProvider = currentUser ? !!currentUser.attributes.profile.metadata.isProvider : false
 
     const listingId = new UUID(rawParams.id);
     const isPendingApprovalVariant = rawParams.variant === LISTING_PAGE_PENDING_APPROVAL_VARIANT;
@@ -334,14 +337,21 @@ export class ListingPageComponent extends Component {
     const userAndListingAuthorAvailable = !!(currentUser && authorAvailable);
     const isOwnListing =
       userAndListingAuthorAvailable && currentListing.author.id.uuid === currentUser.id.uuid;
+
     const showContactUser = authorAvailable && (!currentUser || (currentUser && !isOwnListing));
+    // We add here the condtion that the user should be a provider (isProvider=true), to contact her peers
+    // let showContactUser = authorAvailable && (!currentUser || (currentUser && !isOwnListing));
+    // showContactUser = isProvider && showContactUser
 
     const currentAuthor = authorAvailable ? currentListing.author : null;
     const ensuredAuthor = ensureUser(currentAuthor);
 
+    // UserCard should be used only in a Provider's listing page or in a product page, so we set restaurantName instead of displayName
+    const restaurantName = ensuredAuthor.attributes.profile.publicData.restaurantName
+
     // When user is banned or deleted the listing is also deleted.
     // Because listing can be never showed with banned or deleted user we don't have to provide
-    // banned or deleted display names for the function
+    // banned or deleted display names for the function    
     const authorDisplayName = userDisplayNameAsString(ensuredAuthor, '');
 
     const { formattedPrice, priceTitle } = priceData(price, intl);
@@ -401,7 +411,8 @@ export class ListingPageComponent extends Component {
         params={params}
         to={{ hash: '#author' }}
       >
-        {authorDisplayName}
+        {/* {authorDisplayName} */}
+        {restaurantName}
       </NamedLink>
     );
 
@@ -483,11 +494,13 @@ export class ListingPageComponent extends Component {
                   publicData={publicData}
                   listingId={currentListing.id}
                 />
-                <SectionReviews reviews={reviews} fetchReviewsError={fetchReviewsError} />
+                {/* Commenting out reviews */}
+                {/* <SectionReviews reviews={reviews} fetchReviewsError={fetchReviewsError} /> */}
+                {/* authorDisplayName={authorDisplayName} */}
                 <SectionAuthorMaybe
                   title={title}
                   listing={currentListing}
-                  authorDisplayName={authorDisplayName}
+                  authorDisplayName={restaurantName}
                   onContactUser={this.onContactUser}
                   isEnquiryModalOpen={isAuthenticated && this.state.enquiryModalOpen}
                   onCloseEnquiryModal={() => this.setState({ enquiryModalOpen: false })}

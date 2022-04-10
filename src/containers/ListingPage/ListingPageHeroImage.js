@@ -209,6 +209,9 @@ export class ListingPageComponent extends Component {
       fetchLineItemsError,
     } = this.props;
 
+    // Conditional rendering of the provider/customer UI elements
+    // const isProvider = currentUser ? !!currentUser.attributes.profile.metadata.isProvider : false
+
     const listingId = new UUID(rawParams.id);
     const isPendingApprovalVariant = rawParams.variant === LISTING_PAGE_PENDING_APPROVAL_VARIANT;
     const isDraftVariant = rawParams.variant === LISTING_PAGE_DRAFT_VARIANT;
@@ -332,6 +335,10 @@ export class ListingPageComponent extends Component {
     const isOwnListing =
       userAndListingAuthorAvailable && currentListing.author.id.uuid === currentUser.id.uuid;
     const showContactUser = authorAvailable && (!currentUser || (currentUser && !isOwnListing));
+
+    // We add here the condtion that the user should be a provider (isProvider=true), to contact her peers
+    // let showContactUser = authorAvailable && (!currentUser || (currentUser && !isOwnListing));
+    // showContactUser = isProvider && showContactUser
 
     const currentAuthor = authorAvailable ? currentListing.author : null;
     const ensuredAuthor = ensureUser(currentAuthor);

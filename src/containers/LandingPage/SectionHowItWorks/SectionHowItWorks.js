@@ -9,7 +9,7 @@ import { NamedLink } from '../../../components';
 import css from './SectionHowItWorks.module.css';
 
 const SectionHowItWorks = props => {
-  const { rootClassName, className } = props;
+  const { rootClassName, className, isLoggedIn } = props;
 
   const classes = classNames(rootClassName || css.root, className);
   return (
@@ -47,22 +47,24 @@ const SectionHowItWorks = props => {
         </div>
       </div>
 
-      <div className={css.createListingLink}>
+      {isLoggedIn && <div className={css.createListingLink}>
         <NamedLink name="LoginPage" className={css.loginLink}>
           <FormattedMessage id="SectionHowItWorks.login" />
         </NamedLink>
-      </div>
+      </div>}
+
     </div>
   );
 };
 
 SectionHowItWorks.defaultProps = { rootClassName: null, className: null };
 
-const { string } = PropTypes;
+const { string, bool } = PropTypes;
 
 SectionHowItWorks.propTypes = {
   rootClassName: string,
   className: string,
+  isLoggedIn: bool
 };
 
 export default SectionHowItWorks;

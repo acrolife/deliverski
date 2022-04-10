@@ -122,7 +122,7 @@ export class ProfileSettingsPageComponent extends Component {
                 <h1 className={css.heading}>
                   <FormattedMessage id="ProfileSettingsPage.heading" />
                 </h1>
-                {user.id ? (
+                {isProvider && user.id ? (
                   <NamedLink
                     className={css.profileLink}
                     name="ProfilePage"
