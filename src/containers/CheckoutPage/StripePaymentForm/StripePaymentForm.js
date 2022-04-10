@@ -379,7 +379,7 @@
        loadingData,
        formId,
        paymentInfo,
-       authorDisplayName,
+       restaurantName,
        showInitialMessageInput,
        intl,
        initiateOrderError,
@@ -446,8 +446,7 @@
      });
  
      const messagePlaceholder = intl.formatMessage(
-       { id: 'StripePaymentForm.messagePlaceholder' },
-       { name: authorDisplayName }
+       { id: 'StripePaymentForm.messagePlaceholder' },    
      );
  
      const messageOptionalText = intl.formatMessage({
@@ -456,7 +455,7 @@
  
      const initialMessageLabel = intl.formatMessage(
        { id: 'StripePaymentForm.messageLabel' },
-       { messageOptionalText: messageOptionalText }
+       { restaurantName, messageOptionalText }
      );
  
      const pickupDetails = pickupLocation?.building
@@ -649,7 +648,7 @@
    intl: intlShape.isRequired,
    onSubmit: func.isRequired,
    paymentInfo: string,
-   authorDisplayName: string.isRequired,
+   restaurantName: string.isRequired,
    showInitialMessageInput: bool,
    hasHandledCardPayment: bool,
    defaultPaymentMethod: propTypes.defaultPaymentMethod,

@@ -57,7 +57,8 @@ export const ListingCardComponent = props => {
   const { title = '', price } = currentListing.attributes;
   const slug = createSlug(title);
   const author = ensureUser(listing.author);
-  const authorName = author.attributes.profile.displayName;
+  const authorName = author.attributes.profile.publicData.restaurantName ? author.attributes.profile.publicData.restaurantName : null;
+  // const authorName = author.attributes.profile.displayName;  
   const firstImage =
     currentListing.images && currentListing.images.length > 0 ? currentListing.images[0] : null;
 

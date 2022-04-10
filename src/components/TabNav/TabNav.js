@@ -5,12 +5,21 @@ import { NamedLink } from '../../components';
 
 import css from './TabNav.module.css';
 
-const Tab = props => {
-  const { className, id, disabled, text, selected, linkProps } = props;
-  const linkClasses = classNames(css.link, {
+const linkClassesGenerator = (className, disabled, selected, isSmall) => {
+  const linkClassesNormal = classNames(css.link, {
     [css.selectedLink]: selected,
     [css.disabled]: disabled,
   });
+  const linkClassesSmall = classNames(css.link, css.linkSmall, {
+    [css.selectedLink]: selected,
+    [css.disabled]: disabled,
+  });
+  return isSmall ? linkClassesSmall : linkClassesNormal
+}
+
+const Tab = props => {
+  const { className, id, disabled, text, selected, linkProps, isSmall } = props;
+  const linkClasses = linkClassesGenerator(className, disabled, selected, isSmall)
 
   return (
     <div id={id} className={className}>
@@ -41,7 +50,8 @@ const TabNav = props => {
 
   // Conditional rendering of the provider/customer UI elements, based on isProvider 
   let filteredTabs = tabs
-  if (!isProvider && tabs) {
+  const isInboxMenuCase = tabs ? tabs[0].linkProps.params.tab === 'sales' : false
+  if (!isProvider && isInboxMenuCase) {
     filteredTabs = tabs.filter(e => e.linkProps.params.tab !== 'sales')
   }
 
@@ -49,7 +59,12 @@ const TabNav = props => {
     <nav className={classes}>
       {filteredTabs.map((tab, index) => {
         const id = typeof tab.id === 'string' ? tab.id : `${index}`;
-        return <Tab key={id} id={id} className={tabClasses} {...tab} />;
+        if (isProvider && isInboxMenuCase) {
+          return <Tab key={id} id={id} className={tabClasses} {...tab} isSmall={tab.linkProps.params.tab !== 'sales'} />
+        } else {
+          return <Tab key={id} id={id} className={tabClasses} {...tab} />
+        }
+        // return <Tab key={id} id={id} className={tabClasses} {...tab} />
       })}
     </nav>
   );

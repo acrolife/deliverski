@@ -162,6 +162,8 @@ export const InboxItem = props => {
     [css.bannedUserLink]: isOtherUserBanned,
   });
 
+  const restaurantName = provider.attributes.profile.publicData ? provider.attributes.profile.publicData.restaurantName : null
+
   return (
     <div className={css.item}>
       <div className={css.itemAvatar}>
@@ -174,7 +176,7 @@ export const InboxItem = props => {
       >
         <div className={css.rowNotificationDot}>{rowNotificationDot}</div>
         <div className={css.itemInfo}>
-          <div className={css.itemUsername}>{otherUserDisplayName}</div>
+          <div className={css.itemUsername}>{restaurantName}</div>
           <div className={css.itemOrderInfo}>
             <span>{listing?.attributes?.title}</span>
             <br />
@@ -294,7 +296,11 @@ export const InboxPageComponent = props => {
     {
       text: (
         <span>
-          <FormattedMessage id="InboxPage.ordersTabTitle" />
+          {isProvider ?
+            <FormattedMessage id="InboxPage.ordersTabTitleProvider" /> :
+            <FormattedMessage id="InboxPage.ordersTabTitle" />
+          }
+
         </span>
       ),
       selected: isOrders,

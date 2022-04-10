@@ -65,14 +65,20 @@ ExpandableBio.propTypes = {
 const UserCard = props => {
   const { rootClassName, className, user, currentUser, onContactUser } = props;
 
+
+
   const userIsCurrentUser = user && user.type === 'currentUser';
   const ensuredUser = userIsCurrentUser ? ensureCurrentUser(user) : ensureUser(user);
 
   const ensuredCurrentUser = ensureCurrentUser(currentUser);
   const isCurrentUser =
     ensuredUser.id && ensuredCurrentUser.id && ensuredUser.id.uuid === ensuredCurrentUser.id.uuid;
+  
+  // We don't allow the customer to communicate with the providers. But providers can communicate with peers.
+  const isProvider = currentUser ? !!currentUser.attributes.profile.metadata.isProvider : false
+  
+  const restaurantName = ensuredUser.attributes.profile.publicData.restaurantName
   const { displayName, bio } = ensuredUser.attributes.profile;
-
   const handleContactUserClick = () => {
     onContactUser(user);
   };
@@ -115,8 +121,8 @@ const UserCard = props => {
       <NamedLink className={css.link} name="ProfilePage" params={{ id: ensuredUser.id.uuid }}>
         <FormattedMessage id="UserCard.viewProfileLink" />
       </NamedLink>
-      {separator}
-      {isCurrentUser ? editProfileMobile : contact}
+      {isProvider && separator}
+      {isProvider && (isCurrentUser ? editProfileMobile : contact)}
     </p>
   ) : null;
 
@@ -127,7 +133,10 @@ const UserCard = props => {
         <div className={css.info}>
           <div className={css.headingRow}>
             <h3 className={css.heading}>
-              <FormattedMessage id="UserCard.heading" values={{ name: displayName }} />
+              { restaurantName ? 
+              (<FormattedMessage id="UserCard.headingRestaurant" values={{ name: restaurantName }} />) : 
+              (<FormattedMessage id="UserCard.heading" values={{ name: displayName }} /> )
+              }                             
             </h3>
             {editProfileDesktop}
           </div>
