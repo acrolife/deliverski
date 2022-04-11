@@ -44,13 +44,15 @@ export const isRestaurantOpen = (publicData) => {
   if(onHoldByOwner){
     return {
       status: "closed",
-      message: `This restaurant has been put on hold for a small moment , because of logistics reasons.`
+      message: `This restaurant has been put on hold for a small moment , because of logistics reasons.`,
+      checkoutMessage: ""
     }
   }else{
     if(!schedule){
       return {
         status: "open",
-        message: "The restaurant is open"
+        message: "The restaurant is open",
+        checkoutMessage: ""
       }
     }else{
       const weekdays = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday' ];
@@ -78,14 +80,17 @@ export const isRestaurantOpen = (publicData) => {
        if(currentDate > openingDate && currentDate < closingDate){
          return {
            status: "open",
-           message: "The restaurant is open"
+           message: "The restaurant is open",
+           checkoutMessage: ""
          }
        }
   
        if(currentDate < openingDate || currentDate > closingDate){
         return {
           status: "closed",
-          message: `This restaurant is not open. Opens today from ${scheduleForCurrentDay.startHour}:${scheduleForCurrentDay.startMinute}`
+          message: `This restaurant is not open. Opens today from ${scheduleForCurrentDay.startHour}:${scheduleForCurrentDay.startMinute}`,
+          checkoutMessage: `This restaurant is not yet opened, but good news, your cart will wait until this restaurant opens! At ${scheduleForCurrentDay.startHour}:${scheduleForCurrentDay.startMinute} you can pass your order!`
+
         }
        }
   
