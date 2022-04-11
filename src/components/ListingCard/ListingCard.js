@@ -86,7 +86,6 @@ export const ListingCardComponent = props => {
     : null;
 
   const restaurantStatus = isRestaurantOpen(listing?.author?.attributes.profile?.publicData);
-  console.log(restaurantStatus)
   return (
     <NamedLink className={classes} name="ListingPage" params={{ id, slug }}>
       <AspectRatioWrapper

@@ -46,6 +46,7 @@
   margin-bottom: 60px;
   padding: 0;
   opacity: 0;
+  display: none;
 }
 
 .confirmChangesSectionVisible {

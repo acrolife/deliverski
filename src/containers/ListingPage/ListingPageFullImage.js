@@ -29,6 +29,7 @@ import { richText } from '../../util/richText';
 import { getMarketplaceEntities } from '../../ducks/marketplaceData.duck';
 import { manageDisableScrolling, isScrollingDisabled } from '../../ducks/UI.duck';
 import { initializeCardPaymentData } from '../../ducks/stripe.duck.js';
+import { isRestaurantOpen } from '../../util/data';
 
 import {
   Page,
@@ -415,6 +416,11 @@ export class ListingPageComponent extends Component {
         </span>
       ) : null;
 
+
+      const restaurantStatus = isRestaurantOpen(currentListing?.author?.attributes.profile.publicData);
+      const isRestaurantOnHold = restaurantStatus?.onHold;
+
+  
     return (
       <Page
         title={schemaTitle}
@@ -516,6 +522,8 @@ export class ListingPageComponent extends Component {
                   fetchLineItemsInProgress={fetchLineItemsInProgress}
                   fetchLineItemsError={fetchLineItemsError}
                   currentUser={currentUser}
+                  isRestaurantOnHold={isRestaurantOnHold}
+                  restaurantStatus={restaurantStatus}
                 />
               </div>
             </div>

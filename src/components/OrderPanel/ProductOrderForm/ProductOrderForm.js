@@ -51,7 +51,8 @@ const renderForm = formRenderProps => {
     currentUser,
     history,
     pickupEnabled,
-    shippingEnabled
+    shippingEnabled,
+    isRestaurantOnHold
   } = formRenderProps;
 
   const [sameVendorWarningModalOpen, setSameVendorWarningModalOpen] = useState(false);
@@ -464,7 +465,7 @@ const renderForm = formRenderProps => {
       }
       {breakdown}
       <div className={css.submitButton}>
-        <PrimaryButton type="submit" inProgress={submitInProgress} disabled={submitDisabled || missingDeliveryMethod}>
+        <PrimaryButton type="submit" inProgress={submitInProgress} disabled={submitDisabled || missingDeliveryMethod || isRestaurantOnHold}>
           {hasStock ? (
             <FormattedMessage id="BookingDatesForm.addToCart" />
           ) : (
@@ -534,7 +535,7 @@ const renderForm = formRenderProps => {
 
 const ProductOrderForm = props => {
   const intl = useIntl();
-  const { price, currentStock, pickupEnabled, shippingEnabled } = props;
+  const { price, currentStock, pickupEnabled, shippingEnabled, isRestaurantOnHold } = props;
 
   // Should not happen for listings that go through EditListingWizard.
   // However, this might happen for imported listings.

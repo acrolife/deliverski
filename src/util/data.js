@@ -40,19 +40,22 @@ export const isRestaurantOpen = (publicData) => {
 
   const schedule = publicData?.schedule;
   const onHoldByOwner = publicData?.onHoldByOwner;
+  const phoneNumber = publicData?.phoneNumber;
 
   if(onHoldByOwner){
     return {
       status: "closed",
-      message: `This restaurant has been put on hold for a small moment , because of logistics reasons.`,
-      checkoutMessage: ""
+      message: `This restaurant has been put on hold for a small moment , because of logistics reasons.${phoneNumber ? ` Please try later or contact them at ${phoneNumber} to know more about the issue.` : ''}`,
+      checkoutMessage: "",
+      onHold: true
     }
   }else{
     if(!schedule){
       return {
         status: "open",
         message: "The restaurant is open",
-        checkoutMessage: ""
+        checkoutMessage: "",
+        onHold: false
       }
     }else{
       const weekdays = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday' ];
@@ -81,7 +84,8 @@ export const isRestaurantOpen = (publicData) => {
          return {
            status: "open",
            message: "The restaurant is open",
-           checkoutMessage: ""
+           checkoutMessage: "",
+           onHold: false
          }
        }
   
@@ -89,8 +93,8 @@ export const isRestaurantOpen = (publicData) => {
         return {
           status: "closed",
           message: `This restaurant is not open. Opens today from ${scheduleForCurrentDay.startHour}:${scheduleForCurrentDay.startMinute}`,
-          checkoutMessage: `This restaurant is not yet opened, but good news, your cart will wait until this restaurant opens! At ${scheduleForCurrentDay.startHour}:${scheduleForCurrentDay.startMinute} you can pass your order!`
-
+          checkoutMessage: `This restaurant is not yet opened, but good news, your cart will wait until this restaurant opens! At ${scheduleForCurrentDay.startHour}:${scheduleForCurrentDay.startMinute} you can pass your order!`,
+          onHold: false
         }
        }
   

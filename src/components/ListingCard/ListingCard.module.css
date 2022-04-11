@@ -177,7 +177,8 @@
   vertical-align: center;
   color: transparent;
   height: 100%;
-  padding-top: 20%;
+  padding-top: 15%;
+  padding-bottom: 10%;
   &:hover{
     color: white;
   }
