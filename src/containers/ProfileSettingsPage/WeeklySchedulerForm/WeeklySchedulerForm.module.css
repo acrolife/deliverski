@@ -1,0 +1,42 @@
+.fieldWrapper{
+    display: flex;
+
+    @media (max-width: 768px){
+        flex-direction: column;
+    }
+}
+
+.selectField{
+    max-width: 3pc;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.inputsWrapper{
+    display: flex;
+}
+
+.selectField select{
+    /* border-bottom: none; */
+}
+
+.dayLabel{
+    margin-right: 1pc;
+    min-width: 7pc;
+}
+
+.separator1{
+    margin: auto 7px;
+}
+
+.separator2{
+    margin: auto 5px;
+}
+
+.wrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

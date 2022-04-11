@@ -36,6 +36,67 @@ export const combinedResourceObjects = (oldRes, newRes) => {
   return { id, type, ...attrs, ...rels };
 };
 
+export const isRestaurantOpen = (publicData) => {
+
+  const schedule = publicData?.schedule;
+  const onHoldByOwner = publicData?.onHoldByOwner;
+
+  if(onHoldByOwner){
+    return {
+      status: "closed",
+      message: `This restaurant has been put on hold for a small moment , because of logistics reasons.`
+    }
+  }else{
+    if(!schedule){
+      return {
+        status: "open",
+        message: "The restaurant is open"
+      }
+    }else{
+      const weekdays = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday' ];
+      const currentDay = weekdays[new Date().getDay()];
+      const scheduleForCurrentDay = schedule.find(i => {
+        return i.day === currentDay
+      })
+  
+      const openingHour = Number(scheduleForCurrentDay.startHour);
+      const openingMinute = Number(scheduleForCurrentDay.startMinute);
+      const closingHour = Number(scheduleForCurrentDay.endHour);
+      const closingMinute = Number(scheduleForCurrentDay.endMinute);
+  
+      const currentDate = new Date();
+      const openingDate = new Date();
+      const closingDate = new Date();
+  
+  
+      openingDate.setHours(openingHour);
+      openingDate.setMinutes(openingMinute);
+      closingDate.setHours(closingHour);
+      closingDate.setMinutes(closingMinute);
+  
+      
+       if(currentDate > openingDate && currentDate < closingDate){
+         return {
+           status: "open",
+           message: "The restaurant is open"
+         }
+       }
+  
+       if(currentDate < openingDate || currentDate > closingDate){
+        return {
+          status: "closed",
+          message: `This restaurant is not open. Opens today from ${scheduleForCurrentDay.startHour}:${scheduleForCurrentDay.startMinute}`
+        }
+       }
+  
+  
+    }
+
+  }
+
+  
+}
+
 /**
  * Combine the resource objects form the given api response to the
  * existing entities.

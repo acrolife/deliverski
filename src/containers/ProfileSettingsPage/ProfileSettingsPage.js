@@ -49,7 +49,7 @@ export class ProfileSettingsPageComponent extends Component {
     } = this.props;
 
     const handleSubmit = values => {
-      const { firstName, lastName, bio: rawBio, restaurantName } = values;
+      const { firstName, lastName, bio: rawBio, restaurantName, schedule } = values;
 
       // Ensure that the optional bio is a string
       const bio = rawBio || '';
@@ -63,6 +63,7 @@ export class ProfileSettingsPageComponent extends Component {
 
       // Add our restaurant name to the user public data
       publicData.restaurantName = restaurantName;
+      publicData.schedule = schedule;
 
       const profile = {
         firstName: firstName.trim(),
@@ -88,12 +89,68 @@ export class ProfileSettingsPageComponent extends Component {
     const restaurantName = publicData ? publicData.restaurantName : null
     const profileImageId = user.profileImage ? user.profileImage.id : null;
     const profileImage = image || { imageId: profileImageId };
+    const weekdays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'].map(d => {return ({day: d})});
+
+    const savedSchedule = currentUser?.attributes.profile.publicData.schedule;
+    const basicSchedule = [
+      {
+        day: 'monday',
+        startHour: '00',
+        startMinute: '00',
+        endHour: '23',
+        endMinute: '00'
+      },
+      {
+        day: 'tuesday',
+        startHour: '00',
+        startMinute: '00',
+        endHour: '23',
+        endMinute: '00'
+      },
+      {
+        day: 'wednesday',
+        startHour: '00',
+        startMinute: '00',
+        endHour: '23',
+        endMinute: '00'
+      },
+      {
+        day: 'thursday',
+        startHour: '00',
+        startMinute: '00',
+        endHour: '23',
+        endMinute: '00'
+      },
+      {
+        day: 'friday',
+        startHour: '00',
+        startMinute: '00',
+        endHour: '23',
+        endMinute: '00'
+      },
+      {
+        day: 'saturday',
+        startHour: '00',
+        startMinute: '00',
+        endHour: '23',
+        endMinute: '00'
+      },
+      {
+        day: 'sunday',
+        startHour: '00',
+        startMinute: '00',
+        endHour: '23',
+        endMinute: '00'
+      },
+    ]
+    const scheduleValue = savedSchedule ?? basicSchedule
+    const isOffline = !!user?.attributes?.profile.publicData?.onHoldByOwner;
 
     const profileSettingsForm = user.id ? (
       <ProfileSettingsForm
         className={css.form}
         currentUser={currentUser}
-        initialValues={{ firstName, lastName, bio, restaurantName, profileImage: user.profileImage }}
+        initialValues={{ firstName, lastName, bio, restaurantName, profileImage: user.profileImage, schedule: scheduleValue }}
         profileImage={profileImage}
         onImageUpload={e => onImageUploadHandler(e, onImageUpload)}
         uploadInProgress={uploadInProgress}
@@ -101,10 +158,13 @@ export class ProfileSettingsPageComponent extends Component {
         uploadImageError={uploadImageError}
         updateProfileError={updateProfileError}
         onSubmit={handleSubmit}
+        basicSchedule={basicSchedule}
+        isOffline={isOffline}
       />
     ) : null;
 
     const title = intl.formatMessage({ id: 'ProfileSettingsPage.title' });
+
 
     return (
       <Page className={css.root} title={title} scrollingDisabled={scrollingDisabled}>
