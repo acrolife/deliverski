@@ -14,3 +14,10 @@ build
 .env
 npm-debug.log
 yarn-error.log
+
+#custom
+process
+process-test
+_bkp
+_tmp
+
