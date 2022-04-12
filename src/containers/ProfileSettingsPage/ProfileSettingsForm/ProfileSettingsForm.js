@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import { bool, string } from 'prop-types';
 import { compose } from 'redux';
-import { Field, Form as FinalForm } from 'react-final-form';
+import { Field, Form as FinalForm, FormSpy } from 'react-final-form';
 import isEqual from 'lodash/isEqual';
 import classNames from 'classnames';
-
+import WeeklySchedulerForm from '../WeeklySchedulerForm/WeeklySchedulerForm';
 import { FormattedMessage, injectIntl, intlShape } from '../../../util/reactIntl';
 import { ensureCurrentUser } from '../../../util/data';
 import { propTypes } from '../../../util/types';
 import * as validators from '../../../util/validators';
+import arrayMutators from 'final-form-arrays';
+import Switch from '@mui/material/Switch';
 import { isUploadImageOverLimitError } from '../../../util/errors';
 
 import {
@@ -18,6 +20,8 @@ import {
   ImageFromFile,
   IconSpinner,
   FieldTextInput,
+  SecondaryButton,
+  Modal
 } from '../../../components';
 
 import css from './ProfileSettingsForm.module.css';
@@ -25,12 +29,20 @@ import css from './ProfileSettingsForm.module.css';
 const ACCEPT_IMAGES = 'image/*';
 const UPLOAD_CHANGE_DELAY = 2000; // Show spinner so that browser has time to load img srcset
 
+const sharetribeSdk = require('sharetribe-flex-sdk');
+const sdk = sharetribeSdk.createInstance({
+  clientId: process.env.REACT_APP_SHARETRIBE_SDK_CLIENT_ID
+});
 class ProfileSettingsFormComponent extends Component {
   constructor(props) {
     super(props);
 
     this.uploadDelayTimeoutId = null;
-    this.state = { uploadDelay: false };
+    this.state = { 
+      uploadDelay: false, 
+      offline: this.props.isOffline,
+      onHoldModalOpen: false
+     };
     this.submittedValues = {};
   }
 
@@ -49,10 +61,31 @@ class ProfileSettingsFormComponent extends Component {
     window.clearTimeout(this.uploadDelayTimeoutId);
   }
 
+
+
   render() {
     return (
       <FinalForm
         {...this.props}
+        mutators={{ 
+          ...arrayMutators,
+          fillSchedule: (args, state, utils) => {
+            const formValues = args[0];
+            const mondaySchedule = formValues.schedule.find(s => {
+              return s.day === 'monday'
+            })
+            utils.changeValue(state, 'schedule', () => {
+              return formValues.schedule.map(i => {
+                i.endHour = mondaySchedule.endHour;
+                i.endMinute = mondaySchedule.endMinute;
+                i.startHour = mondaySchedule.startHour;
+                i.startMinute = mondaySchedule.startMinute;
+
+                return i
+              })
+            })
+          }
+        }}
         render={fieldRenderProps => {
           const {
             className,
@@ -198,6 +231,56 @@ class ProfileSettingsFormComponent extends Component {
           const submitDisabled =
             invalid || pristine || pristineSinceLastSubmit || uploadInProgress || submitInProgress;
 
+          const onChangeSpy = (formValues) => {
+            // console.log(formValues.values)
+          }
+
+          const handleOfflineSwitch = (event) => {
+            if(this.props.isOffline){
+              return sdk.currentUser.updateProfile({
+                publicData: {
+                  onHoldByOwner: !this.props.isOffline
+                }
+              }).then(res => {
+                 if(typeof window !== "undefined"){
+                   window.location.reload()
+                 }
+              })
+            }else{
+              this.setState({
+                onHoldModalOpen: true
+              })
+
+            }
+                
+                
+                
+            // this.setState({
+            //   offline: event.target.checked
+            // })
+          }
+
+
+          const setOnlineOffline = () => {
+            
+            return sdk.currentUser.updateProfile({
+              publicData: {
+                onHoldByOwner: !this.props.isOffline
+              }
+            }).then(res => {
+               if(typeof window !== "undefined"){
+                 window.location.reload()
+               }
+            })
+          }
+
+
+          const setOnHoldModalOpen = (value) => {
+            this.setState({
+              onHoldModalOpen: value
+            })
+          }
+
           return (
             <Form
               className={classes}
@@ -206,6 +289,8 @@ class ProfileSettingsFormComponent extends Component {
                 handleSubmit(e);
               }}
             >
+             <FormSpy onChange={onChangeSpy} />
+
               <div className={css.sectionContainer}>
                 <h3 className={css.sectionTitle}>
                   <FormattedMessage id="ProfileSettingsForm.yourProfilePicture" />
@@ -305,7 +390,6 @@ class ProfileSettingsFormComponent extends Component {
                 <div className={classNames(css.sectionContainer)}>
                   <h3 className={css.sectionTitle}>
                     <FormattedMessage id="ProfileSettingsForm.restaurantHeading" />
-                    XXX
                   </h3>
                   <FieldTextInput
                     type="text"
@@ -335,12 +419,95 @@ class ProfileSettingsFormComponent extends Component {
                   <FormattedMessage id="ProfileSettingsForm.bioInfo" />
                 </p>
               </div>
+
+
+              <div className={classNames(css.sectionContainer)}>
+                <h3 className={css.sectionTitle}>
+                  <FormattedMessage id="ProfileSettingsForm.scheduleTitle" />
+                </h3>
+                <div className={css.buttonWrapper}>
+                <p>Click this button to copy Monday's schedule to all days</p>
+
+                <SecondaryButton 
+                className={css.fillDaysButton}
+                type="button"
+                onClick={() => {form.mutators.fillSchedule(values)}}
+                >
+                    Fill all days
+                  </SecondaryButton>
+                </div>
+                
+                  <WeeklySchedulerForm/>
+              </div>
+
+
+              <div className={classNames(css.sectionContainer, css.lastSection)}>
+                <h3 className={css.sectionTitle}>
+                  <FormattedMessage id="ProfileSettingsForm.onHoldTitle" />
+                  {this.props.isOffline ? " (Your restaurant is on hold now)" : " (Your restaurant is online now)" }
+                </h3>
+
+                <p className={css.infoText}>By using this switch, you can put your business on hold or back online</p>
+
+                <div className={css.switchWrapper}>
+                      <p>
+                        Set my restaurant on Hold
+                      </p>
+                      
+                      <Switch
+                      checked={this.state.offline}
+                      onChange={handleOfflineSwitch}
+                      />
+              
+                </div>
+               
+                
+              </div>
+
+
+              <Modal
+              isOpen={this.state.onHoldModalOpen}
+              onClose={() => {
+                setOnHoldModalOpen(false);
+              }}
+              onManageDisableScrolling={() => {}}
+            >
+              <center>
+                <h2>
+                  Are you sure? <br/> Your business will appear offline.
+                </h2>
+              </center>
+
+
+              <div className={css.modalButtonsWrapper}>
+
+                <SecondaryButton 
+                type='button'
+                className={css.modalButton1}
+                onClick={setOnlineOffline}
+                >
+                  Put on hold
+                </SecondaryButton>
+                <br/>
+
+                <SecondaryButton 
+                type='button'
+                className={css.modalButton2}
+                onClick={() => setOnHoldModalOpen(false)}
+                >
+                  Go back
+                </SecondaryButton>
+                 
+              </div>
+            </Modal>
+
+
               {submitError}
               <Button
                 className={css.submitButton}
                 type="submit"
                 inProgress={submitInProgress}
-                disabled={submitDisabled}
+                disabled={false}
                 ready={pristineSinceLastSubmit}
               >
                 <FormattedMessage id="ProfileSettingsForm.saveChanges" />

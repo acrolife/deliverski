@@ -1,0 +1,97 @@
+.css-h7tmkn.Mui-disabled {
+    pointer-events: none;
+    color: rgb(223, 47, 47) !important;
+}
+
+
+.css-2dulho.Mui-disabled {
+    pointer-events: none;
+    color: rgb(223, 47, 47) !important;
+}
+
+.timePickerWrapper > div{
+    width: 12.5pc;
+    @media only screen and (max-width: 800px){
+        width: 100%;
+    }
+}
+
+.timeit-selected-0-1-9{
+    color: var(--marketplaceColor) !important;
+    }
+.dummyTimeWrapperFull{
+    border: 1px solid #C2C2C2;
+    height: 3.5pc;
+    border-radius: 5px;
+    display: flex;
+    padding: 0 12px;
+    justify-content: space-between;
+    cursor: text;
+    width: 100%;
+    margin: 0 auto;
+    &:hover{
+        border-color: black;
+    }
+}
+
+.dummyTimeWrapper{
+    border: 1px solid #C2C2C2;
+    height: 3.5pc;
+    border-radius: 5px;
+    display: flex;
+    padding: 0 12px;
+    justify-content: space-between;
+    cursor: text;
+    width: 12.5pc;
+
+    @media only screen and (max-width: 768px){
+        width: 11.2pc;
+    }
+
+    @media only screen and (max-width: 466px){
+        width: 38vw;
+    }
+
+    &:hover{
+        border-color: black;
+    }
+}
+
+.dummyTimeValue{
+    margin: auto 0;
+    color: #656565;
+    font-weight: 100;
+}
+
+.dummyTimeValueModified{
+    margin: auto 0;
+    color: rgb(71, 71, 71);
+    font-size: 17px;
+}
+
+.dummyTimeIcon{
+    margin: auto 0;
+}
+
+.dummyTimeIcon svg{
+    color: #747474;
+}
+
+.timeit-wrapper-0-1-1{
+    justify-content: center;
+}
+
+.dummyTimeWrapperDisabled{
+    border: 1px solid #C2C2C2;
+    height: 3.5pc;
+    border-radius: 5px;
+    display: flex;
+    padding: 0 12px;
+    justify-content: space-between;
+    pointer-events: none !important;
+
+}
+
+.wrapper{
+    width: 100%;
+}
