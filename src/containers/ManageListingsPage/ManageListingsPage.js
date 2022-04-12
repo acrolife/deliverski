@@ -16,13 +16,21 @@ import {
   LayoutWrapperMain,
   LayoutWrapperFooter,
   Footer,
+  Button
 } from '../../components';
 import TopbarContainer from '../../containers/TopbarContainer/TopbarContainer';
 
 import ManageListingCard from './ManageListingCard/ManageListingCard';
+import { types as sdkTypes } from '../../util/sdkLoader';
 
 import { closeListing, openListing, getOwnListingsById } from './ManageListingsPage.duck';
 import css from './ManageListingsPage.module.css';
+const sharetribeSdk = require('sharetribe-flex-sdk');
+const sdk = sharetribeSdk.createInstance({
+  clientId: process.env.REACT_APP_SHARETRIBE_SDK_CLIENT_ID
+});
+
+const { UUID } = sdkTypes;
 
 export class ManageListingsPageComponent extends Component {
   constructor(props) {
@@ -55,6 +63,33 @@ export class ManageListingsPageComponent extends Component {
 
     const hasPaginationInfo = !!pagination && pagination.totalItems != null;
     const listingsAreLoaded = !queryInProgress && hasPaginationInfo;
+
+    const resetAllStock = () => {
+        console.log(listings)
+
+        const promises = listings.map(l => {
+          const currentStock = l.currentStock?.attributes?.quantity;
+          const dailyStock = l.attributes.publicData?.dailyStock;
+
+          if(currentStock && dailyStock){
+              return sdk.stock.compareAndSet({
+                listingId: new UUID(l.id.uuid),
+                oldTotal: currentStock,
+                newTotal: dailyStock
+              })
+          }else{
+            return 'no stock yet'
+          }
+        })
+
+        return Promise.all(promises).then(resp => {
+          console.log(resp)
+          if(typeof window !== 'undefined'){
+            window.location.reload()
+          } 
+        })
+        
+    }
 
     const loadingResults = (
       <div className={css.messagePanel}>
@@ -127,6 +162,9 @@ export class ManageListingsPageComponent extends Component {
             {queryInProgress ? loadingResults : null}
             {queryListingsError ? queryError : null}
             <div className={css.listingPanel}>
+              <Button className={css.resetButton} onClick={resetAllStock}>
+                Reset all stock
+              </Button>
               {heading}
               <div className={css.listingCards}>
                 {listings.map(l => (
