@@ -9,7 +9,7 @@ const dev = process.env.REACT_APP_ENV === 'development';
 // If you want to change the language, remember to also change the
 // locale data and the messages in the app.js file.
 // const locale = 'fr';
-const locale = process.env.REACT_APP_LOCALE.toLowerCase()
+const locale = process.env.REACT_APP_LOCALE ? process.env.REACT_APP_LOCALE.toLowerCase() : 'en'
 const localeSwitch = process.env.REACT_APP_LOCALE_SWITCH ? process.env.REACT_APP_LOCALE_SWITCH.toLowerCase() : null
 const rootUrlSwitch = localeSwitch ? process.env.REACT_APP_CANONICAL_ROOT_URL_SWITCH : null
 const urlSwitchLang = localeSwitch ? (rootUrlSwitch + "/" + localeSwitch + "/") : "/"
