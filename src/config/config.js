@@ -14,6 +14,12 @@ const localeSwitch = process.env.REACT_APP_LOCALE_SWITCH ? process.env.REACT_APP
 const rootUrlSwitch = localeSwitch ? process.env.REACT_APP_CANONICAL_ROOT_URL_SWITCH : null
 const urlSwitchLang = localeSwitch ? (rootUrlSwitch + "/" + localeSwitch + "/") : "/"
 
+// DEV
+console.log("locale", locale)
+console.log("localeSwitch", localeSwitch)
+console.log("rootUrlSwitch", rootUrlSwitch)
+console.log("urlSwitchLang", urlSwitchLang)
+
 const i18n = {
   /*
     0: Sunday

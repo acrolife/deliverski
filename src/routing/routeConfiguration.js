@@ -45,8 +45,11 @@ const SearchPage = config.searchPageVariant === 'map' ? SearchPageWithMap : Sear
 const ListingPage = config.listingPageLayout === 'full-image' ? ListingPageFullImage : ListingPageHeroImage;
 
 // Custom Multilangage Implementation
-const locale = config.locale
-const localeSwitch = config.localeSwitch
+const locale = config.locale 
+const urlSwitchLang = config.locale ? config.urlSwitchLang : null
+// DEV
+// console.log("locale", locale)
+// console.log("urlSwitchLang", urlSwitchLang)
 
 export const ACCOUNT_SETTINGS_PAGES = [
   'ContactDetailsPage',
@@ -68,7 +71,9 @@ const RedirectToLandingPage = () => <NamedRedirect name="LandingPage" />;
 // a conflicting route defined there.
 
 // Custom implementation
-const localeSubPath = localeSwitch ? `${locale}/` : ""
+const localeSubPath = urlSwitchLang ? `${locale}/` : ""
+// DEV
+// console.log("localeSubPath", localeSubPath)
 
 // Our routes are exact by default.
 // See behaviour from Routes.js where Route is created.
