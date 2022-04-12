@@ -78,7 +78,9 @@ const OrderPanel = props => {
     lineItems,
     fetchLineItemsInProgress,
     fetchLineItemsError,
-    currentUser
+    currentUser,
+    isRestaurantOnHold,
+    restaurantStatus
   } = props;
 
   const isNightly = unitType === LINE_ITEM_NIGHT;
@@ -121,6 +123,8 @@ const OrderPanel = props => {
 
   const classes = classNames(rootClassName || css.root, className);
   const titleClasses = classNames(titleClassName || css.orderTitle);
+  const restaurantDot = <p className={restaurantStatus.status === 'open' ? css.openDot : css.closedDot}>•</p>;
+  const restaurantScheduleMessage = restaurantStatus.message;
 
   return (
     <div className={classes}>
@@ -137,7 +141,8 @@ const OrderPanel = props => {
         </div>
 
         <div className={css.orderHeading}>
-          <h2 className={titleClasses}>{title}</h2>
+          <h2 className={titleClasses}>{title} {restaurantDot}</h2>
+          <p className={restaurantStatus.status === 'open' ? css.scheduleInfoTextOpen : css.scheduleInfoTextClosed}>{restaurantScheduleMessage}</p>
           {subTitleText ? <div className={css.orderHelp}>{subTitleText}</div> : null}
 
           <div className={css.deliveryOptions}>
@@ -198,6 +203,7 @@ const OrderPanel = props => {
             listing={listing}
             currentUser={currentUser}
             history={history}
+            isRestaurantOnHold={isRestaurantOnHold}
           />
         ) : null}
       </ModalInMobile>
@@ -219,7 +225,7 @@ const OrderPanel = props => {
           <Button
             rootClassName={css.orderButton}
             onClick={() => openOrderModal(isOwnListing, isClosed, history, location)}
-            disabled={isOutOfStock}
+            disabled={isOutOfStock || isRestaurantOnHold}
           >
             {isOutOfStock ? (
               <FormattedMessage id="OrderPanel.ctaButtonMessageNoStock" />

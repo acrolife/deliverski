@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import { bool, string } from 'prop-types';
 import { compose } from 'redux';
-import { Field, Form as FinalForm } from 'react-final-form';
+import { Field, Form as FinalForm, FormSpy } from 'react-final-form';
 import isEqual from 'lodash/isEqual';
 import classNames from 'classnames';
-
+import WeeklySchedulerForm from '../WeeklySchedulerForm/WeeklySchedulerForm';
 import { FormattedMessage, injectIntl, intlShape } from '../../../util/reactIntl';
 import { ensureCurrentUser } from '../../../util/data';
 import { propTypes } from '../../../util/types';
 import * as validators from '../../../util/validators';
+import arrayMutators from 'final-form-arrays';
+import Switch from '@mui/material/Switch';
 import { isUploadImageOverLimitError } from '../../../util/errors';
 
 import {
@@ -18,6 +20,8 @@ import {
   ImageFromFile,
   IconSpinner,
   FieldTextInput,
+  SecondaryButton,
+  Modal
 } from '../../../components';
 
 import css from './ProfileSettingsForm.module.css';
@@ -25,12 +29,20 @@ import css from './ProfileSettingsForm.module.css';
 const ACCEPT_IMAGES = 'image/*';
 const UPLOAD_CHANGE_DELAY = 2000; // Show spinner so that browser has time to load img srcset
 
+const sharetribeSdk = require('sharetribe-flex-sdk');
+const sdk = sharetribeSdk.createInstance({
+  clientId: process.env.REACT_APP_SHARETRIBE_SDK_CLIENT_ID
+});
 class ProfileSettingsFormComponent extends Component {
   constructor(props) {
     super(props);
 
     this.uploadDelayTimeoutId = null;
-    this.state = { uploadDelay: false };
+    this.state = {
+      uploadDelay: false,
+      offline: this.props.isOffline,
+      onHoldModalOpen: false
+    };
     this.submittedValues = {};
   }
 
@@ -49,10 +61,31 @@ class ProfileSettingsFormComponent extends Component {
     window.clearTimeout(this.uploadDelayTimeoutId);
   }
 
+
+
   render() {
     return (
       <FinalForm
         {...this.props}
+        mutators={{
+          ...arrayMutators,
+          fillSchedule: (args, state, utils) => {
+            const formValues = args[0];
+            const mondaySchedule = formValues.schedule.find(s => {
+              return s.day === 'monday'
+            })
+            utils.changeValue(state, 'schedule', () => {
+              return formValues.schedule.map(i => {
+                i.endHour = mondaySchedule.endHour;
+                i.endMinute = mondaySchedule.endMinute;
+                i.startHour = mondaySchedule.startHour;
+                i.startMinute = mondaySchedule.startMinute;
+
+                return i
+              })
+            })
+          }
+        }}
         render={fieldRenderProps => {
           const {
             className,
@@ -198,6 +231,56 @@ class ProfileSettingsFormComponent extends Component {
           const submitDisabled =
             invalid || pristine || pristineSinceLastSubmit || uploadInProgress || submitInProgress;
 
+          const onChangeSpy = (formValues) => {
+            // console.log(formValues.values)
+          }
+
+          const handleOfflineSwitch = (event) => {
+            if (this.props.isOffline) {
+              return sdk.currentUser.updateProfile({
+                publicData: {
+                  onHoldByOwner: !this.props.isOffline
+                }
+              }).then(res => {
+                if (typeof window !== "undefined") {
+                  window.location.reload()
+                }
+              })
+            } else {
+              this.setState({
+                onHoldModalOpen: true
+              })
+
+            }
+
+
+
+            // this.setState({
+            //   offline: event.target.checked
+            // })
+          }
+
+
+          const setOnlineOffline = () => {
+
+            return sdk.currentUser.updateProfile({
+              publicData: {
+                onHoldByOwner: !this.props.isOffline
+              }
+            }).then(res => {
+              if (typeof window !== "undefined") {
+                window.location.reload()
+              }
+            })
+          }
+
+
+          const setOnHoldModalOpen = (value) => {
+            this.setState({
+              onHoldModalOpen: value
+            })
+          }
+
           return (
             <Form
               className={classes}
@@ -206,6 +289,8 @@ class ProfileSettingsFormComponent extends Component {
                 handleSubmit(e);
               }}
             >
+              <FormSpy onChange={onChangeSpy} />
+
               <div className={css.sectionContainer}>
                 <h3 className={css.sectionTitle}>
                   <FormattedMessage id="ProfileSettingsForm.yourProfilePicture" />
@@ -342,7 +427,7 @@ class ProfileSettingsFormComponent extends Component {
                 className={css.submitButton}
                 type="submit"
                 inProgress={submitInProgress}
-                disabled={submitDisabled}
+                disabled={false}
                 ready={pristineSinceLastSubmit}
               >
                 <FormattedMessage id="ProfileSettingsForm.saveChanges" />

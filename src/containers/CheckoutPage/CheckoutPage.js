@@ -41,6 +41,7 @@ import {
   txIsPaymentExpired,
   txHasPassedPaymentPending,
 } from '../../util/transaction';
+import { isRestaurantOpen } from '../../util/data';
 
 // Import global thunk functions
 import { isScrollingDisabled } from '../../ducks/UI.duck';
@@ -744,6 +745,9 @@ export class CheckoutPageComponent extends Component {
     const listingTitle = currentListing.attributes.title;
     const title = intl.formatMessage({ id: 'CheckoutPage.title' }, { restaurantName });
 
+
+    const restaurantState = isRestaurantOpen(currentListing?.author?.attributes.profile.publicData);
+    const warningMessage = restaurantState?.checkoutMessage === "" ? null : restaurantState?.checkoutMessage;
     const pageProps = { title, scrollingDisabled };
     const topbar = (
       <div className={css.topbar}>
@@ -890,6 +894,8 @@ export class CheckoutPageComponent extends Component {
     return (
       <Page {...pageProps}>
         {topbar}
+        <center><h2 className={css.warningMessage}>{warningMessage}</h2></center>
+
         <div className={css.contentContainer}>
           {/* <AspectRatioWrapper
             width={aspectWidth}
@@ -962,6 +968,7 @@ export class CheckoutPageComponent extends Component {
                   askShippingDetails={orderData?.deliveryMethod === 'shipping'}
                   pickupLocation={currentListing?.attributes?.publicData?.location}
                   totalPrice={tx.id ? getFormattedTotalPrice(tx, intl) : null}
+                  isRestaurantClosed={restaurantState?.status === 'closed'}
                 />
               ) : null}
               {isPaymentExpired ? (

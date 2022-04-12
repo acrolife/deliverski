@@ -52,7 +52,9 @@ export const ContactDetailsPageComponent = props => {
   const user = ensureCurrentUser(currentUser);
   const currentEmail = user.attributes.email || '';
   const protectedData = user.attributes.profile.protectedData || {};
-  const currentPhoneNumber = protectedData.phoneNumber || '';
+  const publicData = user.attributes.profile.publicData || {};
+
+  const currentPhoneNumber = publicData.phoneNumber || '';
   const contactInfoForm = user.id ? (
     <ContactDetailsForm
       className={css.form}

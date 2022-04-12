@@ -9,6 +9,7 @@ import { ensureListing, ensureUser } from '../../util/data';
 import { richText } from '../../util/richText';
 import { createSlug } from '../../util/urlHelpers';
 import config from '../../config';
+import { isRestaurantOpen } from '../../util/data';
 import { AspectRatioWrapper, NamedLink, ResponsiveImage } from '../../components';
 
 import css from './ListingCard.module.css';
@@ -85,6 +86,7 @@ export const ListingCardComponent = props => {
       }
     : null;
 
+  const restaurantStatus = isRestaurantOpen(listing?.author?.attributes.profile?.publicData);
   return (
     <NamedLink className={classes} name="ListingPage" params={{ id, slug }}>
       <AspectRatioWrapper
@@ -93,6 +95,16 @@ export const ListingCardComponent = props => {
         height={aspectHeight}
         {...setActivePropsMaybe}
       >
+          <div className={css.bulletWrapper}>
+            {/* <img src={badge} className={css.reviewsBadge} /> */}
+            <p className={restaurantStatus.status === "open" ? css.openedRestaurant : css.closedRestaurant} >•</p>
+          </div>
+
+          <div className={css.messageWrapper}>
+            {/* <img src={badge} className={css.reviewsBadge} /> */}
+            <p className={css.scheduleMessage} >{restaurantStatus.message}</p>
+          </div>
+
         <LazyImage
           rootClassName={css.rootForImage}
           alt={title}

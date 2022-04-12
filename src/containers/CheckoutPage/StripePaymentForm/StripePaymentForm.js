@@ -411,7 +411,7 @@
        hasHandledCardPayment
      );
  
-     const submitDisabled = invalid || onetimePaymentNeedsAttention || submitInProgress;
+     const submitDisabled = invalid || onetimePaymentNeedsAttention || submitInProgress || this.props.isRestaurantClosed;
      const hasCardError = this.state.error && !submitInProgress;
      const hasPaymentErrors = confirmCardPaymentError || confirmPaymentError;
      const classes = classNames(rootClassName || css.root, className);

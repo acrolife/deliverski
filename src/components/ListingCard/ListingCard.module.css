@@ -125,3 +125,61 @@
   word-break: break-word;
   hyphens: auto;
 }
+
+.bulletWrapper{
+  position: absolute;
+  left: 0;
+  z-index: 1;
+  background-color: transparent;
+  padding: 5px;
+  width: 100%;
+}
+
+.openedRestaurant{
+  width: auto;
+  margin: 0;
+  font-size: 80px;
+  color: var(--successColor);
+  text-shadow: 0 0.1rem 0.3rem rgb(132, 132, 132);
+
+}
+
+.closedRestaurant{
+  width: auto;
+  margin: 0;
+  font-size: 80px;
+  color: red;
+  text-shadow: 0 0.1rem 0.3rem rgb(132, 132, 132);
+}
+
+.messageWrapper{
+  
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0 10px;
+  &:hover{  
+    z-index: 3;
+    background-color: rgba(56, 56, 56, 0.7);
+    
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.scheduleMessage{
+  z-index: 4;
+  width: 100%;
+  text-align: center;
+  vertical-align: center;
+  color: transparent;
+  height: 100%;
+  padding-top: 15%;
+  padding-bottom: 10%;
+  &:hover{
+    color: white;
+  }
+}
