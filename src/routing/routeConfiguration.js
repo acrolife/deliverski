@@ -44,6 +44,10 @@ const StyleguidePage = loadable(() => import(/* webpackChunkName: "StyleguidePag
 const SearchPage = config.searchPageVariant === 'map' ? SearchPageWithMap : SearchPageWithList;
 const ListingPage = config.listingPageLayout === 'full-image' ? ListingPageFullImage : ListingPageHeroImage;
 
+// Custom Multilangage Implementation
+const locale = config.locale
+const localeSwitch = config.localeSwitch
+
 export const ACCOUNT_SETTINGS_PAGES = [
   'ContactDetailsPage',
   'PasswordChangePage',
@@ -64,7 +68,7 @@ const RedirectToLandingPage = () => <NamedRedirect name="LandingPage" />;
 // a conflicting route defined there.
 
 // Custom implementation
-const localeSubPath = `${config.locale}/`
+const localeSubPath = localeSwitch ? `${locale}/` : ""
 
 // Our routes are exact by default.
 // See behaviour from Routes.js where Route is created.

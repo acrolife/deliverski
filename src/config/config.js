@@ -10,9 +10,9 @@ const dev = process.env.REACT_APP_ENV === 'development';
 // locale data and the messages in the app.js file.
 // const locale = 'fr';
 const locale = process.env.REACT_APP_LOCALE.toLowerCase()
-const localeSwitch = process.env.REACT_APP_LOCALE_SWITCH.toLowerCase()
-const rootUrlSwitch = process.env.REACT_APP_CANONICAL_ROOT_URL_SWITCH
-const urlSwitchLang = rootUrlSwitch + '/' + localeSwitch + '/'
+const localeSwitch = process.env.REACT_APP_LOCALE_SWITCH ? process.env.REACT_APP_LOCALE_SWITCH.toLowerCase() : null
+const rootUrlSwitch = localeSwitch ? process.env.REACT_APP_CANONICAL_ROOT_URL_SWITCH : null
+const urlSwitchLang = localeSwitch ? (rootUrlSwitch + "/" + localeSwitch + "/") : "/"
 
 const i18n = {
   /*
@@ -129,9 +129,9 @@ const listing = {
 
 // Address information is used in SEO schema for Organization (http://schema.org/PostalAddress)
 const addressCountry = 'FR';
-const addressRegion = 'Albertville';
-const postalCode = '73200';
-const streetAddress = 'Rue des prairies';
+const addressRegion = 'Bourg Saint Maurice';
+const postalCode = '73700';
+const streetAddress = 'Rue de la Chaudanne';
 
 // Canonical root url is needed in social media sharing and SEO optimization purposes.
 const canonicalRootURL = process.env.REACT_APP_CANONICAL_ROOT_URL;
