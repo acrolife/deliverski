@@ -46,7 +46,7 @@ const ListingPage = config.listingPageLayout === 'full-image' ? ListingPageFullI
 
 // Custom Multilangage Implementation
 const locale = config.locale 
-const urlSwitchLang = config.locale ? config.urlSwitchLang : null
+const urlSwitchLang = config.urlSwitchLang
 // DEV
 // console.log("locale", locale)
 // console.log("urlSwitchLang", urlSwitchLang)
@@ -73,7 +73,7 @@ const RedirectToLandingPage = () => <NamedRedirect name="LandingPage" />;
 // Custom implementation
 const localeSubPath = urlSwitchLang ? `${locale}/` : ""
 // DEV
-// console.log("localeSubPath", localeSubPath)
+console.log("localeSubPath", localeSubPath)
 
 // Our routes are exact by default.
 // See behaviour from Routes.js where Route is created.
