@@ -71,7 +71,7 @@ const RedirectToLandingPage = () => <NamedRedirect name="LandingPage" />;
 // a conflicting route defined there.
 
 // Custom implementation
-const localeSubPath = urlSwitchLang ? `${locale}/` : ""
+const localeSubPath = urlSwitchLang === "/" ? "" : `${locale}/`
 // DEV
 console.log("localeSubPath", localeSubPath)
 
