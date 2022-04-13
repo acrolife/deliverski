@@ -15,9 +15,7 @@ import NotFoundPage from '../containers/NotFoundPage/NotFoundPage';
 
 import LoadableComponentErrorBoundary from './LoadableComponentErrorBoundary/LoadableComponentErrorBoundary';
 // import { config } from 'yargs';
-import config from '../config';
 
-const localePath = (config.locale && config.localeSwitch) ? `${config.locale}/`: ""
 
 const canShowComponent = props => {
   const { isAuthenticated, route } = props;
@@ -118,7 +116,7 @@ class RouteComponentRenderer extends Component {
     ) : (
       <NamedRedirect
         name={authPage}
-        state={{ from: `${localePath}${location.pathname}${location.search}${location.hash}` }}
+        state={{ from: `${location.localePath}${location.pathname}${location.search}${location.hash}` }}
       />
     );
   }

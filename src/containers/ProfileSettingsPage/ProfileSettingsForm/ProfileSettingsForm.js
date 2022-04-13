@@ -422,6 +422,85 @@ class ProfileSettingsFormComponent extends Component {
                 </p>
               </div>}
 
+
+              {isProvider && <div className={classNames(css.sectionContainer)}>
+                <h3 className={css.sectionTitle}>
+                  <FormattedMessage id="ProfileSettingsForm.scheduleTitle" />
+                </h3>
+                <div className={css.buttonWrapper}>
+                  <p>Click this button to copy Monday's schedule to all days</p>
+
+                  <SecondaryButton
+                    className={css.fillDaysButton}
+                    type="button"
+                    onClick={() => { form.mutators.fillSchedule(values) }}
+                  >
+                    Fill all days
+                  </SecondaryButton>
+                </div>
+
+                <WeeklySchedulerForm />
+              </div>}
+
+
+              {isProvider && <div className={classNames(css.sectionContainer, css.lastSection)}>
+                <h3 className={css.sectionTitle}>
+                  <FormattedMessage id="ProfileSettingsForm.onHoldTitle" />
+                  {this.props.isOffline ? " (Your restaurant is on hold now)" : " (Your restaurant is online now)"}
+                </h3>
+
+                <p className={css.infoText}>By using this switch, you can put your business on hold or back online</p>
+
+                <div className={css.switchWrapper}>
+                  <p>
+                    Set my restaurant on Hold
+                  </p>
+
+                  <Switch
+                    checked={this.state.offline}
+                    onChange={handleOfflineSwitch}
+                  />
+                </div>
+              </div>}
+
+
+              {isProvider && <Modal
+                isOpen={this.state.onHoldModalOpen}
+                onClose={() => {
+                  setOnHoldModalOpen(false);
+                }}
+                onManageDisableScrolling={() => { }}
+              >
+                <center>
+                  <h2>
+                    Are you sure? <br /> Your business will appear offline.
+                  </h2>
+                </center>
+
+
+                <div className={css.modalButtonsWrapper}>
+
+                  <SecondaryButton
+                    type='button'
+                    className={css.modalButton1}
+                    onClick={setOnlineOffline}
+                  >
+                    Put on hold
+                  </SecondaryButton>
+                  <br />
+
+                  <SecondaryButton
+                    type='button'
+                    className={css.modalButton2}
+                    onClick={() => setOnHoldModalOpen(false)}
+                  >
+                    Go back
+                  </SecondaryButton>
+
+                </div>
+              </Modal>}
+
+
               {submitError}
               <Button
                 className={css.submitButton}

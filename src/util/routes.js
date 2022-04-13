@@ -103,7 +103,7 @@ export const findRouteByRouteName = (nameToFind, routes) => {
  *
  */
 export const canonicalRoutePath = (routes, location, pathOnly = false) => {
-  const { pathname, search, hash } = location;
+  const { localePath, pathname, search, hash } = location;
 
   const matches = matchPathname(pathname, routes);
   const isListingRoute = matches.length === 1 && matches[0].route.name === 'ListingPage';
@@ -115,10 +115,11 @@ export const canonicalRoutePath = (routes, location, pathOnly = false) => {
     const cleanedPathName = pathname.replace(/\/$/, '');
     const parts = cleanedPathName.split('/');
 
-    if (parts.length !== 4) {
+    if (!(parts.length === 4 || parts.length === 5)) {
       throw new Error('Expected ListingPage route to have 4 parts');
     }
-    const canonicalListingPathname = `/${parts[1]}/${parts[3]}`;
+    const canonicalListingPathname = `/${parts[2]}/${parts[4]}`;
+
     return pathOnly ? canonicalListingPathname : `${canonicalListingPathname}${search}${hash}`;
   }
 

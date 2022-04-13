@@ -45,7 +45,7 @@ const SearchPage = config.searchPageVariant === 'map' ? SearchPageWithMap : Sear
 const ListingPage = config.listingPageLayout === 'full-image' ? ListingPageFullImage : ListingPageHeroImage;
 
 // Custom Multilangage Implementation
-const locale = config.locale 
+const locale = config.locale
 const urlSwitchLang = config.urlSwitchLang
 // DEV
 // console.log("locale", locale)
@@ -63,6 +63,7 @@ const draftId = '00000000-0000-0000-0000-000000000000';
 const draftSlug = 'draft';
 
 const RedirectToLandingPage = () => <NamedRedirect name="LandingPage" />;
+const RedirectToSearchPage = () => <NamedRedirect name="SearchPage" />;
 
 // NOTE: Most server-side endpoints are prefixed with /api. Requests to those
 // endpoints are indended to be handled in the server instead of the browser and
@@ -73,12 +74,24 @@ const RedirectToLandingPage = () => <NamedRedirect name="LandingPage" />;
 // Custom implementation
 const localeSubPath = urlSwitchLang === "/" ? "" : `${locale}/`
 // DEV
-console.log("localeSubPath", localeSubPath)
+// console.log("localeSubPath", localeSubPath)
 
 // Our routes are exact by default.
 // See behaviour from Routes.js where Route is created.
 const routeConfiguration = () => {
   return [
+    // Custom implementation of multilang START
+    {
+      path: '/',
+      name: 'RedirectToLandingPage',
+      component: RedirectToLandingPage,
+    },
+    {
+      path: '/s',
+      name: 'RedirectToSearchPage',
+      component: RedirectToSearchPage,
+    },
+    // Custom implementation of multilang END
     {
       path: `/${localeSubPath}`,
       name: 'LandingPage',
@@ -353,7 +366,7 @@ const routeConfiguration = () => {
     {
       path: `/${localeSubPath}reset-password`,
       name: 'PasswordResetPage',
-      component: PasswordResetPage ,
+      component: PasswordResetPage,
     },
 
     // Do not change this path!

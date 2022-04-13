@@ -15,10 +15,10 @@ const rootUrlSwitch = localeSwitch ? process.env.REACT_APP_CANONICAL_ROOT_URL_SW
 const urlSwitchLang = localeSwitch ? (rootUrlSwitch + "/" + localeSwitch + "/") : "/"
 
 // DEV
-console.log("locale", locale)
-console.log("localeSwitch", localeSwitch)
-console.log("rootUrlSwitch", rootUrlSwitch)
-console.log("urlSwitchLang", urlSwitchLang)
+// console.log("locale", locale)
+// console.log("localeSwitch", localeSwitch)
+// console.log("rootUrlSwitch", rootUrlSwitch)
+// console.log("urlSwitchLang", urlSwitchLang)
 
 const i18n = {
   /*
@@ -251,6 +251,7 @@ const config = {
   dev,
   locale,
   urlSwitchLang,
+  localeSwitch,
   transactionProcessAlias,
   lineItemUnitType,
   listingManagementType,
