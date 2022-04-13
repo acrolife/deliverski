@@ -34,7 +34,6 @@
  */
 
 export const filters = [
-  /*
   {
     id: 'restaurant',
     label: 'Restaurant',
@@ -63,7 +62,6 @@ export const filters = [
       ],
     },
   },
-  */
   {
     id: 'category',
     label: 'Category',
