@@ -28,19 +28,19 @@ const FilterComponent = props => {
   const name = id.replace(/\s+/g, '-').toLowerCase();
 
   switch (type) {
-    case 'SelectSingleFilter': {
-      return (
-        <SelectSingleFilter
-          id={componentId}
-          label={label}
-          queryParamNames={queryParamNames}
-          initialValues={initialValues(queryParamNames, liveEdit)}
-          onSelect={getHandleChangedValueFn(useHistoryPush)}
-          {...config}
-          {...rest}
-        />
-      );
-    }
+    // case 'SelectSingleFilter': {
+    //   return (
+    //     <SelectSingleFilter
+    //       id={componentId}
+    //       label={label}
+    //       queryParamNames={queryParamNames}
+    //       initialValues={initialValues(queryParamNames, liveEdit)}
+    //       onSelect={getHandleChangedValueFn(useHistoryPush)}
+    //       {...config}
+    //       {...rest}
+    //     />
+    //   );
+    // }
     case 'SelectMultipleFilter': {
       return (
         <SelectMultipleFilter
