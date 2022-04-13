@@ -65,7 +65,7 @@ Read more from https://sharetribe.com/docs/ftw-introduction/ftw-product/
   [#108](https://github.com/sharetribe/ftw-product/pull/108)
 - [change] Line-items: calculate commission from base price.
   [#106](https://github.com/sharetribe/ftw-product/pull/106)
-- [change] Update translations (en.json) to match Sneakertime concept.
+- [change] Update translations (en.json) to match Marmott' concept.
   [#104](https://github.com/sharetribe/ftw-product/pull/104)
 - [fix] TransactionPanel: smaller gap between OrderBreakdown and title.
   [#107](https://github.com/sharetribe/ftw-product/pull/107)
@@ -117,9 +117,9 @@ Read more from https://sharetribe.com/docs/ftw-introduction/ftw-product/
   [#75](https://github.com/sharetribe/ftw-product/pull/75)
 - [add] Stock info and link to correct tab included to ManageListingCard.
   [#74](https://github.com/sharetribe/ftw-product/pull/74)
-- [change] Social media images updated for Sneakertime.
+- [change] Social media images updated for Marmott'.
   [#72](https://github.com/sharetribe/ftw-product/pull/72)
-- [change] Marketplace colors updated for Sneakertime.
+- [change] Marketplace colors updated for Marmott'.
   [#71](https://github.com/sharetribe/ftw-product/pull/71)
 - [change] Landing page Hero and How it works sections updated.
   [#70](https://github.com/sharetribe/ftw-product/pull/70)

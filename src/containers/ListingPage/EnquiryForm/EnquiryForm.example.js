@@ -4,7 +4,7 @@ export const Empty = {
   component: EnquiryForm,
   props: {
     formId: 'EnquiryFormExample',
-    listingTitle: 'Sneaky sneaker',
+    listingTitle: 'Marmottful Marmott',
     authorDisplayName: 'Janne',
     onSubmit(values) {
       console.log('submit with values:', values);
