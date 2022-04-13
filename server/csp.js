@@ -67,8 +67,10 @@ const defaultDirectives = {
     'api.mapbox.com',
     '*.google-analytics.com',
     'js.stripe.com',
-    'http://localhost:3000',
-    'a7494ed.online-server.cloud',    
+    'http://localhost:3000',    
+    'http://localhost:3008',
+    'http://localhost:3009',    
+    'marmott.co',    
   ],
   styleSrc: [self, unsafeInline, 'fonts.googleapis.com', 'api.mapbox.com'],
 };
