@@ -48,8 +48,8 @@ const ListingPage = config.listingPageLayout === 'full-image' ? ListingPageFullI
 const locale = config.locale
 const urlSwitchLang = config.urlSwitchLang
 // DEV
-console.log("locale", locale)
-console.log("urlSwitchLang", urlSwitchLang)
+// console.log("locale", locale)
+// console.log("urlSwitchLang", urlSwitchLang)
 
 export const ACCOUNT_SETTINGS_PAGES = [
   'ContactDetailsPage',
@@ -74,7 +74,7 @@ const RedirectToSearchPage = () => <NamedRedirect name="SearchPage" />;
 // Custom implementation
 const localeSubPath = !urlSwitchLang ? "" : `${locale}/`
 // DEV
-console.log("localeSubPath", localeSubPath)
+// console.log("localeSubPath", localeSubPath)
 
 // Our routes are exact by default.
 // See behaviour from Routes.js where Route is created.
