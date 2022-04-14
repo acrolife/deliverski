@@ -11,13 +11,11 @@ const dev = process.env.REACT_APP_ENV === 'development';
 // const locale = 'fr';
 const locale = process.env.REACT_APP_LOCALE ? process.env.REACT_APP_LOCALE.toLowerCase() : 'en'
 const localeSwitch = process.env.REACT_APP_LOCALE_SWITCH ? process.env.REACT_APP_LOCALE_SWITCH.toLowerCase() : null
-const rootUrlSwitch = localeSwitch ? process.env.REACT_APP_CANONICAL_ROOT_URL_SWITCH : null
-const urlSwitchLang = localeSwitch ? (rootUrlSwitch + "/" + localeSwitch + "/") : "/"
+const urlSwitchLang = localeSwitch ? process.env.REACT_APP_URL_SWITCH : null
 
 // DEV
 // console.log("locale", locale)
 // console.log("localeSwitch", localeSwitch)
-// console.log("rootUrlSwitch", rootUrlSwitch)
 // console.log("urlSwitchLang", urlSwitchLang)
 
 const i18n = {
@@ -140,7 +138,7 @@ const postalCode = '73700';
 const streetAddress = 'Rue de la Chaudanne';
 
 // Canonical root url is needed in social media sharing and SEO optimization purposes.
-const canonicalRootURL = process.env.REACT_APP_CANONICAL_ROOT_URL;
+const canonicalRootURL = process.env.REACT_APP_CANONICAL_ROOT_URL 
 
 // Site title is needed in meta tags (bots and social media sharing reads those)
 const siteTitle = 'Marmott';

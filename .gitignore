@@ -19,5 +19,6 @@ yarn-error.log
 process
 process-test
 _bkp
+_bkp-checked
 _tmp
 package-lock.json
