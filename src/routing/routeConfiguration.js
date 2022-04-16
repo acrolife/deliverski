@@ -65,6 +65,13 @@ const draftSlug = 'draft';
 const RedirectToLandingPage = () => <NamedRedirect name="LandingPage" />;
 const RedirectToSearchPage = () => <NamedRedirect name="SearchPage" />;
 
+// We implement a redirection for /fr when we are in dev mode
+const RedirectToAnyPageTriggerPath = !urlSwitchLang ? "fr" : ""
+// TODO should also implement a redirection for /en but it's ok, not necessary at all
+
+// DEV
+console.log("RedirectToAnyPageTriggerPath", RedirectToAnyPageTriggerPath)
+
 // NOTE: Most server-side endpoints are prefixed with /api. Requests to those
 // endpoints are indended to be handled in the server instead of the browser and
 // they will not render the application. So remember to avoid routes starting
@@ -73,9 +80,7 @@ const RedirectToSearchPage = () => <NamedRedirect name="SearchPage" />;
 
 // Custom implementation
 const localeSubPath = !urlSwitchLang ? "" : `${locale}/`
-// We implement a redirection for /fr when we are in dev mode
-const RedirectToLandingPageTriggerPath = !urlSwitchLang ? "fr" : ""
-// TODO should also implement a redirection for /en but it's ok, not necessary at all
+
 
 // DEV
 // console.log("localeSubPath", localeSubPath)
@@ -86,12 +91,12 @@ const routeConfiguration = () => {
   return [
     // Custom implementation of multilang START
     {
-      path: `/${RedirectToLandingPageTriggerPath}`,
+      path: `/${RedirectToAnyPageTriggerPath}`,
       name: 'RedirectToLandingPage',
       component: RedirectToLandingPage,
     },
     {
-      path: '/s',
+      path: `/${RedirectToAnyPageTriggerPath}s`,
       name: 'RedirectToSearchPage',
       component: RedirectToSearchPage,
     },
@@ -367,6 +372,7 @@ const routeConfiguration = () => {
     // Do not change this path!
     //
     // The API expects that the application implements /reset-password endpoint
+    // OK => We customized the reset-pw messages 
     {
       path: `/${localeSubPath}reset-password`,
       name: 'PasswordResetPage',
@@ -376,6 +382,7 @@ const routeConfiguration = () => {
     // Do not change this path!
     //
     // The API expects that the application implements /verify-email endpoint
+    // OK => We customized the reset-pw messages 
     {
       path: `/${localeSubPath}verify-email`,
       name: 'EmailVerificationPage',
