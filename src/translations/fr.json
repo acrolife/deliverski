@@ -689,7 +689,7 @@
   "SearchFiltersMobile.cancel": "ANNULER",
   "SearchFiltersMobile.filtersButtonLabel": "Filtres",
   "SearchFiltersMobile.foundResults": "{count, number} {count, plural, one {result} other {results}}",
-  "SearchFiltersMobile.heading": "Filtrer produits",
+  "SearchFiltersMobile.heading": "Filtrer les produits",
   "SearchFiltersMobile.keywordLabel": "Mot clé",
   "SearchFiltersMobile.loadingResults": "Chargement…",
   "SearchFiltersMobile.noResults": "Pas de résultats.",
