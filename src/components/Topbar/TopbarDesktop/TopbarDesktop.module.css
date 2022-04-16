@@ -108,7 +108,7 @@
 }
 
 /* Create listing (CTA for providers) */
-.createListingLink {
+.manageListingsLink {
   @apply --TopbarDesktop_linkHover;
   @apply --marketplaceH5FontStyles;
 
@@ -129,7 +129,7 @@
   }
 }
 
-.createListing {
+.manageListings {
   @apply --TopbarDesktop_label;
 }
 
@@ -152,6 +152,11 @@
     margin-top: 0;
     margin-bottom: 0;
   }
+
+  @media only screen and (max-width: 768px){
+    width: 8rem;
+  }
+
 }
 
 .inbox {
@@ -240,12 +245,20 @@
     &:active {
       border-bottom: 0;
     }
+
+    @media only screen and (max-width: 768px){
+      margin-right: -10px;
+    }
 }
 
 .langageMenuContent {
   min-width: 276px;
+  /* width: 6rem !important; */
   padding: 10px 0 10px 0;
-  margin-left: 10px;
+  /* margin-right: 10rem; */
+  /* position: fixed; */
+  /* margin-left: 10px; */
+  /* margin-left: 15rem; */
 }
 
 
@@ -413,12 +426,15 @@
   height: 100%;
   width: 3pc;
   cursor: pointer;
+  padding-top: 10px;
 
   @media only screen and (max-width: 768px){
     width: 1pc;
     justify-content: flex-start;
     height: var(--topbarHeight);
+    margin-right: 22px;
   }
+
 }
 
 .cartIcon{

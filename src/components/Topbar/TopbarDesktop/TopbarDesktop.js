@@ -87,12 +87,11 @@ const TopbarDesktop = props => {
   const langLink = (<Menu>
 
     <MenuLabel className={css.langageMenuLabel} isOpenClassName={css.langageMenuIsOpen}>
-      {/* <FormattedMessage id="TopbarDesktop.lang" /> */}
       <img className={css.langIcon} src={LangIconPng} />
     </MenuLabel>
 
-    <MenuContent className={css.langageMenuContent}>
-      <MenuItem key="ManageListingsPage" className={css.menuItemLang}>
+    <MenuContent className={css.langageMenuContent} >
+      <MenuItem key="ChangeLangage" className={css.menuItemLang}>
         <ExternalLink href={urlSwitchLang} className={css.langLink}>
           {langageSwitch}
         </ExternalLink >
@@ -125,6 +124,17 @@ const TopbarDesktop = props => {
               <FormattedMessage id="TopbarDesktop.yourListingsLink" />
             </NamedLink>}
         </MenuItem>
+
+        <MenuItem key="NewListingPage">
+          {isProvider &&
+            <NamedLink
+              className={classNames(css.yourListingsLink, currentPageClass('NewListingPage'))}
+              name="NewListingPage"
+            >
+              <span className={css.menuItemBorder} />
+              <FormattedMessage id="TopbarDesktop.newListingLink" />
+            </NamedLink>}
+        </MenuItem>        
 
         <MenuItem key="ProfileSettingsPage">
           <NamedLink
@@ -173,8 +183,6 @@ const TopbarDesktop = props => {
   return (
     <nav className={classes}>
 
-      {langLink}
-
       <NamedLink className={css.logoLink} name="LandingPage">
         <Logo
           format="desktop"
@@ -186,22 +194,22 @@ const TopbarDesktop = props => {
       {search}
 
       {
-        isProvider && <NamedLink className={css.createListingLink} name="NewListingPage">
-          <span className={css.createListing}>
-            <FormattedMessage id="TopbarDesktop.createListing" />
+        isProvider && <NamedLink className={css.manageListingsLink} name="NewListingPage">
+          <span className={css.manageListings}>
+            <FormattedMessage id="TopbarDesktop.manageListings" />
           </span>
         </NamedLink>
       }
 
       {inboxLink}
 
-      {/* {langLink} */}
-
       <ShoppingCart
         intl={intl}
         history={history}
         currentUser={currentUser}
       />
+
+      {langLink}
 
       {profileMenu}
 

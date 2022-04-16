@@ -28,7 +28,7 @@ const TopbarMobileMenu = props => {
   } = props;
 
   const user = ensureCurrentUser(currentUser);
-   // Conditional rendering of the provider/customer UI elements
+  // Conditional rendering of the provider/customer UI elements
   const isProvider = currentUser ? !!currentUser.attributes.profile.metadata.isProvider : false
 
   if (!isAuthenticated) {
@@ -92,6 +92,7 @@ const TopbarMobileMenu = props => {
         </InlineTextButton>
 
 
+        <div className={css.spacerMenu} />
         <NamedLink
           className={classNames(css.inbox, currentPageClass('InboxPage'))}
           name="InboxPage"
@@ -101,13 +102,19 @@ const TopbarMobileMenu = props => {
           {notificationCountBadge}
         </NamedLink>
 
-        {
-          isProvider && <NamedLink
-            className={classNames(css.navigationLink, currentPageClass('ManageListingsPage'))}
-            name="ManageListingsPage"
-          >
-            <FormattedMessage id="TopbarMobileMenu.yourListingsLink" />
-          </NamedLink>}
+        {isProvider && <NamedLink
+          className={classNames(css.navigationLink, currentPageClass('ManageListingsPage'))}
+          name="ManageListingsPage"
+        >
+          <FormattedMessage id="TopbarMobileMenu.yourListingsLink" />
+        </NamedLink>}
+
+        {isProvider && <NamedLink
+          className={classNames(css.navigationLink, currentPageClass('NewListingPage'))}
+          name="NewListingPage"
+        >
+          <FormattedMessage id="TopbarMobileMenu.newListingLink" />
+        </NamedLink>}        
 
         <NamedLink
           className={classNames(css.navigationLink, currentPageClass('ProfileSettingsPage'))}
@@ -123,13 +130,16 @@ const TopbarMobileMenu = props => {
         </NamedLink>
         <div className={css.spacer} />
       </div>
+
+
       {
-        isProvider && <div className={css.footer}>
-          <NamedLink className={css.createNewListingLink} name="NewListingPage">
-            <FormattedMessage id="TopbarMobileMenu.newListingLink" />
+        isProvider && isAuthenticated && <div className={css.footer}>
+          <NamedLink className={css.manageListingLink} name="ManageListingsPage">
+            <FormattedMessage id="TopbarMobileMenu.yourListingsLink" />
           </NamedLink>
         </div>
       }
+
 
     </div>
   );

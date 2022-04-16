@@ -207,8 +207,8 @@ class TopbarComponent extends Component {
         <img className={css.langIcon} src={LangIconPng} />
       </MenuLabel>
 
-      <MenuContent className={css.langageMenuContent}>
-        <MenuItem key="ManageListingsPage" className={css.menuItemLang}>
+      <MenuContent className={css.langageMenuContent} style={{ right: true }} >
+        <MenuItem key="ChangeLangage" className={css.menuItemLang}>
           <ExternalLink href={urlSwitchLang} className={css.langLink}>
             {langageSwitch}
           </ExternalLink >
@@ -250,8 +250,6 @@ class TopbarComponent extends Component {
         />
         <div className={classNames(mobileRootClassName || css.container, mobileClassName)}>
 
-          {langLink}
-
           <Button
             rootClassName={css.searchMenu}
             onClick={this.handleMobileSearchOpen}
@@ -259,6 +257,14 @@ class TopbarComponent extends Component {
           >
             <SearchIcon className={css.searchMenuIcon} />
           </Button>
+
+          <div className={css.topbarMobileShoppingCartWrapper}>
+            <ShoppingCart
+              mobile={true}
+              history={this.props.history}
+              currentUser={currentUser}
+            />
+          </div>
 
           <NamedLink
             className={css.home}
@@ -269,22 +275,18 @@ class TopbarComponent extends Component {
             <Logo className={css.logo} format="mobile" />
           </NamedLink>
 
-
-          <div className={css.mobileLeft}>
-            <ShoppingCart
-              mobile={true}
-              history={this.props.history}
-              currentUser={currentUser}
-            />
-          </div>
+          {langLink}
 
           <Button
             rootClassName={css.menu}
             onClick={this.handleMobileMenuOpen}
             title={intl.formatMessage({ id: 'Topbar.menuIcon' })}
           >
-            <MenuIcon className={css.menuIcon} />
-            {notificationDot}
+            <div className={css.menuIconWrapper}>
+              <MenuIcon className={css.menuIcon} />
+              {notificationDot}
+            </div>
+
           </Button>
 
 

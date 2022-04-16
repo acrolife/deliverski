@@ -30,15 +30,24 @@
 
 }
 
-.mobileLeft{
+.topbarMobileShoppingCartWrapper{
   display: flex;
+  margin-left: -18px;
 }
 
 .home {
   display: flex;
   height: var(--topbarHeight);
+  
   /* Calculate vertical padding. Something like: (60px - 25px)/2 */
-  padding: calc((var(--topbarHeight) - var(--Topbar_logoHeight)) / 2) 24px;
+  /* padding: calc((var(--topbarHeight) - var(--Topbar_logoHeight)) / 2) 24px; */
+
+  /* The following is different */
+  padding-top: calc((var(--topbarHeight) - var(--Topbar_logoHeight)) / 2);
+  padding-bottom: calc((var(--topbarHeight) - var(--Topbar_logoHeight)) / 2);
+  padding-left: 30px;
+
+  /* margin-left: 25px; */
 }
 
 .logo {
@@ -82,15 +91,19 @@
 
 .menu {
   padding: 15px 10px;
+  /* padding: 15px 0px 15px 10px; */
   position: relative;
-  margin-right: -12px;
+  /* margin-right: 1rem; */
 }
-.searchMenu {
-  padding: 12px 24px;
-  margin: 0 -18px;
+.menuIconWrapper {
+  padding-left: 12px;
 }
 
-.menuIcon,
+.searchMenu {
+  padding: 12px 24px;
+}
+
+.menuIcon 
 .searchMenuIcon {
   margin: 9px 0;
 }
@@ -275,8 +288,7 @@
 /* Lang menu */
 .langageMenuLabel {
   height: 100%;
-  margin: 0;
-  /* margin-left: -1rem; */
+  /* margin: 0; */
 
   &:active {
     border-bottom: 0;
@@ -288,7 +300,8 @@
   align-items: center;
   width: 6rem !important;
   padding: 10px 0 10px 0;
-  margin-left: -12px;
+  margin-left: 15rem;
+  /* margin-left: calc((var(--) - var(--Topbar_logoHeight)) / 2) xxpx; */
 }
 
 
@@ -305,6 +318,7 @@ border-bottom: 0 !important;
 
 .langIcon {
   width: 2rem;  
-  margin-left: 10px;
-  margin-right: -10px;
+  /* margin-left: 10px; */
+  margin-right: -15px;
+  /* padding-right: -20px; */
 }
