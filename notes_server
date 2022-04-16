@@ -1,0 +1,38 @@
+
+
+# All
+
+
+
+
+# Playground
+cd /home/marmott/marmott_app_playground/
+
+## First
+cd /home/marmott/marmott_app_playground/deliverski_fr
+pm2 start 'NODE_ENV=production PORT=3000 yarn start' --name "deliverski_202204jjhhmm_master_ml_fr"
+cd /home/home/marmott/marmott_app_playground/deliverski_en
+pm2 start 'NODE_ENV=production PORT=3009 yarn start' --name "deliverski_202204jjhhmm_master_ml_en"
+
+## Parallel
+cd /home/marmott/marmott_app_playground/deliverski_fr_parallel
+pm2 start 'NODE_ENV=production PORT=3000 yarn start' --name "deliverski_202204jjhhmm_master_ml_fr_parallel"
+cd /home/marmott/marmott_app_playground/deliverski_fr_parallel
+pm2 start 'NODE_ENV=production PORT=3009 yarn start' --name "deliverski_202204jjhhmm_master_ml_en_parallel"
+
+
+# Prodution  
+cd /home/marmott_app_prod/
+
+## First
+cd /home/marmott_app_prod/deliverski_fr
+pm2 start 'NODE_ENV=production PORT=3000 yarn start' --name "deliverski_202204jjhhmm_master_ml_fr"
+cd /home/marmott_app_prod/deliverski_en
+pm2 start 'NODE_ENV=production PORT=3009 yarn start' --name "deliverski_202204jjhhmm_master_ml_en"
+
+## Parallel
+cd /home/marmott_app_prod/deliverski_fr_parallel
+pm2 start 'NODE_ENV=production PORT=3000 yarn start' --name "deliverski_202204jjhhmm_master_ml_fr_parallel"
+cd /home/marmott_app_prod/deliverski_fr_parallel
+pm2 start 'NODE_ENV=production PORT=3009 yarn start' --name "deliverski_202204jjhhmm_master_ml_en_parallel"
+
