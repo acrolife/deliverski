@@ -96,13 +96,14 @@ const CreateStripeAccountFields = props => {
         <FormattedMessage id="StripeConnectAccountForm.accountTypeTitle" />
       </h3>
       <div className={css.radioButtonRow}>
-        <FieldRadioButton
+        {/* We won't have providers being individuals */}
+        {/* <FieldRadioButton
           id="individual"
           name="accountType"
           label={individualAccountLabel}
           value="individual"
           showAsRequired={showAsRequired}
-        />
+        /> */}
         <FieldRadioButton
           id="company"
           name="accountType"
