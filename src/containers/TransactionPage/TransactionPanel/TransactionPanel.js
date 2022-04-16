@@ -72,6 +72,7 @@ const displayNames = (currentUser, currentProvider, currentCustomer, intl) => {
     otherUserDisplayNameString = userDisplayNameAsString(currentCustomer, '');
   }
 
+  // Getting restaurantName requires a check on publiData first otherwise throws error 
   const restaurantName = currentProvider.attributes.profile.publicData ? currentProvider.attributes.profile.publicData.restaurantName : null
 
   return {
@@ -189,10 +190,13 @@ export class TransactionPanelComponent extends Component {
     // console.log("transaction", transaction)
     // const pastTransitions = ["transition/enquire", "transition/request-payment",]
     //
+
+    /* DEV
     // Conditional rendering of the provider/customer UI elements
     // Our isProvider is computed differenty than the one of the template, based on the transaction object,
     // so we just confirm that everthing went normal validating with our isProviderCustom
     const isProviderCustom = currentUser ? !!currentUser.attributes.profile.metadata.isProvider : false
+   */
 
     const currentTransaction = ensureTransaction(transaction);
     const currentListing = ensureListing(currentTransaction.listing);
@@ -393,7 +397,12 @@ export class TransactionPanelComponent extends Component {
                 />
                 {
                   isAnyItemWithShipping ?
-                    <p className={css.shippingWarningMobile}>Caution! Some items need to be picked up at the restaurant</p>
+                    <p className={css.shippingWarningMobile}>
+                      <FormattedMessage
+                        id="TransactionPanel.warningPickupItems"
+                        values={{ restaurantName }}
+                      />
+                    </p>
                     :
                     null
                 }

@@ -928,7 +928,13 @@ export class CheckoutPageComponent extends Component {
               {breakdown}
               {
               isAnyItemWithShipping ?
-              <p className={css.shippingWarning}>Caution! Some items need to be picked up at the restaurant</p>
+              
+              <p className={css.shippingWarning}>
+              <FormattedMessage
+                id="CheckoutPage.warningPickupItems"
+                values={{ restaurantName }}
+              />
+            </p>
               :
               null
             }
@@ -1009,7 +1015,12 @@ export class CheckoutPageComponent extends Component {
             {breakdown}
             {
               isAnyItemWithShipping ?
-              <p className={css.shippingWarning}>Caution! Some items need to be picked up at the restaurant</p>
+              <p className={css.orderError}>
+              <FormattedMessage
+                id="CheckoutPage.warningPickupItems"
+                values={{ restaurantName }}
+              />
+            </p>
               :
               null
             }
