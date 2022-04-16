@@ -426,13 +426,14 @@
   height: 100%;
   width: 3pc;
   cursor: pointer;
-  padding-top: 10px;
+  padding-top: 5px;
 
   @media only screen and (max-width: 768px){
     width: 1pc;
     justify-content: flex-start;
     height: var(--topbarHeight);
     margin-right: 22px;
+    padding-top: 10px;
   }
 
 }
