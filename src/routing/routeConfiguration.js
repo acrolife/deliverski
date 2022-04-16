@@ -73,6 +73,10 @@ const RedirectToSearchPage = () => <NamedRedirect name="SearchPage" />;
 
 // Custom implementation
 const localeSubPath = !urlSwitchLang ? "" : `${locale}/`
+// We implement a redirection for /fr when we are in dev mode
+const RedirectToLandingPageTriggerPath = !urlSwitchLang ? "fr" : ""
+// TODO should also implement a redirection for /en but it's ok, not necessary at all
+
 // DEV
 // console.log("localeSubPath", localeSubPath)
 
@@ -82,7 +86,7 @@ const routeConfiguration = () => {
   return [
     // Custom implementation of multilang START
     {
-      path: '/',
+      path: `/${RedirectToLandingPageTriggerPath}`,
       name: 'RedirectToLandingPage',
       component: RedirectToLandingPage,
     },
