@@ -58,7 +58,8 @@ export const filters = [
         { key: 'made-in-les-arcs', label: 'Made in Les Arcs' },
         { key: 'fondus-de-ski', label: 'Fondus de Ski' },      
         { key: 'mountain-cake', label: 'Mountain Cake' },        
-        { key: 'green-and-good', label: 'Green And Good' },          
+        { key: 'green-and-good', label: 'Green And Good' },  
+        { key: 'soups-smoothies', label: 'Soups & Smoothies'}        
       ],
     },
   },
