@@ -59,11 +59,6 @@ const TopbarMobileMenu = props => {
             />
           </div>
         </div>
-        <div className={css.footer}>
-          <NamedLink className={css.createNewListingLink} name="NewListingPage">
-            <FormattedMessage id="TopbarMobileMenu.newListingLink" />
-          </NamedLink>
-        </div>
       </div>
     );
   }
@@ -131,9 +126,8 @@ const TopbarMobileMenu = props => {
         <div className={css.spacer} />
       </div>
 
-
       {
-        isProvider && isAuthenticated && <div className={css.footer}>
+        (isProvider && isAuthenticated) && <div className={css.footer}>
           <NamedLink className={css.manageListingLink} name="ManageListingsPage">
             <FormattedMessage id="TopbarMobileMenu.yourListingsLink" />
           </NamedLink>
