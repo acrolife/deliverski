@@ -1,6 +1,13 @@
 
 
 # All
+deliverki
+cp -r  deliverski_fr/build/static deliverski_fr/static_bkp
+cp -r deliverski_en/build/static/js/* deliverski_fr/build/static/js/
+
+deliverki_parallel
+cp -r deliverski_fr_parallel/build/static deliverski_fr_parallel/static_bkp
+cp -r deliverski_en_parallel/build/static/js/* deliverski_fr_parallel/build/static/js/
 
 
 
@@ -33,6 +40,6 @@ pm2 start 'NODE_ENV=production PORT=3009 yarn start' --name "deliverski_202204jj
 ## Parallel
 cd /home/marmott_app_prod/deliverski_fr_parallel
 pm2 start 'NODE_ENV=production PORT=3000 yarn start' --name "deliverski_202204jjhhmm_master_ml_fr_parallel"
-cd /home/marmott_app_prod/deliverski_fr_parallel
+cd /home/marmott_app_prod/deliverski_en_parallel
 pm2 start 'NODE_ENV=production PORT=3009 yarn start' --name "deliverski_202204jjhhmm_master_ml_en_parallel"
 
