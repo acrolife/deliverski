@@ -70,7 +70,7 @@ const RedirectToAnyPageTriggerPath = !urlSwitchLang ? "fr" : ""
 // TODO should also implement a redirection for /en but it's ok, not necessary at all
 
 // DEV
-console.log("RedirectToAnyPageTriggerPath", RedirectToAnyPageTriggerPath)
+// console.log("RedirectToAnyPageTriggerPath (if empty, will show nothing):", RedirectToAnyPageTriggerPath)
 
 // NOTE: Most server-side endpoints are prefixed with /api. Requests to those
 // endpoints are indended to be handled in the server instead of the browser and
