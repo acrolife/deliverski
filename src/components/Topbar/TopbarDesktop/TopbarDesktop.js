@@ -72,11 +72,11 @@ const TopbarDesktop = props => {
 
   const inboxLink = authenticatedOnClientSide ? (
     <NamedLink
-      className={css.inboxLink}
+      className={css.inboxLinkDesktop}
       name="InboxPage"
       params={{ tab: currentUserHasListings ? 'sales' : 'orders' }}
     >
-      <span className={css.inbox}>
+      <span className={css.inboxDesktop}>
         <FormattedMessage id="TopbarDesktop.inbox" />
         {notificationDot}
       </span>
@@ -86,13 +86,14 @@ const TopbarDesktop = props => {
   // Change profileMenuIsOpen
   const langLink = (<Menu>
 
-    <MenuLabel className={css.langageMenuLabel} isOpenClassName={css.langageMenuIsOpen}>
-      <img className={css.langIcon} src={LangIconPng} />
+    <MenuLabel className={css.langageMenuLabelDesktop} isOpenClassName={css.langageMenuIsOpenDesktop}>
+      <img className={css.langIconDesktop} src={LangIconPng} />
     </MenuLabel>
 
-    <MenuContent className={css.langageMenuContent} >
-      <MenuItem key="ChangeLangage" className={css.menuItemLang}>
-        <ExternalLink href={urlSwitchLang} className={css.langLink}>
+    <MenuContent className={css.langageMenuContentDesktop} >
+      {/* CAUTION menuItemLangDesktop is an empty class */}
+      <MenuItem key="ChangeLangage" className={css.menuItemLangDesktop}>
+        <ExternalLink href={urlSwitchLang} className={css.langLinkDesktop}>
           {langageSwitch}
         </ExternalLink >
       </MenuItem>

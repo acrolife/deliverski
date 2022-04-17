@@ -135,7 +135,7 @@
 
 
 /* Inbox */
-.inboxLink {
+.inboxLinkDesktop {
   @apply --TopbarDesktop_linkHover;
   @apply --marketplaceH5FontStyles;
   height: 100%;
@@ -159,7 +159,7 @@
 
 }
 
-.inbox {
+.inboxDesktop {
   @apply --TopbarDesktop_label;
   position: relative;
 }
@@ -232,7 +232,7 @@
 
 
 /* Lang menu */
-.langageMenuLabel {
+.langageMenuLabelDesktop {
     @apply --TopbarDesktop_linkHover;
     @apply --marketplaceH5FontStyles;
     flex-shrink: 0;
@@ -251,7 +251,7 @@
     }
 }
 
-.langageMenuContent {
+.langageMenuContentDesktop {
   min-width: 276px;
   /* width: 6rem !important; */
   padding: 10px 0 10px 0;
@@ -261,8 +261,11 @@
   /* margin-left: 15rem; */
 }
 
+/* .menuItemLangDesktop {
 
-.langLink {
+} */
+
+.langLinkDesktop {
   @apply --TopbarDesktop_linkHoverVert;
   @apply --marketplaceH5FontStyles;
   height: 100%;
@@ -282,8 +285,9 @@
   border-bottom: 0 !important;
 }
 
-.langIcon {
-  width: 2rem;  
+.langIconDesktop {
+  width: 28px;  
+  margin-top: 4px;
   /* margin-left: 10px; */
 }
 
