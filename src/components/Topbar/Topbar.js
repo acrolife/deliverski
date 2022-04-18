@@ -208,6 +208,7 @@ class TopbarComponent extends Component {
       </MenuLabel>
 
       <MenuContent className={css.langageMenuContent} style={{ right: true }} >
+        {/* CAUTION menuItemLang is an empty class */}
         <MenuItem key="ChangeLangage" className={css.menuItemLang}>
           <ExternalLink href={urlSwitchLang} className={css.langLink}>
             {langageSwitch}
