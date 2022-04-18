@@ -140,16 +140,24 @@
 }
 
 .infoText{
+  padding: 0 20px 0 20px;
   font-weight: var(--fontWeightMedium);
   font-size: 15px;
   line-height: 24px;
   letter-spacing: 0;
   color: var(--marketplaceColor);
+  @media (--viewportMedium) {
+    padding: 0 0 0 0;
+  }
 }
 
 .helpIcon{
   cursor: pointer;
   color: var(--marketplaceColorDark);
   animation: breathing 1s ease-out infinite normal;
-
+  margin-right: 5px;
 }
+
+.deliveryMethodErrorInfo{
+  margin: 0 0 2rem 0;
+} 

@@ -263,14 +263,16 @@ export class TransactionPanelComponent extends Component {
           headingState: HEADING_DISPUTED,
           showDetailCardHeadings: isCustomer,
         };
-      } else if (txIsReceived(tx) || txIsCompleted(tx) || txIsInFirstReviewBy(tx, !isCustomer)) {
-        return {
-          headingState: HEADING_RECEIVED,
-          showDetailCardHeadings: isCustomer,
-          showActionButtons: true,
-          primaryButtonProps: leaveReviewProps,
-        };
-      } else if (txHasBeenReceived(tx)) {
+      }
+      // else if (txIsReceived(tx) || txIsCompleted(tx) || txIsInFirstReviewBy(tx, !isCustomer)) {
+      //   return {
+      //     headingState: HEADING_RECEIVED,
+      //     showDetailCardHeadings: isCustomer,
+      //     showActionButtons: true,
+      //     primaryButtonProps: leaveReviewProps,
+      //   };
+      // } 
+      else if (txHasBeenReceived(tx)) {
         return {
           headingState: HEADING_RECEIVED,
           showDetailCardHeadings: isCustomer,
