@@ -120,7 +120,11 @@ const ShoppingCartComponent = (props) => {
         let newItem = {...item}
 
         if(newItem.listing.id.uuid === id){
-          newItem.checkoutValues.quantity = (Number(newItem.checkoutValues.quantity) + 1).toString();
+          const itemCurrentStock = newItem?.listing.currentStock?.attributes?.quantity;
+          const newValue = Number(newItem.checkoutValues.quantity) + 1;
+          if(newValue <= itemCurrentStock){
+            newItem.checkoutValues.quantity = (Number(newItem.checkoutValues.quantity) + 1).toString();
+          }
         }
 
         return newItem
