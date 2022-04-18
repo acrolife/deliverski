@@ -134,7 +134,7 @@ const stateDescription = {
   // Original
   // id: 'flex-product-default-process/release-1',
   // New version
-  id: 'flex-product-default-process/auto-delivered-120--auto-received-90-prod-v2',
+  id: 'flex-product-default-process/auto-delivered-120--auto-received-90-prod-v3',
 
   // This 'initial' state is a starting point for new transaction
   initial: STATE_INITIAL,

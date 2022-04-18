@@ -43,7 +43,12 @@
     {:name :action/stripe-refund-payment}
     {:name :action/decline-stock-reservation}],
    :from :state/pending-payment,
-   :to :state/payment-expired},
+   :to :state/payment-expired}
+   {:name :transition/mark-received-from-purchased,
+    :actor :actor.role/customer,
+    :actions [{:name :action/stripe-create-payout}],
+    :from :state/purchased,
+    :to :state/received}
   {:name :transition/mark-delivered,
    :actor :actor.role/provider,
    :actions [],
