@@ -24,3 +24,6 @@ _tmp
 package-lock.json
 notes_ssh
 env_files
+.env-dev
+.env-prod
+.env
