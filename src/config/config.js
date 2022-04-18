@@ -60,7 +60,7 @@ const sortSearchByDistance = false;
 // Original
 // const transactionProcessAlias = 'flex-product-default-process/release-1';
 // New version
-const transactionProcessAlias = 'flex-product-default-process/dev-periods-chge-90-v10';
+const transactionProcessAlias = 'flex-product-default-process/auto-delivered-120--auto-received-90-v1';
 
 // The transaction line item code for the main unit type for listings.
 //
