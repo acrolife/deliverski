@@ -46,7 +46,7 @@ const TopbarMobileMenu = props => {
 
     const signupOrLogin = (
       <span className={css.authenticationLinks}>
-        <FormattedMessage id="TopbarMobileMenu.signupOrLogin" values={{ signup, login }} />
+        <FormattedMessage id="TopbarMobileMenu.signupOrLogin" values={{ lineBreak: <br />, signup, login }} />
       </span>
     );
     return (

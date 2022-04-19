@@ -195,7 +195,7 @@ const TopbarDesktop = props => {
       {search}
 
       {
-        isProvider && <NamedLink className={css.manageListingsLink} name="NewListingPage">
+        isProvider && <NamedLink className={css.manageListingsLink} name="ManageListingsPage">
           <span className={css.manageListings}>
             <FormattedMessage id="TopbarDesktop.manageListings" />
           </span>
