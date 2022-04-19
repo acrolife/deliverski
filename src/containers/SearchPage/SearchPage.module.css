@@ -349,3 +349,24 @@
     width: 37.5vw;
   }
 }
+
+.desktopHeadingSearchPage {
+  display: none;
+
+  @media (--viewportLarge) {
+    display: block;
+    margin: 2px 0 24px 0;
+  }
+}
+
+.mobileHeadingSearchPage {
+  flex-shrink: 0;
+  margin: 47px 0 0 0;
+
+  @media (--viewportMedium) {
+    margin: 49px 0 0 0;
+  }
+  @media (--viewportLarge) {
+    display: none;
+  }
+}

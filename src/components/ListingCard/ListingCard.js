@@ -40,6 +40,7 @@ class ListingImage extends Component {
     return <ResponsiveImage {...this.props} />;
   }
 }
+
 const LazyImage = lazyLoadWithDimensions(ListingImage, { loadAfterInitialRendering: 3000 });
 
 export const ListingCardComponent = props => {
@@ -76,34 +77,35 @@ export const ListingCardComponent = props => {
   const unitTranslationKey = isNightly
     ? 'ListingCard.perNight'
     : isDaily
-    ? 'ListingCard.perDay'
-    : 'ListingCard.perUnit';
+      ? 'ListingCard.perDay'
+      : 'ListingCard.perUnit';
 
   const setActivePropsMaybe = setActiveListing
     ? {
-        onMouseEnter: () => setActiveListing(currentListing.id),
-        onMouseLeave: () => setActiveListing(null),
-      }
+      onMouseEnter: () => setActiveListing(currentListing.id),
+      onMouseLeave: () => setActiveListing(null),
+    }
     : null;
 
   const restaurantStatus = isRestaurantOpen(listing?.author?.attributes.profile?.publicData);
-  return (
-    <NamedLink className={classes} name="ListingPage" params={{ id, slug }}>
+
+  const ContentDiv = () => {
+    return (<div>
       <AspectRatioWrapper
         className={css.aspectRatioWrapper}
         width={aspectWidth}
         height={aspectHeight}
         {...setActivePropsMaybe}
       >
-          <div className={css.bulletWrapper}>
-            {/* <img src={badge} className={css.reviewsBadge} /> */}
-            <p className={restaurantStatus.status === "open" ? css.openedRestaurant : css.closedRestaurant} >•</p>
-          </div>
+        <div className={css.bulletWrapper}>
+          {/* <img src={badge} className={css.reviewsBadge} /> */}
+          <p className={restaurantStatus.status === "open" ? css.openedRestaurant : css.closedRestaurant} >•</p>
+        </div>
 
-          <div className={css.messageWrapper}>
-            {/* <img src={badge} className={css.reviewsBadge} /> */}
-            <p className={css.scheduleMessage} >{restaurantStatus.message}</p>
-          </div>
+        <div className={css.messageWrapper}>
+          {/* <img src={badge} className={css.reviewsBadge} /> */}
+          <p className={css.scheduleMessage} >{restaurantStatus.message}</p>
+        </div>
 
         <LazyImage
           rootClassName={css.rootForImage}
@@ -138,7 +140,40 @@ export const ListingCardComponent = props => {
           ) : null}
         </div>
       </div>
-    </NamedLink>
+    </div>)
+  }
+
+
+  const hasSearchParams = location.search?.length > 0;
+  // Build conditional UI for search listing as Restaurant's page
+  let restaurantName = ''
+  // TODO Write a more striaghtforwadr way to get those data
+  // Check src/containers/LandingPage/LandingPage.duck.js
+  const restaurantSearchParam = 'pub_restaurant='
+  // DEV
+  // console.log("listings", listings)
+  const hasRestaurantSearchParam = hasSearchParams && location.search.includes(restaurantSearchParam)
+
+  const NamedLinkRestaurant = () => {
+    return (
+      <NamedLink to={{ search: `?pub_restaurant=${listing.attributes.publicData?.restaurant}` }}
+        name="SearchPage">
+        < ContentDiv />
+      </NamedLink>
+    )
+  }
+
+  const NamedLinkListing = () => {
+    return (
+      <NamedLink
+        className={classes} name="ListingPage" params={{ id, slug }}>
+        < ContentDiv />
+      </NamedLink>
+    )
+  }
+
+  return (
+    hasRestaurantSearchParam ? <NamedLinkListing /> : <NamedLinkRestaurant />
   );
 };
 

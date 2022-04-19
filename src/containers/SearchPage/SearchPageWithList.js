@@ -197,8 +197,8 @@ export class SearchPageComponent extends Component {
     const isArray = Array.isArray(queryParamNames);
     return isArray
       ? queryParamNames.reduce((acc, paramName) => {
-          return { ...acc, [paramName]: getInitialValue(paramName) };
-        }, {})
+        return { ...acc, [paramName]: getInitialValue(paramName) };
+      }, {})
       : {};
   }
 
@@ -319,9 +319,9 @@ export class SearchPageComponent extends Component {
       const mobileClassesMaybe =
         mode === 'mobile'
           ? {
-              rootClassName: css.sortBy,
-              menuLabelRootClassName: css.sortByMenuLabel,
-            }
+            rootClassName: css.sortBy,
+            menuLabelRootClassName: css.sortByMenuLabel,
+          }
           : { className: css.sortByDesktop };
       return sortConfig.active ? (
         <SortBy
@@ -350,6 +350,26 @@ export class SearchPageComponent extends Component {
 
     const hasNoResult = listingsAreLoaded && totalItems === 0;
     const hasSearchParams = location.search?.length > 0;
+
+    // Build conditional UI for search listing as Restaurant's page
+    let restaurantName = ''
+    // TODO Write a more striaghtforwadr way to get those data
+    // Check src/containers/LandingPage/LandingPage.duck.js
+    const restaurantSearchParam = 'pub_restaurant='
+    // DEV
+    // console.log("listings", listings)
+    const hasRestaurantSearchParam = hasSearchParams && location.search.includes(restaurantSearchParam)
+    if (hasRestaurantSearchParam) {
+      const restaurant = location.search.split(restaurantSearchParam)[1].split('&')[0]
+      // DEV
+      // console.log("restaurant", restaurant)
+      if (listings.length) {
+        restaurantName = listings[0].author.attributes.profile.publicData.restaurantName
+        // DEV
+        // console.log("restaurantName", restaurantName)
+      }
+    }
+
     const noResultsInfo = hasNoResult ? (
       <div className={css.noSearchResults}>
         <FormattedMessage id="SearchPage.noResults" />
@@ -409,6 +429,16 @@ export class SearchPageComponent extends Component {
 
           <div className={css.layoutWrapperMain} role="main">
             <div className={css.searchResultContainer}>
+
+              {
+                restaurantName &&
+                <div>
+                  <h1 className={css.mobileHeadingSearchPage}>
+                    <FormattedMessage id="ProfilePage.mobileHeading" values={{ name: restaurantName, linebreak: <br/> }} />
+                  </h1>
+                </div>
+              }
+
               <SearchFiltersMobile
                 className={css.searchFiltersMobileList}
                 urlQueryParams={validQueryParams}
@@ -442,6 +472,17 @@ export class SearchPageComponent extends Component {
                   );
                 })}
               </SearchFiltersMobile>
+
+              {
+                restaurantName &&
+                <div>
+                  <h1 className={css.desktopHeadingSearchPage}>
+                    <FormattedMessage id="ProfilePage.desktopHeadingRestaurant" values={{ name: restaurantName }} />
+                  </h1>
+                </div>
+              }
+
+
               <MainPanelHeader
                 className={css.mainPanel}
                 sortByComponent={sortBy('desktop')}
@@ -461,6 +502,7 @@ export class SearchPageComponent extends Component {
                     <FormattedMessage id="SearchPage.searchError" />
                   </h2>
                 ) : null}
+
                 <SearchResultsPanel
                   className={css.searchListingsPanel}
                   listings={listings}

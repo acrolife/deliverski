@@ -3,7 +3,7 @@ import { array, bool, node, object, string } from 'prop-types';
 import classNames from 'classnames';
 
 import { propTypes } from '../../../util/types';
-import { ListingCard, PaginationLinks } from '../../../components';
+import { ListingCard, PaginationLinks, NamedLink } from '../../../components';
 
 import css from './SearchResultsPanel.module.css';
 

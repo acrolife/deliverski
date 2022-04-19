@@ -18,6 +18,10 @@ import css from './SectionFilteredSearches.module.css';
 // import imageForFilter3 from './images/imageForFilter3_648x448.jpg';
 import placeHolderProfileBg from './images/placeHolderProfileBg_648x448.jpg';
 
+import config from '../../../config'
+
+const canonicalRootUrl = config.canonicalRootURL
+
 // Thumbnail image for the search "card"
 class ThumbnailImage extends Component {
   render() {
@@ -71,45 +75,60 @@ const SectionFilteredSearches = props => {
     // console.log(userProviders)
 
     return (
-      userProviders.length > 0 ? [...userProviders ]
-      // TODO DEV, here we put three times the array to see the result with more providers
-      // userProviders.length > 0 ? [...userProviders, ...userProviders, ...userProviders.reverse() ]
-      .map(e =>
-        <FilterLink
-        className={css.listingCard}
-          key={e.id.uuid}
-          name={e.attributes.profile.publicData.restaurantName}
-          image={e.profileImage ? e.profileImage.attributes.variants['scaled-medium'].url : placeHolderProfileBg}
-          link={`http://localhost:3000/s?pub_restaurant=${e.attributes.profile.publicData.restaurant}`}
-        />
-      )
+      userProviders.length > 0 ? [...userProviders]
+        // TODO DEV, here we put three times the array to see the result with more providers
+        // userProviders.length > 0 ? [...userProviders, ...userProviders, ...userProviders.reverse() ]
+        .map(e =>
+
+          // <NamedLink
+          //   to={{
+          //     search: `?pub_restaurant=${e.attributes.profile.publicData.restaurant}`,
+          //   }}
+
+          //   key={e.id.uuid}
+          //   name="SearchPage"
+          // image={e.profileImage ? e.profileImage.attributes.variants['scaled-medium'].url : placeHolderProfileBg}
+          // >
+          //   <img className={css.listingCard} src={e.profileImage ? e.profileImage.attributes.variants['scaled-medium'].url : placeHolderProfileBg} />
+          // </NamedLink>
+
+
+          <FilterLink
+            className={css.listingCard}
+            key={e.id.uuid}
+            name={e.attributes.profile.publicData.restaurantName}
+            image={e.profileImage ? e.profileImage.attributes.variants['scaled-medium'].url : placeHolderProfileBg}
+            link={`${canonicalRootUrl}/s?pub_restaurant=${e.attributes.profile.publicData.restaurant}`}
+          />
+        )
+
         // : <div>'Pulling data...'</div>
         : <div></div>
     )
   }
 
-{/*original image={imageForFilter1} */ }
+  {/*original image={imageForFilter1} */ }
 
-{/* Not needed here, works with initials. We want it to work with the image. This strucutre works with useProvider2.
+  {/* Not needed here, works with initials. We want it to work with the image. This strucutre works with useProvider2.
           <Avatar className={css.avatar} user={useProvider2} disableProfileLink />  */}
 
-// FilterLink props:
-// - "name" is a string that defines what kind of search the link is going to make
-// - "image" is imported from images directory and you can update it by changing the file
-// - "link" should be copy-pasted URL from search page.
-//    The domain doesn't matter, but search query does. (I.e. "?pub_brand=nike")
-return (
-  <div className={classes}>
-    <div className={css.title}>
-      <FormattedMessage id="SectionFilteredSearches.title" />
-    </div>
-    {/* <div className={css.filteredSearches} > */}
-    <div className={css.listingCards} >
+  // FilterLink props:
+  // - "name" is a string that defines what kind of search the link is going to make
+  // - "image" is imported from images directory and you can update it by changing the file
+  // - "link" should be copy-pasted URL from search page.
+  //    The domain doesn't matter, but search query does. (I.e. "?pub_brand=nike")
+  return (
+    <div className={classes}>
+      <div className={css.title}>
+        <FormattedMessage id="SectionFilteredSearches.title" />
+      </div>
+      {/* <div className={css.filteredSearches} > */}
+      <div className={css.listingCards} >
 
-      < RestaurantTiles />
+        < RestaurantTiles />
 
-      {/* className={css.box} */}
-      {/* <FilterLink
+        {/* className={css.box} */}
+        {/* <FilterLink
           name="Full meal"
           image={imageForFilter1}
           link="http://localhost:3000/s?pub_size=full_meal"
@@ -125,31 +144,31 @@ return (
           link="http://localhost:3000/s?pub_size=breakfast"
         /> */}
 
+      </div>
     </div>
-  </div>
-  //   <div className={classes}>
-  //   <div className={css.title}>
-  //     <FormattedMessage id="SectionFilteredSearches.title" />
-  //   </div>
-  //   <div className={css.filteredSearches}>
-  //     <FilterLink
-  //       name="Asiatic"
-  //       image={imageForFilter1}
-  //       link="http://localhost:3000/s?pub_brand=asiatic"
-  //     />
-  //     <FilterLink
-  //       name="Burger"
-  //       image={imageForFilter2}
-  //       link="http://localhost:3000/s?pub_brand=yeezy"
-  //     />
-  //     <FilterLink
-  //       name="Sweets"
-  //       image={imageForFilter3}
-  //       link="http://localhost:3000/s?pub_brand=converse"
-  //     />
-  //   </div>
-  // </div>
-);
+    //   <div className={classes}>
+    //   <div className={css.title}>
+    //     <FormattedMessage id="SectionFilteredSearches.title" />
+    //   </div>
+    //   <div className={css.filteredSearches}>
+    //     <FilterLink
+    //       name="Asiatic"
+    //       image={imageForFilter1}
+    //       link="http://localhost:3000/s?pub_brand=asiatic"
+    //     />
+    //     <FilterLink
+    //       name="Burger"
+    //       image={imageForFilter2}
+    //       link="http://localhost:3000/s?pub_brand=yeezy"
+    //     />
+    //     <FilterLink
+    //       name="Sweets"
+    //       image={imageForFilter3}
+    //       link="http://localhost:3000/s?pub_brand=converse"
+    //     />
+    //   </div>
+    // </div>
+  );
 };
 
 SectionFilteredSearches.defaultProps = { rootClassName: null, className: null, userProviders: [] };
