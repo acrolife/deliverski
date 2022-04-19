@@ -295,19 +295,20 @@ const renderForm = formRenderProps => {
 
 
   const clearBasket = () => {
-    if(currentUser){
-      return sdk.currentUser.updateProfile({
-        publicData: {
-          shoppingCart: []
-        },
-      }).then(res => {
-          window.location.reload()
-      }).catch(e => console.log(e))
-    }else{
-      return window.sessionStorage.setItem('shoppingCart', JSON.stringify([]))
-
+    if(typeof window !== 'undefined'){
+      if(currentUser){
+        return sdk.currentUser.updateProfile({
+          publicData: {
+            shoppingCart: []
+          },
+        }).then(res => {
+            window.location.reload()
+        }).catch(e => console.log(e))
+      }else{
+        return window.sessionStorage.setItem('shoppingCart', JSON.stringify([]))
+  
+      }
     }
-
   }
 
 

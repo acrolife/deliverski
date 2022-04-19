@@ -99,7 +99,7 @@ export const ListingCardComponent = props => {
       >
           <div className={css.bulletWrapper}>
             {/* <img src={badge} className={css.reviewsBadge} /> */}
-            <p className={restaurantStatus.status === "open" ? css.openedRestaurant : css.closedRestaurant} >•</p>
+            <p className={restaurantStatus?.status === "open" ? css.openedRestaurant : css.closedRestaurant} >•</p>
           </div>
 
           <div className={css.messageWrapper}>
