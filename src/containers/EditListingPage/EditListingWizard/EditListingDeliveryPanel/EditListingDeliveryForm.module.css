@@ -26,6 +26,11 @@
   }
 }
 
+.deliveryCheckboxDisabled{
+  pointer-events: none;
+  margin-bottom: 24px;
+}
+
 .deliveryCheckbox {
   margin-bottom: 24px;
 }

@@ -36,7 +36,7 @@ exports.transactionLineItems = (listing, orderData) => {
   const publicData = listing.attributes.publicData;
   const unitPrice = listing.attributes.price;
   const currency = unitPrice.currency;
-  const freeShipping = listing.attributes.publicData.freeShipping;
+  const freeShipping = listing.attributes.publicData.freeShipping ? listing.attributes.publicData.freeShipping.includes('yes') : false;
 
   // Check delivery method and shipping prices
   const deliveryMethod = orderData && orderData.deliveryMethod;

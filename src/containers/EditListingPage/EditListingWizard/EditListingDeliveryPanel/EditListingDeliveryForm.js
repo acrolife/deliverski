@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { bool, func, shape, string } from 'prop-types';
 import { compose } from 'redux';
-import { Form as FinalForm } from 'react-final-form';
+import { Form as FinalForm, FormSpy } from 'react-final-form';
 import classNames from 'classnames';
 
 // Import configs and util modules
@@ -115,9 +115,20 @@ export const EditListingDeliveryFormComponent = props => (
 
       const pickupClasses = classNames(css.deliveryOption, !pickupEnabled ? css.disabled : null);
       const shippingClasses = classNames(css.deliveryOption);
+      const isShippingSelected = values.deliveryOptions ? values.deliveryOptions.includes("shipping") : false;
 
+        const handleOnChange = (formValues) => {
+          const valuesInfo = formValues.values;
+          const isShippingNoLongerSelected = valuesInfo.deliveryOptions ? !valuesInfo.deliveryOptions.includes("shipping") : false;
+          const isFreeShippingSelected = valuesInfo.freeShipping ? valuesInfo.freeShipping.includes("yes") : false;
+          if(isShippingNoLongerSelected && isFreeShippingSelected){
+            form.change('freeShipping', [])
+          }
+        }
       return (
         <Form className={classes} onSubmit={handleSubmit}>
+
+          <FormSpy onChange={handleOnChange} />
           <FieldCheckbox
             id="pickup"
             className={css.deliveryCheckbox}
@@ -179,7 +190,18 @@ export const EditListingDeliveryFormComponent = props => (
           />
 
           <div className={shippingClasses}>
-            <FieldCurrencyInput
+
+                
+          <FieldCheckbox
+            id="freeShipping"
+            className={ isShippingSelected ? css.deliveryCheckbox : css.deliveryCheckboxDisabled}
+            name="freeShipping"
+            label={"Free shipping"}
+            value={'yes'}
+          />
+
+
+            {/* <FieldCurrencyInput
               id="shippingPriceInSubunitsOneItem"
               name="shippingPriceInSubunitsOneItem"
               className={css.inputShippingFee}
@@ -209,7 +231,17 @@ export const EditListingDeliveryFormComponent = props => (
               // See example: https://codesandbox.io/s/changing-field-level-validators-zc8ei
               key={shippingEnabled ? 'oneItemValidation' : 'noOneItemValidation'}
               disabled={true}
-            />
+            /> */}
+
+
+
+
+
+
+
+
+
+
 
             {/* <FieldCurrencyInput
               id="shippingPriceInSubunitsAdditionalItems"
