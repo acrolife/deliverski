@@ -86,6 +86,8 @@ export const ListingCardComponent = props => {
     : null;
 
   const restaurantStatus = isRestaurantOpen(listing?.author?.attributes.profile?.publicData);
+  const { pickupEnabled, shippingEnabled } = listing?.attributes?.publicData || {};
+
   return (
     <NamedLink className={classes} name="ListingPage" params={{ id, slug }}>
       <AspectRatioWrapper
@@ -103,6 +105,15 @@ export const ListingCardComponent = props => {
             {/* <img src={badge} className={css.reviewsBadge} /> */}
             <p className={css.scheduleMessage} >{restaurantStatus.message}</p>
           </div>
+
+          {!pickupEnabled || !shippingEnabled ? 
+            <div className={css.badgeWrapper}>
+            {/* <img src={badge} className={css.reviewsBadge} /> */}
+            <p className={css.reviewsBadge} >
+              {!pickupEnabled ? 'No pickup' : 'No shipping'}
+            </p>
+            </div>
+          : null}
 
         <LazyImage
           rootClassName={css.rootForImage}

@@ -146,15 +146,15 @@ const OrderPanel = props => {
 
           <div className={css.deliveryOptions}>
             {
-            shippingEnabled ?
-            <Chip className={css.shipChip} label="Shipping" variant="outlined" />
+            !shippingEnabled ?
+            <Chip className={css.shipChip} label="No shipping" variant="outlined" />
             :
             null
             }
 
           {
-            pickupEnabled ?
-            <Chip className={css.pickupChip} label="Pickup" variant="outlined" />
+            !pickupEnabled ?
+            <Chip className={css.pickupChip} label="No pickup" variant="outlined" />
             :
             null
             }
