@@ -87,6 +87,7 @@ export const ListingCardComponent = props => {
 
   const restaurantStatus = isRestaurantOpen(listing?.author?.attributes.profile?.publicData);
   const { pickupEnabled, shippingEnabled } = listing?.attributes?.publicData || {};
+  const isOnHold = listing?.author?.attributes?.profile.publicData.onHoldByOwner;
 
   return (
     <NamedLink className={classes} name="ListingPage" params={{ id, slug }}>
@@ -106,11 +107,18 @@ export const ListingCardComponent = props => {
             <p className={css.scheduleMessage} >{restaurantStatus.message}</p>
           </div>
 
-          {!pickupEnabled || !shippingEnabled ? 
+          {!pickupEnabled || !shippingEnabled || isOnHold ? 
             <div className={css.badgeWrapper}>
             {/* <img src={badge} className={css.reviewsBadge} /> */}
             <p className={css.reviewsBadge} >
-              {!pickupEnabled ? 'No pickup' : 'No shipping'}
+              {
+                isOnHold ?
+                'On hold'
+                :
+                (
+                  !pickupEnabled ? 'No pickup' : 'No shipping'
+                )
+              }
             </p>
             </div>
           : null}
