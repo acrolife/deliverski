@@ -308,7 +308,11 @@ const renderForm = formRenderProps => {
   const submitDisabled = !hasStock;
 
 
-  const shoppingCartFromSession = JSON.parse(window.sessionStorage.getItem('shoppingCart'));
+  const shoppingCartFromSession = typeof window !== 'undefined' ? 
+            JSON.parse(window.sessionStorage.getItem('shoppingCart'))
+            :
+            [];
+
 
 
   const currentShopCart = currentUser ? 
