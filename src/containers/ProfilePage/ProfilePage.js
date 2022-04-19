@@ -112,9 +112,9 @@ export class ProfilePageComponent extends Component {
         <AvatarLarge className={css.avatar} user={user} disableProfileLink />
         <h1 className={css.mobileHeading}>
           {isProvider ? (
-            <FormattedMessage id="ProfilePage.mobileHeading" values={{ name: restaurantName }} />
+            <FormattedMessage id="ProfilePage.mobileHeading" values={{ name: restaurantName, linebreak: <br/> }} />
           ) : (
-            <FormattedMessage id="ProfilePage.mobileHeading" values={{ name: displayName }} />
+            <FormattedMessage id="ProfilePage.mobileHeading" values={{ name: displayName, linebreak: <br/> }} />
           )}
         </h1>
         {editLinkMobile}

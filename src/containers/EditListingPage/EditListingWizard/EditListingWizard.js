@@ -27,7 +27,7 @@ import {
 } from '../../../components';
 
 // Import modules from this directory
-import EditListingWizardTab, { DETAILS, DELIVERY, PRICING, PHOTOS } from './EditListingWizardTab';
+import EditListingWizardTab, { DETAILS, FEATURES, PRICING, DELIVERY, PHOTOS } from './EditListingWizardTab';
 import css from './EditListingWizard.module.css';
 
 // Custom fields
@@ -37,7 +37,7 @@ import css from './EditListingWizard.module.css';
 // Note 1: You need to change save button translations for new listing flow
 // Note 2: Ensure that draft listing is created after the first panel
 // and listing publishing happens after last panel.
-export const TABS = [DETAILS, PRICING, DELIVERY, PHOTOS ];
+export const TABS = [DETAILS, FEATURES, PRICING, DELIVERY, PHOTOS];
 // , RESTAURANT];
 
 // Tabs are horizontal in small screens
@@ -50,14 +50,16 @@ const tabLabel = (intl, tab) => {
   let key = null;
   if (tab === DETAILS) {
     key = 'EditListingWizard.tabLabelDetails';
+  } else if (tab === FEATURES) {
+    key = 'EditListingWizard.tabLabelFeatures';
   } else if (tab === DELIVERY) {
     key = 'EditListingWizard.tabLabelDelivery';
   } else if (tab === PRICING) {
     key = 'EditListingWizard.tabLabelPricing';
   } else if (tab === PHOTOS) {
     key = 'EditListingWizard.tabLabelPhotos';
-  // } else if (tab === RESTAURANT) {
-  //   key = 'EditListingWizard.tabLabelRestaurant';
+    // } else if (tab === RESTAURANT) {
+    //   key = 'EditListingWizard.tabLabelRestaurant';
   }
 
   return intl.formatMessage({ id: key });
@@ -72,14 +74,20 @@ const tabLabel = (intl, tab) => {
  * @return true if tab / step is completed.
  */
 const tabCompleted = (tab, listing) => {
-  const { availabilityPlan, description, price, title, publicData } = listing.attributes;
+  const {  description, price, title, publicData } = listing.attributes;
   const images = listing.images;
+  const productType = publicData && publicData.productType ;
+  // XXX We don't validate on size
+  const featuresData =
+  publicData && (publicData.mealType && publicData.cuisine && publicData.foodType);
   const deliveryOptionPicked =
     publicData && (publicData.shippingEnabled || publicData.pickupEnabled);
 
   switch (tab) {
     case DETAILS:
-      return !!(description && title);
+      return !!(description && title && productType);
+    case FEATURES:
+      return !!(featuresData);
     case DELIVERY:
       return !!deliveryOptionPicked;
     case PRICING:

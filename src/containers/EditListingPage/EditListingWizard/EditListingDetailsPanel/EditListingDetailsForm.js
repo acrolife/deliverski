@@ -6,13 +6,14 @@ import classNames from 'classnames';
 
 // Import configs and util modules
 import config from '../../../../config';
+import { findOptionsForSelectFilter } from '../../../../util/search';
 import { intlShape, injectIntl, FormattedMessage } from '../../../../util/reactIntl';
 import { propTypes } from '../../../../util/types';
 import { maxLength, required, composeValidators } from '../../../../util/validators';
 import { findConfigForSelectFilter } from '../../../../util/search';
 
 // Import shared components
-import { Form, Button, FieldTextInput } from '../../../../components';
+import { Form, Button, FieldTextInput, FieldSelect, FieldCheckboxGroup } from '../../../../components';
 // Import modules from this directory
 import CustomFieldEnum from '../CustomFieldEnum';
 import css from './EditListingDetailsForm.module.css';
@@ -39,30 +40,10 @@ const EditListingDetailsFormComponent = props => (
         filterConfig,
       } = formRenderProps;
 
-      const titleMessage = intl.formatMessage({ id: 'EditListingDetailsForm.title' });
-      const titlePlaceholderMessage = intl.formatMessage({
-        id: 'EditListingDetailsForm.titlePlaceholder',
-      });
-      const titleRequiredMessage = intl.formatMessage({
-        id: 'EditListingDetailsForm.titleRequired',
-      });
-      const maxLengthMessage = intl.formatMessage(
-        { id: 'EditListingDetailsForm.maxLength' },
-        {
-          maxLength: TITLE_MAX_LENGTH,
-        }
-      );
-
-      const descriptionMessage = intl.formatMessage({
-        id: 'EditListingDetailsForm.description',
-      });
-      const descriptionPlaceholderMessage = intl.formatMessage({
-        id: 'EditListingDetailsForm.descriptionPlaceholder',
-      });
-      const maxLength60Message = maxLength(maxLengthMessage, TITLE_MAX_LENGTH);
-      const descriptionRequiredMessage = intl.formatMessage({
-        id: 'EditListingDetailsForm.descriptionRequired',
-      });
+      const classes = classNames(css.root, className);
+      const submitReady = (updated && pristine) || ready;
+      const submitInProgress = updateInProgress;
+      const submitDisabled = invalid || disabled || submitInProgress;
 
       const { updateListingError, createListingDraftError, showListingsError } = fetchErrors || {};
       const errorMessageUpdateListing = updateListingError ? (
@@ -84,11 +65,35 @@ const EditListingDetailsFormComponent = props => (
         </p>
       ) : null;
 
-      const classes = classNames(css.root, className);
-      const submitReady = (updated && pristine) || ready;
-      const submitInProgress = updateInProgress;
-      const submitDisabled = invalid || disabled || submitInProgress;
+      // Title section 
+      const titleMessage = intl.formatMessage({ id: 'EditListingDetailsForm.title' });
+      const titlePlaceholderMessage = intl.formatMessage({
+        id: 'EditListingDetailsForm.titlePlaceholder',
+      });
+      const titleRequiredMessage = intl.formatMessage({
+        id: 'EditListingDetailsForm.titleRequired',
+      });
+      const maxLengthMessage = intl.formatMessage(
+        { id: 'EditListingDetailsForm.maxLength' },
+        {
+          maxLength: TITLE_MAX_LENGTH,
+        }
+      );
 
+      // Description section 
+      const descriptionMessage = intl.formatMessage({
+        id: 'EditListingDetailsForm.description',
+      });
+      const descriptionPlaceholderMessage = intl.formatMessage({
+        id: 'EditListingDetailsForm.descriptionPlaceholder',
+      });
+      const maxLength60Message = maxLength(maxLengthMessage, TITLE_MAX_LENGTH);
+      const descriptionRequiredMessage = intl.formatMessage({
+        id: 'EditListingDetailsForm.descriptionRequired',
+      });
+
+      // Category  section
+      /*
       const categoryConfig = findConfigForSelectFilter('category', filterConfig);
       const categorySchemaType = categoryConfig.schemaType;
       const categories = categoryConfig.options ? categoryConfig.options : [];
@@ -104,36 +109,25 @@ const EditListingDetailsFormComponent = props => (
           id: 'EditListingDetailsForm.categoryRequired',
         })
       );
+      */
 
-      const sizeConfig = findConfigForSelectFilter('size', filterConfig);
-      const sizeSchemaType = sizeConfig ? sizeConfig.schemaType : null;
-      const sizes = sizeConfig && sizeConfig.options ? sizeConfig.options : [];
-      const sizeLabel = intl.formatMessage({
-        id: 'EditListingDetailsForm.sizeLabel',
+      // Product Type
+      const productTypeKey = 'productType';
+      const productTypeOption = findOptionsForSelectFilter(productTypeKey, filterConfig);
+      // const productTypeObject = filterConfig.filter(e => e.id === productTypeKey)
+      // const productTypeLabel = productTypeObject.length ? productTypeObject[0].label : null
+      const productTypeConfig = findConfigForSelectFilter(productTypeKey, filterConfig);
+      const productTypeSchemaType = productTypeConfig.schemaType;
+      const productTypeLabel = intl.formatMessage({
+        id: 'EditListingDetailsForm.productTypeLabel',
       });
-      const sizePlaceholder = intl.formatMessage({
-        id: 'EditListingDetailsForm.sizePlaceholder',
+      const productTypePlaceholder = intl.formatMessage({
+        id: 'EditListingDetailsForm.productTypePlaceholder',
       });
 
-      const sizeRequired = required(
+      const productTypeRequiredMessage = required(
         intl.formatMessage({
-          id: 'EditListingDetailsForm.sizeRequired',
-        })
-      );
-
-      const brandConfig = findConfigForSelectFilter('brand', filterConfig);
-      const brandSchemaType = brandConfig ? brandConfig.schemaType : null;
-      const brands = brandConfig && brandConfig.options ? brandConfig.options : [];
-      const brandLabel = intl.formatMessage({
-        id: 'EditListingDetailsForm.brandLabel',
-      });
-      const brandPlaceholder = intl.formatMessage({
-        id: 'EditListingDetailsForm.brandPlaceholder',
-      });
-
-      const brandRequired = required(
-        intl.formatMessage({
-          id: 'EditListingDetailsForm.brandRequired',
+          id: 'EditListingDetailsForm.productTypeRequired',
         })
       );
 
@@ -162,35 +156,43 @@ const EditListingDetailsFormComponent = props => (
             placeholder={descriptionPlaceholderMessage}
             validate={composeValidators(required(descriptionRequiredMessage))}
           />
-          <CustomFieldEnum
-            id="category"
-            name="category"
-            options={categories}
+
+          {/* <CustomFieldEnum
+            id="categories"
+            name="categories"
+            options={categoryConfig.options}
             label={categoryLabel}
             placeholder={categoryPlaceholder}
             validate={categoryRequired}
             schemaType={categorySchemaType}
-          />
+          /> */}
 
           <CustomFieldEnum
-            id="size"
-            name="size"
-            options={sizes}
-            label={sizeLabel}
-            placeholder={sizePlaceholder}
-            validate={sizeRequired}
-            schemaType={sizeSchemaType}
+            id={productTypeKey}
+            name={productTypeKey}
+            options={productTypeOption}
+            label={productTypeLabel}
+            placeholder={productTypePlaceholder}
+            validate={productTypeRequiredMessage}
+            schemaType={productTypeSchemaType}
           />
 
-          <CustomFieldEnum
-            id="brand"
-            name="brand"
-            options={brands}
-            label={brandLabel}
-            placeholder={brandPlaceholder}
-            validate={brandRequired}
-            schemaType={brandSchemaType}
-          />
+          {/* Alternative to CustomFieldEnum */}
+          {/* {
+            productTypeLabel && <FieldSelect
+              className={css.detailsItems}
+              name={productTypeKey}
+              id={productTypeKey}
+              label={productTypeLabel}
+              validate={composeValidators(required(productTypeRequiredMessage))}
+            >
+              {productTypeOption.map(e => (
+                <option key={e.key} value={e.key}>
+                  {e.label}
+                </option>
+              ))}
+            </FieldSelect>
+          } */}
 
           <Button
             className={css.submitButton}

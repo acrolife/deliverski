@@ -477,18 +477,18 @@ export class ListingPageComponent extends Component {
                   />
                   <SectionDescriptionMaybe description={description} listingTitle={richTitle} />
                   <SectionDetailsMaybe publicData={publicData} customConfig={customConfig} />
-                  <SectionFeaturesMaybe
+                  {/* <SectionFeaturesMaybe
                     extendedDataKey="amenities"
                     options={amenityOptions}
                     publicData={publicData}
-                  />
+                  /> */}
                   <SectionRulesMaybe publicData={publicData} />
-                  <SectionMapMaybe
+                  {/* <SectionMapMaybe
                     geolocation={geolocation}
                     publicData={publicData}
                     listingId={currentListing.id}
-                  />
-                  <SectionReviews reviews={reviews} fetchReviewsError={fetchReviewsError} />
+                  /> */}
+                  {/* <SectionReviews reviews={reviews} fetchReviewsError={fetchReviewsError} /> */}
                   <SectionAuthorMaybe
                     title={title}
                     listing={currentListing}

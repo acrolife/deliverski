@@ -14,6 +14,7 @@ import { createResourceLocatorString } from '../../../util/routes';
 
 // Import modules from this directory
 import EditListingDetailsPanel from './EditListingDetailsPanel/EditListingDetailsPanel';
+import EditListingFeaturesPanel from './EditListingFeaturesPanel/EditListingFeaturesPanel';
 import EditListingDeliveryPanel from './EditListingDeliveryPanel/EditListingDeliveryPanel';
 import EditListingPhotosPanel from './EditListingPhotosPanel/EditListingPhotosPanel';
 import EditListingPricingPanel from './EditListingPricingPanel/EditListingPricingPanel';
@@ -21,6 +22,7 @@ import EditListingPricingPanel from './EditListingPricingPanel/EditListingPricin
 import css from './EditListingWizard.module.css';
 
 export const DETAILS = 'details';
+export const FEATURES = 'features';
 export const DELIVERY = 'delivery';
 export const PRICING = 'pricing';
 export const PHOTOS = 'photos';
@@ -28,7 +30,7 @@ export const PHOTOS = 'photos';
 // export const RESTAURANT = 'restaurant';
 
 // EditListingWizardTab component supports these tabs
-export const SUPPORTED_TABS = [DETAILS, DELIVERY, PRICING, PHOTOS ]
+export const SUPPORTED_TABS = [DETAILS, FEATURES, PRICING, DELIVERY, PHOTOS ]
 // , RESTAURANT];
 
 const pathParamsToNextTab = (params, tab, marketplaceTabs) => {
@@ -73,7 +75,7 @@ const EditListingWizardTab = props => {
     newListingPublished,
     history,
     images,
-    availability,
+    // availability,
     listing,
     handleCreateFlowTabScrolling,
     handlePublishListing,
@@ -153,11 +155,27 @@ const EditListingWizardTab = props => {
           {...panelProps(DETAILS)}
           submitButtonText={intl.formatMessage({ id: submitButtonTranslationKey })}
           onSubmit={values => {
+            // DEV
+            // console.log(values)
             onCompleteEditListingWizardTab(tab, values);
           }}
         />
       );
     }
+    case FEATURES: {
+      const submitButtonTranslationKey = isNewListingFlow
+        ? 'EditListingWizard.saveNewFeatures'
+        : 'EditListingWizard.saveEditFeatures';
+      return (
+        <EditListingFeaturesPanel
+          {...panelProps(DETAILS)}
+          submitButtonText={intl.formatMessage({ id: submitButtonTranslationKey })}
+          onSubmit={values => {
+            onCompleteEditListingWizardTab(tab, values);
+          }}
+        />
+      );
+    }    
     case DELIVERY: {
       const submitButtonTranslationKey = isNewListingFlow
         ? 'EditListingWizard.saveNewDelivery'
@@ -237,7 +255,7 @@ EditListingWizardTab.propTypes = {
     replace: func.isRequired,
   }).isRequired,
   images: array.isRequired,
-  availability: object.isRequired,
+  // availability: object.isRequired,
 
   // We cannot use propTypes.listing since the listing might be a draft.
   listing: shape({

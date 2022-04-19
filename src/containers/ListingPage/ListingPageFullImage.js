@@ -410,6 +410,7 @@ export class ListingPageComponent extends Component {
         className={css.authorNameLink}
         name="ListingPage"
         params={params}
+        // to={`?pub_restaurant=${}`}
         to={{ hash: '#author' }}
       >
         {/* {authorDisplayName} */}
@@ -489,17 +490,17 @@ export class ListingPageComponent extends Component {
                 </div>
                 <SectionDescriptionMaybe description={description} listingTitle={richTitle} />
                 <SectionDetailsMaybe publicData={publicData} customConfig={customConfig} />
-                <SectionFeaturesMaybe
+                {/* <SectionFeaturesMaybe
                   extendedDataKey="amenities"
                   options={amenityOptions}
                   publicData={publicData}
-                />
+                /> */}
                 <SectionRulesMaybe publicData={publicData} />
-                <SectionMapMaybe
+                {/* <SectionMapMaybe
                   geolocation={geolocation}
                   publicData={publicData}
                   listingId={currentListing.id}
-                />
+                /> */}
                 {/* Commenting out reviews */}
                 {/* <SectionReviews reviews={reviews} fetchReviewsError={fetchReviewsError} /> */}
                 {/* authorDisplayName={authorDisplayName} */}

@@ -34,8 +34,6 @@
  */
 
 export const filters = [
-
-  // # Restaurant filter ------------------------------------------------------- #
   {
     id: 'restaurant',
     label: 'Restaurant',
@@ -58,30 +56,28 @@ export const filters = [
         { key: 'legumes-et-vie', label: 'Légumes et Vie' },
         { key: 'albert-cookies', label: 'Albert Cookies' },
         { key: 'made-in-les-arcs', label: 'Made in Les Arcs' },
-        { key: 'fondus-de-ski', label: 'Fondus de Ski' },
-        { key: 'mountain-cake', label: 'Mountain Cake' },
-        { key: 'green-and-good', label: 'Green And Good' },
-        { key: 'soups-smoothies', label: 'Soups & Smoothies' }
+        { key: 'fondus-de-ski', label: 'Fondus de Ski' },      
+        { key: 'mountain-cake', label: 'Mountain Cake' },        
+        { key: 'green-and-good', label: 'Green And Good' },  
+        { key: 'soups-smoothies', label: 'Soups & Smoothies'}        
       ],
     },
   },
-  // # Product type filter ----------------------------------------------------- #
   {
-    id: 'productType',
-    label: 'Categorie',
+    id: 'ptype',
+    label: 'Product Type',
     type: 'SelectSingleFilter',
     group: 'secondary',
     queryParamNames: ['pub_ptype'],
     config: {
       schemaType: 'enum',
       options: [
-        { key: 'drinkable', label: 'Se boit' },
-        { key: 'eatable', label: 'Se mange' },
+        { key: 'drinkable', label: 'To Drink' },
+        { key: 'eatable', label: 'To Eat' },
         { key: 'composable', label: 'Menu' }
       ],
     },
   },
-  // # General category filter (example) --------------------------------------- #
   // {
   //   id: 'category',
   //   label: 'Category',
@@ -101,110 +97,28 @@ export const filters = [
   //     ],
   //   },
   // },
-  // # Cuisine filter ---------------------------------------------------------- #
   {
     id: 'cuisine',
     label: 'Cuisine',
     type: 'SelectMultipleFilter',
     group: 'secondary',
-    queryParamNames: ['pub_cuisine'],
-    config: {
-      schemaType: 'multi-enum',
-      searchMode: 'has_any',
-      options: [
-        { key: 'local', label: 'Savoyarde' },
-        { key: 'french', label: 'Française' },
-        { key: 'italian', label: 'Italienne' },             
-        { key: 'asian', label: 'Asiatique' },                      
-        { key: 'other', label: 'Autre' },   
-      ],
-    },
-  },
-  // # Meal type filter -------------------------------------------------------- #
-  {
-    id: 'mealType',
-    label: 'Type de plat',
-    type: 'SelectMultipleFilter',
-    group: 'secondary',
-    queryParamNames: ['pub_mtype'],
-    config: {
-      schemaType: 'multi-enum',
-      searchMode: 'has_any',
-      options: [
-        { key: 'breakfast', label: 'Petit-déjeûner' },
-        { key: 'apetizer', label: 'Apéritif' },
-        { key: 'starter', label: 'Entrée' },
-        { key: 'main_dish', label: 'Plat principal' },
-        { key: 'snack', label: 'En-cas' },        
-        { key: 'dessert', label: 'Dessert' },    
-        { key: 'other', label: 'Autre' },          
-      ],
-    },
-  },
-  // # Food type filter -------------------------------------------------------- #
-  {
-    id: 'foodType',
-    label: 'Diététique',
-    type: 'SelectMultipleFilter',
-    group: 'secondary',
-    queryParamNames: ['pub_dietetic'],
-    config: {
-      schemaType: 'multi-enum',
-      searchMode: 'has_any',
-      options: [        
-        { key: 'burger', label: 'Burger' },        
-        { key: 'frites', label: 'Frites' },  
-        { key: 'pizza', label: 'Pizza' },            
-        { key: 'lasagna', label: 'Lasagne' },          
-        { key: 'cheese', label: 'Fromage' },           
-        { key: 'sandwich', label: 'Sandwich' },               
-        { key: 'fast_food', label: 'Fast food' },
-        { key: 'bio', label: 'Origine biologique' },           
-        { key: 'veggie', label: 'Végétarien' },
-        { key: 'vegan', label: 'Végan' },            
-        { key: 'bakery', label: 'Viennoiserie' },    
-        { key: 'other', label: 'Autre' },                 
-      ],
-    },
-  },
-  // # Allergens filter -------------------------------------------------------- #
-  // {
-  //   id: 'allergens',
-  //   label: 'Allergènes',
-  //   type: 'SelectMultipleFilter',
-  //   group: 'secondary',
-  //   queryParamNames: ['pub_allergens'],
-  //   config: {
-  //     schemaType: 'multi-enum',
-  //     searchMode: 'has_any',
-  //     options: [
-  //       { key: 'xxx', label: 'Xxxxx' },
-
-  //     ],
-  //   },
-  // },
-  // # Size filter ------------------------------------------------------------- #
-  {
-    id: 'sizes',
-    label: 'Tailles',
-    type: 'SelectMultipleFilter',
-    group: 'secondary',
     queryParamNames: ['pub_category'],
     config: {
-      schemaType: 'multi-enum',
-      searchMode: 'has_any',
+      schemaType: 'enum',
       options: [
-        { key: 'small', label: 'Petit' },
-        { key: 'medium', label: 'Moyen' },
-        { key: 'large', label: 'Grand' },
-        { key: 'xlarge', label: 'XL' },
+        { key: 'local', label: 'Local' },
+        { key: 'fast_food', label: 'Fast food' },
+        { key: 'french', label: 'French' },
+        { key: 'asiatic', label: 'Asiatic' },
+        { key: 'vegan', label: 'Vegan' },
+        { key: 'bakery', label: 'Bakery' },
+        { key: 'other', label: 'Other' },
       ],
     },
   },
-  // # Price filter ------------------------------------------------------------ #
   {
     id: 'price',
-    label: 'Prix',
+    label: 'Price',
     type: 'PriceFilter',
     group: 'primary',
     // Note: PriceFilter is fixed filter,
@@ -218,10 +132,9 @@ export const filters = [
       step: 10,
     },
   },
-  // # Keyword search ---------------------------------------------------------- #
   {
     id: 'keyword',
-    label: 'Mot-clef',
+    label: 'Keyword',
     type: 'KeywordFilter',
     group: 'primary',
     // Note: KeywordFilter is fixed filter,
@@ -233,10 +146,8 @@ export const filters = [
     config: {},
   },
 
-  // # ------------------------------------------------------------------------- #
-
-  /*
   // Here is an example of multi-enum search filter.
+  
   {
     id: 'amenities',
     label: 'Amenities',
@@ -267,8 +178,6 @@ export const filters = [
       ],
     },
   },
-  */
-  // # ------------------------------------------------------------------------- #
 ];
 
 export const sortConfig = {
@@ -292,20 +201,20 @@ export const sortConfig = {
   conflictingFilters: [],
 
   options: [
-    { key: 'createdAt', label: 'Plus récent en premier' },
-    { key: '-createdAt', label: 'Plus ancien en premier' },
-    { key: '-price', label: 'Prix le plus bas en premier' },
-    { key: 'price', label: 'Prix le plus haut en premier' },
+    { key: 'createdAt', label: 'Newest' },
+    { key: '-createdAt', label: 'Oldest' },
+    { key: '-price', label: 'Lowest price' },
+    { key: 'price', label: 'Highest price' },
 
     // The relevance is only used for keyword search, but the
     // parameter isn't sent to the Marketplace API. The key is purely
     // for handling the internal state of the sorting dropdown.
-    { key: 'relevance', label: 'Pertinence', longLabel: 'Pertinence (Recherche par mot-clef)' },
+    { key: 'relevance', label: 'Relevance', longLabel: 'Relevance (Keyword search)' },
   ],
 };
 
 export const listing = {
   // These should be listing details from public data with schema type: enum
   // SectionDetailsMaybe component shows these on listing page.
-  enumFieldDetails: ['productType', 'cuisine', 'mealType', 'foodType'],
+  enumFieldDetails: ['size', 'brand', 'category'],
 };

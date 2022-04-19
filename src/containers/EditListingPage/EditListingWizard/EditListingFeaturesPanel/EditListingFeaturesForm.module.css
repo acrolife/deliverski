@@ -15,11 +15,19 @@
   }
 }
 
-.features {
+.featuresItems {
   margin-bottom: 24px;
 
   @media (--viewportMedium) {
     margin-bottom: 32px;
+  }
+}
+
+.featuresWrapper {
+  overflow-y: scroll;
+  max-height: 65vh;
+  @media (--viewportMedium) {
+    height: 50vh;
   }
 }
 

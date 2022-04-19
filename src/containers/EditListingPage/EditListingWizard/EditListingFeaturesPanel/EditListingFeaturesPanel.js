@@ -14,7 +14,7 @@ import { ListingLink } from '../../../../components';
 import EditListingFeaturesForm from './EditListingFeaturesForm';
 import css from './EditListingFeaturesPanel.module.css';
 
-const FEATURES_NAME = 'amenities';
+const FEATURES_NAME = 'features';
 
 const EditListingFeaturesPanel = props => {
   const {
@@ -45,8 +45,17 @@ const EditListingFeaturesPanel = props => {
     <FormattedMessage id="EditListingFeaturesPanel.createListingTitle" />
   );
 
-  const amenities = publicData && publicData.amenities;
-  const initialValues = { amenities };
+  const mealType = publicData && publicData.mealType;
+  const cuisine = publicData && publicData.cuisine;
+  const foodType = publicData && publicData.foodType;
+  const sizes = publicData && publicData.sizes;
+
+  const initialValues = { 
+    mealType,
+    cuisine, 
+    foodType,
+    sizes 
+  };
 
   return (
     <div className={classes}>
@@ -56,10 +65,26 @@ const EditListingFeaturesPanel = props => {
         name={FEATURES_NAME}
         initialValues={initialValues}
         onSubmit={values => {
-          const { amenities = [] } = values;
+          const { 
+            // cuisine = [], 
+            // sizes = [], 
+            // mealType = [],
+            // foodType = [],
+            cuisine, 
+            sizes, 
+            mealType,
+            foodType,            
+            // productType = '' 
+          } = values;
 
           const updatedValues = {
-            publicData: { amenities },
+            publicData: { 
+              cuisine,
+              sizes,
+              mealType,
+              foodType,
+              // productType 
+            },
           };
           onSubmit(updatedValues);
         }}

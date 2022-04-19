@@ -499,6 +499,11 @@
   margin: 0;
 }
 
+.detailsSub {
+  display: flex;
+  justify-content: end;
+}
+
 .detailsRow {
   display: inline-flex;
   justify-content: space-between;
@@ -512,15 +517,20 @@
     border-bottom: 1px solid var(--matterColorNegative);
   }
 
-  @media (--viewportMedium) {
+  /* @media (--viewportMedium) {
     padding: 7px 0 0px 0;
     line-height: 40px;
     max-width: 10pc;
-  }
+  } */
 }
 
 .detailLabel {
   font-weight: var(--fontWeightSemiBold);
+  letter-spacing: -0.09px;
+}
+
+.detailLabelSub {
+  font-weight: var( --fontWeightRegular);
   letter-spacing: -0.09px;
 }
 

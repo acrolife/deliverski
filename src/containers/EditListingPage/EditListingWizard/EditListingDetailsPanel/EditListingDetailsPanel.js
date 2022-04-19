@@ -38,14 +38,14 @@ const EditListingDetailsPanel = props => {
 
   useEffect(() => {
     sdk.currentUser.show().then(res => {
-      if(res.data.data){
+      if (res.data.data) {
         setHost(res.data.data)
       }
     }).catch(e => {
       console.log(e)
     })
   }, [])
- 
+
   const currentListing = ensureOwnListing(listing);
   const classes = classNames(rootClassName || css.root, className);
   const { description, title, publicData } = currentListing.attributes;
@@ -60,32 +60,39 @@ const EditListingDetailsPanel = props => {
     <FormattedMessage id="EditListingDetailsPanel.createListingTitle" />
   );
 
+  const productType = publicData && publicData.productType;
+  // const category = publicData && publicData.category;
+  const initialValues = {
+    title,
+    productType,
+    description,
+    // category, // XXX
+  }
+
   return (
     <div className={classes}>
       <h1 className={css.title}>{panelTitle}</h1>
       <EditListingDetailsForm
         className={css.form}
-        initialValues={{
-          title,
-          description,
-          category: publicData.category,
-          size: publicData.size,
-          brand: publicData.brand,
-        }}
+        initialValues={initialValues}
         saveActionMsg={submitButtonText}
         onSubmit={values => {
-          const { title, description, category, size, brand } = values;
+          const { 
+            title, 
+            description, 
+            productType,
+            // category, //XXX
+          } = values; 
           const hostIdObj = host ? {
             hostId: host.id.uuid
           } : {};
           const updateValues = {
             title: title.trim(),
-            description,
-            publicData: { 
-              category, 
-              size, 
-              brand,
-              ...hostIdObj 
+            description, 
+            publicData: {
+              productType,
+              // category, //XXX
+              ...hostIdObj
             },
           };
 
