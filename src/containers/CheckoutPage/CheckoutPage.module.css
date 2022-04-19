@@ -248,7 +248,10 @@
   }
 }
 .orderError {
-  color: var(--failColor);
+  @apply --marketplaceH4FontStyles;
+  font-weight: 800;
+  color: var(--marketplaceColor);
+  margin: 48px 16px 8px 48px;
 }
 .notFoundError {
   color: var(--attentionColor);
