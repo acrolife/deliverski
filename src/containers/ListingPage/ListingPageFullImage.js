@@ -474,6 +474,8 @@ export class ListingPageComponent extends Component {
                     authorLink={authorLink}
                     showContactUser={showContactUser}
                     onContactUser={this.onContactUser}
+                    restaurantStatus={restaurantStatus}
+
                   />
                 </div>
                 <SectionDescriptionMaybe description={description} listingTitle={richTitle} />
