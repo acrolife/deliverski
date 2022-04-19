@@ -88,7 +88,7 @@ export const ListingCardComponent = props => {
   const restaurantStatus = isRestaurantOpen(listing?.author?.attributes.profile?.publicData);
   const { pickupEnabled, shippingEnabled } = listing?.attributes?.publicData || {};
   const isOnHold = listing?.author?.attributes?.profile.publicData.onHoldByOwner;
-
+  const stock = listing?.currentStock?.attributes?.quantity ?? 0;
   return (
     <NamedLink className={classes} name="ListingPage" params={{ id, slug }}>
       <AspectRatioWrapper
@@ -148,10 +148,23 @@ export const ListingCardComponent = props => {
               longWordMinLength: MIN_LENGTH_FOR_LONG_WORDS,
               longWordClass: css.longWord,
             })}
+
           </div>
           {showAuthorInfo ? (
             <div className={css.authorInfo}>
               <FormattedMessage id="ListingCard.author" values={{ authorName }} />
+              <span className={css.stock}>Stock:  
+              <p className={
+                stock === 0 ? css.redDot : 
+                  (
+                    stock > 0 && stock <= 3 ?
+                    css.yellowDot
+                    :
+                    css.greenDot
+                  )
+                } >•</p>
+              </span>
+
             </div>
           ) : null}
         </div>
