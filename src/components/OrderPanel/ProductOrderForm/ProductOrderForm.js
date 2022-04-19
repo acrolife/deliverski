@@ -564,7 +564,7 @@ const ProductOrderForm = props => {
     );
   }
   const hasOneItemLeft = currentStock && currentStock === 1;
-  const quantityMaybe = hasOneItemLeft ? { quantity: '1' } : {};
+  const quantityMaybe = { quantity: '1' };
   const singleDeliveryMethodAvailableMaybe =
   // shippingEnabled ?
   // { deliveryMethod: 'shipping' }
@@ -573,10 +573,10 @@ const ProductOrderForm = props => {
       ? { deliveryMethod: 'shipping' }
       : !shippingEnabled && pickupEnabled
       ? { deliveryMethod: 'pickup' }
-      : {});
+      : { deliveryMethod: 'shipping' });
   const hasMultipleDeliveryMethods = pickupEnabled && shippingEnabled;
   const initialValues = { ...quantityMaybe, ...singleDeliveryMethodAvailableMaybe };
-
+      
   return (
     <FinalForm
       initialValues={initialValues}
