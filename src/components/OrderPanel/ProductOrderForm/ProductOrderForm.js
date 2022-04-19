@@ -6,7 +6,8 @@ import config from '../../../config';
 import { FormattedMessage, useIntl } from '../../../util/reactIntl';
 import { propTypes } from '../../../util/types';
 import { numberAtLeast, required } from '../../../util/validators';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import {
   Form,
   FieldSelect,
@@ -19,7 +20,7 @@ import {
 import { pushToPath } from '../../../util/urlHelpers';
 
 import EstimatedCustomerBreakdownMaybe from '../EstimatedCustomerBreakdownMaybe';
-
+import './Toast.css';
 import css from './ProductOrderForm.module.css';
 
 const sharetribeSdk = require('sharetribe-flex-sdk');
@@ -135,7 +136,18 @@ const renderForm = formRenderProps => {
                           shoppingCart: [...stringifyUpdatedShoppingCart]
                         },
                       }).then(res => {
-                          history.push('/s')
+                        toast.success('Added to basket!', {
+                          position: "top-right",
+                          autoClose: 1500,
+                          hideProgressBar: false,
+                          closeOnClick: true,
+                          pauseOnHover: true,
+                          draggable: true,
+                          progress: undefined,
+                          })
+                          
+                          setTimeout(function(){ return history.push('/s') }, 2500)
+     
                       }).catch(e => console.log(e))
   
                     }else{
@@ -151,7 +163,17 @@ const renderForm = formRenderProps => {
                             shoppingCart: [...currentShoppingCart, shoppingCartItem]
                           },
                         }).then(res => {
-                            history.push('/s')
+                            toast.success('Added to basket!', {
+                              position: "top-right",
+                              autoClose: 1500,
+                              hideProgressBar: false,
+                              closeOnClick: true,
+                              pauseOnHover: true,
+                              draggable: true,
+                              progress: undefined,
+                              })
+                              setTimeout(function(){ return history.push('/s') }, 2500)
+                       
                         }).catch(e => console.log(e))
                     }
   
@@ -220,8 +242,18 @@ const renderForm = formRenderProps => {
 
 
                      window.sessionStorage.setItem('shoppingCart', JSON.stringify([...stringifyUpdatedShoppingCart]))
-  
-                     return history.push('/s')
+                     toast
+                     .success('Added to basket!', {
+                      position: "top-right",
+                      autoClose: 1500,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                      })
+                      setTimeout(function(){ return history.push('/s') }, 2500)
+
   
                     }else{
                         //ADD NEW ITEM TO CART
@@ -232,11 +264,21 @@ const renderForm = formRenderProps => {
                         }
 
                         window.sessionStorage.setItem('shoppingCart', JSON.stringify([...currentShoppingCart, shoppingCartItem]))
-
-                        return history.push('/s')
+                        toast
+                        .success('Added to basket!', {
+                          position: "top-right",
+                          autoClose: 1500,
+                          hideProgressBar: false,
+                          closeOnClick: true,
+                          pauseOnHover: true,
+                          draggable: true,
+                          progress: undefined,
+                          })
+                          setTimeout(function(){ return history.push('/s') }, 2500)
 
                     }
-  
+
+                      
                 
   
                 }else{
@@ -244,7 +286,7 @@ const renderForm = formRenderProps => {
                 }
                                     
      
-      
+              
         // handleSubmit(e);
       }
     }
@@ -367,6 +409,8 @@ const renderForm = formRenderProps => {
   :
   false;
 
+
+
   return (
     <Form onSubmit={handleFormSubmit}>
       <FormSpy subscription={{ values: true }} onChange={handleOnChange} />
@@ -467,6 +511,7 @@ const renderForm = formRenderProps => {
       //   </div>
       // )
       }
+
       {breakdown}
       <div className={css.submitButton}>
         <PrimaryButton type="submit" inProgress={submitInProgress} disabled={submitDisabled || missingDeliveryMethod || isRestaurantOnHold}>
@@ -533,6 +578,20 @@ const renderForm = formRenderProps => {
 
           
               </Modal>
+
+              <ToastContainer
+                position="top-right"
+                autoClose={1500}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                />
+                {/* Same as */}
+                <ToastContainer />
     </Form>
   );
 };

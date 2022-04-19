@@ -90,11 +90,11 @@
 
 .submitButton {
   padding: 0 24px;
-  margin-top: 24px;
+  margin-top: 1pc;
 
   @media (--viewportMedium) {
     padding: 0;
-    margin-top: 72px;
+    margin-top: 1pc;
   }
 }
 
