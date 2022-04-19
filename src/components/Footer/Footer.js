@@ -119,7 +119,7 @@ const Footer = props => {
                   <NamedLink
                     name="SearchPage"
                     to={{
-                      search: '?pub_brand=adidas',
+                      search: '?pub_cuisine=local',
                     }}
                     className={css.link}
                   >
@@ -130,7 +130,7 @@ const Footer = props => {
                   <NamedLink
                     name="SearchPage"
                     to={{
-                      search: '?pub_brand=air_jordan',
+                      search: '?pub_cuisine=french',
                     }}
                     className={css.link}
                   >
@@ -141,7 +141,7 @@ const Footer = props => {
                   <NamedLink
                     name="SearchPage"
                     to={{
-                      search: '?pub_brand=converse',
+                      search: '?pub_cuisine=asian',
                     }}
                     className={css.link}
                   >
@@ -152,7 +152,7 @@ const Footer = props => {
                   <NamedLink
                     name="SearchPage"
                     to={{
-                      search: '?pub_brand=new_balance',
+                      search: '?pub_foodType=veggie',
                     }}
                     className={css.link}
                   >
@@ -163,7 +163,7 @@ const Footer = props => {
                   <NamedLink
                     name="SearchPage"
                     to={{
-                      search: '?pub_brand=nike',
+                      search: '?pub_foodType=bio',
                     }}
                     className={css.link}
                   >
@@ -178,7 +178,7 @@ const Footer = props => {
                   <NamedLink
                     name="SearchPage"
                     to={{
-                      search: '?pub_brand=puma',
+                      search: '?pub_mealType=dessert',
                     }}
                     className={css.link}
                   >
@@ -189,7 +189,7 @@ const Footer = props => {
                   <NamedLink
                     name="SearchPage"
                     to={{
-                      search: '?pub_brand=ultraboost',
+                      search: '?pub_mealType=snack',
                     }}
                     className={css.link}
                   >
@@ -200,7 +200,7 @@ const Footer = props => {
                   <NamedLink
                     name="SearchPage"
                     to={{
-                      search: '?pub_brand=vans',
+                      search: '?pub_foodType=pizza',
                     }}
                     className={css.link}
                   >
@@ -211,7 +211,7 @@ const Footer = props => {
                   <NamedLink
                     name="SearchPage"
                     to={{
-                      search: '?pub_brand=yeezy',
+                      search: '?pub_foodType=burger',
                     }}
                     className={css.link}
                   >
@@ -222,7 +222,7 @@ const Footer = props => {
                   <NamedLink
                     name="SearchPage"
                     to={{
-                      search: '?pub_brand=other',
+                      search: '?pub_foodType=bakkery',
                     }}
                     className={css.link}
                   >
