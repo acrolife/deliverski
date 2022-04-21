@@ -216,7 +216,7 @@ export class ProfilePageComponent extends Component {
         {hasListings ? (
           <div className={listingsContainerClasses}>
             <h2 className={css.listingsTitle}>
-              {isProvider && <FormattedMessage
+              {isProvider && listings.length && <FormattedMessage
                 id="ProfilePage.listingsTitle"
                 values={{ count: listings.length, name: restaurantName }}
               />}
@@ -255,7 +255,7 @@ export class ProfilePageComponent extends Component {
         id: 'ProfilePage.schemaTitle',
       },
       {
-        name: displayName,
+        restaurantName: restaurantName,
         siteTitle: config.siteTitle,
       }
     );
