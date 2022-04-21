@@ -143,8 +143,8 @@ export const ListingCardComponent = props => {
     </div>)
   }
 
-
-  const hasSearchParams = location?.search?.length > 0;
+const locationSearch = location ? location.search ? location.search : null : null
+  const hasSearchParams = locationSearch && locationSearch.length > 0
   // Build conditional UI for search listing as Restaurant's page
   let restaurantName = ''
   // TODO Write a more striaghtforwadr way to get those data
@@ -152,7 +152,7 @@ export const ListingCardComponent = props => {
   const restaurantSearchParam = 'pub_restaurant='
   // DEV
   // console.log("listings", listings)
-  const hasRestaurantSearchParam = hasSearchParams && location?.search?.includes(restaurantSearchParam)
+  const hasRestaurantSearchParam = hasSearchParams && locationSearch && locationSearch.includes(restaurantSearchParam)
 
   const NamedLinkRestaurant = () => {
     return (
