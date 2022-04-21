@@ -35,6 +35,13 @@
 
 export const filters = [
 
+  // # ------------------------------------------------------------------------- #
+  //
+  //    CAUTION the data structure should be the right one enum => '', multi-enum => []
+  //    CHECK src/containers/EditListingPage/EditListingWizard/EditListingDetailsPanel/EditListingDetailsPanel.js
+  //
+  // # ------------------------------------------------------------------------- #
+
   // # Restaurant filter ------------------------------------------------------- #
   {
     id: 'restaurant',
@@ -61,17 +68,22 @@ export const filters = [
         { key: 'fondus-de-ski', label: 'Fondus de Ski' },
         { key: 'mountain-cake', label: 'Mountain Cake' },
         { key: 'green-and-good', label: 'Green And Good' },
-        { key: 'soups-smoothies', label: 'Soups & Smoothies' }
+        { key: 'soups-smoothies', label: 'Soups & Smoothies' },
+        { key: 'veggie-stuff', label: 'Veggie stuff' },
+        { key: 'veggielesarcs', label: 'VeggieLesArcs' }
       ],
     },
   },
   // # Product type filter ----------------------------------------------------- #
   {
     id: 'productType',
-    label: 'Categorie',
-    type: 'SelectSingleFilter',
+    label: 'Boisson | Repas',
+    // TODO put back SelectSingleFilter if sections in all meals / restaurant's page
+    // And if UX not Ok
+    // type: 'SelectSingleFilter',    
+    type: 'SelectMultipleFilter',
     group: 'secondary',
-    queryParamNames: ['pub_ptype'],
+    queryParamNames: ['pub_productType'],
     config: {
       schemaType: 'enum',
       options: [
@@ -81,26 +93,53 @@ export const filters = [
       ],
     },
   },
-  // # General category filter (example) --------------------------------------- #
-  // {
-  //   id: 'category',
-  //   label: 'Category',
-  //   type: 'SelectMultipleFilter',
-  //   group: 'secondary',
-  //   queryParamNames: ['pub_category'],
-  //   config: {
-  //     schemaType: 'enum',
-  //     options: [
-  //       { key: 'fullmeal', label: 'Full meal' },
-  //       { key: 'pizzas', label: 'Pizzas' },
-  //       { key: 'burgers', label: 'Burgers' },
-  //       { key: 'apetizer', label: 'Apetizer' },
-  //       { key: 'breakfast', label: 'Breakfast' },
-  //       { key: 'sweets', label: 'Sweets' },
-  //       { key: 'other', label: 'Other' },
-  //     ],
-  //   },
-  // },
+  // # Food type filter -------------------------------------------------------- #
+  {
+    id: 'foodType',
+    label: 'Plat | En-cas',
+    type: 'SelectMultipleFilter',
+    group: 'secondary',
+    queryParamNames: ['pub_foodType'],
+    config: {
+      schemaType: 'enum',
+      searchMode: 'has_any',
+      options: [
+        { key: 'burger', label: 'Burger' },
+        { key: 'pizza', label: 'Pizza' },
+        { key: 'kebab', label: 'Kebab' },
+        { key: 'salad', label: 'Salade' },
+        { key: 'sandwich', label: 'Sandwich' },
+        { key: 'fries', label: 'Frites' },
+        { key: 'deli', label: 'Charcuterie & fromages' },
+        { key: 'soup', label: 'Soupe' },
+        { key: 'waffels', label: 'Gauffres & crêpes' },
+        { key: 'pastry', label: 'Viennoiserie & Pâtisserie' },
+        { key: 'bread', label: 'Pain' },
+        { key: 'sweet_dish', label: 'Autre sucré' },
+        { key: 'other_dish', label: 'Autre plat' },
+      ],
+    },
+  },
+  // # Drink filter ---------------------------------------------------------- #
+  {
+    id: 'drinkType',
+    label: 'Type de boisson',
+    type: 'SelectMultipleFilter',
+    group: 'secondary',
+    queryParamNames: ['pub_drinkType'],
+    config: {
+      schemaType: 'enum',
+      searchMode: 'has_any',
+      options: [
+        { key: 'soda', label: 'Soda' },
+        { key: 'water', label: 'Eau' },
+        { key: 'tea', label: 'Thé' },
+        { key: 'coffee', label: 'Café' },
+        { key: 'milk_based', label: 'A base de lait' },
+        { key: 'soup', label: 'Soupe' },
+      ],
+    },
+  },
   // # Cuisine filter ---------------------------------------------------------- #
   {
     id: 'cuisine',
@@ -109,87 +148,83 @@ export const filters = [
     group: 'secondary',
     queryParamNames: ['pub_cuisine'],
     config: {
-      schemaType: 'multi-enum',
+      schemaType: 'enum',
       searchMode: 'has_any',
       options: [
         { key: 'local', label: 'Savoyarde' },
         { key: 'french', label: 'Française' },
-        { key: 'italian', label: 'Italienne' },             
-        { key: 'asian', label: 'Asiatique' },                      
-        { key: 'other', label: 'Autre' },   
+        { key: 'italian', label: 'Italienne' },
+        { key: 'asian', label: 'Asiatique' },
+        { key: 'us', label: 'Américaine' },
+        // { key: 'mexican', label: 'Mexicaine' },
+        { key: 'other', label: 'Autre' },
       ],
     },
   },
   // # Meal type filter -------------------------------------------------------- #
+  // {
+  //   id: 'mealType',
+  //   label: 'Type de repas',
+  //   type: 'SelectMultipleFilter',
+  //   group: 'secondary',
+  //   queryParamNames: ['pub_mealType'],
+  //   config: {
+  //     schemaType: 'enum',
+  //     searchMode: 'has_any',
+  //     options: [
+  //       { key: 'breakfast', label: 'Petit-déjeûner' },
+  //       { key: 'apetizer', label: 'Apéritif' },
+  //       { key: 'starter', label: 'Entrée' },
+  //       { key: 'main_dish', label: 'Plat principal' },    
+  //       { key: 'snack', label: 'En-cas' },
+  //       { key: 'dessert', label: 'Dessert' },
+  //     ],
+  //   },
+  // },  
+  // # Food type filter -------------------------------------------------------- #
   {
-    id: 'mealType',
-    label: 'Type de plat',
+    id: 'diet',
+    label: 'Régime alimentaire',
     type: 'SelectMultipleFilter',
     group: 'secondary',
-    queryParamNames: ['pub_mtype'],
+    queryParamNames: ['pub_diet'],
     config: {
       schemaType: 'multi-enum',
       searchMode: 'has_any',
       options: [
-        { key: 'breakfast', label: 'Petit-déjeûner' },
-        { key: 'apetizer', label: 'Apéritif' },
-        { key: 'starter', label: 'Entrée' },
-        { key: 'main_dish', label: 'Plat principal' },
-        { key: 'snack', label: 'En-cas' },        
-        { key: 'dessert', label: 'Dessert' },    
-        { key: 'other', label: 'Autre' },          
-      ],
-    },
-  },
-  // # Food type filter -------------------------------------------------------- #
-  {
-    id: 'foodType',
-    label: 'Diététique',
-    type: 'SelectMultipleFilter',
-    group: 'secondary',
-    queryParamNames: ['pub_dietetic'],
-    config: {
-      schemaType: 'multi-enum',
-      searchMode: 'has_any',
-      options: [        
-        { key: 'burger', label: 'Burger' },        
-        { key: 'frites', label: 'Frites' },  
-        { key: 'pizza', label: 'Pizza' },            
-        { key: 'lasagna', label: 'Lasagne' },          
-        { key: 'cheese', label: 'Fromage' },           
-        { key: 'sandwich', label: 'Sandwich' },               
-        { key: 'fast_food', label: 'Fast food' },
-        { key: 'bio', label: 'Origine biologique' },           
+        { key: 'bio', label: 'Label AB - Bio' },
         { key: 'veggie', label: 'Végétarien' },
-        { key: 'vegan', label: 'Végan' },            
-        { key: 'bakery', label: 'Viennoiserie' },    
-        { key: 'other', label: 'Autre' },                 
+        { key: 'vegan', label: 'Végan' },
+        { key: 'halal', label: 'Halal' },
+        // Added allergens
+        { key: 'gluten_free', label: 'Sans gluten' },
+        { key: 'lactose_free', label: 'Sans lactose' }
       ],
     },
   },
-  // # Allergens filter -------------------------------------------------------- #
+  // # Allergen filter -------------------------------------------------------- #
   // {
-  //   id: 'allergens',
+  //   id: 'allergen',
   //   label: 'Allergènes',
   //   type: 'SelectMultipleFilter',
   //   group: 'secondary',
-  //   queryParamNames: ['pub_allergens'],
+  //   queryParamNames: ['pub_allergen'],
   //   config: {
   //     schemaType: 'multi-enum',
   //     searchMode: 'has_any',
   //     options: [
-  //       { key: 'xxx', label: 'Xxxxx' },
-
+  //       { key: 'gluten_free', label: 'Sans gluten' },
+  //       { key: 'lactose_free', label: 'Sans lactose' }        
   //     ],
   //   },
   // },
   // # Size filter ------------------------------------------------------------- #
   {
-    id: 'sizes',
-    label: 'Tailles',
-    type: 'SelectMultipleFilter',
+    id: 'size',
+    label: 'Tailles existantes',
+    type: 'SelectSingleFilter',
     group: 'secondary',
-    queryParamNames: ['pub_category'],
+    queryParamNames: ['pub_size'],
     config: {
       schemaType: 'multi-enum',
       searchMode: 'has_any',
@@ -304,8 +339,11 @@ export const sortConfig = {
   ],
 };
 
+// This will determine the data output on he LISTING PAGE 
 export const listing = {
   // These should be listing details from public data with schema type: enum
-  // SectionDetailsMaybe component shows these on listing page.
-  enumFieldDetails: ['productType', 'cuisine', 'mealType', 'foodType'],
+  // SectionDetailsMaybe component shows these on LISTING page.
+  // enumFieldDetails: ['foodType', 'cuisine', 'diet', 'size' ],  
+  enumFieldDetails: ['cuisine', 'mealType', 'foodType', 'drinkType', 'diet', 'allergen', 'size'],
+  // enumFieldDetails: ['productType', 'cuisine', 'mealType', 'foodType', 'drinkType', 'diet', 'allergen', 'size'],
 };
