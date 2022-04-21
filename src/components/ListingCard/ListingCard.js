@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { string, func, bool } from 'prop-types';
+import { string, func, bool, object } from 'prop-types';
 import { FormattedMessage, intlShape, injectIntl } from '../../util/reactIntl';
 import classNames from 'classnames';
 import { lazyLoadWithDimensions } from '../../util/contextHelpers';
@@ -52,7 +52,9 @@ export const ListingCardComponent = props => {
     renderSizes,
     setActiveListing,
     showAuthorInfo,
+    search,
   } = props;
+
   const classes = classNames(rootClassName || css.root, className);
   const currentListing = ensureListing(listing);
   const id = currentListing.id.uuid;
@@ -143,16 +145,14 @@ export const ListingCardComponent = props => {
     </div>)
   }
 
-const locationSearch = location ? location.search ? location.search : null : null
-  const hasSearchParams = locationSearch && locationSearch.length > 0
   // Build conditional UI for search listing as Restaurant's page
   let restaurantName = ''
   // TODO Write a more striaghtforwadr way to get those data
   // Check src/containers/LandingPage/LandingPage.duck.js
-  const restaurantSearchParam = 'pub_restaurant='
   // DEV
   // console.log("listings", listings)
-  const hasRestaurantSearchParam = hasSearchParams && locationSearch && locationSearch.includes(restaurantSearchParam)
+  const hasSearchParams = search ? (Object.keys(search).length > 0) : null
+  const hasRestaurantSearchParam = hasSearchParams ? !!search.pub_restaurant : null
 
   const NamedLinkRestaurant = () => {
     return (
@@ -191,6 +191,7 @@ ListingCardComponent.propTypes = {
   intl: intlShape.isRequired,
   listing: propTypes.listing.isRequired,
   showAuthorInfo: bool,
+  search: object,
 
   // Responsive image sizes hint
   renderSizes: string,
