@@ -82,12 +82,11 @@ const tabCompleted = (tab, listing) => {
       publicData.cuisine = publicData.cuisine ? publicData.cuisine : 'na'
       productTypeValidation = !!(publicData && publicData.drinkType) // publicData.cuisine
     case 'composable':
-      console.log(publicData)
       productTypeValidation = !!(publicData && publicData.cuisine && publicData.size)
   }
 
   // DEV
-  console.log(publicData)
+  // console.log(publicData)
   // console.log(!!publicData.drinkType)
 
   const deliveryOptionPicked =
