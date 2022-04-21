@@ -30,15 +30,11 @@ import {
 import EditListingWizardTab, { DETAILS, FEATURES, PRICING, DELIVERY, PHOTOS } from './EditListingWizardTab';
 import css from './EditListingWizard.module.css';
 
-// Custom fields
-// import RESTAURANT from './EditListingWizardTab'
-
 // You can reorder these panels.
 // Note 1: You need to change save button translations for new listing flow
 // Note 2: Ensure that draft listing is created after the first panel
 // and listing publishing happens after last panel.
 export const TABS = [DETAILS, FEATURES, PRICING, DELIVERY, PHOTOS];
-// , RESTAURANT];
 
 // Tabs are horizontal in small screens
 const MAX_HORIZONTAL_NAV_SCREEN_WIDTH = 1023;
@@ -58,8 +54,6 @@ const tabLabel = (intl, tab) => {
     key = 'EditListingWizard.tabLabelPricing';
   } else if (tab === PHOTOS) {
     key = 'EditListingWizard.tabLabelPhotos';
-    // } else if (tab === RESTAURANT) {
-    //   key = 'EditListingWizard.tabLabelRestaurant';
   }
 
   return intl.formatMessage({ id: key });
@@ -74,12 +68,28 @@ const tabLabel = (intl, tab) => {
  * @return true if tab / step is completed.
  */
 const tabCompleted = (tab, listing) => {
-  const {  description, price, title, publicData } = listing.attributes;
+  const { description, price, title, publicData } = listing.attributes;
   const images = listing.images;
-  const productType = publicData && publicData.productType ;
-  // XXX We don't validate on size
-  const featuresData =
-  publicData && (publicData.mealType && publicData.cuisine && publicData.foodType);
+
+  const productType = publicData && publicData.productType;
+  // featuresData Validation depending on productType => productTypeValidation
+  let productTypeValidation
+  switch (productType) {
+    case 'eatable':
+      productTypeValidation = !!(publicData && publicData.foodType && publicData.cuisine)
+    case 'drinkable':
+      // Need to enforce this to  validate the "Save" step to next tab
+      publicData.cuisine = publicData.cuisine ? publicData.cuisine : 'na'
+      productTypeValidation = !!(publicData && publicData.drinkType) // publicData.cuisine
+    case 'composable':
+      console.log(publicData)
+      productTypeValidation = !!(publicData && publicData.cuisine && publicData.size)
+  }
+
+  // DEV
+  console.log(publicData)
+  // console.log(!!publicData.drinkType)
+
   const deliveryOptionPicked =
     publicData && (publicData.shippingEnabled || publicData.pickupEnabled);
 
@@ -87,15 +97,13 @@ const tabCompleted = (tab, listing) => {
     case DETAILS:
       return !!(description && title && productType);
     case FEATURES:
-      return !!(featuresData);
+      return !!productTypeValidation;
     case DELIVERY:
       return !!deliveryOptionPicked;
     case PRICING:
       return !!price;
     case PHOTOS:
       return images && images.length > 0;
-    // case RESTAURANT:
-    //   return !!(publicData && publicData.restaurant);
     default:
       return false;
   }

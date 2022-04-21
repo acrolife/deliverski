@@ -61,12 +61,10 @@ const EditListingDetailsPanel = props => {
   );
 
   const productType = publicData && publicData.productType;
-  // const category = publicData && publicData.category;
   const initialValues = {
     title,
     productType,
     description,
-    // category, // XXX
   }
 
   return (
@@ -81,17 +79,30 @@ const EditListingDetailsPanel = props => {
             title, 
             description, 
             productType,
-            // category, //XXX
           } = values; 
           const hostIdObj = host ? {
             hostId: host.id.uuid
           } : {};
+
+          // CAUTION the data structure should be the right one enum => '', multi-enum => []
+          // CHECK src/config/marketplace-custom-config.js
+          // Will reinitialize the attributes of featuresData if the productType is modified
+          // Avvoid inconsistant data
+          let featuresData
+          if (initialValues.productType !== productType) {
+            featuresData = {
+              foodType: '',
+              cuisine: '',
+              diet: [],
+              size: []
+            }
+          }
           const updateValues = {
             title: title.trim(),
             description, 
             publicData: {
               productType,
-              // category, //XXX
+              ...featuresData,
               ...hostIdObj
             },
           };

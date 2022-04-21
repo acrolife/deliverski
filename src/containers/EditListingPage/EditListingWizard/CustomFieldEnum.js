@@ -7,6 +7,9 @@ import css from './EditListingWizard.module.css';
 const CustomFieldEnum = props => {
   const { name, id, options, label, placeholder, validate, schemaType } = props;
 
+  // DEV
+  // console.log("options", options)
+
   return options && schemaType === 'enum' ? (
     <FieldSelect
       className={css.detailsSelect}
