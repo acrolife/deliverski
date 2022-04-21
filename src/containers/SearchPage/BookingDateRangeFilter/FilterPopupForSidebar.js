@@ -7,7 +7,7 @@ import { injectIntl, intlShape } from '../../../util/reactIntl';
 import { OutsideClickHandler } from '../../../components';
 
 import FilterForm from '../FilterForm/FilterForm';
-import IconPlus from '../IconPlus/IconPlus';
+import IconPlus from '../../../components/IconPlus/IconPlus';
 
 import css from './FilterPopupForSidebar.module.css';
 

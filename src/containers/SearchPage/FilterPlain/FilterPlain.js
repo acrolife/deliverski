@@ -4,7 +4,7 @@ import classNames from 'classnames';
 
 import { FormattedMessage, injectIntl, intlShape } from '../../../util/reactIntl';
 
-import IconPlus from '../IconPlus/IconPlus';
+import IconPlus from '../../../components/IconPlus/IconPlus';
 import FilterForm from '../FilterForm/FilterForm';
 
 import css from './FilterPlain.module.css';
