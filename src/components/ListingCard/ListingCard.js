@@ -152,7 +152,7 @@ export const ListingCardComponent = props => {
   const restaurantSearchParam = 'pub_restaurant='
   // DEV
   // console.log("listings", listings)
-  const hasRestaurantSearchParam = hasSearchParams && location.search.includes(restaurantSearchParam)
+  const hasRestaurantSearchParam = hasSearchParams && location?.search?.includes(restaurantSearchParam)
 
   const NamedLinkRestaurant = () => {
     return (
