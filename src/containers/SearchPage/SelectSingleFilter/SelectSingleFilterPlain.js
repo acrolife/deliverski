@@ -4,7 +4,7 @@ import classNames from 'classnames';
 
 import { FormattedMessage } from '../../../util/reactIntl';
 
-import IconPlus from '../IconPlus/IconPlus';
+import IconPlus from '../../../components/IconPlus/IconPlus';
 
 import css from './SelectSingleFilterPlain.module.css';
 

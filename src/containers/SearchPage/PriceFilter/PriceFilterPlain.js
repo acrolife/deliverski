@@ -7,7 +7,7 @@ import { FormattedMessage, injectIntl, intlShape } from '../../../util/reactIntl
 import { propTypes } from '../../../util/types';
 import { formatCurrencyMajorUnit } from '../../../util/currency';
 
-import IconPlus from '../IconPlus/IconPlus';
+import IconPlus from '../../../components/IconPlus/IconPlus';
 import PriceFilterForm from '../PriceFilterForm/PriceFilterForm';
 
 import css from './PriceFilterPlain.module.css';
