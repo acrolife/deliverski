@@ -31,6 +31,12 @@ const TopbarMobileMenu = props => {
   // Conditional rendering of the provider/customer UI elements
   const isProvider = currentUser ? !!currentUser.attributes.profile.metadata.isProvider : false
 
+  const restaurant = 'veggielesarcs'
+
+  const searchParamMyRestaurant = {
+    search: `?pub_restaurant=${restaurant}`
+  }
+
   if (!isAuthenticated) {
     const signup = (
       <NamedLink name="SignupPage" className={css.signupLink}>
@@ -109,7 +115,15 @@ const TopbarMobileMenu = props => {
           name="NewListingPage"
         >
           <FormattedMessage id="TopbarMobileMenu.newListingLink" />
-        </NamedLink>}        
+        </NamedLink>}
+
+        {isProvider && <NamedLink
+          className={classNames(css.navigationLink, currentPageClass('SearchRestaurantPage'))}
+          name="SearchPage"
+          to={searchParamMyRestaurant}
+        >
+          <FormattedMessage id="TopbarMobileMenu.restaurantPageLink" />
+        </NamedLink>}
 
         <NamedLink
           className={classNames(css.navigationLink, currentPageClass('ProfileSettingsPage'))}
