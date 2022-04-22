@@ -74,25 +74,6 @@ export const filters = [
       ],
     },
   },
-  // # Product type filter ----------------------------------------------------- #
-  {
-    id: 'productType',
-    label: 'Boisson | Repas',
-    // TODO put back SelectSingleFilter if sections in all meals / restaurant's page
-    // And if UX not Ok
-    // type: 'SelectSingleFilter',    
-    type: 'SelectMultipleFilter',
-    group: 'secondary',
-    queryParamNames: ['pub_productType'],
-    config: {
-      schemaType: 'enum',
-      options: [
-        { key: 'drinkable', label: 'Se boit' },
-        { key: 'eatable', label: 'Se mange' },
-        { key: 'composable', label: 'Menu' }
-      ],
-    },
-  },
   // # Food type filter -------------------------------------------------------- #
   {
     id: 'foodType',
@@ -110,33 +91,31 @@ export const filters = [
         { key: 'salad', label: 'Salade' },
         { key: 'sandwich', label: 'Sandwich' },
         { key: 'fries', label: 'Frites' },
-        { key: 'deli', label: 'Charcuterie & fromages' },
+        { key: 'deli', label: 'Charcuterie & fromage' },
         { key: 'soup', label: 'Soupe' },
-        { key: 'waffels', label: 'Gauffres & crêpes' },
+        { key: 'waffels', label: 'Gauffre & crêpe' },
         { key: 'pastry', label: 'Viennoiserie & Pâtisserie' },
         { key: 'bread', label: 'Pain' },
-        { key: 'sweet_dish', label: 'Autre sucré' },
         { key: 'other_dish', label: 'Autre plat' },
       ],
     },
   },
-  // # Drink filter ---------------------------------------------------------- #
+  // # Product type filter ----------------------------------------------------- #
   {
-    id: 'drinkType',
-    label: 'Type de boisson',
+    id: 'productType',
+    label: 'Se mange | Se boit | Menu',
+    // TODO put back SelectSingleFilter if sections in all meals / restaurant's page
+    // And if UX not Ok
+    // type: 'SelectSingleFilter',    
     type: 'SelectMultipleFilter',
     group: 'secondary',
-    queryParamNames: ['pub_drinkType'],
+    queryParamNames: ['pub_productType'],
     config: {
       schemaType: 'enum',
-      searchMode: 'has_any',
       options: [
-        { key: 'soda', label: 'Soda' },
-        { key: 'water', label: 'Eau' },
-        { key: 'tea', label: 'Thé' },
-        { key: 'coffee', label: 'Café' },
-        { key: 'milk_based', label: 'A base de lait' },
-        { key: 'soup', label: 'Soupe' },
+        { key: 'eatable', label: 'Se mange' },
+        { key: 'drinkable', label: 'Se boit' },
+        { key: 'composable', label: 'Menu' }
       ],
     },
   },
@@ -161,26 +140,6 @@ export const filters = [
       ],
     },
   },
-  // # Meal type filter -------------------------------------------------------- #
-  // {
-  //   id: 'mealType',
-  //   label: 'Type de repas',
-  //   type: 'SelectMultipleFilter',
-  //   group: 'secondary',
-  //   queryParamNames: ['pub_mealType'],
-  //   config: {
-  //     schemaType: 'enum',
-  //     searchMode: 'has_any',
-  //     options: [
-  //       { key: 'breakfast', label: 'Petit-déjeûner' },
-  //       { key: 'apetizer', label: 'Apéritif' },
-  //       { key: 'starter', label: 'Entrée' },
-  //       { key: 'main_dish', label: 'Plat principal' },    
-  //       { key: 'snack', label: 'En-cas' },
-  //       { key: 'dessert', label: 'Dessert' },
-  //     ],
-  //   },
-  // },  
   // # Food type filter -------------------------------------------------------- #
   {
     id: 'diet',
@@ -218,6 +177,45 @@ export const filters = [
   //     ],
   //   },
   // },
+  // # Drink filter ---------------------------------------------------------- #
+  {
+    id: 'drinkType',
+    label: 'Boisson',
+    type: 'SelectMultipleFilter',
+    group: 'secondary',
+    queryParamNames: ['pub_drinkType'],
+    config: {
+      schemaType: 'enum',
+      searchMode: 'has_any',
+      options: [
+        { key: 'soda', label: 'Soda' },
+        { key: 'water', label: 'Eau' },
+        { key: 'tea', label: 'Thé' },
+        { key: 'coffee', label: 'Café' },
+        { key: 'milk_based', label: 'A base de lait' },
+      ],
+    },
+  },
+  // # Meal type filter -------------------------------------------------------- #
+  // {
+  //   id: 'mealType',
+  //   label: 'Type de repas',
+  //   type: 'SelectMultipleFilter',
+  //   group: 'secondary',
+  //   queryParamNames: ['pub_mealType'],
+  //   config: {
+  //     schemaType: 'enum',
+  //     searchMode: 'has_any',
+  //     options: [
+  //       { key: 'breakfast', label: 'Petit-déjeûner' },
+  //       { key: 'apetizer', label: 'Apéritif' },
+  //       { key: 'starter', label: 'Entrée' },
+  //       { key: 'main_dish', label: 'Plat principal' },    
+  //       { key: 'snack', label: 'En-cas' },
+  //       { key: 'dessert', label: 'Dessert' },
+  //     ],
+  //   },
+  // },  
   // # Size filter ------------------------------------------------------------- #
   {
     id: 'size',
