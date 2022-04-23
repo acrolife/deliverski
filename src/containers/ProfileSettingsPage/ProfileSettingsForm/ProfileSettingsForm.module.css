@@ -317,8 +317,18 @@ line-height: 32px;
 }
 
 .fillDaysButton{
+  /* color: var(--matterColorAnti); */
   height: 2pc;
   width: 12pc;
+  padding: 5px 10px;
+  box-shadow: 2px;
+  background-color: var(--marketplaceColor);
+  color: white;
+ 
+  &:hover {
+    color: var(--marketplaceColor);
+    background-color: white
+  }
 }
 
 .switchWrapper{
@@ -334,9 +344,14 @@ line-height: 32px;
 }
 
 .infoText{
+  color: var(--matterColorAnti);
+  margin-top: 11px;
   margin: 0;
-  font-size: 16px;
+  font-size: 20px;
   line-height: 32px;
+  @media (--viewportMedium) {
+    margin-top: 16px;
+  }
 }
 
 .modalButton1{
@@ -348,3 +363,12 @@ line-height: 32px;
   }
 }
 
+.onHoldStatus {
+  color: rgb(255, 34, 34);
+  font-weight: 800;
+} 
+
+.onlineStatus {
+  color: rgb(34, 255, 60);
+  font-weight: 800;
+} 

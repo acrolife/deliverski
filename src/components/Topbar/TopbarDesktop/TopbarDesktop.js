@@ -57,6 +57,11 @@ const TopbarDesktop = props => {
   const isProvider = currentUser ? !!currentUser.attributes.profile.metadata.isProvider : false
 
   const classes = classNames(rootClassName || css.root, className);
+  const restaurant = 'veggielesarcs'
+
+  const searchParamMyRestaurant = {
+    search: `?pub_restaurant=${restaurant}`
+  }
 
   const search = (
     <TopbarSearchForm
@@ -135,7 +140,19 @@ const TopbarDesktop = props => {
               <span className={css.menuItemBorder} />
               <FormattedMessage id="TopbarDesktop.newListingLink" />
             </NamedLink>}
-        </MenuItem>        
+        </MenuItem>
+
+        <MenuItem key="SearchRestaurantPage">
+          {isProvider &&
+            <NamedLink
+              className={classNames(css.yourListingsLink, currentPageClass('SearchRestaurantPage'))}
+              name="SearchPage"
+              to={searchParamMyRestaurant}
+            >
+              <span className={css.menuItemBorder} />
+              <FormattedMessage id="TopbarDesktop.restaurantPageLink" />
+            </NamedLink>}
+        </MenuItem>
 
         <MenuItem key="ProfileSettingsPage">
           <NamedLink

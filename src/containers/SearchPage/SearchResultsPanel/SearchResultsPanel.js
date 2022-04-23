@@ -19,6 +19,9 @@ const SearchResultsPanel = props => {
   } = props;
   const classes = classNames(rootClassName || css.root, className);
 
+  // DEV
+  // console.log("search", search)
+
   const paginationLinks =
     pagination && pagination.totalPages > 1 ? (
       <PaginationLinks
@@ -64,6 +67,7 @@ const SearchResultsPanel = props => {
             listing={l}
             renderSizes={cardRenderSizes(isMapVariant)}
             setActiveListing={setActiveListing}
+            search={search}
           />
         ))}
         {props.children}

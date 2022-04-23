@@ -36,6 +36,7 @@
   display: flex;
   flex-direction: column;
   padding: 16px 0 2px 0;
+
 }
 
 .price {
@@ -86,6 +87,7 @@
 
 .title {
   /* Font */
+
   @apply --marketplaceDefaultFontStyles;
   line-height: 24px;
   color: var(--matterColor);
@@ -102,6 +104,8 @@
 
 .authorInfo {
   /* Font */
+  display: flex;
+  justify-content: space-between;
   @apply --marketplaceTinyFontStyles;
   color: var(--matterColor);
 
@@ -135,13 +139,82 @@
   width: 100%;
 }
 
+.reviewsBadge{
+  width: auto;
+  margin: 0;
+  /* filter: invert(64%) sepia(66%) saturate(376%) hue-rotate(153deg) brightness(89%) contrast(111%); */
+}
+
+.reviewsBadge2{
+  width: auto;
+  margin: 0;
+  margin-top: -8px;
+  filter: invert(64%) sepia(66%) saturate(376%) hue-rotate(153deg) brightness(89%) contrast(111%);
+}
+
+.badgeWrapper{
+  position: absolute;
+  right: 0;
+  z-index: 1;
+  background-color: white;
+  padding: 5px;
+  border-bottom-left-radius: 20px;
+  border-top-right-radius: 3px;
+
+  box-shadow: 0 0.1rem 0.1rem rgb(202, 202, 202);
+  border-top: 1px solid rgb(239, 239, 239);
+  border-right: 1px solid rgb(239, 239, 239);
+}
+
+/* .openedRestaurant{
+  width: auto;
+  margin: 0;
+  font-size: 80px;
+  color: var(--successColor); orig 
+  text-shadow: 0 0.1rem 0.3rem rgb(132, 132, 132);
+} */
+
 .openedRestaurant{
   width: auto;
   margin: 0;
   font-size: 80px;
+  /* color: var(--successColor); */ 
+  /* text-shadow: 0 0.1rem 0.3rem rgb(132, 132, 132); */
+  color: transparent;
+  /* border-color: var(--successColor);
+  border: 2px; */
+}
+
+.stock{
+  display: flex;
+}
+
+.yellowDot{
+  margin: 0;
+  font-size: 45px;
+  color: orange;
+  text-shadow: 0 0.1rem 0.3rem rgb(132, 132, 132);
+  line-height: 12px;
+  margin-left: 5px;
+}
+
+.greenDot{
+  margin: 0;
+  font-size: 45px;
   color: var(--successColor);
   text-shadow: 0 0.1rem 0.3rem rgb(132, 132, 132);
+  line-height: 12px;
+  margin-left: 5px;
+}
 
+
+.redDot{
+  margin: 0;
+  font-size: 45px;
+  color: red;
+  text-shadow: 0 0.1rem 0.3rem rgb(132, 132, 132);
+  line-height: 12px;
+  margin-left: 5px;
 }
 
 .closedRestaurant{

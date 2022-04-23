@@ -112,9 +112,9 @@ export class ProfilePageComponent extends Component {
         <AvatarLarge className={css.avatar} user={user} disableProfileLink />
         <h1 className={css.mobileHeading}>
           {isProvider ? (
-            <FormattedMessage id="ProfilePage.mobileHeading" values={{ name: restaurantName, linebreak: <br/> }} />
+            <FormattedMessage id="ProfilePage.mobileHeading" values={{ name: restaurantName, linebreak: <br /> }} />
           ) : (
-            <FormattedMessage id="ProfilePage.mobileHeading" values={{ name: displayName, linebreak: <br/> }} />
+            <FormattedMessage id="ProfilePage.mobileHeading" values={{ name: displayName, linebreak: <br /> }} />
           )}
         </h1>
         {editLinkMobile}
@@ -216,19 +216,22 @@ export class ProfilePageComponent extends Component {
         {hasListings ? (
           <div className={listingsContainerClasses}>
             <h2 className={css.listingsTitle}>
-              {isProvider && listings.length && <FormattedMessage
+              {isProvider && <FormattedMessage
                 id="ProfilePage.listingsTitle"
                 values={{ count: listings.length, name: restaurantName }}
               />}
 
             </h2>
-            <ul className={css.listings}>
-              {listings.map(l => (
-                <li className={css.listing} key={l.id.uuid}>
-                  <ListingCard listing={l} showAuthorInfo={false} />
-                </li>
-              ))}
-            </ul>
+            {
+              listings.length && <ul className={css.listings}>
+                {listings.map(l => (
+                  <li className={css.listing} key={l.id.uuid}>
+                    <ListingCard listing={l} showAuthorInfo={false} />
+                  </li>
+                ))}
+              </ul>
+            }
+
           </div>
         ) : null}
         {/* Commenting out reviews */}

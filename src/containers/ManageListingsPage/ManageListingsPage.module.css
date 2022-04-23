@@ -20,6 +20,18 @@
   }
 }
 
+.resetButton{
+  margin-left: 2pc;
+  margin-bottom: 2pc;
+  width: 20pc;
+
+  @media (max-width: 768px){
+    width:85%;
+    margin: 0 auto;
+    margin-bottom: 2pc;
+  }
+}
+
 .tab {
   display: flex;
   align-items: flex-end;
