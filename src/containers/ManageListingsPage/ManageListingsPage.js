@@ -69,30 +69,30 @@ export class ManageListingsPageComponent extends Component {
     const isProvider = currentUser ? !!currentUser.attributes.profile.metadata.isProvider : false
 
     const resetAllStock = () => {
-        console.log(listings)
+      console.log(listings)
 
-        const promises = listings.map(l => {
-          const currentStock = l.currentStock?.attributes?.quantity;
-          const dailyStock = l.attributes.publicData?.dailyStock;
+      const promises = listings.map(l => {
+        const currentStock = l.currentStock?.attributes?.quantity;
+        const dailyStock = l.attributes.publicData?.dailyStock;
 
-          if(currentStock && dailyStock){
-              return sdk.stock.compareAndSet({
-                listingId: new UUID(l.id.uuid),
-                oldTotal: currentStock,
-                newTotal: dailyStock
-              })
-          }else{
-            return 'no stock yet'
-          }
-        })
+        if (currentStock && dailyStock) {
+          return sdk.stock.compareAndSet({
+            listingId: new UUID(l.id.uuid),
+            oldTotal: currentStock,
+            newTotal: dailyStock
+          })
+        } else {
+          return 'no stock yet'
+        }
+      })
 
-        return Promise.all(promises).then(resp => {
-          console.log(resp)
-          if(typeof window !== 'undefined'){
-            window.location.reload()
-          } 
-        })
-        
+      return Promise.all(promises).then(resp => {
+        console.log(resp)
+        if (typeof window !== 'undefined') {
+          window.location.reload()
+        }
+      })
+
     }
 
     const loadingResults = (
@@ -171,7 +171,7 @@ export class ManageListingsPageComponent extends Component {
             {queryListingsError ? queryError : null}
             <div className={css.listingPanel}>
               <Button className={css.resetButton} onClick={resetAllStock}>
-                Reset all stock
+                {intl.formatMessage({ id: 'ManageListingsPage.resetButton' })}
               </Button>
               {heading}
               <div className={css.listingCards}>

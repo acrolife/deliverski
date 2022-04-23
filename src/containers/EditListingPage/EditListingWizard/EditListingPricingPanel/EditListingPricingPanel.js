@@ -37,7 +37,7 @@ const EditListingPricingPanel = props => {
   const currentListing = ensureOwnListing(listing);
   // The listing resource has a relationship: `currentStock`,
   // which you should include when making API calls.
-  const currentStockRaw = currentListing.currentStock?.attributes?.quantity ?? 50;
+  const currentStockRaw = currentListing.currentStock?.attributes?.quantity;
   const currentStock = typeof currentStockRaw != null ? currentStockRaw : 1;
   const { price } = currentListing.attributes;
 

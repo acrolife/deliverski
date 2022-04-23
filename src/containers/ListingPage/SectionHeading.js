@@ -29,8 +29,8 @@ const SectionHeading = props => {
     : 'ListingPage.perUnit';
 
     const restaurantDot = <p className={restaurantStatus.status === 'open' ? css.openDot : css.closedDot}>•</p>;
-    const restaurantScheduleMessage = restaurantStatus.message;
-
+    const restaurantScheduleMessageKey = restaurantStatus.message ? restaurantStatus.message.key : null
+    const restaurantScheduleMessageValues = restaurantStatus.message ? restaurantStatus.message.values : null
     
   return (
     <div className={css.sectionHeading}>
@@ -45,7 +45,9 @@ const SectionHeading = props => {
       <div className={css.heading}>
 
         <h1 className={css.title}>{richTitle} {restaurantDot}</h1>
-        <p className={restaurantStatus.status === 'open' ? css.scheduleInfoTextOpen : css.scheduleInfoTextClosed}>{restaurantScheduleMessage}</p>
+        <p className={restaurantStatus.status === 'open' ? css.scheduleInfoTextOpen : css.scheduleInfoTextClosed}>
+          <FormattedMessage id={restaurantScheduleMessageKey} />
+          </p>
 
         <div className={css.author}>
           {category}

@@ -40,6 +40,13 @@ export const EditListingPricingFormComponent = props => (
         fetchErrors,
       } = formRenderProps;
 
+      const classes = classNames(css.root, className);
+      const submitReady = (updated && pristine) || ready;
+      const submitInProgress = updateInProgress;
+      const submitDisabled = invalid || disabled || submitInProgress;
+      const { updateListingError, showListingsError, setStockError } = fetchErrors || {};
+
+      // Price
       const priceRequired = validators.required(
         intl.formatMessage({
           id: 'EditListingPricingForm.priceRequired',
@@ -61,20 +68,21 @@ export const EditListingPricingFormComponent = props => (
         ? validators.composeValidators(priceRequired, minPriceRequired)
         : priceRequired;
 
+      // Current stock        
       const stockValidator = validators.numberAtLeast(
         intl.formatMessage({ id: 'EditListingPricingForm.stockIsRequired' }),
         0
       );
 
-      const classes = classNames(css.root, className);
-      const submitReady = (updated && pristine) || ready;
-      const submitInProgress = updateInProgress;
-      const submitDisabled = invalid || disabled || submitInProgress;
-      const { updateListingError, showListingsError, setStockError } = fetchErrors || {};
-
       const stockErrorMessage = isOldTotalMismatchStockError(setStockError)
         ? intl.formatMessage({ id: 'EditListingPricingForm.oldStockTotalWasOutOfSync' })
         : intl.formatMessage({ id: 'EditListingPricingForm.stockUpdateFailed' });
+
+      // Daily stock        
+      // const dailyStockValidator = validators.numberAtLeast(
+      //   intl.formatMessage({ id: 'EditListingPricingForm.dailyStockIsRequired' }),
+      //   0
+      // );
 
       return (
         <Form onSubmit={handleSubmit} className={classes}>
@@ -98,6 +106,17 @@ export const EditListingPricingFormComponent = props => (
             currencyConfig={config.currencyConfig}
             validate={priceValidators}
           />
+
+          {/* <FieldTextInput
+            className={css.input}
+            id="dailyStock"
+            name="dailyStock"
+            label={intl.formatMessage({ id: 'EditListingPricingForm.dailyStockLabel' })}
+            placeholder={intl.formatMessage({ id: 'EditListingPricingForm.dailyStockPlaceholder' })}
+            type="number"
+            min={0}
+            validate={dailyStockValidator}
+          /> */}
 
           <FieldTextInput
             className={css.input}

@@ -124,7 +124,8 @@ const OrderPanel = props => {
   const classes = classNames(rootClassName || css.root, className);
   const titleClasses = classNames(titleClassName || css.orderTitle);
   const restaurantDot = <p className={restaurantStatus.status === 'open' ? css.openDot : css.closedDot}>•</p>;
-  const restaurantScheduleMessage = restaurantStatus.message;
+  const restaurantScheduleMessageKey = restaurantStatus.message ? restaurantStatus.message.key : null
+  const restaurantScheduleMessageValues = restaurantStatus.message ? restaurantStatus.message.values : null
 
   return (
     <div className={classes}>
@@ -142,7 +143,9 @@ const OrderPanel = props => {
 
         <div className={css.orderHeading}>
           <h2 className={titleClasses}>{title} {restaurantDot}</h2>
-          <p className={restaurantStatus.status === 'open' ? css.scheduleInfoTextOpen : css.scheduleInfoTextClosed}>{restaurantScheduleMessage}</p>
+          <p className={restaurantStatus.status === 'open' ? css.scheduleInfoTextOpen : css.scheduleInfoTextClosed}>
+          <FormattedMessage id={restaurantScheduleMessageKey} />
+            </p>
           {subTitleText ? <div className={css.orderHelp}>{subTitleText}</div> : null}
 
           <div className={css.deliveryOptions}>
