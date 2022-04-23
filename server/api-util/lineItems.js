@@ -81,7 +81,7 @@ exports.transactionLineItems = (listing, orderData) => {
 
   const restOfShoppingCartItems = orderData.restOfShoppingCartItems;
 
-  const providerShippingParticipation = freeShipping ? 0 : (process.env.REACT_APP_SHIPPING_PROVIDER * 100);
+  const providerShippingParticipation = freeShipping ? 0 : (- process.env.REACT_APP_SHIPPING_PROVIDER * 100);
   const providerShippingParticipationForMarketplaceCommision = freeShipping ? 0 : ( - process.env.REACT_APP_SHIPPING_PROVIDER * 100 );
 
   const customerShippingParticipation = freeShipping ? 0 : process.env.REACT_APP_SHIPPING_CUSTOMER * 100;
