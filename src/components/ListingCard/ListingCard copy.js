@@ -13,6 +13,7 @@ import { isRestaurantOpen } from '../../util/data';
 import { AspectRatioWrapper, NamedLink, ResponsiveImage } from '../../components';
 
 import css from './ListingCard.module.css';
+import { stringify } from 'query-string';
 
 const MIN_LENGTH_FOR_LONG_WORDS = 10;
 
@@ -92,34 +93,28 @@ const ListingCardComponent = props => {
   const restaurantStatus = isRestaurantOpen(listing?.author?.attributes.profile?.publicData);
   let restaurantMessageIdAndValues = []
   if (restaurantStatus) {
-    restaurantMessageIdAndValues.push({ id: restaurantStatus.message.key })
-
+    restaurantMessageIdAndValues.push({id: restaurantStatus.message.key})
     if (restaurantStatus.message.values) {
       const messageValue = restaurantStatus.message.values
-      let restaurantMessageValues = {}
-      restaurantMessageValues.openingHour = JSON.stringify(messageValue.openingHour) ? messageValue.openingHour : null
-      restaurantMessageValues.openingMinute = JSON.stringify(messageValue.openingMinute) ? messageValue.openingMinute : null
-      restaurantMessageValues.closingHour = JSON.stringify(messageValue.closingHour) ? messageValue.closingHour : null
-      restaurantMessageValues.closingMinute = JSON.stringify(messageValue.closingMinute) ? messageValue.closingMinute : null
-      restaurantMessageValues.phoneNumber = JSON.stringify(messageValue.phoneNumber) ? messageValue.phoneNumber : null
-      for (const k of Object.keys(restaurantMessageValues)) {
-        if (restaurantMessageValues[k] === null) {
-          delete restaurantMessageValues[k]
-        } else if (JSON.stringify(restaurantMessageValues[k]).length === 1) {
-          restaurantMessageValues[k] = '0' + JSON.stringify(restaurantMessageValues[k])
-        }
-      }
-      restaurantMessageIdAndValues.push(restaurantMessageValues)
+
+      restaurantMessageIdAndValues.push(messageValue.startHour ? { startHour: messageValue.startHour } : null)
+      restaurantMessageIdAndValues.push(messageValue.startMinute ? { startMinute: messageValue.startMinute } : null)
+      restaurantMessageIdAndValues.push(messageValue.closingHour ? { closingHour: messageValue.closingHour } : null)
+      restaurantMessageIdAndValues.push(messageValue.closingMinute ? { closingMinute: messageValue.closingMinute } : null)
+      restaurantMessageIdAndValues.push(messageValue.phoneNumber ? { phoneNumber: messageValue.phoneNumber } : null)
+      // Removing null values from the aray
+      restaurantMessageIdAndValues = restaurantMessageIdAndValues.filter(e => e)
     }
   }
+
+  console.log("restaurantMessageIdAndValues", JSON.stringify(restaurantMessageIdAndValues))
 
   const { pickupEnabled, shippingEnabled } = listing?.attributes?.publicData || {};
   const isOnHold = listing?.author?.attributes?.profile.publicData.onHoldByOwner;
   const stock = listing?.currentStock?.attributes?.quantity ?? 0;
+
   const ContentDiv = () => {
-
     return (
-
       <div>
         <AspectRatioWrapper
           className={css.aspectRatioWrapper}
@@ -135,7 +130,7 @@ const ListingCardComponent = props => {
           <div className={css.messageWrapper}>
             {/* <img src={badge} className={css.reviewsBadge} /> */}
             <p className={css.scheduleMessage} >
-              {intl.formatMessage(...restaurantMessageIdAndValues)}
+              {intl.formatMessage({ ...restaurantMessageIdAndValues })}
             </p>
           </div>
 
@@ -148,22 +143,11 @@ const ListingCardComponent = props => {
                     intl.formatMessage({ id: 'ListingCard.restaurantIsOnHold' })
                     :
                     (
-                      !shippingEnabled ?
-                        intl.formatMessage({ id: 'ListingCard.productShippingDisabled' }) : null
-                    )
-                }
-                {/* 
-                Here we'll show a pill also for no-pickup case - not nice UX
-                {
-                  isOnHold ?
-                    intl.formatMessage({ id: 'ListingCard.restaurantIsOnHold' })
-                    :
-                    (
                       !pickupEnabled ?
                         intl.formatMessage({ id: 'ListingCard.productPickupDisabled' }) :
                         intl.formatMessage({ id: 'ListingCard.productShippingDisabled' })
                     )
-                } */}
+                }
               </p>
             </div>
             : null}
@@ -176,44 +160,42 @@ const ListingCardComponent = props => {
             sizes={renderSizes}
           />
         </AspectRatioWrapper>
-        <div >
-          <div className={css.info}>
-            <div className={css.price}>
-              <div className={css.priceValue} title={priceTitle}>
-                {formattedPrice}
-              </div>
-              {config.listing.showUnitTypeTranslations ? (
-                <div className={css.perUnit}>
-                  <FormattedMessage id={unitTranslationKey} />
-                </div>
-              ) : null}
+        <div className={css.info}>
+          <div className={css.price}>
+            <div className={css.priceValue} title={priceTitle}>
+              {formattedPrice}
             </div>
-            <div className={css.mainInfo}>
-              <div className={css.title}>
-                {richText(title, {
-                  longWordMinLength: MIN_LENGTH_FOR_LONG_WORDS,
-                  longWordClass: css.longWord,
-                })}
+            {config.listing.showUnitTypeTranslations ? (
+              <div className={css.perUnit}>
+                <FormattedMessage id={unitTranslationKey} />
+              </div>
+            ) : null}
+          </div>
+          <div className={css.mainInfo}>
+            <div className={css.title}>
+              {richText(title, {
+                longWordMinLength: MIN_LENGTH_FOR_LONG_WORDS,
+                longWordClass: css.longWord,
+              })}
+
+            </div>
+            {showAuthorInfo ? (
+              <div className={css.authorInfo}>
+                <FormattedMessage id="ListingCard.author" values={{ authorName }} />
+                <span className={css.stock}>Stock:
+                  <p className={
+                    stock === 0 ? css.redDot :
+                      (
+                        stock > 0 && stock <= 3 ?
+                          css.yellowDot
+                          :
+                          css.greenDot
+                      )
+                  } >•</p>
+                </span>
 
               </div>
-              {showAuthorInfo ? (
-                <div className={css.authorInfo}>
-                  <FormattedMessage id="ListingCard.author" values={{ authorName }} />
-                  <span className={css.stock}> {intl.formatMessage({ id: "ListingCard.stock" })}:
-                    <p className={
-                      stock === 0 ? css.redDot :
-                        (
-                          stock > 0 && stock <= 3 ?
-                            css.yellowDot
-                            :
-                            css.greenDot
-                        )
-                    } >•</p>
-                  </span>
-
-                </div>
-              ) : null}
-            </div>
+            ) : null}
           </div>
         </div>
       </div>)
@@ -234,7 +216,7 @@ const ListingCardComponent = props => {
 
   const NamedLinkRestaurant = () => {
     return (
-      <NamedLink className={classes} to={{ search: `?pub_restaurant=${listing.attributes.publicData?.restaurant}` }}
+      <NamedLink to={{ search: `?pub_restaurant=${listing.attributes.publicData?.restaurant}` }}
         name="SearchPage">
         < ContentDiv />
       </NamedLink>

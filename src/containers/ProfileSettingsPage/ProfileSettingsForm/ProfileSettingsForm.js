@@ -422,20 +422,21 @@ class ProfileSettingsFormComponent extends Component {
                 </p>
               </div>}
 
-
               {isProvider && <div className={classNames(css.sectionContainer)}>
                 <h3 className={css.sectionTitle}>
                   <FormattedMessage id="ProfileSettingsForm.scheduleTitle" />
                 </h3>
                 <div className={css.buttonWrapper}>
-                  <p>Click this button to copy Monday's schedule to all days</p>
+                  <p className={css.bioInfo}>
+                    <FormattedMessage id="ProfileSettingsForm.copyMondaySchedule" />
+                  </p>
 
                   <SecondaryButton
                     className={css.fillDaysButton}
                     type="button"
                     onClick={() => { form.mutators.fillSchedule(values) }}
                   >
-                    Fill all days
+                    <FormattedMessage id="ProfileSettingsForm.fillAllDays" />
                   </SecondaryButton>
                 </div>
 
@@ -446,15 +447,26 @@ class ProfileSettingsFormComponent extends Component {
               {isProvider && <div className={classNames(css.sectionContainer, css.lastSection)}>
                 <h3 className={css.sectionTitle}>
                   <FormattedMessage id="ProfileSettingsForm.onHoldTitle" />
-                  {this.props.isOffline ? " (Your restaurant is on hold now)" : " (Your restaurant is online now)"}
+                  <br />
+
+                  {this.props.isOffline ?
+                    (<p className={css.onHoldStatus}>
+                      <FormattedMessage id="ProfileSettingsForm.restaurantOnHold" />
+                    </p>)
+                    : (<p className={css.onlineStatus}>
+                      <FormattedMessage id="ProfileSettingsForm.restaurantOnline" />
+                    </p>)}
+
                 </h3>
 
-                <p className={css.infoText}>By using this switch, you can put your business on hold or back online</p>
+                <p className={css.bioInfo}>
+                  <FormattedMessage id="ProfileSettingsForm.warningSwitch" />
+                </p>
 
                 <div className={css.switchWrapper}>
-                  <p>
-                    Set my restaurant on Hold
-                  </p>
+                  {this.props.isOffline ?
+                    <FormattedMessage id="ProfileSettingsForm.setOnline" /> :
+                    <FormattedMessage id="ProfileSettingsForm.setOnHold" />}
 
                   <Switch
                     checked={this.state.offline}
@@ -463,42 +475,48 @@ class ProfileSettingsFormComponent extends Component {
                 </div>
               </div>}
 
+              {
+                isProvider && <Modal
+                  isOpen={this.state.onHoldModalOpen}
+                  onClose={() => {
+                    setOnHoldModalOpen(false);
+                  }}
+                  onManageDisableScrolling={() => { }}
+                >
+                  <center>
+                    <h2>
+                      <p className={css.infoText}>
+                        <FormattedMessage id="ProfileSettingsForm.confirm" />
+                      </p>
 
-              {isProvider && <Modal
-                isOpen={this.state.onHoldModalOpen}
-                onClose={() => {
-                  setOnHoldModalOpen(false);
-                }}
-                onManageDisableScrolling={() => { }}
-              >
-                <center>
-                  <h2>
-                    Are you sure? <br /> Your business will appear offline.
-                  </h2>
-                </center>
+                      <br />
+                      <FormattedMessage id="ProfileSettingsForm.businessOffline" />
+                    </h2>
+                  </center>
 
 
-                <div className={css.modalButtonsWrapper}>
+                  <div className={css.modalButtonsWrapper}>
 
-                  <SecondaryButton
-                    type='button'
-                    className={css.modalButton1}
-                    onClick={setOnlineOffline}
-                  >
-                    Put on hold
-                  </SecondaryButton>
-                  <br />
+                    <SecondaryButton
+                      type='button'
+                      className={css.modalButton1}
+                      onClick={setOnlineOffline}
+                    >
+                      <FormattedMessage id="ProfileSettingsForm.setOnHoldShort" />
+                    </SecondaryButton>
+                    <br />
 
-                  <SecondaryButton
-                    type='button'
-                    className={css.modalButton2}
-                    onClick={() => setOnHoldModalOpen(false)}
-                  >
-                    Go back
-                  </SecondaryButton>
+                    <SecondaryButton
+                      type='button'
+                      className={css.modalButton2}
+                      onClick={() => setOnHoldModalOpen(false)}
+                    >
+                       <FormattedMessage id="ProfileSettingsForm.goBack" />
+                    </SecondaryButton>
 
-                </div>
-              </Modal>}
+                  </div>
+                </Modal>
+              }
 
 
               {submitError}
@@ -511,9 +529,10 @@ class ProfileSettingsFormComponent extends Component {
               >
                 <FormattedMessage id="ProfileSettingsForm.saveChanges" />
               </Button>
-            </Form>
+            </Form >
           );
-        }}
+        }
+        }
       />
     );
   }

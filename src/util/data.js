@@ -104,17 +104,17 @@ export const isRestaurantOpen = (publicData) => {
           message: {
             key: 'ListingCard.restaurantClosedMessage',
             values: {
-              startHour: scheduleForCurrentDay.startHour,
-              startMinute: scheduleForCurrentDay.startMinute,
-              closingHour: scheduleForCurrentDay.closingHour,
-              closingMinute: scheduleForCurrentDay.closingMinute,
+              openingHour,
+              openingMinute,
+              closingHour,
+              closingMinute,
             }
           },
           checkoutMessage: {
             key: 'ListingCard.restaurantClosedCheckoutMessage',
             values: {
-              startHour: scheduleForCurrentDay.startHour,
-              startMinute: scheduleForCurrentDay.startMinute,
+              openingHour,
+              openingMinute,
             }
           },
           onHold: false
