@@ -393,7 +393,7 @@
   /* Font */
   @apply --marketplaceModalTitleStyles;
   color: var(--matterColor);
-
+  display: flex;
   /* Layout */
   width: 100%;
   margin-top: 0;
@@ -753,4 +753,32 @@
 
 .modalButton{
   width: 40%;
+}
+
+.openDot{
+  width: auto;
+  margin: 0;
+  font-size: 80px;
+  color: var(--successColor);
+  text-shadow: 0 0.1rem 0.3rem rgb(132, 132, 132);
+  margin-top: -2px;
+}
+
+.closedDot{
+  width: auto;
+  margin: 0;
+  font-size: 80px;
+  color: red;
+  text-shadow: 0 0.1rem 0.3rem rgb(132, 132, 132);
+  margin-top: -2px;
+}
+
+.scheduleInfoTextOpen{
+  color: var(--successColor);
+  line-height: 20px;
+}
+
+.scheduleInfoTextClosed{
+  color: red;
+  line-height: 20px;
 }

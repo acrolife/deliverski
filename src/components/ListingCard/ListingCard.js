@@ -90,113 +90,166 @@ export const ListingCardComponent = props => {
     : null;
 
   const restaurantStatus = isRestaurantOpen(listing?.author?.attributes.profile?.publicData);
+  const restaurantMessageIdAndValues = {}
+  if (restaurantStatus) {
+    restaurantMessageIdAndValues.id = restaurantStatus.message.key
+    if (restaurantStatus.message.values) {
+      const messageValue = restaurantStatus.message.values
+      messageValue.startHour ? restaurantMessageIdAndValues.startHour = messageValue.startHour : null
+      messageValue.startMinute ? restaurantMessageIdAndValues.startMinute = messageValue.startMinute : null
+      messageValue.closingHour ? restaurantMessageIdAndValues.closingHour = messageValue.closingHour : null
+      messageValue.closingMinute ? restaurantMessageIdAndValues.closingMinute = messageValue.closingMinute : null
+      messageValue.phoneNumber ? restaurantMessageIdAndValues.phoneNumber = messageValue.phoneNumber : null
+    }
 
-  const ContentDiv = () => {
-    return (<div>
-      <AspectRatioWrapper
-        className={css.aspectRatioWrapper}
-        width={aspectWidth}
-        height={aspectHeight}
-        {...setActivePropsMaybe}
-      >
-        <div className={css.bulletWrapper}>
-          {/* <img src={badge} className={css.reviewsBadge} /> */}
-          <p className={restaurantStatus.status === "open" ? css.openedRestaurant : css.closedRestaurant} >•</p>
-        </div>
+    const { pickupEnabled, shippingEnabled } = listing?.attributes?.publicData || {};
+    const isOnHold = listing?.author?.attributes?.profile.publicData.onHoldByOwner;
+    const stock = listing?.currentStock?.attributes?.quantity ?? 0;
 
-        <div className={css.messageWrapper}>
-          {/* <img src={badge} className={css.reviewsBadge} /> */}
-          <p className={css.scheduleMessage} >{restaurantStatus.message}</p>
-        </div>
-
-        <LazyImage
-          rootClassName={css.rootForImage}
-          alt={title}
-          image={firstImage}
-          variants={variants}
-          sizes={renderSizes}
-        />
-      </AspectRatioWrapper>
-      <div className={css.info}>
-        <div className={css.price}>
-          <div className={css.priceValue} title={priceTitle}>
-            {formattedPrice}
-          </div>
-          {config.listing.showUnitTypeTranslations ? (
-            <div className={css.perUnit}>
-              <FormattedMessage id={unitTranslationKey} />
+    const ContentDiv = () => {
+      return (
+        <div>
+          <AspectRatioWrapper
+            className={css.aspectRatioWrapper}
+            width={aspectWidth}
+            height={aspectHeight}
+            {...setActivePropsMaybe}
+          >
+            <div className={css.bulletWrapper}>
+              {/* <img src={badge} className={css.reviewsBadge} /> */}
+              <p className={restaurantStatus?.status === "open" ? css.openedRestaurant : css.closedRestaurant} >•</p>
             </div>
-          ) : null}
-        </div>
-        <div className={css.mainInfo}>
-          <div className={css.title}>
-            {richText(title, {
-              longWordMinLength: MIN_LENGTH_FOR_LONG_WORDS,
-              longWordClass: css.longWord,
-            })}
-          </div>
-          {showAuthorInfo ? (
-            <div className={css.authorInfo}>
-              <FormattedMessage id="ListingCard.author" values={{ authorName }} />
+
+            <div className={css.messageWrapper}>
+              {/* <img src={badge} className={css.reviewsBadge} /> */}
+              <p className={css.scheduleMessage} >
+                {intl.formatMessage(restaurantMessageIdAndValues)}
+              </p>
             </div>
-          ) : null}
-        </div>
-      </div>
-    </div>)
-  }
 
-  // Build conditional UI for search listing as Restaurant's page
-  let restaurantName = ''
-  // TODO Write a more striaghtforwadr way to get those data
-  // Check src/containers/LandingPage/LandingPage.duck.js
-  // DEV
-  // console.log("listings", listings)
-  const hasSearchParams = search ? (Object.keys(search).length > 0) : null
-  const hasRestaurantSearchParam = hasSearchParams ? !!search.pub_restaurant : null
+            {!pickupEnabled || !shippingEnabled || isOnHold ?
+              <div className={css.badgeWrapper}>
+                {/* <img src={badge} className={css.reviewsBadge} /> */}
+                <p className={css.reviewsBadge} >
+                  {
+                    isOnHold ?                   
+                      intl.formatMessage({id: 'ListingCard.restaurantIsOnHold'})
+                      :
+                      (
+                        !pickupEnabled ? 
+                        intl.formatMessage({id: 'ListingCard.productPickupDisabled'}) :
+                        intl.formatMessage({id: 'ListingCard.productShippingDisabled'})
+                      )
+                  }
+                </p>
+              </div>
+              : null}
 
-  const NamedLinkRestaurant = () => {
+            <LazyImage
+              rootClassName={css.rootForImage}
+              alt={title}
+              image={firstImage}
+              variants={variants}
+              sizes={renderSizes}
+            />
+          </AspectRatioWrapper>
+          <div className={css.info}>
+            <div className={css.price}>
+              <div className={css.priceValue} title={priceTitle}>
+                {formattedPrice}
+              </div>
+              {config.listing.showUnitTypeTranslations ? (
+                <div className={css.perUnit}>
+                  <FormattedMessage id={unitTranslationKey} />
+                </div>
+              ) : null}
+            </div>
+            <div className={css.mainInfo}>
+              <div className={css.title}>
+                {richText(title, {
+                  longWordMinLength: MIN_LENGTH_FOR_LONG_WORDS,
+                  longWordClass: css.longWord,
+                })}
+
+              </div>
+              {showAuthorInfo ? (
+                <div className={css.authorInfo}>
+                  <FormattedMessage id="ListingCard.author" values={{ authorName }} />
+                  <span className={css.stock}>Stock:
+                    <p className={
+                      stock === 0 ? css.redDot :
+                        (
+                          stock > 0 && stock <= 3 ?
+                            css.yellowDot
+                            :
+                            css.greenDot
+                        )
+                    } >•</p>
+                  </span>
+
+                </div>
+              ) : null}
+            </div>
+          </div>
+        </div>)
+    }
+
+    // Build conditional UI for search listing as Restaurant's page
+    let restaurantName = ''
+    // TODO Write a more straightforward way to get those data
+    // Check src/containers/LandingPage/LandingPage.duck.js
+    // DEV
+    // console.log("listings", listings)
+    const hasSearchParams = search ? (Object.keys(search).length > 0) : null
+    const hasRestaurantSearchParam = hasSearchParams ? !!search.pub_restaurant : null
+    // Adding control on listing.attributes.publicData?.restaurant, otherwise when clicking a product of 
+    // a restaurant who changed its name without actualizing its stock, the search would show nothing
+    // Because of pub_restaurant=undefined url query param
+    const showRestaurantAfterTileClick = hasSearchParams && listing.attributes.publicData?.restaurant
+
+    const NamedLinkRestaurant = () => {
+      return (
+        <NamedLink to={{ search: `?pub_restaurant=${listing.attributes.publicData?.restaurant}` }}
+          name="SearchPage">
+          < ContentDiv />
+        </NamedLink>
+      )
+    }
+
+    const NamedLinkListing = () => {
+      return (
+        <NamedLink
+          className={classes} name="ListingPage" params={{ id, slug }}>
+          < ContentDiv />
+        </NamedLink>
+      )
+    }
+
     return (
-      <NamedLink to={{ search: `?pub_restaurant=${listing.attributes.publicData?.restaurant}` }}
-        name="SearchPage">
-        < ContentDiv />
-      </NamedLink>
-    )
-  }
+      showRestaurantAfterTileClick ? <NamedLinkListing /> : <NamedLinkRestaurant />
+    );
+  };
 
-  const NamedLinkListing = () => {
-    return (
-      <NamedLink
-        className={classes} name="ListingPage" params={{ id, slug }}>
-        < ContentDiv />
-      </NamedLink>
-    )
-  }
+  ListingCardComponent.defaultProps = {
+    className: null,
+    rootClassName: null,
+    renderSizes: null,
+    setActiveListing: null,
+    showAuthorInfo: true,
+  };
 
-  return (
-    hasRestaurantSearchParam ? <NamedLinkListing /> : <NamedLinkRestaurant />
-  );
-};
+  ListingCardComponent.propTypes = {
+    className: string,
+    rootClassName: string,
+    intl: intlShape.isRequired,
+    listing: propTypes.listing.isRequired,
+    showAuthorInfo: bool,
+    search: object,
 
-ListingCardComponent.defaultProps = {
-  className: null,
-  rootClassName: null,
-  renderSizes: null,
-  setActiveListing: null,
-  showAuthorInfo: true,
-};
+    // Responsive image sizes hint
+    renderSizes: string,
 
-ListingCardComponent.propTypes = {
-  className: string,
-  rootClassName: string,
-  intl: intlShape.isRequired,
-  listing: propTypes.listing.isRequired,
-  showAuthorInfo: bool,
-  search: object,
+    setActiveListing: func,
+  };
 
-  // Responsive image sizes hint
-  renderSizes: string,
-
-  setActiveListing: func,
-};
-
-export default injectIntl(ListingCardComponent);
+  export default injectIntl(ListingCardComponent);

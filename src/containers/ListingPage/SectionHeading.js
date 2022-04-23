@@ -15,6 +15,7 @@ const SectionHeading = props => {
     authorLink,
     showContactUser,
     onContactUser,
+    restaurantStatus
   } = props;
 
   const unitType = config.lineItemUnitType;
@@ -27,6 +28,10 @@ const SectionHeading = props => {
     ? 'ListingPage.perDay'
     : 'ListingPage.perUnit';
 
+    const restaurantDot = <p className={restaurantStatus.status === 'open' ? css.openDot : css.closedDot}>•</p>;
+    const restaurantScheduleMessage = restaurantStatus.message;
+
+    
   return (
     <div className={css.sectionHeading}>
       <div className={css.desktopPriceContainer}>
@@ -38,7 +43,10 @@ const SectionHeading = props => {
         </div>
       </div>
       <div className={css.heading}>
-        <h1 className={css.title}>{richTitle}</h1>
+
+        <h1 className={css.title}>{richTitle} {restaurantDot}</h1>
+        <p className={restaurantStatus.status === 'open' ? css.scheduleInfoTextOpen : css.scheduleInfoTextClosed}>{restaurantScheduleMessage}</p>
+
         <div className={css.author}>
           {category}
           <FormattedMessage id="ListingPage.soldBy" values={{ name: authorLink }} />

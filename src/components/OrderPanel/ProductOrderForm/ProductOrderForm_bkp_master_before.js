@@ -6,8 +6,7 @@ import config from '../../../config';
 import { FormattedMessage, useIntl } from '../../../util/reactIntl';
 import { propTypes } from '../../../util/types';
 import { numberAtLeast, required } from '../../../util/validators';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+
 import {
   Form,
   FieldSelect,
@@ -20,7 +19,7 @@ import {
 import { pushToPath } from '../../../util/urlHelpers';
 
 import EstimatedCustomerBreakdownMaybe from '../EstimatedCustomerBreakdownMaybe';
-import './Toast.css';
+
 import css from './ProductOrderForm.module.css';
 
 const sharetribeSdk = require('sharetribe-flex-sdk');
@@ -136,18 +135,7 @@ const renderForm = formRenderProps => {
                   shoppingCart: [...stringifyUpdatedShoppingCart]
                 },
               }).then(res => {
-                toast.success('Added to basket!', {
-                  position: "top-right",
-                  autoClose: 1500,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                })
-
-                setTimeout(function () { return history.push('/s') }, 2500)
-
+                history.push('/s')
               }).catch(e => console.log(e))
 
             } else {
@@ -163,17 +151,7 @@ const renderForm = formRenderProps => {
                   shoppingCart: [...currentShoppingCart, shoppingCartItem]
                 },
               }).then(res => {
-                toast.success('Added to basket!', {
-                  position: "top-right",
-                  autoClose: 1500,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                })
-                setTimeout(function () { return history.push('/s') }, 2500)
-
+                history.push('/s')
               }).catch(e => console.log(e))
             }
 
@@ -242,18 +220,8 @@ const renderForm = formRenderProps => {
 
 
             window.sessionStorage.setItem('shoppingCart', JSON.stringify([...stringifyUpdatedShoppingCart]))
-            toast
-              .success('Added to basket!', {
-                position: "top-right",
-                autoClose: 1500,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-              })
-            setTimeout(function () { return history.push('/s') }, 2500)
 
+            return history.push('/s')
 
           } else {
             //ADD NEW ITEM TO CART
@@ -264,20 +232,10 @@ const renderForm = formRenderProps => {
             }
 
             window.sessionStorage.setItem('shoppingCart', JSON.stringify([...currentShoppingCart, shoppingCartItem]))
-            toast
-              .success('Added to basket!', {
-                position: "top-right",
-                autoClose: 1500,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-              })
-            setTimeout(function () { return history.push('/s') }, 2500)
+
+            return history.push('/s')
 
           }
-
 
 
 
@@ -295,20 +253,19 @@ const renderForm = formRenderProps => {
 
 
   const clearBasket = () => {
-    if (typeof window !== 'undefined') {
-      if (currentUser) {
-        return sdk.currentUser.updateProfile({
-          publicData: {
-            shoppingCart: []
-          },
-        }).then(res => {
-          window.location.reload()
-        }).catch(e => console.log(e))
-      } else {
-        return window.sessionStorage.setItem('shoppingCart', JSON.stringify([]))
+    if (currentUser) {
+      return sdk.currentUser.updateProfile({
+        publicData: {
+          shoppingCart: []
+        },
+      }).then(res => {
+        window.location.reload()
+      }).catch(e => console.log(e))
+    } else {
+      return window.sessionStorage.setItem('shoppingCart', JSON.stringify([]))
 
-      }
     }
+
   }
 
 
@@ -351,11 +308,7 @@ const renderForm = formRenderProps => {
   const submitDisabled = !hasStock;
 
 
-  const shoppingCartFromSession = typeof window !== 'undefined' ?
-    JSON.parse(window.sessionStorage.getItem('shoppingCart'))
-    :
-    [];
-
+  const shoppingCartFromSession = JSON.parse(window.sessionStorage.getItem('shoppingCart'));
 
 
   const currentShopCart = currentUser ?
@@ -410,8 +363,6 @@ const renderForm = formRenderProps => {
     :
     false;
 
-
-
   return (
     <Form onSubmit={handleFormSubmit}>
       <FormSpy subscription={{ values: true }} onChange={handleOnChange} />
@@ -462,6 +413,7 @@ const renderForm = formRenderProps => {
             {/* {`You cannot add this product for ${deliveryMethodsOptions[0].value}, please choose ${deliveryMethodsOptions[0].value === 'pickup' ? 'shippable' : 'pickup'} items or empty your cart to add this one.`} */}
 
           </p>)
+
         )
         :
         // hasMultipleDeliveryMethods ? (
@@ -519,7 +471,6 @@ const renderForm = formRenderProps => {
         //   </div>
         // )
       }
-
       {breakdown}
       <div className={css.submitButton}>
         <PrimaryButton type="submit" inProgress={submitInProgress} disabled={submitDisabled || missingDeliveryMethod || isRestaurantOnHold}>
@@ -548,17 +499,17 @@ const renderForm = formRenderProps => {
         }}
         onManageDisableScrolling={() => { }}
       >
-        <center><h2><FormattedMessage id="ProductOrderForm.sameVendorModalTitle" /></h2></center>
+        <center><h2><FormattedMessage id="ListingPage.sameVendorModalTitle" /></h2></center>
 
 
         <div className={css.modalButtonsWrapper}>
 
           <Button type='button' className={css.modalButton} onClick={clearBasket}>
-            <FormattedMessage id="ProductOrderForm.emptyCart" />
+            <FormattedMessage id="ListingPage.clearBasket" />
           </Button>
 
           <Button type='button' className={css.modalButton} onClick={() => pushToPath(`/s?pub_hostId=${hostIdOfFirstItem}`)}>
-            <FormattedMessage id="ProductOrderForm.seeSameVendorListings" />
+            <FormattedMessage id="ListingPage.seeSameVendorListings" />
           </Button>
 
         </div>
@@ -575,60 +526,21 @@ const renderForm = formRenderProps => {
         }}
         onManageDisableScrolling={() => { }}
       >
-        <center>
-          <h2>
-            <FormattedMessage
-              id="ProductOrderForm.emptyCartModalTitle"
-              values={{
-                method:
-                  deliveryMethodsOptions[0].value === 'pickup' ?
-                    intl.formatMessage({
-                      id: 'ProductOrderForm.deliveryMethodToShip'
-                    }) :
-                    intl.formatMessage({
-                      id: 'ProductOrderForm.deliveryMethodToPickup'
-                    })
-              }} />
-          </h2>
-        </center>
+        <center><h2><FormattedMessage id="ListingPage.emptyCartModalTitle" values={{ method: `${deliveryMethodsOptions[0].value === 'pickup' ? 'pickup' : 'ship'}` }} /></h2></center>
 
         <div className={css.deliveryMethodErrorInfo} >
-          <FormattedMessage
-            id="ProductOrderForm.deliveryMethodErrorCartMoreInfo"
-            values={
-              {
-                method:
-                  deliveryMethodsOptions[0].value === 'pickup' ?
-                    intl.formatMessage({
-                      id: 'ProductOrderForm.deliveryMethodToShip'
-                    }) :
-                    intl.formatMessage({
-                      id: 'ProductOrderForm.deliveryMethodToPickup'
-                    })
-              }
-            }
-          /> :
+          {deliveryMethodsOptions[0].value === 'pickup' ?
+            <FormattedMessage id="ProductOrderForm.deliveryMethodErrorShippableCartMoreInfo" /> :
+            <FormattedMessage id="ProductOrderForm.deliveryMethodErrorPickupableCartMoreInfo" />
+          }
         </div>
 
         <Button type='button' onClick={clearBasket}>
-          <FormattedMessage id="ProductOrderForm.emptyCart" />
+          <FormattedMessage id="ListingPage.emptyCart" />
         </Button>
 
-      </Modal>
 
-      <ToastContainer
-        position="top-right"
-        autoClose={1500}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
-      {/* Same as */}
-      <ToastContainer />
+      </Modal>
     </Form>
   );
 };
@@ -660,7 +572,7 @@ const ProductOrderForm = props => {
     );
   }
   const hasOneItemLeft = currentStock && currentStock === 1;
-  const quantityMaybe = { quantity: '1' };
+  const quantityMaybe = hasOneItemLeft ? { quantity: '1' } : {};
   const singleDeliveryMethodAvailableMaybe =
     // shippingEnabled ?
     // { deliveryMethod: 'shipping' }
@@ -669,7 +581,7 @@ const ProductOrderForm = props => {
       ? { deliveryMethod: 'shipping' }
       : !shippingEnabled && pickupEnabled
         ? { deliveryMethod: 'pickup' }
-        : { deliveryMethod: 'shipping' });
+        : {});
   const hasMultipleDeliveryMethods = pickupEnabled && shippingEnabled;
   const initialValues = { ...quantityMaybe, ...singleDeliveryMethodAvailableMaybe };
 

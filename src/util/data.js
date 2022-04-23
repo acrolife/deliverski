@@ -42,68 +42,91 @@ export const isRestaurantOpen = (publicData) => {
   const onHoldByOwner = publicData?.onHoldByOwner;
   const phoneNumber = publicData?.phoneNumber;
 
-  if(onHoldByOwner){
+  if (onHoldByOwner) {
     return {
       status: "closed",
-      message: `This restaurant has been put on hold for a small moment , because of logistics reasons.${phoneNumber ? ` Please try later or contact them at ${phoneNumber} to know more about the issue.` : ''}`,
-      checkoutMessage: "",
+      message: {
+        key: phoneNumber ? 'ListingCard.restaurantIsOnHoldPhoneNumberMessage' : 'ListingCard.restaurantIsOnHoldMessage',
+        values: phoneNumber ? { phoneNumber } : null
+      },
+      checkoutMessage: null,
       onHold: true
     }
-  }else{
-    if(!schedule){
+  } else {
+    if (!schedule) {
       return {
         status: "open",
-        message: "The restaurant is open",
-        checkoutMessage: "",
+        message: {
+          key: 'ListingCard.restaurantOpenMessage',
+          values: null
+        },
+        checkoutMessage: null,
         onHold: false
       }
-    }else{
-      const weekdays = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday' ];
+    } else {
+      const weekdays = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
       const currentDay = weekdays[new Date().getDay()];
       const scheduleForCurrentDay = schedule.find(i => {
         return i.day === currentDay
       })
-  
+
       const openingHour = Number(scheduleForCurrentDay.startHour);
       const openingMinute = Number(scheduleForCurrentDay.startMinute);
       const closingHour = Number(scheduleForCurrentDay.endHour);
       const closingMinute = Number(scheduleForCurrentDay.endMinute);
-  
+
       const currentDate = new Date();
       const openingDate = new Date();
       const closingDate = new Date();
-  
-  
+
+
       openingDate.setHours(openingHour);
       openingDate.setMinutes(openingMinute);
       closingDate.setHours(closingHour);
       closingDate.setMinutes(closingMinute);
-  
-      
-       if(currentDate > openingDate && currentDate < closingDate){
-         return {
-           status: "open",
-           message: "The restaurant is open",
-           checkoutMessage: "",
-           onHold: false
-         }
-       }
-  
-       if(currentDate < openingDate || currentDate > closingDate){
+
+
+      if (currentDate > openingDate && currentDate < closingDate) {
         return {
-          status: "closed",
-          message: `This restaurant is not open. Opens today from ${scheduleForCurrentDay.startHour}:${scheduleForCurrentDay.startMinute}`,
-          checkoutMessage: `This restaurant is not yet opened, but good news, your cart will wait until this restaurant opens! At ${scheduleForCurrentDay.startHour}:${scheduleForCurrentDay.startMinute} you can pass your order!`,
+          status: 'open',
+          message: {
+            key: 'ListingCard.restaurantOpenMessage',
+            values: null
+          },
+          checkoutMessage: null,
           onHold: false
         }
-       }
-  
-  
+      }
+
+      if (currentDate < openingDate || currentDate > closingDate) {
+        return {
+          status: 'closed',
+          message: {
+            key: 'ListingCard.restaurantClosedMessage',
+            values: {
+              startHour: scheduleForCurrentDay.startHour,
+              startMinute: scheduleForCurrentDay.startMinute,
+              closingHour: scheduleForCurrentDay.closingHour,
+              closingMinute: scheduleForCurrentDay.closingMinute,
+            }
+          },
+          checkoutMessage: {
+            key: 'ListingCard.restaurantClosedCheckoutMessage',
+            values: {
+              startHour: scheduleForCurrentDay.startHour,
+              startMinute: scheduleForCurrentDay.startMinute,
+            }
+          },
+          onHold: false
+        }
+      }
+
+
     }
 
   }
 
-  
+
 }
 
 /**
@@ -342,7 +365,7 @@ export const ensurePaymentMethodCard = stripePaymentMethod => {
 
   if (cardPaymentMethod.attributes.type !== 'stripe-payment-method/card') {
     throw new Error(`'ensurePaymentMethodCard' got payment method with wrong type.
-      'stripe-payment-method/card' was expected, received ${cardPaymentMethod.attributes.type}`);
+      'stripe-payment-method/card' was expected, received ${cardPaymentMethod.attributes.type} `);
   }
 
   return cardPaymentMethod;
@@ -450,7 +473,7 @@ export const overrideArrays = (objValue, srcValue, key, object, source, stack) =
  */
 export const humanizeLineItemCode = code => {
   if (!/^line-item\/.+/.test(code)) {
-    throw new Error(`Invalid line item code: ${code}`);
+    throw new Error(`Invalid line item code: ${code} `);
   }
   const lowercase = code.replace(/^line-item\//, '').replace(/-/g, ' ');
 

@@ -80,7 +80,8 @@ class EditListingDeliveryPanel extends Component {
           }
         : { search: undefined, selectedPlace: undefined },
       deliveryOptions,
-      shippingPriceInSubunitsOneItem: new Money(shippingAmount * 100, config.currency)
+      shippingPriceInSubunitsOneItem: new Money(shippingAmount * 100, config.currency),
+      freeShipping: publicData?.freeShipping
       // shippingPriceInSubunitsAdditionalItems: shippingAdditionalItemsAsMoney,
     };
   }
@@ -127,6 +128,7 @@ class EditListingDeliveryPanel extends Component {
               shippingPriceInSubunitsOneItem,
               // shippingPriceInSubunitsAdditionalItems,
               deliveryOptions,
+              freeShipping
             } = values;
 
             const shippingEnabled = deliveryOptions.includes('shipping');
@@ -155,6 +157,7 @@ class EditListingDeliveryPanel extends Component {
                 ...pickupDataMaybe,
                 shippingEnabled,
                 ...shippingDataMaybe,
+                freeShipping
               },
             };
             this.setState({
@@ -164,6 +167,7 @@ class EditListingDeliveryPanel extends Component {
                 shippingPriceInSubunitsOneItem,
                 // shippingPriceInSubunitsAdditionalItems,
                 deliveryOptions,
+                freeShipping
               },
             });
             onSubmit(updateValues);
