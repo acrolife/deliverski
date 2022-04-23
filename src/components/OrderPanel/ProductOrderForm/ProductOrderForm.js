@@ -31,6 +31,7 @@ const sdk = sharetribeSdk.createInstance({
 
 
 const renderForm = formRenderProps => {
+
   const {
     // FormRenderProps from final-form
     handleSubmit,
@@ -57,8 +58,22 @@ const renderForm = formRenderProps => {
     isRestaurantOnHold
   } = formRenderProps;
 
-  const [sameVendorWarningModalOpen, setSameVendorWarningModalOpen] = useState(false);
-  const [emptyCartModalOpen, setEmptyCartModalOpen] = useState(false);
+  const [sameVendorModalOpen, setSameVendorModalOpen] = useState(false);
+  const [emptyCart, setEmptyCart] = useState(false);
+
+  const handleSVModalOpen = () => {
+    setSameVendorModalOpen(true);
+  };
+  const handleSVModalClose = () => {
+    setSameVendorModalOpen(false);
+  };
+  const handleEmptyCart = () => {
+    setEmptyCart(true);
+  };
+  const handleNotEmptyCart = () => {
+    setEmptyCart(false);
+  };
+
 
   const handleOnChange = formValues => {
     const { quantity: quantityRaw, deliveryMethod } = formValues.values;
@@ -181,7 +196,7 @@ const renderForm = formRenderProps => {
 
 
           } else {
-            setSameVendorWarningModalOpen(true)
+            handleSVModalOpen()
           }
 
         }).catch(e => console.log(e))
@@ -283,7 +298,7 @@ const renderForm = formRenderProps => {
 
 
         } else {
-          setSameVendorWarningModalOpen(true)
+          handleSVModalOpen()
         }
 
 
@@ -414,7 +429,7 @@ const renderForm = formRenderProps => {
 
 
   return (
-    <Form onSubmit={handleFormSubmit}>
+    <Form onSubmit={handleFormSubmit} key={formId}>
       <FormSpy subscription={{ values: true }} onChange={handleOnChange} />
       {hasNoStockLeft ? null : hasOneItemLeft ? (
         <FieldTextInput
@@ -451,14 +466,18 @@ const renderForm = formRenderProps => {
 
             <HelpOutlineIcon
               className={css.helpIcon}
-              onClick={() => setEmptyCartModalOpen(true)}
+              onClick={() => handleEmptyCart()}
             />
             {intl.formatMessage({ id: 'ProductOrderForm.deliveryMethodErrorClickMoreInfo' })}
             <br />
-            {deliveryMethodsOptions[0].value === 'pickup' ?
-              <FormattedMessage id="ProductOrderForm.deliveryMethodErrorShippableCart" /> :
-              <FormattedMessage id="ProductOrderForm.deliveryMethodErrorPickupableCart" />
-            }
+            <FormattedMessage
+              id="ProductOrderForm.deliveryMethodErrorDeliveryMethodCart"
+              values={{
+                method:
+                  deliveryMethodsOptions[0].value === 'pickup' ?
+                    intl.formatMessage({ id: "ProductOrderForm.deliveryMethodToPickup" }) :
+                    intl.formatMessage({ id: "ProductOrderForm.deliveryMethodToShip" })
+              }} />
 
             {/* {`You cannot add this product for ${deliveryMethodsOptions[0].value}, please choose ${deliveryMethodsOptions[0].value === 'pickup' ? 'shippable' : 'pickup'} items or empty your cart to add this one.`} */}
 
@@ -543,9 +562,9 @@ const renderForm = formRenderProps => {
 
       <Modal
         id='sameVendorModal'
-        isOpen={sameVendorWarningModalOpen}
+        isOpen={sameVendorModalOpen}
         onClose={() => {
-          setSameVendorWarningModalOpen(false);
+          handleSVModalClose()
         }}
         onManageDisableScrolling={() => { }}
       >
@@ -570,9 +589,9 @@ const renderForm = formRenderProps => {
 
       <Modal
         id='emptyCartModal'
-        isOpen={emptyCartModalOpen}
+        isOpen={emptyCart}
         onClose={() => {
-          setEmptyCartModalOpen(false);
+          handleNotEmptyCart()
         }}
         onManageDisableScrolling={() => { }}
       >
@@ -608,7 +627,7 @@ const renderForm = formRenderProps => {
                     })
               }
             }
-          /> :
+          />
         </div>
 
         <Button type='button' onClick={clearBasket}>
@@ -636,7 +655,7 @@ const renderForm = formRenderProps => {
 
 const ProductOrderForm = props => {
   const intl = useIntl();
-  const { price, currentStock, pickupEnabled, shippingEnabled, isRestaurantOnHold } = props;
+  const { price, currentStock, pickupEnabled, shippingEnabled, isRestaurantOnHold, listingId } = props;
 
   // Should not happen for listings that go through EditListingWizard.
   // However, this might happen for imported listings.
@@ -676,7 +695,6 @@ const ProductOrderForm = props => {
 
   return (
     <FinalForm
-      key={listingId}
       initialValues={initialValues}
       hasMultipleDeliveryMethods={hasMultipleDeliveryMethods}
       {...props}

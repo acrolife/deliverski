@@ -131,12 +131,32 @@
 
 .modalButtonsWrapper{
   display: flex;
-  justify-content: space-between;
-  margin-top: 2pc;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 30px;
+  margin-bottom: 10px;
+  @media (--viewportMedium) {
+    flex-direction: row;
+    margin-top: 2pc;
+    margin-bottom: 10px;
+    justify-content: space-between;
+  }
 }
 
 .modalButton{
-  width: 40%;
+
+  width: 65%;
+  padding: 10px 15px;
+  align-self: center;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  height: 5rem;
+
+  @media (--viewportMedium) {
+    width: 45%;
+    padding: 10px 15px;
+    height: 6rem;
+  }
 }
 
 .infoText{

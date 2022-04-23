@@ -21,6 +21,7 @@ import { pushToPath } from '../../../util/urlHelpers';
 import EstimatedCustomerBreakdownMaybe from '../EstimatedCustomerBreakdownMaybe';
 
 import css from './ProductOrderForm.module.css';
+import xXssProtection from 'helmet/dist/middlewares/x-xss-protection';
 
 const sharetribeSdk = require('sharetribe-flex-sdk');
 const sdk = sharetribeSdk.createInstance({
@@ -405,12 +406,13 @@ const renderForm = formRenderProps => {
             />
             {intl.formatMessage({ id: 'ProductOrderForm.deliveryMethodErrorClickMoreInfo' })}
             <br />
-            {deliveryMethodsOptions[0].value === 'pickup' ?
-              <FormattedMessage id="ProductOrderForm.deliveryMethodErrorShippableCart" /> :
-              <FormattedMessage id="ProductOrderForm.deliveryMethodErrorPickupableCart" />
-            }
-
-            {/* {`You cannot add this product for ${deliveryMethodsOptions[0].value}, please choose ${deliveryMethodsOptions[0].value === 'pickup' ? 'shippable' : 'pickup'} items or empty your cart to add this one.`} */}
+            <FormattedMessage
+              id="ProductOrderForm.deliveryMethodErrorDeliveryMethodCart"
+              values={
+                deliveryMethodsOptions[0].value === 'pickup' ?
+                  intl.formatMessage({ id: "ProductOrderForm.deliveryMethodToPickup" }) :
+                  intl.formatMessage({ id: "ProductOrderForm.deliveryMethodToShip" })
+              } />
 
           </p>)
 
@@ -529,10 +531,13 @@ const renderForm = formRenderProps => {
         <center><h2><FormattedMessage id="ListingPage.emptyCartModalTitle" values={{ method: `${deliveryMethodsOptions[0].value === 'pickup' ? 'pickup' : 'ship'}` }} /></h2></center>
 
         <div className={css.deliveryMethodErrorInfo} >
-          {deliveryMethodsOptions[0].value === 'pickup' ?
-            <FormattedMessage id="ProductOrderForm.deliveryMethodErrorShippableCartMoreInfo" /> :
-            <FormattedMessage id="ProductOrderForm.deliveryMethodErrorPickupableCartMoreInfo" />
-          }
+          <FormattedMessage
+            id="ProductOrderForm.deliveryMethodErrorDeliveryMethodCart"
+            values={
+              deliveryMethodsOptions[0].value === 'pickup' ?
+                intl.formatMessage({ id: "ProductOrderForm.deliveryMethodToPickup" }) :
+                intl.formatMessage({ id: "ProductOrderForm.deliveryMethodToShip" })
+            } />
         </div>
 
         <Button type='button' onClick={clearBasket}>

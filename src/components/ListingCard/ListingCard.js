@@ -113,6 +113,9 @@ const ListingCardComponent = props => {
     }
   }
 
+  // DEV
+  // console.log("restaurantMessageIdAndValues", restaurantMessageIdAndValues)
+
   const { pickupEnabled, shippingEnabled } = listing?.attributes?.publicData || {};
   const isOnHold = listing?.author?.attributes?.profile.publicData.onHoldByOwner;
   const stock = listing?.currentStock?.attributes?.quantity ?? 0;
@@ -230,7 +233,15 @@ const ListingCardComponent = props => {
   // Adding control on listing.attributes.publicData?.restaurant, otherwise when clicking a product of 
   // a restaurant who changed its name without actualizing its stock, the search would show nothing
   // Because of pub_restaurant=undefined url query param
-  const showRestaurantAfterTileClick = hasSearchParams && listing.attributes.publicData?.restaurant
+
+  // From SearchPage, we apply the filter pub_restaurant 
+  // if hasSearchParams=false, i.e. there is not pub_restaurant in the url
+  // if the listing contains a value for restaurant i.e. listing.attributes.publicData?.restaurant
+  const showRestaurantAfterTileClick = !hasRestaurantSearchParam && listing.attributes.publicData?.restaurant
+
+ // DEV
+//  console.log("showRestaurantAfterTileClick", showRestaurantAfterTileClick)
+
 
   const NamedLinkRestaurant = () => {
     return (

@@ -96,8 +96,8 @@ const paymentFlow = (selectedPaymentMethod, saveAfterOnetimePayment) => {
   return selectedPaymentMethod === 'defaultCard'
     ? USE_SAVED_CARD
     : saveAfterOnetimePayment
-    ? PAY_AND_SAVE_FOR_LATER_USE
-    : ONETIME_PAYMENT;
+      ? PAY_AND_SAVE_FOR_LATER_USE
+      : ONETIME_PAYMENT;
 };
 
 const initializeOrderPage = (initialValues, routes, dispatch) => {
@@ -112,8 +112,8 @@ const checkIsPaymentExpired = existingTransaction => {
   return txIsPaymentExpired(existingTransaction)
     ? true
     : txIsPaymentPending(existingTransaction)
-    ? minutesBetween(existingTransaction.attributes.lastTransitionedAt, new Date()) >= 15
-    : false;
+      ? minutesBetween(existingTransaction.attributes.lastTransitionedAt, new Date()) >= 15
+      : false;
 };
 
 const getFormattedTotalPrice = (transaction, intl) => {
@@ -126,11 +126,11 @@ const bookingDatesMaybe = bookingDates => {
   const apiTimeZone = 'Etc/UTC';
   return bookingDates
     ? {
-        bookingDates: {
-          bookingStart: timeOfDayFromLocalToTimeZone(bookingDates.bookingStart, apiTimeZone),
-          bookingEnd: timeOfDayFromLocalToTimeZone(bookingDates.bookingEnd, apiTimeZone),
-        },
-      }
+      bookingDates: {
+        bookingStart: timeOfDayFromLocalToTimeZone(bookingDates.bookingStart, apiTimeZone),
+        bookingEnd: timeOfDayFromLocalToTimeZone(bookingDates.bookingEnd, apiTimeZone),
+      },
+    }
     : {};
 };
 
@@ -408,11 +408,11 @@ export class CheckoutPageComponent extends Component {
       const paymentParams =
         selectedPaymentFlow !== USE_SAVED_CARD
           ? {
-              payment_method: {
-                billing_details: billingDetails,
-                card: card,
-              },
-            }
+            payment_method: {
+              billing_details: billingDetails,
+              card: card,
+            },
+          }
           : { payment_method: stripePaymentMethodId };
 
       const params = {
@@ -466,37 +466,37 @@ export class CheckoutPageComponent extends Component {
     };
 
 
-        // Step 6: - remove items from basket if the case
+    // Step 6: - remove items from basket if the case
 
-        const emptyBasktet = fnParams => {
-          const isTxWithBasket = pageData.orderData.restOfShoppingCartItems;
-          if(isTxWithBasket){
-            return sdk.currentUser.updateProfile({
-              publicData: {
-                shoppingCart: []
-              },
-            }).then(() => {
-              return fnParams;
-            }).catch(e => {
-              console.log(e)
-            })
-          }else{
-            return fnParams;
-          }
+    const emptyBasktet = fnParams => {
+      const isTxWithBasket = pageData.orderData.restOfShoppingCartItems;
+      if (isTxWithBasket) {
+        return sdk.currentUser.updateProfile({
+          publicData: {
+            shoppingCart: []
+          },
+        }).then(() => {
+          return fnParams;
+        }).catch(e => {
+          console.log(e)
+        })
+      } else {
+        return fnParams;
       }
+    }
 
 
-          // Step 7: - change quantity for the rest of shopping cart items
+    // Step 7: - change quantity for the rest of shopping cart items
 
-          const changeRestOfShoppingCartItemsQuantity = fnParams => {
-            const restOfShoppingCartItems = pageData.orderData.restOfShoppingCartItems;
-            return post('/api/change-all-items-quantity', {restOfShoppingCartItems}).then(resp => {
-              return fnParams;
-            }).catch(e => {
-              return fnParams;
-            })
-            
-        }
+    const changeRestOfShoppingCartItemsQuantity = fnParams => {
+      const restOfShoppingCartItems = pageData.orderData.restOfShoppingCartItems;
+      return post('/api/change-all-items-quantity', { restOfShoppingCartItems }).then(resp => {
+        return fnParams;
+      }).catch(e => {
+        return fnParams;
+      })
+
+    }
 
     // Here we create promise calls in sequence
     // This is pretty much the same as:
@@ -527,8 +527,8 @@ export class CheckoutPageComponent extends Component {
       deliveryMethod && shippingDetails
         ? { protectedData: { deliveryMethod, shippingDetails } }
         : deliveryMethod
-        ? { protectedData: { deliveryMethod } }
-        : {};
+          ? { protectedData: { deliveryMethod } }
+          : {};
     // Note: optionalPaymentParams contains Stripe paymentMethod,
     // but that can also be passed on Step 2
     // stripe.confirmCardPayment(stripe, { payment_method: stripePaymentMethodId })
@@ -536,8 +536,8 @@ export class CheckoutPageComponent extends Component {
       selectedPaymentFlow === USE_SAVED_CARD && hasDefaultPaymentMethod
         ? { paymentMethod: stripePaymentMethodId }
         : selectedPaymentFlow === PAY_AND_SAVE_FOR_LATER_USE
-        ? { setupPaymentMethodForSaving: true }
-        : {};
+          ? { setupPaymentMethodForSaving: true }
+          : {};
 
     const orderParams = {
       listingId: pageData.listing.id,
@@ -585,15 +585,15 @@ export class CheckoutPageComponent extends Component {
     const addressMaybe =
       addressLine1 && postal
         ? {
-            address: {
-              city: city,
-              country: country,
-              line1: addressLine1,
-              line2: addressLine2,
-              postal_code: postal,
-              state: state,
-            },
-          }
+          address: {
+            city: city,
+            country: country,
+            line1: addressLine1,
+            line2: addressLine2,
+            postal_code: postal,
+            state: state,
+          },
+        }
         : {};
     const billingDetails = {
       name,
@@ -621,20 +621,20 @@ export class CheckoutPageComponent extends Component {
     const shippingDetailsMaybe =
       recipientName && recipientAddressLine1
         ? {
-            shippingDetails: {
-              name: recipientName,
-              phoneNumber: recipientPhoneNumber,
-              address: {
-                city: "Arc 1800",
-                country: "France",
-                line1: recipientAddressLine1,
-                line2: recipientAddressLine2,
-                postalCode: "73700",
-                state: "Savoie",
-              },
+          shippingDetails: {
+            name: recipientName,
+            phoneNumber: recipientPhoneNumber,
+            address: {
+              city: "Arc 1800",
+              country: "France",
+              line1: recipientAddressLine1,
+              line2: recipientAddressLine2,
+              postalCode: "73700",
+              state: "Savoie",
             },
-          }
-        : {};    
+          },
+        }
+        : {};
     const requestPaymentParams = {
       pageData: this.state.pageData,
       speculatedTransaction,
@@ -738,7 +738,7 @@ export class CheckoutPageComponent extends Component {
     const speculatedTransaction = ensureTransaction(speculatedTransactionMaybe, {}, null);
     const currentListing = ensureListing(listing);
     const currentAuthor = ensureUser(currentListing.author);
-  
+
     // Getting restaurantName requires a check on publiData first otherwise throws error 
     const restaurantName = currentAuthor.attributes.profile.publicData ? currentAuthor.attributes.profile.publicData.restaurantName : null
 
@@ -747,7 +747,18 @@ export class CheckoutPageComponent extends Component {
 
 
     const restaurantState = isRestaurantOpen(currentListing?.author?.attributes.profile.publicData);
-    const warningMessage = restaurantState?.checkoutMessage === "" ? null : restaurantState?.checkoutMessage;
+    const warningMessageKey = restaurantState?.checkoutMessage?.key
+    let warningMessageValues = warningMessageKey && restaurantState?.checkoutMessage?.values ? restaurantState.checkoutMessage.values : null
+    if (warningMessageValues) {
+      for (const k of Object.keys(warningMessageValues)) {
+        if (warningMessageValues[k] === null) {
+          delete warningMessageValues[k]
+        } else if (JSON.stringify(warningMessageValues[k]).length === 1) {
+          warningMessageValues[k] = '0' + JSON.stringify(warningMessageValues[k])
+        }
+      }
+    }
+
     const pageProps = { title, scrollingDisabled };
     const topbar = (
       <div className={css.topbar}>
@@ -854,8 +865,8 @@ export class CheckoutPageComponent extends Component {
     const unitTranslationKey = isNightly
       ? 'CheckoutPage.perNight'
       : isDaily
-      ? 'CheckoutPage.perDay'
-      : 'CheckoutPage.perUnit';
+        ? 'CheckoutPage.perDay'
+        : 'CheckoutPage.perUnit';
 
     const price = currentListing.attributes.price;
     const formattedPrice = formatMoney(intl, price);
@@ -882,19 +893,36 @@ export class CheckoutPageComponent extends Component {
     const initalValuesForStripePayment = { name: userName, recipientName: userName };
 
 
-    const isAnyItemWithShipping = 
-    this.state.pageData.orderData?.restOfShoppingCartItems.find(item => {
-      return item.checkoutValues.deliveryMethod === "pickup"
-    }) 
-    || 
-    this.state.pageData.orderData?.deliveryMethod === "pickup";
+    const isAnyItemWithShipping =
+      this.state.pageData.orderData?.restOfShoppingCartItems.find(item => {
+        return item.checkoutValues.deliveryMethod === "pickup"
+      })
+      ||
+      this.state.pageData.orderData?.deliveryMethod === "pickup";
 
 
 
     return (
       <Page {...pageProps}>
         {topbar}
-        <center><h2 className={css.warningMessage}>{warningMessage}</h2></center>
+        {
+          warningMessageKey &&
+          <center>
+            <h2 className={css.warningMessage}>
+              {
+                warningMessageValues ? <FormattedMessage
+                  id={warningMessageKey}
+                  values={warningMessageValues}
+                /> :
+                  <FormattedMessage
+                    id={warningMessageKey}
+
+                  />
+              }
+
+            </h2>
+          </center>
+        }
 
         <div className={css.contentContainer}>
           {/* <AspectRatioWrapper
@@ -927,17 +955,17 @@ export class CheckoutPageComponent extends Component {
               {speculateTransactionErrorMessage}
               {breakdown}
               {
-              isAnyItemWithShipping ?
-              
-              <p className={css.shippingWarning}>
-              <FormattedMessage
-                id="CheckoutPage.warningPickupItems"
-                values={{ restaurantName }}
-              />
-            </p>
-              :
-              null
-            }
+                isAnyItemWithShipping ?
+
+                  <p className={css.shippingWarning}>
+                    <FormattedMessage
+                      id="CheckoutPage.warningPickupItems"
+                      values={{ restaurantName }}
+                    />
+                  </p>
+                  :
+                  null
+              }
             </div>
 
             <section className={css.paymentContainer}>
@@ -1015,14 +1043,14 @@ export class CheckoutPageComponent extends Component {
             {breakdown}
             {
               isAnyItemWithShipping ?
-              <p className={css.orderError}>
-              <FormattedMessage
-                id="CheckoutPage.warningPickupItems"
-                values={{ restaurantName }}
-              />
-            </p>
-              :
-              null
+                <p className={css.orderError}>
+                  <FormattedMessage
+                    id="CheckoutPage.warningPickupItems"
+                    values={{ restaurantName }}
+                  />
+                </p>
+                :
+                null
             }
           </div>
         </div>

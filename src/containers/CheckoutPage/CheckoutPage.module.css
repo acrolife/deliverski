@@ -117,9 +117,14 @@
 }
 
 .warningMessage{
-  margin-bottom: 0;
+  @apply --marketplaceH4FontStyles;
+  margin-bottom: 4rem;
   padding: 0 20vw;
   color: var(--marketplaceColor);
+  @media (--viewportMedium) {
+    @apply --marketplaceH2FontStyles;
+    margin-bottom: 0;
+  }
 }
 
 .avatarWrapper {

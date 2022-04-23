@@ -115,17 +115,27 @@ const OrderPanel = props => {
   const unitTranslationKey = isNightly
     ? 'OrderPanel.perNight'
     : isDaily
-    ? 'OrderPanel.perDay'
-    : 'OrderPanel.perUnit';
+      ? 'OrderPanel.perDay'
+      : 'OrderPanel.perUnit';
 
   // const authorDisplayName = userDisplayNameAsString(author, '');
-  const restaurantName = author.attributes.profile.publicData.restaurantName ? author.attributes.profile.publicData.restaurantName : null;  
+  const restaurantName = author.attributes.profile.publicData.restaurantName ? author.attributes.profile.publicData.restaurantName : null;
 
   const classes = classNames(rootClassName || css.root, className);
   const titleClasses = classNames(titleClassName || css.orderTitle);
   const restaurantDot = <p className={restaurantStatus.status === 'open' ? css.openDot : css.closedDot}>•</p>;
   const restaurantScheduleMessageKey = restaurantStatus.message ? restaurantStatus.message.key : null
-  const restaurantScheduleMessageValues = restaurantStatus.message ? restaurantStatus.message.values : null
+  let restaurantScheduleMessageValues = restaurantStatus.message ? restaurantStatus.message.values : null
+  if (restaurantScheduleMessageValues !== null) {
+    for (const k of Object.keys(restaurantScheduleMessageValues)) {
+      if (restaurantScheduleMessageValues[k] === null) {
+        delete restaurantScheduleMessageValues[k]
+      } else if (JSON.stringify(restaurantScheduleMessageValues[k]).length === 1) {
+        restaurantScheduleMessageValues[k] = '0' + JSON.stringify(restaurantScheduleMessageValues[k])
+      }
+    }
+  }
+
 
   return (
     <div className={classes}>
@@ -144,23 +154,28 @@ const OrderPanel = props => {
         <div className={css.orderHeading}>
           <h2 className={titleClasses}>{title} {restaurantDot}</h2>
           <p className={restaurantStatus.status === 'open' ? css.scheduleInfoTextOpen : css.scheduleInfoTextClosed}>
-          <FormattedMessage id={restaurantScheduleMessageKey} />
-            </p>
+            {
+              restaurantScheduleMessageValues ?
+                <FormattedMessage id={restaurantScheduleMessageKey} values={restaurantScheduleMessageValues} /> :
+                <FormattedMessage id={restaurantScheduleMessageKey} />
+            }
+
+          </p>
           {subTitleText ? <div className={css.orderHelp}>{subTitleText}</div> : null}
 
           <div className={css.deliveryOptions}>
             {
-            !shippingEnabled ?
-            <Chip className={css.shipChip} label="No shipping" variant="outlined" />
-            :
-            null
+              !shippingEnabled ?
+                <Chip className={css.shipChip} label="No shipping" variant="outlined" />
+                :
+                null
             }
 
-          {
-            !pickupEnabled ?
-            <Chip className={css.pickupChip} label="No pickup" variant="outlined" />
-            :
-            null
+            {
+              !pickupEnabled ?
+                <Chip className={css.pickupChip} label="No pickup" variant="outlined" />
+                :
+                null
             }
           </div>
 
