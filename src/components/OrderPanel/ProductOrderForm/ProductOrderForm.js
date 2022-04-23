@@ -7,7 +7,8 @@ import { FormattedMessage, useIntl } from '../../../util/reactIntl';
 import { propTypes } from '../../../util/types';
 import { numberAtLeast, required } from '../../../util/validators';
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+// import 'react-toastify/scss/main.scss'
+// import 'react-toastify/dist/ReactToastify.css';
 import {
   Form,
   FieldSelect,
@@ -675,6 +676,7 @@ const ProductOrderForm = props => {
 
   return (
     <FinalForm
+      key={listingId}
       initialValues={initialValues}
       hasMultipleDeliveryMethods={hasMultipleDeliveryMethods}
       {...props}

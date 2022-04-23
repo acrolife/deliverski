@@ -251,7 +251,7 @@ const ListingCardComponent = props => {
   }
 
   return (
-    showRestaurantAfterTileClick ? <NamedLinkListing /> : <NamedLinkRestaurant />
+    showRestaurantAfterTileClick ? <NamedLinkRestaurant /> : <NamedLinkListing />
   );
 };
 
