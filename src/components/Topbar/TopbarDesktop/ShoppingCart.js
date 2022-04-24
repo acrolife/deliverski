@@ -387,7 +387,7 @@ const ShoppingCartComponent = (props) => {
 
 
             <br />
-            {isBelowMininumAmount ?
+            {isBelowMininumAmount && shippingItem ?
               <p className={css.infoText}>
                 <FormattedMessage id="ShoppingCart.minAmountOrder" values={{ amount: minOrderAmount }} />
               </p>
@@ -400,7 +400,7 @@ const ShoppingCartComponent = (props) => {
               </>
               : null}
 
-            <Button type='button' disabled={isBelowMininumAmount} onClick={toCheckout}><FormattedMessage id="ShoppingCart.checkout" /></Button>
+            <Button type='button' disabled={isBelowMininumAmount && shippingItem} onClick={toCheckout}><FormattedMessage id="ShoppingCart.checkout" /></Button>
 
           </div>
         }
