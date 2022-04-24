@@ -6,9 +6,13 @@ import { types as sdkTypes, transit } from './sdkLoader';
 import config from '../config';
 import Decimal from 'decimal.js';
 
+
 export const apiBaseUrl = () => {
   const port = process.env.REACT_APP_DEV_API_SERVER_PORT;
   const useDevApiServer = process.env.NODE_ENV === 'development' && !!port;
+
+  // DEV
+  // console.log(window.location.origin)
 
   // In development, the dev API server is running in a different port
   if (useDevApiServer) {
@@ -18,6 +22,48 @@ export const apiBaseUrl = () => {
   // Otherwise, use the same domain and port as the frontend
   return `${window.location.origin}`;
 };
+
+
+/*
+// DEV
+//
+export const apiBaseUrl = () => {
+  const port = process.env.REACT_APP_DEV_API_SERVER_PORT;
+  const useDevApiServer = process.env.NODE_ENV === 'development' && !!port;
+
+  // In development, the dev API server is running in a different port
+  // if (useDevApiServer) {
+  //   return `http://localhost:${port}`;
+  // }
+
+  // Otherwise, use the same domain and port as the frontend
+  // DEV Dav trying out to solve the windew undefined issue on the server for FTW-webapp api calls
+  function getRootUrl(url) {
+    console.log("test", url.toString().replace(/^(.*\/\/[^\/?#]*).*$/, "$1"))
+    return url.toString().replace(/^(.*\/\/[^\/?#]*).*$/, "$1");
+  }
+  console.log("url", url)
+  console.log("document.location.host", document.location.host)
+  console.log("document.location.hostname", document.location.hostname)
+  getRootUrl(url)
+
+  // Otherwise, use the same domain and port as the frontend
+  return `${window.location.origin}`;
+};
+*/
+
+/*
+// DEV
+//
+let apiBaseUrl
+if (window) {
+  apiBaseUrl = window.location.origin
+} else {
+  apiBaseUrl = `http://localhost:${port}`
+}
+return apiBaseUrl
+*/
+
 
 // Application type handlers for JS SDK.
 //
