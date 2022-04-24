@@ -77,7 +77,7 @@ export const filters = [
   // # Food type filter -------------------------------------------------------- #
   {
     id: 'foodType',
-    label: 'Plat | En-cas',
+    label: 'Plat & en-cas',
     type: 'SelectMultipleFilter',
     group: 'secondary',
     queryParamNames: ['pub_foodType'],
@@ -103,7 +103,7 @@ export const filters = [
   // # Product type filter ----------------------------------------------------- #
   {
     id: 'productType',
-    label: 'Se mange | Se boit | Menu',
+    label: 'Salé, sucré, menu',
     // TODO put back SelectSingleFilter if sections in all meals / restaurant's page
     // And if UX not Ok
     // type: 'SelectSingleFilter',    
@@ -113,8 +113,9 @@ export const filters = [
     config: {
       schemaType: 'enum',
       options: [
-        { key: 'eatable', label: 'Se mange' },
-        { key: 'drinkable', label: 'Se boit' },
+        { key: 'eatable_salty', label: 'Salé' },
+        { key: 'eatable_sweet', label: 'Sucré' },        
+        { key: 'drinkable', label: 'Boisson' },
         { key: 'composable', label: 'Menu' }
       ],
     },
@@ -130,8 +131,8 @@ export const filters = [
       schemaType: 'enum',
       searchMode: 'has_any',
       options: [
-        { key: 'local', label: 'Savoyarde' },
-        { key: 'french', label: 'Française' },
+        { key: 'local', label: 'Locale, savoyarde' },
+        { key: 'french', label: 'Autre française' },
         { key: 'italian', label: 'Italienne' },
         { key: 'asian', label: 'Asiatique' },
         { key: 'us', label: 'Américaine' },
@@ -190,6 +191,8 @@ export const filters = [
       options: [
         { key: 'soda', label: 'Soda' },
         { key: 'water', label: 'Eau' },
+        { key: 'juice', label: 'Jus de fruits' },
+        { key: 'smoothie', label: 'Smoothie' },        
         { key: 'tea', label: 'Thé' },
         { key: 'coffee', label: 'Café' },
         { key: 'milk_based', label: 'A base de lait' },
