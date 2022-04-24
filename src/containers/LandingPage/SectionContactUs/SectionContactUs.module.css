@@ -1,5 +1,6 @@
 @import '../../../styles/propertySets.css';
 
+
 .title {
   @apply --marketplaceH1FontStyles;
   margin-top: 0;
@@ -14,7 +15,10 @@
   }
 }
 
-.step {
+.stepContact {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   @media (--viewportMedium) {
     width: 324px;
     margin-right: 40px;
@@ -45,6 +49,6 @@
   }
 }
 
-.textHowItWorks {
+.textContact {
   color: var(--marketplaceColor)
 }

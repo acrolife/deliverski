@@ -5,6 +5,8 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
+import LogoImage from '../../assets/logos/marmott-logo-sansfond.png';
+
 import config from '../../config';
 import { injectIntl, intlShape } from '../../util/reactIntl';
 import { isScrollingDisabled } from '../../ducks/UI.duck';
@@ -24,6 +26,7 @@ import twitterImage from '../../assets/marmottTwitter-600x314.jpg';
 
 import SectionHero from './SectionHero/SectionHero';
 import SectionHowItWorks from './SectionHowItWorks/SectionHowItWorks';
+import SectionContactUs from './SectionContactUs/SectionContactUs'
 import SectionFilteredSearches from './SectionFilteredSearches/SectionFilteredSearches';
 import css from './LandingPage.module.css';
 
@@ -46,8 +49,8 @@ const LandingPageComponent = (props) => {
     }
   }, [props.userProviders]);
 
-  const isLoggedIn = !currentUser
- 
+  const isLoggedIn = !!currentUser
+
   /* Example
   // Thumbnail image for the search "card"
 class ThumbnailImage extends Component {
@@ -98,21 +101,31 @@ class ThumbnailImage extends Component {
               location={location}
             />
           </div>
-          <ul className={css.sections}>
-            <li className={css.section}>
-              <div className={css.sectionContentFirstChild}>
+
+          <div className={css.sectionContentFirstChild}>
                 <SectionFilteredSearches userProviders={userProviders} />
               </div>
+          <div className={css.imgCenterParentLanding}>
+            <img src={LogoImage} width="60%"
+            />
+          </div>
+
+          <ul className={css.sections}>
+            <li className={css.section}>
+      
             </li>
             <li className={css.section}>
               <div className={css.sectionContent} id={"how-it-works"}>
                 <SectionHowItWorks isLoggedIn={isLoggedIn} />
               </div>
+              <div className={css.sectionContent} id={"contact-us"}>
+                <SectionContactUs isLoggedIn={isLoggedIn} />
+              </div>
             </li>
           </ul>
         </LayoutWrapperMain>
         <LayoutWrapperFooter>
-          <Footer currentUser={currentUser}/>
+          <Footer currentUser={currentUser} />
         </LayoutWrapperFooter>
       </LayoutSingleColumn>
     </Page>

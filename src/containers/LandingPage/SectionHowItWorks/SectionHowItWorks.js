@@ -23,7 +23,7 @@ const SectionHowItWorks = props => {
           <h2 className={css.stepTitle}>
             <FormattedMessage id="SectionHowItWorks.part1Title" />
           </h2>
-          <p>
+          <p className={css.textHowItWorks}>
             <FormattedMessage id="SectionHowItWorks.part1Text" />
           </p>
         </div>
@@ -32,7 +32,7 @@ const SectionHowItWorks = props => {
           <h2 className={css.stepTitle}>
             <FormattedMessage id="SectionHowItWorks.part2Title" />
           </h2>
-          <p>
+          <p className={css.textHowItWorks}>
             <FormattedMessage id="SectionHowItWorks.part2Text" />
           </p>
         </div>
@@ -41,13 +41,13 @@ const SectionHowItWorks = props => {
           <h2 className={css.stepTitle}>
             <FormattedMessage id="SectionHowItWorks.part3Title" />
           </h2>
-          <p>
+          <p className={css.textHowItWorks}>
             <FormattedMessage id="SectionHowItWorks.part3Text" />
           </p>
         </div>
       </div>
 
-      {isLoggedIn && <div className={css.createListingLink}>
+      {!isLoggedIn && <div className={css.createListingLink}>
         <NamedLink name="LoginPage" className={css.loginLink}>
           <FormattedMessage id="SectionHowItWorks.login" />
         </NamedLink>
