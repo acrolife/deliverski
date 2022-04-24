@@ -116,7 +116,7 @@ const TopbarMobileMenu = props => {
         >
           <FormattedMessage id="TopbarMobileMenu.newListingLink" />
         </NamedLink>}
-        
+
         {/* 
         {isProvider && <NamedLink
           className={classNames(css.navigationLink, currentPageClass('SearchRestaurantPage'))}
@@ -132,12 +132,14 @@ const TopbarMobileMenu = props => {
         >
           <FormattedMessage id="TopbarMobileMenu.profileSettingsLink" />
         </NamedLink>
+      
         <NamedLink
           className={classNames(css.navigationLink, currentPageClass('AccountSettingsPage'))}
           name="AccountSettingsPage"
         >
           <FormattedMessage id="TopbarMobileMenu.accountSettingsLink" />
         </NamedLink>
+
         <div className={css.spacer} />
       </div>
 
