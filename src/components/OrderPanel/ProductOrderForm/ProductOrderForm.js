@@ -29,6 +29,8 @@ const sdk = sharetribeSdk.createInstance({
   clientId: process.env.REACT_APP_SHARETRIBE_SDK_CLIENT_ID
 });
 
+const locale = config.locale
+const localePath = locale ? `/${locale}` : ''
 
 const renderForm = formRenderProps => {
 
@@ -162,7 +164,7 @@ const renderForm = formRenderProps => {
                   progress: undefined,
                 })
 
-                setTimeout(function () { return history.push('/s') }, 2500)
+                setTimeout(function () { return history.push(redirectPathToRestaurantSpace) }, 2500)
 
               }).catch(e => console.log(e))
 
@@ -395,6 +397,11 @@ const renderForm = formRenderProps => {
 
   const hostIdOfFirstItem = currentShopCartUnwrapped.length > 0 ? currentShopCartUnwrapped[0].listing.author.id.uuid : false;
 
+  const restaurant = currentShopCartUnwrapped.length > 0 ? currentShopCartUnwrapped[0].listing.attributes.publicData.restaurant : false;
+  const redirectPathToRestaurantSpace = `${localePath}/s?pub_restaurant=${restaurant}`
+  // Previous implementation of redirection
+    // const hostIdOfFirstItem = currentShopCartUnwrapped.length > 0 ? currentShopCartUnwrapped[0].listing.author.id.uuid : false;
+
   const deliveryMethodOfItemsAdded = currentShopCartUnwrapped && currentShopCartUnwrapped.length > 0 ?
     currentShopCartUnwrapped[0].checkoutValues.deliveryMethod
     :
@@ -577,7 +584,7 @@ const renderForm = formRenderProps => {
             <FormattedMessage id="ProductOrderForm.emptyCart" />
           </Button>
 
-          <Button type='button' className={css.modalButton} onClick={() => pushToPath(`/s?pub_hostId=${hostIdOfFirstItem}`)}>
+          <Button type='button' className={css.modalButton} onClick={() => pushToPath(redirectPathToRestaurantSpace)}>
             <FormattedMessage id="ProductOrderForm.seeSameVendorListings" />
           </Button>
 

@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-import { NamedLink} from '../../../components';
+import { NamedLink } from '../../../components';
 
 import css from './TopbarDesktop.module.css';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
@@ -35,7 +35,11 @@ const sdk = sharetribeSdk.createInstance({
 });
 
 const { Money } = sdkTypes;
+const locale = config.locale
+const localePath = locale ? `/${locale}` : ''
 
+// Manage redirection
+const onClickAfterAddToCart = `${localePath}/s`
 
 const ShoppingCartComponent = (props) => {
 
@@ -79,7 +83,6 @@ const ShoppingCartComponent = (props) => {
       return console.log(e)
     })
   }, [isOpen])
-
 
   const deleteItem = (id) => {
 
@@ -163,10 +166,10 @@ const ShoppingCartComponent = (props) => {
       newShoppingCart.map(item => {
         let newItem = { ...item }
 
-        if(newItem.listing.id.uuid === id){
+        if (newItem.listing.id.uuid === id) {
           const itemCurrentStock = newItem?.listing.currentStock?.attributes?.quantity;
           const newValue = Number(newItem.checkoutValues.quantity) + 1;
-          if(newValue <= itemCurrentStock){
+          if (newValue <= itemCurrentStock) {
             newItem.checkoutValues.quantity = (Number(newItem.checkoutValues.quantity) + 1).toString();
           }
         }
@@ -263,7 +266,6 @@ const ShoppingCartComponent = (props) => {
 
   }
 
-
   const shippingItem = shoppingCartItems.find(item => {
     return item.checkoutValues.deliveryMethod === "shipping"
   })
@@ -273,7 +275,6 @@ const ShoppingCartComponent = (props) => {
   shoppingCartItems.forEach(item => {
     quantityTotal += Number(item.checkoutValues.quantity)
   })
-
 
   return (
     <>
@@ -307,12 +308,21 @@ const ShoppingCartComponent = (props) => {
           <>  {mobile ? <br /> : null}
             <center><h2><FormattedMessage id="ShoppingCart.emptyTitle" /></h2></center>
             <br />
-            <Button onClick={() => pushToPath('/s')}>
+            <Button onClick={() => pushToPath(onClickAfterAddToCart)}>
               <FormattedMessage id="ShoppingCart.searchListing" />
             </Button>
           </> :
           <div className={css.cartItemsWrapper}>
             {shoppingCartItems.map(item => {
+
+              // Manage redirection  
+              
+              // TODO if not possible to have /l and /s?pub_restaurant on the same page, 
+              // redirect to /s?pub_restaurant but emphasizing the pdocut with color background
+              // const restaurant = item ? item.listing.attributes.publicData.restaurant : false;
+              // const restaurantSpaceSubpath = `${localePath}/s?pub_restaurant=${restaurant}`
+
+              const onClickProductLink = item ? `${localePath}/l/${item.listing.attributes.title.replace(' ', '-')}/${item.listing.id.uuid}` : ''
 
               const totalItemAmount = item.listing.attributes.price.amount * Number(item.checkoutValues.quantity);
               const totalPriceOfItem = new Money(totalItemAmount, config.currency);
@@ -322,7 +332,7 @@ const ShoppingCartComponent = (props) => {
                 <div className={css.cartItem} key={item.listing.id.uuid}>
                   <div className={css.cartItemLeft}>
                     <span>
-                      {item.checkoutValues.quantity} x <a onClick={() => pushToPath(`/l/${item.listing.attributes.title.replace(' ', '-')}/${item.listing.id.uuid}`)}>{item.listing.attributes.title}</a>
+                      {item.checkoutValues.quantity} x <a onClick={() => pushToPath(onClickProductLink)}>{item.listing.attributes.title}</a>
                     </span>
                     <div className={css.buttonsWrapper}>
                       <RemoveIcon
@@ -357,7 +367,9 @@ const ShoppingCartComponent = (props) => {
             </div>
             {
               shippingItem ?
-                <p className={css.infoTextTotal}>Before delivery cost participation</p>
+                <p className={css.infoTextTotal}>
+                  <FormattedMessage id="ShoppingCart.beforeCostMessage" />
+                </p>
                 :
                 null
             }
@@ -366,7 +378,9 @@ const ShoppingCartComponent = (props) => {
             <br />
             {
               isBelowMininumAmount ?
-                <p className={css.infoText}>* The minimum order amount is €{minOrderAmount}</p>
+                <p className={css.infoText}>
+                  <FormattedMessage id="ShoppingCart.minAmountOrder" values={{ amount: minOrderAmount }} />
+                </p>
                 :
                 null
             }
