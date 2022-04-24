@@ -16,9 +16,9 @@ import {
   txIsPaymentPending,
   txIsReceived,
   txIsCompleted,
-  txIsReviewedByCustomer,
-  txIsReviewedByProvider,
-  txIsReviewed,
+  // txIsReviewedByCustomer,
+  // txIsReviewedByProvider,
+  // txIsReviewed,
 } from '../../util/transaction';
 import { propTypes, DATE_TYPE_DATE } from '../../util/types';
 import { ensureCurrentUser } from '../../util/data';
@@ -111,7 +111,9 @@ export const txState = (intl, tx, type) => {
         id: 'InboxPage.stateReceived',
       }),
     };
-  } else if (txIsReviewedByCustomer(tx)) {
+  }
+  /*
+  else if (txIsReviewedByCustomer(tx)) {
     const translationKey = isOrder ? 'InboxPage.stateReviewGiven' : 'InboxPage.stateReviewNeeded';
     return {
       stateClassName: isOrder ? css.stateNoActionNeeded : css.stateActionNeeded,
@@ -134,7 +136,9 @@ export const txState = (intl, tx, type) => {
         id: 'InboxPage.stateReviewed',
       }),
     };
-  } else {
+  } 
+  */
+  else {
     console.warn('This transition is unknown:', tx.attributes.lastTransition);
     return null;
   }

@@ -18,19 +18,19 @@ import {
   TRANSITION_MARK_RECEIVED_FROM_DISPUTED,
   TRANSITION_MARK_DELIVERED,
   TRANSITION_DISPUTE,
-  TRANSITION_REVIEW_1_BY_CUSTOMER,
-  TRANSITION_REVIEW_1_BY_PROVIDER,
-  TRANSITION_REVIEW_2_BY_CUSTOMER,
-  TRANSITION_REVIEW_2_BY_PROVIDER,
+  // TRANSITION_REVIEW_1_BY_CUSTOMER,
+  // TRANSITION_REVIEW_1_BY_PROVIDER,
+  // TRANSITION_REVIEW_2_BY_CUSTOMER,
+  // TRANSITION_REVIEW_2_BY_PROVIDER,
   getUserTxRole,
-  isCustomerReview,
-  isProviderReview,
+  // isCustomerReview,
+  // isProviderReview,
   isRelevantPastTransition,
-  transitionIsReviewed,
-  txIsInFirstReviewBy,
+  // transitionIsReviewed,
+  // txIsInFirstReviewBy,
   txIsCompleted,
-  txIsReviewed,
-  txRoleIsCustomer,
+  // txIsReviewed,
+  // txRoleIsCustomer,
   txRoleIsProvider,
 } from '../../../util/transaction';
 import { propTypes } from '../../../util/types';
@@ -102,12 +102,14 @@ Review.propTypes = {
   rating: number.isRequired,
 };
 
+/*
 const hasUserLeftAReviewFirst = (userRole, transaction) => {
   // Because function txIsInFirstReviewBy uses isCustomer to check in which state the reviews are
   // we should also use isCustomer insted of isProvider
   const isCustomer = txRoleIsCustomer(userRole);
   return txIsInFirstReviewBy(transaction, isCustomer);
 };
+*/
 
 const resolveTransitionMessage = (
   transaction,
@@ -142,6 +144,7 @@ const resolveTransitionMessage = (
     case TRANSITION_MARK_RECEIVED_FROM_DISPUTED:
       // Show the leave a review link if the state is completed and
       // if the current user is the first to leave a review
+      /*
       const reviewPeriodJustStarted = txIsCompleted(transaction);
 
       const reviewAsFirstLink = reviewPeriodJustStarted ? (
@@ -151,6 +154,7 @@ const resolveTransitionMessage = (
       ) : null;
 
       return reviewAsFirstLink || <FormattedMessage id="ActivityFeed.transitionMarkReceived" />;
+      */
     case TRANSITION_MARK_DELIVERED: {
       const isShipped = transaction.attributes?.protectedData?.deliveryMethod === 'shipping';
       return isOwnTransition && isShipped ? (
@@ -178,6 +182,7 @@ const resolveTransitionMessage = (
           values={{ displayName, listingTitle }}
         />
       );
+    /*
     case TRANSITION_REVIEW_1_BY_PROVIDER:
     case TRANSITION_REVIEW_1_BY_CUSTOMER:
       if (isOwnTransition) {
@@ -211,7 +216,7 @@ const resolveTransitionMessage = (
           />
         );
       }
-
+    */
     default:
       log.error(new Error('Unknown transaction transition type'), 'unknown-transition-type', {
         transitionType: currentTransition,
@@ -262,23 +267,25 @@ const Transition = props => {
   const deletedReviewContent = intl.formatMessage({ id: 'ActivityFeed.deletedReviewContent' });
   let reviewComponent = null;
 
-  if (transitionIsReviewed(lastTransition)) {
-    if (isCustomerReview(currentTransition)) {
-      const review = reviewByAuthorId(currentTransaction, customer.id);
-      reviewComponent = review ? (
-        <Review content={review.attributes.content} rating={review.attributes.rating} />
-      ) : (
-        <Review content={deletedReviewContent} />
-      );
-    } else if (isProviderReview(currentTransition)) {
-      const review = reviewByAuthorId(currentTransaction, provider.id);
-      reviewComponent = review ? (
-        <Review content={review.attributes.content} rating={review.attributes.rating} />
-      ) : (
-        <Review content={deletedReviewContent} />
-      );
+  /*
+    if (transitionIsReviewed(lastTransition)) {
+      if (isCustomerReview(currentTransition)) {
+        const review = reviewByAuthorId(currentTransaction, customer.id);
+        reviewComponent = review ? (
+          <Review content={review.attributes.content} rating={review.attributes.rating} />
+        ) : (
+          <Review content={deletedReviewContent} />
+        );
+      } else if (isProviderReview(currentTransition)) {
+        const review = reviewByAuthorId(currentTransaction, provider.id);
+        reviewComponent = review ? (
+          <Review content={review.attributes.content} rating={review.attributes.rating} />
+        ) : (
+          <Review content={deletedReviewContent} />
+        );
+      }
     }
-  }
+    */
 
   const todayString = intl.formatMessage({ id: 'ActivityFeed.today' });
 
