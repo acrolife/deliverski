@@ -170,9 +170,9 @@ export class ManageListingsPageComponent extends Component {
             {queryInProgress ? loadingResults : null}
             {queryListingsError ? queryError : null}
             <div className={css.listingPanel}>
-              <Button className={css.resetButton} onClick={resetAllStock}>
+              {/* <Button className={css.resetButton} onClick={resetAllStock}>
                 {intl.formatMessage({ id: 'ManageListingsPage.resetButton' })}
-              </Button>
+              </Button> */}
               {heading}
               <div className={css.listingCards}>
                 {listings.map(l => (
