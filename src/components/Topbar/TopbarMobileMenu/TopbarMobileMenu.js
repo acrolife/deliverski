@@ -116,14 +116,15 @@ const TopbarMobileMenu = props => {
         >
           <FormattedMessage id="TopbarMobileMenu.newListingLink" />
         </NamedLink>}
-
+        
+        {/* 
         {isProvider && <NamedLink
           className={classNames(css.navigationLink, currentPageClass('SearchRestaurantPage'))}
           name="SearchPage"
           to={searchParamMyRestaurant}
         >
           <FormattedMessage id="TopbarMobileMenu.restaurantPageLink" />
-        </NamedLink>}
+        </NamedLink>} */}
 
         <NamedLink
           className={classNames(css.navigationLink, currentPageClass('ProfileSettingsPage'))}

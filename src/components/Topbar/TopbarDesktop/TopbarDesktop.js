@@ -142,7 +142,7 @@ const TopbarDesktop = props => {
             </NamedLink>}
         </MenuItem>
 
-        <MenuItem key="SearchRestaurantPage">
+        {/* <MenuItem key="SearchRestaurantPage">
           {isProvider &&
             <NamedLink
               className={classNames(css.yourListingsLink, currentPageClass('SearchRestaurantPage'))}
@@ -152,7 +152,7 @@ const TopbarDesktop = props => {
               <span className={css.menuItemBorder} />
               <FormattedMessage id="TopbarDesktop.restaurantPageLink" />
             </NamedLink>}
-        </MenuItem>
+        </MenuItem> */}
 
         <MenuItem key="ProfileSettingsPage">
           <NamedLink

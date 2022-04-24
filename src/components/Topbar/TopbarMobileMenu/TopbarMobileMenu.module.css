@@ -29,7 +29,10 @@
 .avatar {
   /* Layout */
   flex-shrink: 0;
-  margin: var(--TopbarMobileMenu_topMargin) 0 0 0;
+  /* margin: var(--TopbarMobileMenu_topMargin) 0 0 0; */
+  
+  /* Changed the top margin because mobile renders too low */
+  margin: 3rem 0 0 0;
 }
 
 .greeting {
