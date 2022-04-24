@@ -6,9 +6,6 @@ import config from '../../../config';
 import { FormattedMessage, useIntl } from '../../../util/reactIntl';
 import { propTypes } from '../../../util/types';
 import { numberAtLeast, required } from '../../../util/validators';
-import { ToastContainer, toast } from 'react-toastify';
-// import 'react-toastify/scss/main.scss'
-// import 'react-toastify/dist/ReactToastify.css';
 import {
   Form,
   FieldSelect,
@@ -21,14 +18,21 @@ import {
 import { pushToPath } from '../../../util/urlHelpers';
 
 import EstimatedCustomerBreakdownMaybe from '../EstimatedCustomerBreakdownMaybe';
-import './Toast.css';
+
 import css from './ProductOrderForm.module.css';
+
+// Toastify 
+// Doesnt work with original setup (*) => haad to copy the css in one fine in same dir
+import { ToastContainer, toast } from 'react-toastify';
+// (*) import 'react-toastify/dist/ReactToastify.css';
+import './Toast.css';
 
 const sharetribeSdk = require('sharetribe-flex-sdk');
 const sdk = sharetribeSdk.createInstance({
   clientId: process.env.REACT_APP_SHARETRIBE_SDK_CLIENT_ID
 });
 
+// Manage path redirection and locale
 const locale = config.locale
 const localePath = locale ? `/${locale}` : ''
 
@@ -62,20 +66,37 @@ const renderForm = formRenderProps => {
 
   const [sameVendorModalOpen, setSameVendorModalOpen] = useState(false);
   const [emptyCart, setEmptyCart] = useState(false);
-
+  // Opens cart message modal
   const handleSVModalOpen = () => {
     setSameVendorModalOpen(true);
   };
+  // Closes cart message modal
   const handleSVModalClose = () => {
     setSameVendorModalOpen(false);
   };
+  // Empty cart action
   const handleEmptyCart = () => {
     setEmptyCart(true);
   };
+  // Cart not empty action
   const handleNotEmptyCart = () => {
     setEmptyCart(false);
   };
 
+  // Toaster settings
+  const settingsToastAddedToBasket = {
+    params: {
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    },
+    message: intl.formatMessage({ id: 'ProductOrderForm.toastMessageAddedToCart' }),
+    delayMs: 1500
+  }
 
   const handleOnChange = formValues => {
     const { quantity: quantityRaw, deliveryMethod } = formValues.values;
@@ -93,6 +114,10 @@ const renderForm = formRenderProps => {
   // Otherwise continue with the default handleSubmit function.
   const handleFormSubmit = e => {
 
+    const restaurant = listing ? listing.attributes?.publicData?.restaurant : false;
+    const redirectPathToRestaurantSpace = `${localePath}/s?pub_restaurant=${restaurant}`
+    // Previous implementation of redirection
+    // const hostIdOfFirstItem = currentShopCartUnwrapped.length > 0 ? currentShopCartUnwrapped[0].listing.author.id.uuid : false;  
     if (currentUser) {
 
       const { quantity, deliveryMethod } = values || {};
@@ -131,7 +156,9 @@ const renderForm = formRenderProps => {
             })
 
             if (isAlreadyInTheBasket) {
-              // UPDATE EXISTING ITEM QUANTITY
+              // # ----------------------------------------------------- #
+              // #               Update EXISTING item qty                #
+              // # ------------------------------------------------------# 
               const updatedShoppingCard = currentShoppingCartUnwrapped.map(i => {
                 if (i.listing.id.uuid === currentListing.id.uuid) {
                   i.checkoutValues.quantity = (Number(i.checkoutValues.quantity) + Number(quantity)).toString()
@@ -154,53 +181,39 @@ const renderForm = formRenderProps => {
                   shoppingCart: [...stringifyUpdatedShoppingCart]
                 },
               }).then(res => {
-                toast.success('Added to basket!', {
-                  position: "top-right",
-                  autoClose: 1500,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                })
-
-                setTimeout(function () { return history.push(redirectPathToRestaurantSpace) }, 2500)
+                toast.success(
+                  settingsToastAddedToBasket.message,
+                  settingsToastAddedToBasket.params
+                )
+                setTimeout(function () { return history.push(redirectPathToRestaurantSpace) }, settingsToastAddedToBasket.delayMs)
 
               }).catch(e => console.log(e))
 
             } else {
-              //ADD NEW ITEM TO CART
+              // # ----------------------------------------------------- #
+              // #             Add NEW item to cart                      #
+              // # ------------------------------------------------------# 
 
               const shoppingCartItem = {
                 listing: JSON.stringify({ ...currentListing }),
                 checkoutValues: JSON.stringify({ ...values })
               }
-
               return sdk.currentUser.updateProfile({
                 publicData: {
                   shoppingCart: [...currentShoppingCart, shoppingCartItem]
                 },
               }).then(res => {
-                toast.success('Added to basket!', {
-                  position: "top-right",
-                  autoClose: 1500,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                })
-                setTimeout(function () { return history.push('/s') }, 2500)
-
+                toast.success(
+                  settingsToastAddedToBasket.message,
+                  settingsToastAddedToBasket.params
+                )
+                setTimeout(function () { history.push(redirectPathToRestaurantSpace) }, settingsToastAddedToBasket.delayMs)
               }).catch(e => console.log(e))
             }
-
-
-
           } else {
+            // Opens cart message modal
             handleSVModalOpen()
           }
-
         }).catch(e => console.log(e))
 
         // handleSubmit(e);
@@ -240,7 +253,9 @@ const renderForm = formRenderProps => {
           })
 
           if (isAlreadyInTheBasket) {
-            // UPDATE EXISTING ITEM QUANTITY
+            // # ----------------------------------------------------- #
+            // #               Update EXISTING item qty                #
+            // # ------------------------------------------------------# 
             const updatedShoppingCard = currentShoppingCartUnwrapped.map(i => {
               if (i.listing.id.uuid === currentListing.id.uuid) {
                 i.checkoutValues.quantity = (Number(i.checkoutValues.quantity) + Number(quantity)).toString()
@@ -261,16 +276,11 @@ const renderForm = formRenderProps => {
 
             window.sessionStorage.setItem('shoppingCart', JSON.stringify([...stringifyUpdatedShoppingCart]))
             toast
-              .success('Added to basket!', {
-                position: "top-right",
-                autoClose: 1500,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-              })
-            setTimeout(function () { return history.push('/s') }, 2500)
+              .success(
+                settingsToastAddedToBasket.message,
+                settingsToastAddedToBasket.params
+              )
+            setTimeout(function () { history.push(redirectPathToRestaurantSpace) }, settingsToastAddedToBasket.delayMs)
 
 
           } else {
@@ -283,28 +293,16 @@ const renderForm = formRenderProps => {
 
             window.sessionStorage.setItem('shoppingCart', JSON.stringify([...currentShoppingCart, shoppingCartItem]))
             toast
-              .success('Added to basket!', {
-                position: "top-right",
-                autoClose: 1500,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-              })
-            setTimeout(function () { return history.push('/s') }, 2500)
-
+              .success(
+                settingsToastAddedToBasket.message,
+                settingsToastAddedToBasket.params
+              )
+            setTimeout(function () { history.push(redirectPathToRestaurantSpace) }, settingsToastAddedToBasket.delayMs)
           }
-
-
-
-
         } else {
+          // Opens cart message modal
           handleSVModalOpen()
         }
-
-
-
         // handleSubmit(e);
       }
     }
@@ -394,14 +392,6 @@ const renderForm = formRenderProps => {
     })
   });
 
-
-  const hostIdOfFirstItem = currentShopCartUnwrapped.length > 0 ? currentShopCartUnwrapped[0].listing.author.id.uuid : false;
-
-  const restaurant = currentShopCartUnwrapped.length > 0 ? currentShopCartUnwrapped[0].listing.attributes.publicData.restaurant : false;
-  const redirectPathToRestaurantSpace = `${localePath}/s?pub_restaurant=${restaurant}`
-  // Previous implementation of redirection
-    // const hostIdOfFirstItem = currentShopCartUnwrapped.length > 0 ? currentShopCartUnwrapped[0].listing.author.id.uuid : false;
-
   const deliveryMethodOfItemsAdded = currentShopCartUnwrapped && currentShopCartUnwrapped.length > 0 ?
     currentShopCartUnwrapped[0].checkoutValues.deliveryMethod
     :
@@ -421,7 +411,6 @@ const renderForm = formRenderProps => {
     :
     [];
 
-
   const deliveryMethodsOptions = [...pickup, ...shipping];
 
   const missingDeliveryMethod = deliveryMethodOfItemsAdded ?
@@ -432,8 +421,6 @@ const renderForm = formRenderProps => {
     )
     :
     false;
-
-
 
   return (
     <Form onSubmit={handleFormSubmit} key={formId}>
@@ -473,6 +460,7 @@ const renderForm = formRenderProps => {
 
             <HelpOutlineIcon
               className={css.helpIcon}
+              // Empty cart action
               onClick={() => handleEmptyCart()}
             />
             {intl.formatMessage({ id: 'ProductOrderForm.deliveryMethodErrorClickMoreInfo' })}
@@ -571,6 +559,7 @@ const renderForm = formRenderProps => {
         id='sameVendorModal'
         isOpen={sameVendorModalOpen}
         onClose={() => {
+          // Closes cart message modal
           handleSVModalClose()
         }}
         onManageDisableScrolling={() => { }}
@@ -598,6 +587,7 @@ const renderForm = formRenderProps => {
         id='emptyCartModal'
         isOpen={emptyCart}
         onClose={() => {
+          // Cart not empty action
           handleNotEmptyCart()
         }}
         onManageDisableScrolling={() => { }}
@@ -643,7 +633,8 @@ const renderForm = formRenderProps => {
 
       </Modal>
 
-      <ToastContainer
+      <ToastContainer />
+      {/* <ToastContainer
         position="top-right"
         autoClose={1500}
         hideProgressBar={false}
@@ -653,9 +644,7 @@ const renderForm = formRenderProps => {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-      />
-      {/* Same as */}
-      <ToastContainer />
+      /> */}
     </Form>
   );
 };

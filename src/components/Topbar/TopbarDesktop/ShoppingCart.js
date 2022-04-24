@@ -54,6 +54,7 @@ const ShoppingCartComponent = (props) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [notLoggedInWarning, setNotLoggedInWarning] = useState(false);
 
+  // # Useeffect ----------------------------------------------------------------------- #
   useEffect(() => {
     sdk.currentUser.show().then(res => {
       setCurrentUser(res.data.data)
@@ -84,7 +85,8 @@ const ShoppingCartComponent = (props) => {
     })
   }, [isOpen])
 
-  const deleteItem = (id) => {
+  // # Delete all items ---------------------------------------------------------------- #
+  const deleteAllItems = (id) => {
 
     let newShoppingCart = [...shoppingCartItems]
 
@@ -114,21 +116,22 @@ const ShoppingCartComponent = (props) => {
       setShoppingCartItems(newShoppingCart)
     }
 
-
-
   }
 
-
-  const add = (id) => {
+  // # Add one item -------------------------------------------------------------------- #
+  const addOneItem = (id) => {
     let newShoppingCart = [...shoppingCartItems]
-
     newShoppingCart.map(item => {
       let newItem = { ...item }
-
       if (newItem.listing.id.uuid === id) {
-        newItem.checkoutValues.quantity = (Number(newItem.checkoutValues.quantity) + 1).toString();
-      }
-
+        // Validation: if cart cardinality for this item = current stock, can't add an item
+        const currentCartItemCardinality = Number(newItem.checkoutValues.quantity) 
+        const itemCurrentStock = Number(newItem?.listing.currentStock?.attributes?.quantity)
+        if (currentCartItemCardinality < itemCurrentStock) {
+          // New value from the selected operation (soustraction)
+          newItem.checkoutValues.quantity = (Number(newItem.checkoutValues.quantity) + 1).toString();
+        }   
+      }   
       return newItem
     })
 
@@ -152,7 +155,8 @@ const ShoppingCartComponent = (props) => {
 
   }
 
-  const remove = (id) => {
+  // # Remove one item ----------------------------------------------------------------- # 
+  const removeOneItem = (id) => {
     let newShoppingCart = [...shoppingCartItems];
 
     const foundItem = newShoppingCart.find(item => {
@@ -160,20 +164,31 @@ const ShoppingCartComponent = (props) => {
     });
 
     const isQuantityOne = Number(foundItem.checkoutValues.quantity) === 1;
+
     if (isQuantityOne) {
-      return deleteItem(id)
+      return deleteAllItems(id)
     } else {
+
+      // Mapping action on all the elements of the cart array
       newShoppingCart.map(item => {
+
         let newItem = { ...item }
 
+        // If the item targetted by the operation if the right one
         if (newItem.listing.id.uuid === id) {
-          const itemCurrentStock = newItem?.listing.currentStock?.attributes?.quantity;
-          const newValue = Number(newItem.checkoutValues.quantity) + 1;
-          if (newValue <= itemCurrentStock) {
-            newItem.checkoutValues.quantity = (Number(newItem.checkoutValues.quantity) + 1).toString();
-          }
-        }
 
+          newItem.checkoutValues.quantity = (Number(newItem.checkoutValues.quantity) - 1).toString();
+
+          /* Do we wan this behaviour ?
+          // Validation: user can substract items until there remains one, then should use delete
+          const currentCartItemCardinality = Number(newItem.checkoutValues.quantity) 
+          const itemCurrentStock = Number(newItem?.listing.currentStock?.attributes?.quantity)
+          if (currentCartItemCardinality >= 1) {
+            // New value from the selected operation (soustraction)
+            newItem.checkoutValues.quantity = (Number(newItem.checkoutValues.quantity) - 1).toString();
+          }
+          */
+        }
         return newItem
       })
 
@@ -199,6 +214,7 @@ const ShoppingCartComponent = (props) => {
 
   }
 
+  // # Managing totla price and amounts ------------------------------------------------ #
   let totalPrice
   let totalOrderAmount = 0
 
@@ -210,13 +226,13 @@ const ShoppingCartComponent = (props) => {
     totalPrice = intl ? formatMoney(intl, new Money(totalAmount, config.currency)) : `${totalAmount / 100} ${config.currency}`;
   }
 
-
   const isBelowMininumAmount = totalOrderAmount < Number(minOrderAmount) * 100;
 
   // const callSetInitialValues = (setInitialValues, values, saveToSessionStorage) => {
   //         return setInitialValues(values, saveToSessionStorage)
   // }
 
+  // # Checkout operations ------------------------------------------------------------- #
   const toCheckout = () => {
     if (currentUser) {
       const {
@@ -266,6 +282,7 @@ const ShoppingCartComponent = (props) => {
 
   }
 
+  // #  shippingItem and quantityTotal ------------------------------------------------- #
   const shippingItem = shoppingCartItems.find(item => {
     return item.checkoutValues.deliveryMethod === "shipping"
   })
@@ -315,14 +332,13 @@ const ShoppingCartComponent = (props) => {
           <div className={css.cartItemsWrapper}>
             {shoppingCartItems.map(item => {
 
-              // Manage redirection  
-              
+              // Manage redirection ----------------------------------------------------------------------- #
               // TODO if not possible to have /l and /s?pub_restaurant on the same page, 
               // redirect to /s?pub_restaurant but emphasizing the pdocut with color background
               // const restaurant = item ? item.listing.attributes.publicData.restaurant : false;
               // const restaurantSpaceSubpath = `${localePath}/s?pub_restaurant=${restaurant}`
-
               const onClickProductLink = item ? `${localePath}/l/${item.listing.attributes.title.replace(' ', '-')}/${item.listing.id.uuid}` : ''
+              // ------------------------------------------------------------------------------------------ #
 
               const totalItemAmount = item.listing.attributes.price.amount * Number(item.checkoutValues.quantity);
               const totalPriceOfItem = new Money(totalItemAmount, config.currency);
@@ -330,6 +346,7 @@ const ShoppingCartComponent = (props) => {
 
               return (
                 <div className={css.cartItem} key={item.listing.id.uuid}>
+
                   <div className={css.cartItemLeft}>
                     <span>
                       {item.checkoutValues.quantity} x <a onClick={() => pushToPath(onClickProductLink)}>{item.listing.attributes.title}</a>
@@ -337,64 +354,51 @@ const ShoppingCartComponent = (props) => {
                     <div className={css.buttonsWrapper}>
                       <RemoveIcon
                         className={css.quantityButton}
-                        onClick={() => remove(item.listing.id.uuid)}
+                        onClick={() => removeOneItem(item.listing.id.uuid)}
                       />
                       <AddIcon
                         className={css.quantityButton}
-                        onClick={() => add(item.listing.id.uuid)}
+                        onClick={() => addOneItem(item.listing.id.uuid)}
                       />
                     </div>
                   </div>
 
-
                   <div>
                     <DeleteOutlineIcon
                       className={css.deleteIcon}
-                      onClick={() => deleteItem(item.listing.id.uuid)}
+                      onClick={() => deleteAllItems(item.listing.id.uuid)}
                     />
-
                     <span>{formattedPrice}</span>
                   </div>
                 </div>
               )
             })}
 
-
             <div className={css.total}>
               <span> <FormattedMessage id="ShoppingCart.total" /></span>
-
               <span>{totalPrice}</span>
             </div>
-            {
-              shippingItem ?
-                <p className={css.infoTextTotal}>
-                  <FormattedMessage id="ShoppingCart.beforeCostMessage" />
-                </p>
-                :
-                null
-            }
+
+            {shippingItem ?
+              <p className={css.infoTextTotal}>
+                <FormattedMessage id="ShoppingCart.beforeCostMessage" />
+              </p>
+              : null}
 
 
             <br />
-            {
-              isBelowMininumAmount ?
-                <p className={css.infoText}>
-                  <FormattedMessage id="ShoppingCart.minAmountOrder" values={{ amount: minOrderAmount }} />
-                </p>
-                :
-                null
-            }
+            {isBelowMininumAmount ?
+              <p className={css.infoText}>
+                <FormattedMessage id="ShoppingCart.minAmountOrder" values={{ amount: minOrderAmount }} />
+              </p>
+              : null}
 
-            {
-              notLoggedInWarning ?
-
-                <>
-                  <p className={css.notLoggedInText1}>You need to <NamedLink name="LoginPage" className={css.logoLink}>log in</NamedLink> to proceed to checkout</p>
-                  <p className={css.notLoggedInText2}>You don't have an account ? Create one in <NamedLink name="SignupPage" className={css.logoLink}>here</NamedLink></p>
-                </>
-                :
-                null
-            }
+            {notLoggedInWarning ?
+              <>
+                <p className={css.notLoggedInText1}>You need to <NamedLink name="LoginPage" className={css.logoLink}>log in</NamedLink> to proceed to checkout</p>
+                <p className={css.notLoggedInText2}>You don't have an account ? Create one in <NamedLink name="SignupPage" className={css.logoLink}>here</NamedLink></p>
+              </>
+              : null}
 
             <Button type='button' disabled={isBelowMininumAmount} onClick={toCheckout}><FormattedMessage id="ShoppingCart.checkout" /></Button>
 

@@ -251,9 +251,9 @@
     opacity: 0.7;
     transform-origin: left;
   }
-  .Toastify__progress-bar--animated {
+  /* .Toastify__progress-bar--animated {
     animation: Toastify__trackProgress linear 1 forwards;
-  }
+  } */
   .Toastify__progress-bar--controlled {
     transition: transform 0.2s;
   }
