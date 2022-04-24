@@ -10,7 +10,7 @@ import css from './SectionContactUs.module.css';
 
 const SectionContactUs = props => {
   const { rootClassName, className, isLoggedIn } = props;
-console.log("isLoggedIn", isLoggedIn)
+
   const classes = classNames(rootClassName || css.root, className);
   return (
     <div className={classes}>
