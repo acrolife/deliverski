@@ -91,7 +91,7 @@ const Footer = props => {
                       <FormattedMessage id="Footer.toNewListingPage" />
                     </NamedLink>
                   </li>}
-                <li className={css.listItem}>
+                {/* <li className={css.listItem}>
                   <NamedLink name="LandingPage" to={{ hash: '#how-it-works' }} className={css.link}>
                     <FormattedMessage id="Footer.toAboutPage" />
                   </NamedLink>
@@ -102,12 +102,17 @@ const Footer = props => {
                   </NamedLink>
                 </li>
                 <li className={css.listItem}>
-                  <NamedLink name="LandingPage" className={css.link}>
+                  <NamedLink name="LandingPage" to={{ hash: '#how-it-works' }} className={css.link}>
                     <FormattedMessage id="Footer.toHelpPage" />
+                  </NamedLink>
+                </li> */}
+                <li className={css.listItem}>
+                  <NamedLink name="LandingPage" to={{ hash: '#how-it-works' }} className={css.link}>
+                    <FormattedMessage id="Footer.howItWorks" />
                   </NamedLink>
                 </li>
                 <li className={css.listItem}>
-                  <NamedLink name="LandingPage" to={{ hash: '#how-it-works' }} className={css.link}>
+                  <NamedLink name="LandingPage" to={{ hash: '#contact-us' }} className={css.link}>
                     <FormattedMessage id="Footer.toContactPage" />
                   </NamedLink>
                 </li>
@@ -178,7 +183,7 @@ const Footer = props => {
                   <NamedLink
                     name="SearchPage"
                     to={{
-                      search: '?pub_foodType=pizza',                      
+                      search: '?pub_foodType=pizza',
                     }}
                     className={css.link}
                   >
@@ -222,7 +227,7 @@ const Footer = props => {
                   <NamedLink
                     name="SearchPage"
                     to={{
-                      search: '?pub_drinkType=drinkable',
+                      search: '?pub_productType=drinkable',
                     }}
                     className={css.link}
                   >
@@ -231,8 +236,11 @@ const Footer = props => {
                 </li>
               </ul>
             </div>
-            <div className={css.extraLinks}>
-              {/* <div className={css.someLinks}>{socialMediaLinks}</div> */}
+          </div>
+
+          {/* // Footer Desktop TermsOfServicePage PrivacyPolicyPage */}
+          {/* <div className={css.extraLinks}>
+              <div className={css.someLinks}>{socialMediaLinks}</div>
               <div className={css.legalMatters}>
                 <ul className={css.tosAndPrivacy}>
                   <li>
@@ -247,21 +255,25 @@ const Footer = props => {
                   </li>
                 </ul>
               </div>
-            </div>
-          </div>
+            </div> */}
+
+
+          {/* // Footer Mobile TermsOfServicePage PrivacyPolicyPage */}
           <div className={css.copyrightAndTermsMobile}>
             <NamedLink name="LandingPage" className={css.organizationCopyrightMobile}>
               <FormattedMessage id="Footer.copyright" />
             </NamedLink>
             <div className={css.tosAndPrivacyMobile}>
-              <NamedLink name="PrivacyPolicyPage" className={css.privacy}>
+              {/* <NamedLink name="PrivacyPolicyPage" className={css.privacy}>
                 <FormattedMessage id="Footer.privacy" />
               </NamedLink>
               <NamedLink name="TermsOfServicePage" className={css.terms}>
                 <FormattedMessage id="Footer.terms" />
-              </NamedLink>
+              </NamedLink> */}
             </div>
           </div>
+
+
         </div>
       </div>
     </div>
