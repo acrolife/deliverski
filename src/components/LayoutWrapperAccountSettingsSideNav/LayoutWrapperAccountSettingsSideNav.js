@@ -3,7 +3,7 @@
  * Navigational 'aside' content should be added to this wrapper.
  */
 import React from 'react';
-import { node, number, string, shape } from 'prop-types';
+import { node, number, string, shape, bool } from 'prop-types';
 import { compose } from 'redux';
 import { FormattedMessage } from '../../util/reactIntl';
 import { withViewport } from '../../util/contextHelpers';
@@ -24,7 +24,7 @@ const scrollToTab = currentTab => {
 };
 
 const LayoutWrapperAccountSettingsSideNavComponent = props => {
-  const { currentTab, viewport } = props;
+  const { currentTab, viewport, isProvider } = props;
 
   let hasScrolledToTab = false;
 
@@ -42,7 +42,7 @@ const LayoutWrapperAccountSettingsSideNavComponent = props => {
     hasScrolledToTab = true;
   }
 
-  const tabs = [
+  let tabs = [
     {
       text: <FormattedMessage id="LayoutWrapperAccountSettingsSideNav.contactDetailsTabTitle" />,
       selected: currentTab === 'ContactDetailsPage',
@@ -77,6 +77,10 @@ const LayoutWrapperAccountSettingsSideNavComponent = props => {
     },
   ];
 
+  if (!isProvider) {
+    tabs = tabs.filter(e => e.id !== 'StripePayoutPageTab')
+  }
+
   return <LayoutWrapperSideNav tabs={tabs} />;
 };
 
@@ -85,6 +89,7 @@ LayoutWrapperAccountSettingsSideNavComponent.defaultProps = {
   rootClassName: null,
   children: null,
   currentTab: null,
+  isProvider: null,
 };
 
 LayoutWrapperAccountSettingsSideNavComponent.propTypes = {
@@ -98,6 +103,9 @@ LayoutWrapperAccountSettingsSideNavComponent.propTypes = {
     width: number.isRequired,
     height: number.isRequired,
   }).isRequired,
+
+  // from ContactDetailsPage
+  isProvider: bool,
 };
 
 const LayoutWrapperAccountSettingsSideNav = compose(withViewport)(

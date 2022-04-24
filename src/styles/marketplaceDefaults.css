@@ -136,7 +136,8 @@
   --SectionHero_desktopTitleMaxWidth: 625px;
 
   /* ================ TabNav ================ */
-  --TabNav_linkWidth: 240px;
+  /* --TabNav_linkWidth: 240px; */
+  --TabNav_linkWidth: 272px;
 
   /* ================ LandingPage ================ */
   --LandingPage_sectionMarginTop: 40px;

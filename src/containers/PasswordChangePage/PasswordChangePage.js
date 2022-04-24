@@ -39,6 +39,9 @@ export const PasswordChangePageComponent = props => {
     intl,
   } = props;
 
+  // Conditional rendering of the provider/customer UI elements
+  const isProvider = currentUser ? !!currentUser.attributes.profile.metadata.isProvider : false
+
   const changePasswordForm =
     currentUser && currentUser.id ? (
       <PasswordChangeForm
@@ -68,7 +71,7 @@ export const PasswordChangePageComponent = props => {
           />
           <UserNav selectedPageName="PasswordChangePage" />
         </LayoutWrapperTopbar>
-        <LayoutWrapperAccountSettingsSideNav currentTab="PasswordChangePage" />
+        <LayoutWrapperAccountSettingsSideNav currentTab="PasswordChangePage"isProvider={isProvider}  />
         <LayoutWrapperMain>
           <div className={css.content}>
             <h1 className={css.title}>
