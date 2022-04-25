@@ -4,16 +4,19 @@
 <html>
   <body>
     {{#with transaction}}
-    <h3>Votre reçu concernant {{listing.title}}</h3>
+    <h3>
+      La commande litigieuse concernant {{listing.title}} a été considérée reçue
+    </h3>
 
     <p>
-      Merci d'avoir acheter {{listing.title}} auprès de
-      {{provider.display-name}}!
+      La commande litigieuse de {{customer.display-name}} concernant
+      {{listing.title}} a été considérée reçue par les administrateurs.
     </p>
 
     <p>
-      Nous vous avons prélevé {{> format-money money=payin-total}}. Voici votre
-      reçu.
+      Nous vous avons réglé la somme de {{> format-money money=payout-total}}
+      concernant le paiement de {{listing.title}}. Selon les délais bancaires,
+      le paiement arrivera au plus tard sous 7 jours. Voici le détail.
     </p>
 
     <table>
@@ -23,9 +26,9 @@
         </tr>
       </thead>
       <tbody>
-        {{#each tx-line-items}} {{#contains include-for "customer"}} {{#eq
+        {{#each tx-line-items}} {{#contains include-for "provider"}} {{#eq
         "line-item/units" code}}
-        <!-- <tr>
+        <tr>
           <td>Prix unitaire</td>
           <td style="text-align: right; padding-left: 20px">
             {{> format-money money=unit-price}}
@@ -36,9 +39,9 @@
           <td style="text-align: right; padding-left: 20px">
             &times; {{number quantity}}
           </td>
-        </tr> -->
+        </tr>
         <tr>
-          <th style="text-align: left">Montant de base - sous-total</th>>
+          <th style="text-align: left">Sous-total</th>
           <th style="text-align: right; padding-left: 20px">
             {{> format-money money=line-total}}
           </th>
@@ -57,13 +60,20 @@
             {{> format-money money=unit-price}}
           </td>
         </tr>
+        {{/eq}} {{#eq "line-item/provider-commission" code}}
+        <tr>
+          <td>Frais de commission de {{marketplace.name}}</td>
+          <td style="text-align: right; padding-left: 20px">
+            {{> format-money money=line-total}}
+          </td>
+        </tr>
         {{/eq}} {{/contains}} {{/each}}
       </tbody>
       <tfoot>
         <tr>
-          <th style="text-align: left">Paiment total</th>
+          <th style="text-align: left">Vous recevez</th>
           <th style="text-align: left; padding-left: 20px">
-            {{> format-money money=payin-total}}
+            {{> format-money money=payout-total}}
           </th>
         </tr>
       </tfoot>
@@ -79,16 +89,17 @@
     <!-- ///////////////////////////////////////////////////////////////////// -->
 
     {{#with transaction}}
-    <h3>Your receipt for {{listing.title}}</h3>
+    <h3>Disputed order for {{listing.title}} was marked as received</h3>
 
     <p>
-      Thank your for purchasing {{listing.title}} from
-      {{provider.display-name}}!
+      The disputed order by {{customer.display-name}} for {{listing.title}} was
+      marked as received by the marketplace admin.
     </p>
 
     <p>
-      We have how charged {{> format-money money=payin-total}} from your credit
-      card. Here's your receipt.
+      We have sent you {{> format-money money=payout-total}} for the payment for
+      {{listing.title}}. It might take up to seven days for the money to reach
+      your bank account. Here is the breakdown.
     </p>
 
     <table>
@@ -98,9 +109,9 @@
         </tr>
       </thead>
       <tbody>
-        {{#each tx-line-items}} {{#contains include-for "customer"}} {{#eq
+        {{#each tx-line-items}} {{#contains include-for "provider"}} {{#eq
         "line-item/units" code}}
-        <!-- <tr>
+        <tr>
           <td>Unit price</td>
           <td style="text-align: right; padding-left: 20px">
             {{> format-money money=unit-price}}
@@ -112,8 +123,8 @@
             &times; {{number quantity}}
           </td>
         </tr>
-        <tr> -->
-          <th style="text-align: left">Base amount - subtotal</th>
+        <tr>
+          <th style="text-align: left">Subtotal</th>
           <th style="text-align: right; padding-left: 20px">
             {{> format-money money=line-total}}
           </th>
@@ -132,13 +143,20 @@
             {{> format-money money=unit-price}}
           </td>
         </tr>
+        {{/eq}} {{#eq "line-item/provider-commission" code}}
+        <tr>
+          <td>{{marketplace.name}} fee</td>
+          <td style="text-align: right; padding-left: 20px">
+            {{> format-money money=line-total}}
+          </td>
+        </tr>
         {{/eq}} {{/contains}} {{/each}}
       </tbody>
       <tfoot>
         <tr>
-          <th style="text-align: left">Payment total</th>
+          <th style="text-align: left">You earn</th>
           <th style="text-align: left; padding-left: 20px">
-            {{> format-money money=payin-total}}
+            {{> format-money money=payout-total}}
           </th>
         </tr>
       </tfoot>

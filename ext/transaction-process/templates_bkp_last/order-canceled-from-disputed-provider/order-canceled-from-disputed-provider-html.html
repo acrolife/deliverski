@@ -1,0 +1,38 @@
+<html>
+  <body>
+    {{#with transaction}}
+    <h3>La commande litigieuse concernant {{listing.title}} a été annulée</h3>
+
+    <p>
+      La commande litigieuse de {{customer.display-name}} concernant
+      {{listing.title}} a été annulée par les administrateurs.
+    </p>
+
+    <p>Si vous avez des question, merci de contacter les administrateurs par email à support@marmott.co</p>
+    {{/with}}
+
+    <p>Meilleures salutations,<br />La team {{marketplace.name}} </p>
+
+    <p><small>Vous avez reçu ce mail car vous êtes membre de {{marketplace.name}}. Si vous ne souhaitez plus recevoir d&#x27;emails de notre part, merci de contacter les administrateurs de {{marketplace.name}} sous la rubrique "contact" de notre site web https://marmott.co</small></p>
+
+    <hr />
+
+    <!-- ///////////////////////////////////////////////////////////////////// -->
+
+    {{#with transaction}}
+    <h3>Disputed order for {{listing.title}} was canceled</h3>
+
+    <p>
+      The disputed order by {{customer.display-name}} for {{listing.title}} was
+      marked as canceled by the marketplace admin.
+    </p>
+
+    <p>If you have any questions, please contact the marketplace admin via email to support@marmott.co</p>
+    {{/with}}
+
+
+    <p>Best regards,<br />The {{marketplace.name}} team</p>
+
+    <p><small>You have received this email notification because you are a member of {{marketplace.name}}. If you no longer wish to receive these emails, please contact {{marketplace.name}} team, in the section "contact” on our website https://marmott.co</small></p>
+  </body>
+</html>

@@ -1,0 +1,1 @@
+Pensez à indiquer que vous avez reçu la commande de {{transaction.listing.title}} - Remember to mark your order for {{transaction.listing.title}} as received

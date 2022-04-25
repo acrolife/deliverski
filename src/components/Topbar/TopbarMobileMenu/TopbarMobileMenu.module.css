@@ -14,7 +14,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  overflow-y: scroll;
+  overflow-y: scroll !important;
 }
 
 .footer {
@@ -33,7 +33,7 @@
   /* margin: var(--TopbarMobileMenu_topMargin) 0 0 0; */
 
   /* Changed the top margin because mobile renders too low */
-  margin: 4rem 0 0 0;
+  margin: 1rem 0 0 0;
 }
 
 .greeting {

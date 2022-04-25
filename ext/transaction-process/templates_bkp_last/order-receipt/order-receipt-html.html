@@ -25,7 +25,7 @@
       <tbody>
         {{#each tx-line-items}} {{#contains include-for "customer"}} {{#eq
         "line-item/units" code}}
-        <!-- <tr>
+        <tr>
           <td>Prix unitaire</td>
           <td style="text-align: right; padding-left: 20px">
             {{> format-money money=unit-price}}
@@ -36,9 +36,9 @@
           <td style="text-align: right; padding-left: 20px">
             &times; {{number quantity}}
           </td>
-        </tr> -->
+        </tr>
         <tr>
-          <th style="text-align: left">Montant de base - sous-total</th>>
+          <th style="text-align: left">Sous-total</th>
           <th style="text-align: right; padding-left: 20px">
             {{> format-money money=line-total}}
           </th>
@@ -100,7 +100,7 @@
       <tbody>
         {{#each tx-line-items}} {{#contains include-for "customer"}} {{#eq
         "line-item/units" code}}
-        <!-- <tr>
+        <tr>
           <td>Unit price</td>
           <td style="text-align: right; padding-left: 20px">
             {{> format-money money=unit-price}}
@@ -112,8 +112,8 @@
             &times; {{number quantity}}
           </td>
         </tr>
-        <tr> -->
-          <th style="text-align: left">Base amount - subtotal</th>
+        <tr>
+          <th style="text-align: left">Subtotal</th>
           <th style="text-align: right; padding-left: 20px">
             {{> format-money money=line-total}}
           </th>

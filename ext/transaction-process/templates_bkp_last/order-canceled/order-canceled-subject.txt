@@ -1,0 +1,1 @@
+Commande concernant {{transaction.listing.title}} annulée - Order for {{transaction.listing.title}} was canceled

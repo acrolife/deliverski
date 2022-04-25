@@ -1,0 +1,49 @@
+<html>
+  <body>
+    {{#with transaction}}
+    <h3>La commande de "{{listing.title}}" a expiré</h3>
+
+    {{#eq "shipping" protected-data.deliveryMethod}}
+    <p>
+      Malheureusement la commande concernant "{{listing.title}}" de
+      {{customer.display-name}} n'a pas été reçue sous 120 minutes et par
+      conséquant a été automatiquement annulée.
+    </p>
+    {{else}}
+    <p>
+      Malheureusement la commande concernant "{{listing.title}}" de
+      {{customer.display-name}} n'a pas été récupérée sous 120 minutes et par
+      conséquant a été automatiquement annulée.
+    </p>
+    {{/eq}} {{/with}}
+
+    <p>Meilleures salutations,<br />La team {{marketplace.name}} </p>
+
+    <p><small>Vous avez reçu ce mail car vous êtes membre de {{marketplace.name}}. Si vous ne souhaitez plus recevoir d&#x27;emails de notre part, merci de contacter les administrateurs de {{marketplace.name}} sous la rubrique "contact" de notre site web https://marmott.co</small></p>
+
+    <hr />
+
+    <!-- ///////////////////////////////////////////////////////////////////// -->
+
+    {{#with transaction}}
+    <h3>Order for {{listing.title}} has expired</h3>
+
+    {{#eq "shipping" protected-data.deliveryMethod}}
+    <p>
+      Unfortunately the order for {{listing.title}} from
+      {{customer.display-name}} was not marked as shipped within 120 minutes from
+      the order and was therefore automatically canceled.
+    </p>
+    {{else}}
+    <p>
+      Unfortunately the order for {{listing.title}} from
+      {{customer.display-name}} was not picked up within 120 minutes and was
+      therefore automatically canceled.
+    </p>
+    {{/eq}} {{/with}}
+
+    <p>Best regards,<br />The {{marketplace.name}} team</p>
+
+    <p><small>You have received this email notification because you are a member of {{marketplace.name}}. If you no longer wish to receive these emails, please contact {{marketplace.name}} team, in the section "contact” on our website https://marmott.co</small></p>
+  </body>
+</html>

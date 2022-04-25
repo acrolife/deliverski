@@ -1,0 +1,1 @@
+{{transaction.customer.display-name}} a reçu la commande - {{transaction.customer.display-name}} marked her/his order as received

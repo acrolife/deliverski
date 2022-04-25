@@ -1,0 +1,50 @@
+<html>
+  <body>
+    {{#with transaction}}
+    <h3>N'oubliez pas d'indiquer que vous avez reçu la commande</h3>
+
+    <p>
+      Avez-vous reçu la commande de {{listing.title}}? Pensez à indiquer que
+      vous avez reçu la commande sur la page de détails de votre commande. Ansi
+      nous pourrons déclencher le paiement auprès de {{provider.display-name}}.
+    </p>
+    {{/with}}
+
+    <p>La commande sera automatiquement indiquée comme reçue sous 2 jours</p>
+
+    <p>
+      Si vous n'avez pas reçu votre commande, merci de contacter
+      {{provider.display-name}} sur la page de détails de votre commande.
+    </p>
+
+    <p>Meilleures salutations,<br />La team {{marketplace.name}} </p>
+
+    <p><small>Vous avez reçu ce mail car vous êtes membre de {{marketplace.name}}. Si vous ne souhaitez plus recevoir d&#x27;emails de notre part, merci de contacter les administrateurs de {{marketplace.name}} sous la rubrique "contact" de notre site web https://marmott.co</small></p>
+
+    <hr />
+
+    <!-- ///////////////////////////////////////////////////////////////////// -->
+
+    {{#with transaction}}
+    <h3>Remember to mark your order as received</h3>
+
+    <p>
+      Have you received your order for {{listing.title}}? Remember to mark the
+      item as received on the order details page. This way we can release your
+      payment to {{provider.display-name}}.
+    </p>
+    {{/with}}
+
+    <p>The order will be marked automatically as completed in two days.</p>
+
+    <p>
+      If you have not received your order, please contact
+      {{provider.display-name}} on the order details page or the marketplace
+      admin.
+    </p>
+
+    <p>Best regards,<br />The {{marketplace.name}} team</p>
+
+    <p><small>You have received this email notification because you are a member of {{marketplace.name}}. If you no longer wish to receive these emails, please contact {{marketplace.name}} team, in the section "contact” on our website https://marmott.co</small></p>
+  </body>
+</html>

@@ -1,0 +1,64 @@
+<html>
+  <body>
+    {{#with transaction}}
+    <h3>La commande concernant {{listing.title}} a été clôturée</h3>
+
+    {{#eq "shipping" protected-data.deliveryMethod}}
+    <p>
+      La commande concernant {{listing.title}} a été envoyée il y a 90 minutes,
+      mais n'a pas été indiquée comme reçue. D'après notre politique, toutes les
+      commandes sont automatiquement considérées reçues 90 minutes après leur
+      envoi.
+    </p>
+    {{else}}
+    <p>
+      La commande concernant {{listing.title}} a té ramassée il y a 90 minutes,
+      mais n'a pas été marquée comme reçue.D'après notre politique, toutes les
+      commandes sont automatiquement considérées reçues 90 minutes après leur
+      envoi.
+    </p>
+    {{/eq}}
+
+    <p>
+      Si vous n'avez pas reçu votre commande, merci de contacter les
+      administrateurs par email à support@marmott.co
+    </p>
+
+    {{/with}}
+
+    <p>Meilleures salutations,<br />La team {{marketplace.name}} </p>
+
+    <p><small>Vous avez reçu ce mail car vous êtes membre de {{marketplace.name}}. Si vous ne souhaitez plus recevoir d&#x27;emails de notre part, merci de contacter les administrateurs de {{marketplace.name}} sous la rubrique "contact" de notre site web https://marmott.co</small></p>
+
+    <hr />
+
+    <!-- ///////////////////////////////////////////////////////////////////// -->
+
+    {{#with transaction}}
+    <h3>Your order for {{listing.title}} was marked as completed</h3>
+
+    {{#eq "shipping" protected-data.deliveryMethod}}
+    <p>
+      Your order for {{listing.title}} was marked as shipped two weeks ago, but
+      was not marked as received. According to our policy, all orders are marked
+      as received 90 minutes after they have been marked as sent.
+    </p>
+    {{else}}
+    <p>
+      Your order for {{listing.title}} was marked as delivered two weeks ago,
+      but was not marked as received. According to our policy, all orders are
+      marked as received 90 minutes after they have been marked as sent.
+    </p>
+    {{/eq}}
+
+    <p>
+      If you did not receive your order, please contact the marketplace admin via email to support@marmott.co
+    </p>
+
+    {{/with}}
+
+    <p>Best regards,<br />The {{marketplace.name}} team</p>
+
+    <p><small>You have received this email notification because you are a member of {{marketplace.name}}. If you no longer wish to receive these emails, please contact {{marketplace.name}} team, in the section "contact” on our website https://marmott.co</small></p>
+  </body>
+</html>
