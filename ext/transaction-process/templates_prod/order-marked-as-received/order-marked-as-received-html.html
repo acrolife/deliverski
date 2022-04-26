@@ -1,0 +1,186 @@
+{{~#*inline "format-money"~}} {{money-amount money}} {{money.currency}}
+{{~/inline~}}
+
+<html>
+
+<body>
+  {{#with transaction}}
+  <h3>La commande a été reçue et le montant vous a été transféré</h3>
+
+  <p>
+    {{customer.display-name}} a confirmé la receptin de {{listing.title}}.
+  </p>
+
+  <p>
+    Nous vous avons réglé la somme de {{> format-money money=payout-total}}
+    concernant la commande de {{listing.title}} de {{customer.display-name}}.
+    Selon les delais bancaires, le paiement arrivera au plus tard sous 7
+    jours. Voici le détail.
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="text-align: left">Paiment</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each tx-line-items}} {{#contains include-for "provider"}} {{#eq
+      "line-item/units" code}}
+      <!-- <tr>
+          <td>Prix unitaire</td>
+          <td style="text-align: right; padding-left: 20px">
+            {{> format-money money=unit-price}}
+          </td>
+        </tr>
+        <tr>
+          <td>Quantité</td>
+          <td style="text-align: right; padding-left: 20px">
+            &times; {{number quantity}}
+          </td>
+        </tr>
+        <tr> -->
+      <tr>
+        <th style="text-align: left">Détail par produit</th>
+        <td style="text-align: right; padding-left: 20px;">
+          (à venir dans une prochaine version)
+        </td>
+      </tr>
+      <th style="text-align: left">Montant de base - sous-total</th>
+      <th style="text-align: right; padding-left: 20px">
+        {{> format-money money=line-total}}
+      </th>
+      </tr>
+      {{/eq}} {{#eq "line-item/shipping-fee" code}}
+      <tr>
+        <td>Livraison</td>
+        <td style="text-align: right; padding-left: 20px">
+          {{> format-money money=unit-price}}
+        </td>
+      </tr>
+      {{/eq}} {{#eq "line-item/pickup-fee" code}}
+      <tr>
+        <td>À emporter</td>
+        <td style="text-align: right; padding-left: 20px">
+          {{> format-money money=unit-price}}
+        </td>
+      </tr>
+      {{/eq}} {{#eq "line-item/provider-commission" code}}
+      <tr>
+        <td>Frais de commission de {{marketplace.name}}</td>
+        <td style="text-align: right; padding-left: 20px">
+          {{> format-money money=line-total}}
+        </td>
+      </tr>
+      {{/eq}} {{/contains}} {{/each}}
+    </tbody>
+    <tfoot>
+      <tr>
+        <th style="text-align: left">Vous recevez</th>
+        <th style="text-align: left; padding-left: 20px">
+          {{> format-money money=payout-total}}
+        </th>
+      </tr>
+    </tfoot>
+  </table>
+  {{/with}}
+
+  <p>Meilleures salutations,<br />La team {{marketplace.name}} </p>
+
+  <p><small>Vous avez reçu ce mail car vous êtes membre de {{marketplace.name}}. Si vous ne souhaitez plus recevoir
+      d&#x27;emails de notre part, merci de contacter les administrateurs de {{marketplace.name}} sous la rubrique
+      "contact" de notre site web https://marmott.co</small></p>
+
+  <hr />
+
+  <!-- ///////////////////////////////////////////////////////////////////// -->
+
+  {{#with transaction}}
+  <h3>Order was marked as received and the amount has been transfered to your account</h3>
+
+  <p>
+    {{customer.display-name}} marked the order for {{listing.title}} as
+    received.
+  </p>
+
+  <p>
+    We have sent you {{> format-money money=payout-total}} for the payment for
+    {{listing.title}} by {{customer.display-name}}. It might take up to seven
+    days for the money to reach your bank account. Here's the breakdown.
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="text-align: left">Payment</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each tx-line-items}} {{#contains include-for "provider"}} {{#eq
+      "line-item/units" code}}
+      <!-- <tr>
+          <td>Unit price</td>
+          <td style="text-align: right; padding-left: 20px">
+            {{> format-money money=unit-price}}
+          </td>
+        </tr>
+        <tr>
+          <td>Quantity</td>
+          <td style="text-align: right; padding-left: 20px">
+            &times; {{number quantity}}
+          </td>
+        </tr> -->
+      <tr>
+        <th style="text-align: left">Detail per product</th>
+        <td style="text-align: right; padding-left: 20px;">
+          (to come in a next version)
+        </td>
+      </tr>
+      <tr>
+        <th style="text-align: left">Base amount - subtotal</th>
+        <th style="text-align: right; padding-left: 20px">
+          {{> format-money money=line-total}}
+        </th>
+      </tr>
+      {{/eq}} {{#eq "line-item/shipping-fee" code}}
+      <tr>
+        <td>Shipping</td>
+        <td style="text-align: right; padding-left: 20px">
+          {{> format-money money=unit-price}}
+        </td>
+      </tr>
+      {{/eq}} {{#eq "line-item/pickup-fee" code}}
+      <tr>
+        <td>Pickup</td>
+        <td style="text-align: right; padding-left: 20px">
+          {{> format-money money=unit-price}}
+        </td>
+      </tr>
+      {{/eq}} {{#eq "line-item/provider-commission" code}}
+      <tr>
+        <td>{{marketplace.name}} fee</td>
+        <td style="text-align: right; padding-left: 20px">
+          {{> format-money money=line-total}}
+        </td>
+      </tr>
+      {{/eq}} {{/contains}} {{/each}}
+    </tbody>
+    <tfoot>
+      <tr>
+        <th style="text-align: left">You earn</th>
+        <th style="text-align: left; padding-left: 20px">
+          {{> format-money money=payout-total}}
+        </th>
+      </tr>
+    </tfoot>
+  </table>
+  {{/with}}
+
+  <p>Best regards,<br />The {{marketplace.name}} team</p>
+
+  <p><small>You have received this email notification because you are a member of {{marketplace.name}}. If you no longer
+      wish to receive these emails, please contact {{marketplace.name}} team, in the section "contact” on our website
+      https://marmott.co</small></p>
+</body>
+
+</html>

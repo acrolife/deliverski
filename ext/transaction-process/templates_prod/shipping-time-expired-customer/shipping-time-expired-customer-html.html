@@ -1,0 +1,63 @@
+<html>
+  <body>
+    {{#with transaction}}
+    <h3>Votre commande a expiré</h3>
+
+    {{#eq "shipping" protected-data.deliveryMethod}}
+    <p>
+      Malheureusement votre commande concernant "{{listing.title}}" a été
+      annulée car {{provider.display-name}} ne l'a pas envoyée à temps. Vous serez
+      intégralement remboursé.
+    </p>
+    {{else}}
+    <p>
+      Malheureusement votre commande concernant "{{listing.title}}" a été
+      annulée car vous n'avez pas récupéré votre commande à temps auprès de
+      {{provider.display-name}}. Vous serez intégralement remboursé.
+    </p>
+    {{/eq}}
+
+    <p>
+      <a href="{{marketplace.url}}/fr/order/{{url-encode id}}/details"
+        >Details de la commande</a
+      >
+    </p>
+    {{/with}}
+
+    <p>Meilleures salutations,<br />La team {{marketplace.name}} </p>
+
+    <p><small>Vous avez reçu ce mail car vous êtes membre de {{marketplace.name}}. Si vous ne souhaitez plus recevoir d&#x27;emails de notre part, merci de contacter les administrateurs de {{marketplace.name}} sous la rubrique "contact" de notre site web https://marmott.co</small></p>
+
+    <hr />
+
+    <!-- ///////////////////////////////////////////////////////////////////// -->
+
+    {{#with transaction}}
+    <h3>Your order has expired</h3>
+
+    {{#eq "shipping" protected-data.deliveryMethod}}
+    <p>
+      Unfortunately your order for {{listing.title}} was canceled as
+      {{provider.display-name}} did not ship the item on time. You will be
+      refunded fully.
+    </p>
+    {{else}}
+    <p>
+      Unfortunately your order for {{listing.title}} was canceled as you did not
+      pick it up on time from {{provider.display-name}}. You will be refunded
+      fully.
+    </p>
+    {{/eq}}
+
+    <p>
+      <a href="{{marketplace.url}}/en/order/{{url-encode id}}/details"
+        >Order details</a
+      >
+    </p>
+    {{/with}}
+
+    <p>Best regards,<br />The {{marketplace.name}} team</p>
+
+    <p><small>You have received this email notification because you are a member of {{marketplace.name}}. If you no longer wish to receive these emails, please contact {{marketplace.name}} team, in the section "contact” on our website https://marmott.co</small></p>
+  </body>
+</html>
