@@ -69,8 +69,10 @@ export const filters = [
         { key: 'mountain-cake', label: 'Mountain Cake' },
         { key: 'green-and-good', label: 'Green And Good' },
         { key: 'soups-smoothies', label: 'Soups & Smoothies' },
-        { key: 'veggie-stuff', label: 'Veggie stuff' },
-        { key: 'veggielesarcs', label: 'VeggieLesArcs' }
+        // { key: 'le-regal-de-veggie', label: 'Le Régal de Veggie' },
+        { key: 'veggielesarcs', label: 'VeggieLesArcs' },
+        { key: 'arcosushis', label: 'ArcOsushis' },     
+        { key: 'team-marmott', label: "Team Marmott'" },          
       ],
     },
   },
