@@ -73,10 +73,10 @@ const UserCard = props => {
   const ensuredCurrentUser = ensureCurrentUser(currentUser);
   const isCurrentUser =
     ensuredUser.id && ensuredCurrentUser.id && ensuredUser.id.uuid === ensuredCurrentUser.id.uuid;
-  
+
   // We don't allow the customer to communicate with the providers. But providers can communicate with peers.
   const isProvider = currentUser ? !!currentUser.attributes.profile.metadata.isProvider : false
-  
+
   const restaurantName = ensuredUser.attributes.profile.publicData.restaurantName
   const { displayName, bio } = ensuredUser.attributes.profile;
   const handleContactUserClick = () => {
@@ -97,7 +97,11 @@ const UserCard = props => {
       onClick={handleContactUserClick}
       enforcePagePreloadFor="SignupPage"
     >
-      <FormattedMessage id="UserCard.contactUser" />
+      {restaurantName === 'team-marmott' ?
+        <FormattedMessage id="UserCard.contactMarmottTeam" /> :
+        <FormattedMessage id="UserCard.contactUser" />
+      }
+
     </InlineTextButton>
   );
 
@@ -133,10 +137,10 @@ const UserCard = props => {
         <div className={css.info}>
           <div className={css.headingRow}>
             <h3 className={css.heading}>
-              { restaurantName ? 
-              (<FormattedMessage id="UserCard.headingRestaurant" values={{ name: restaurantName }} />) : 
-              (<FormattedMessage id="UserCard.heading" values={{ name: displayName }} /> )
-              }                             
+              {restaurantName ?
+                (<FormattedMessage id="UserCard.headingRestaurant" values={{ name: restaurantName }} />) :
+                (<FormattedMessage id="UserCard.heading" values={{ name: displayName }} />)
+              }
             </h3>
             {editProfileDesktop}
           </div>

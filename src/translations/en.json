@@ -1148,6 +1148,7 @@
   "TransactionPanel.shippingInfoHeading": "Shipping address",
   "TransactionPanel.warningPickupItems": "Caution! Your order needs to be picked up at the restaurant {restaurantName}",
   "UserCard.contactUser": "Contact this colleague",
+  "UserCard.contactMarmottTeam": "Contacter the Marmott' Team",
   "UserCard.heading": "Hello, I'm {name}.",
   "UserCard.headingRestaurant": "Visit {name}'s page!",
   "UserCard.showFullBioLink": "more",
