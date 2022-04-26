@@ -1151,6 +1151,7 @@
   "TransactionPanel.warningPickupItems": "Attention! Votre commande doit être retirée auprès du restaurant {restaurantName}",
   "UserCard.contactUser": "Contacter ce collègue",
   "UserCard.contactMarmottTeam": "Contacter la Team Marmott'",
+  "UserCard.contactMarmottTeamRestaurantName": "Team Marmott'",
   "UserCard.heading": "Bonjour, je suis {name}.",
   "UserCard.headingRestaurant": "Visitez le restaurant {name}!",
   "UserCard.showFullBioLink": "plus",

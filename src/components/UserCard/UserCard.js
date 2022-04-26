@@ -8,6 +8,7 @@ import { ensureUser, ensureCurrentUser } from '../../util/data';
 import { propTypes } from '../../util/types';
 
 import css from './UserCard.module.css';
+import { lowerFirst } from 'lodash';
 
 // Approximated collapsed size so that there are ~three lines of text
 // in the desktop layout in the author section of the ListingPage.
@@ -65,8 +66,6 @@ ExpandableBio.propTypes = {
 const UserCard = props => {
   const { rootClassName, className, user, currentUser, onContactUser } = props;
 
-
-
   const userIsCurrentUser = user && user.type === 'currentUser';
   const ensuredUser = userIsCurrentUser ? ensureCurrentUser(user) : ensureUser(user);
 
@@ -78,6 +77,7 @@ const UserCard = props => {
   const isProvider = currentUser ? !!currentUser.attributes.profile.metadata.isProvider : false
 
   const restaurantName = ensuredUser.attributes.profile.publicData.restaurantName
+
   const { displayName, bio } = ensuredUser.attributes.profile;
   const handleContactUserClick = () => {
     onContactUser(user);
@@ -97,7 +97,8 @@ const UserCard = props => {
       onClick={handleContactUserClick}
       enforcePagePreloadFor="SignupPage"
     >
-      {restaurantName === 'team-marmott' ?
+    {/* {restaurantName === UserCard.contactMarmottTeamRestaurantName ? */}
+      {restaurantName === 'Team Marmott\'' ?
         <FormattedMessage id="UserCard.contactMarmottTeam" /> :
         <FormattedMessage id="UserCard.contactUser" />
       }
