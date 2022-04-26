@@ -438,7 +438,7 @@
   "ListingImageGallery.imageAltText": "Gallerie d'images {index}/{count}",
   "ListingImageGallery.imageThumbnailAltText": "Gallerie d'images {index}/{count}",
   "ListingImageGallery.viewImagesButton": "Voir les photos ({count})",
-  "ListingPage.aboutProviderTitle": "À propos des restaurants",
+  "ListingPage.aboutProviderTitle": "À propos du restaurant",
   "ListingPage.bookingTitle": "{title}",
   "ListingPage.closedListing": "Ce produit ne peut plus être commandé.",
   "ListingPage.contactUser": "Contact",
