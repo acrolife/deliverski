@@ -428,10 +428,8 @@ export class ListingPageComponent extends Component {
         </span>
       ) : null;
 
-
       const restaurantStatus = isRestaurantOpen(currentListing?.author?.attributes.profile.publicData);
       const isRestaurantOnHold = restaurantStatus?.onHold;
-
   
     return (
       <Page

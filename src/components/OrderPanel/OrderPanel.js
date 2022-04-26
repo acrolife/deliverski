@@ -80,8 +80,11 @@ const OrderPanel = props => {
     fetchLineItemsError,
     currentUser,
     isRestaurantOnHold,
-    restaurantStatus
+    restaurantStatus,
   } = props;
+
+  // FIXME Solving issue on contact colleague button on OrderPanel => becomes undefined when clickin send message
+  const restaurantStatusLocal = restaurantStatus ? restaurantStatus : false
 
   const isNightly = unitType === LINE_ITEM_NIGHT;
   const isDaily = unitType === LINE_ITEM_DAY;
@@ -123,9 +126,9 @@ const OrderPanel = props => {
 
   const classes = classNames(rootClassName || css.root, className);
   const titleClasses = classNames(titleClassName || css.orderTitle);
-  const restaurantDot = <p className={restaurantStatus.status === 'open' ? css.openDot : css.closedDot}>•</p>;
-  const restaurantScheduleMessageKey = restaurantStatus.message ? restaurantStatus.message.key : null
-  let restaurantScheduleMessageValues = restaurantStatus.message ? restaurantStatus.message.values : null
+  const restaurantDot = <p className={restaurantStatusLocal?.status === 'open' ? css.openDot : css.closedDot}>•</p>;
+  const restaurantScheduleMessageKey = restaurantStatusLocal?.message ? restaurantStatusLocal.message.key : null
+  let restaurantScheduleMessageValues = restaurantStatusLocal?.message ? restaurantStatusLocal.message.values : null
   if (restaurantScheduleMessageValues !== null) {
     for (const k of Object.keys(restaurantScheduleMessageValues)) {
       if (restaurantScheduleMessageValues[k] === null) {
@@ -153,11 +156,11 @@ const OrderPanel = props => {
 
         <div className={css.orderHeading}>
           <h2 className={titleClasses}>{title} {restaurantDot}</h2>
-          <p className={restaurantStatus.status === 'open' ? css.scheduleInfoTextOpen : css.scheduleInfoTextClosed}>
+          <p className={restaurantStatusLocal.status === 'open' ? css.scheduleInfoTextOpen : css.scheduleInfoTextClosed}>
             {
-              restaurantScheduleMessageValues ?
+              restaurantStatusLocal && (restaurantScheduleMessageValues ?
                 <FormattedMessage id={restaurantScheduleMessageKey} values={restaurantScheduleMessageValues} /> :
-                <FormattedMessage id={restaurantScheduleMessageKey} />
+                <FormattedMessage id={restaurantScheduleMessageKey} />)
             }
 
           </p>
