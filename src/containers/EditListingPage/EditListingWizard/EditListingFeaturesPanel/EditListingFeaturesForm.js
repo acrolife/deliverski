@@ -47,7 +47,7 @@ const EditListingFeaturesFormComponent = props => (
       const productType = initialValues?.productType
 
       const productTypeVisibiliy = {
-        foodType: productType === 'eatable',
+        foodType: productType === 'eatable_salty' || productType === 'eatable_sweet',
         drinkType: productType === 'drinkable',
         cuisine: productType !== 'drinkable',
         // mealType:  productType !== 'eatable',
