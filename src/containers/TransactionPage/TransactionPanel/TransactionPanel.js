@@ -24,7 +24,9 @@ import {
   ensureTransaction,
   ensureUser,
   userDisplayNameAsString,
+  isRestaurantOpen,
 } from '../../../util/data';
+
 import { isMobileSafari } from '../../../util/userAgent';
 import { formatMoney } from '../../../util/currency';
 import { AvatarLarge, OrderPanel, NamedLink, UserDisplayName } from '../../../components';
@@ -213,6 +215,8 @@ export class TransactionPanelComponent extends Component {
     const isProviderLoaded = !!currentProvider.id;
     const isProviderBanned = isProviderLoaded && currentProvider.attributes.banned;
     const isProviderDeleted = isProviderLoaded && currentProvider.attributes.deleted;
+
+    const restaurantStatus = isRestaurantOpen(currentListing?.author?.attributes.profile.publicData);
 
     const stateDataFn = tx => {
       if (txIsEnquired(tx)) {
