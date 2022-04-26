@@ -1,9 +1,9 @@
 import React, { Component, useState, useEffect } from 'react';
-import { string } from 'prop-types';
+import { bool, string } from 'prop-types';
 import classNames from 'classnames';
 
 import { FormattedMessage } from '../../../util/reactIntl';
-import { NamedLink } from '../../../components';
+import { NamedLink, ExternalLink } from '../../../components';
 
 import css from './SectionHero.module.css';
 // import css2 from '../../../styles/marketplaceDefaults.css'
@@ -46,23 +46,37 @@ const heroImagesArray = [
   hero16
 ]
 
-  // Apply a new hero (bg) image on refresh
-  let heroCurrentImageRnd = heroImagesArray[Math.floor(Math.random() * heroImagesArray.length)]
-  // const divStyle = {}
-  const divStyle = {
-    background: `linear-gradient(-45deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.6)), url(${heroCurrentImageRnd})`,
-    backgroundColor: '#4a4a4a',
-    backgroundPosition: '50% 50%',
-    backgroundSize: 'cover',      
-  };
+// Apply a new hero (bg) image on refresh
+let heroCurrentImageRnd = heroImagesArray[Math.floor(Math.random() * heroImagesArray.length)]
+// const divStyle = {}
+const divStyle = {
+  background: `linear-gradient(-45deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.6)), url(${heroCurrentImageRnd})`,
+  backgroundColor: '#4a4a4a',
+  backgroundPosition: '50% 50%',
+  backgroundSize: 'cover',
+};
+
+const playgroundLink = (
+  <ExternalLink href="https://playground.marmott.co" className={css.playgroundLink}>
+    <FormattedMessage id="SectionHero.playgroundLinkText" />
+  </ExternalLink>
+);
 
 const SectionHero = props => {
-  const { rootClassName, className } = props;
+  const { rootClassName, className, isProduction } = props;
   const classes = classNames(rootClassName || css.root, className);
 
   return (
     <div className={classes} style={divStyle}>
       <div className={css.heroContent}>
+        {isProduction && <h3 className={css.messageCheckPlayground}>
+          {/* <FormattedMessage id="SectionHero.messageCheckPlaygroundWithLink" values={{ lineBreak: <br />, playgroundLink }} /> */}
+          <FormattedMessage id="SectionHero.messageCheckPlayground" values={{ lineBreak: <br /> }} />
+        </h3>}
+
+        {isProduction && <p>
+          {playgroundLink}
+        </p>}
         <h1 className={css.heroMainTitle}>
           <FormattedMessage id="SectionHero.title" />
         </h1>
@@ -82,6 +96,7 @@ SectionHero.defaultProps = { rootClassName: null, className: null };
 SectionHero.propTypes = {
   rootClassName: string,
   className: string,
+  isProvider: bool,
 };
 
 export default SectionHero;

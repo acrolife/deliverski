@@ -51,6 +51,10 @@ const LandingPageComponent = (props) => {
 
   const isLoggedIn = !!currentUser
 
+  // Logic to hide the mesage sending to playground on production
+  const canonicalRootURL = config.canonicalRootURL ? config.canonicalRootURL : null
+  // const isProduction = canonicalRootURL ? canonicalRootURL.includes('playground') : false
+  const isProduction = true
   /* Example
   // Thumbnail image for the search "card"
 class ThumbnailImage extends Component {
@@ -99,6 +103,7 @@ class ThumbnailImage extends Component {
               className={css.hero}
               history={history}
               location={location}
+              isProduction={isProduction}
             />
           </div>
 

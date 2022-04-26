@@ -77,6 +77,7 @@
   animation-delay: 0.5s;
 
   @media (--viewportMedium) {
+    margin-top: 4rem;
     max-width: var(--SectionHero_desktopTitleMaxWidth);
   }
 }
@@ -105,5 +106,37 @@
   @media (--viewportMedium) {
     display: block;
     width: 260px;
+  }
+}
+
+.playgroundLink {
+  /* background-color: var(--marketplaceColor); */
+  /* color: var(--matterColorLight);  */
+  color: var(--matterColor); 
+  /* margin-top: 1rem; */
+  padding: 5px 10px;
+  background-color: orange;
+  /* box-shadow: 0 2px 6px rgba(180, 179, 179, 0.75),0 0 0 1px rgba(68, 68, 68, 0.50); */
+  border-radius: 3px;
+  /* border-bottom: 1px solid var(--matterColorNegative); */
+  composes: animation;
+  animation-delay: 0.8s;
+
+  &:hover {
+    text-decoration: none;
+    background-color: var(--marketplaceColor);
+  } 
+}
+
+.messageCheckPlayground {
+  @apply --marketplaceH4FontStyles;
+  color: var(--matterColorLight);
+  margin: 0 0 10px 0;
+  composes: animation;
+  animation-delay: 0.65s;
+
+  @media (--viewportMedium) {
+    max-width: var(--SectionHero_desktopTitleMaxWidth);
+    margin: 0 0 10px 0;
   }
 }
