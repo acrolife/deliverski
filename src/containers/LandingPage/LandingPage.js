@@ -54,7 +54,8 @@ const LandingPageComponent = (props) => {
   // Logic to hide the mesage sending to playground on production
   const canonicalRootURL = config.canonicalRootURL ? config.canonicalRootURL : null
   const isProduction = canonicalRootURL ? !canonicalRootURL.includes('playground') : false
-
+  // DEV
+  // const isProduction = false
   
   /* Example
   // Thumbnail image for the search "card"

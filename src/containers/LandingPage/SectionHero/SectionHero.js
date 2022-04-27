@@ -56,10 +56,28 @@ const divStyle = {
   backgroundSize: 'cover',
 };
 
+// const playgroundLink = (
+//   <ExternalLink href="https://playground.marmott.co" className={css.playgroundLink}>
+//     <FormattedMessage id="SectionHero.playgroundLinkText" />
+//   </ExternalLink>
+// );
+
+// + trad anglais
+
 const playgroundLink = (
-  <ExternalLink href="https://playground.marmott.co" className={css.playgroundLink}>
+  <ExternalLink href="https://playground.marmott.co" className={css.heroButtonPlayground}>
     <FormattedMessage id="SectionHero.playgroundLinkText" />
   </ExternalLink>
+);
+
+const emailAddress = 'restaurants@marmott.co'
+const emailSubject = 'Ajout de mon restaurant sur marmott.co'
+const messageContent = 'Bonjour, \n Je souhaite faire ajouter gratuitement et sans engagement mon restaurant au site vitrine. \n Le nom de mon restaurant est <nom de votre restaurant>, situé à <station>. \n A très bientôt, <votre nom>'
+
+const restaurantsMailtoMarmott = (
+  <a href={`mailto:${emailAddress}?subject=${emailSubject}&body=${messageContent}`} className={css.heroButtonPromo}>
+    <FormattedMessage id="SectionHero.restaurantsMailtoMarmott" />
+  </a>
 );
 
 const SectionHero = props => {
@@ -74,18 +92,25 @@ const SectionHero = props => {
           <FormattedMessage id="SectionHero.messageCheckPlayground" values={{ lineBreak: <br /> }} />
         </h3>}
 
-        {isProduction && <p>
+        {isProduction && <h3 className={css.messageCheckPlaygroundMobile}>
+          {/* <FormattedMessage id="SectionHero.messageCheckPlaygroundWithLink" values={{ lineBreak: <br />, playgroundLink }} /> */}
+          <FormattedMessage id="SectionHero.messageCheckPlaygroundMobile" values={{ lineBreak: <br /> }} />
+        </h3>}        
+
+        {/* {isProduction && <p>
           {playgroundLink}
-        </p>}
-        <h1 className={css.heroMainTitle}>
+        </p>} */}
+        <h1 className={isProduction ? css.heroMainTitlePromo : css.heroMainTitle}>
           <FormattedMessage id="SectionHero.title" />
         </h1>
-        <h2 className={css.heroSubTitle}>
+        <h2 className={isProduction ? css.heroSubTitlePromo : css.heroSubTitle}>
           <FormattedMessage id="SectionHero.subTitle" />
         </h2>
-        <NamedLink name="SearchPage" className={css.heroButton}>
+        {!isProduction && <NamedLink name="SearchPage" className={isProduction ? css.heroButtonPromo : css.heroButton}>
           <FormattedMessage id="SectionHero.browseButton" />
-        </NamedLink>
+        </NamedLink>}
+        {isProduction && restaurantsMailtoMarmott}
+        {isProduction && playgroundLink}
       </div>
     </div>
   );
