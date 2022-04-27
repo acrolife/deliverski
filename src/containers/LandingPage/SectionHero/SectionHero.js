@@ -51,20 +51,11 @@ let heroCurrentImageRnd = heroImagesArray[Math.floor(Math.random() * heroImagesA
 // const divStyle = {}
 const divStyle = {
   background: `linear-gradient(-45deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.6)), url(${heroCurrentImageRnd})`,
-  backgroundColor: '#4a4a4a',
   backgroundPosition: '50% 50%',
   backgroundSize: 'cover',
 };
 
-// const playgroundLink = (
-//   <ExternalLink href="https://playground.marmott.co" className={css.playgroundLink}>
-//     <FormattedMessage id="SectionHero.playgroundLinkText" />
-//   </ExternalLink>
-// );
-
-// + trad anglais
-
-const playgroundLink = (
+const playgroundButton = (
   <ExternalLink href="https://playground.marmott.co" className={css.heroButtonPlayground}>
     <FormattedMessage id="SectionHero.playgroundLinkText" />
   </ExternalLink>
@@ -95,22 +86,19 @@ const SectionHero = props => {
         {isProduction && <h3 className={css.messageCheckPlaygroundMobile}>
           {/* <FormattedMessage id="SectionHero.messageCheckPlaygroundWithLink" values={{ lineBreak: <br />, playgroundLink }} /> */}
           <FormattedMessage id="SectionHero.messageCheckPlaygroundMobile" values={{ lineBreak: <br /> }} />
-        </h3>}        
+        </h3>}
 
-        {/* {isProduction && <p>
-          {playgroundLink}
-        </p>} */}
         <h1 className={isProduction ? css.heroMainTitlePromo : css.heroMainTitle}>
-          <FormattedMessage id="SectionHero.title" />
+          {isProduction ? <FormattedMessage id="SectionHero.titleRestaurants" /> : <FormattedMessage id="SectionHero.title" />}
         </h1>
-        <h2 className={isProduction ? css.heroSubTitlePromo : css.heroSubTitle}>
-          <FormattedMessage id="SectionHero.subTitle" />
-        </h2>
+        {!isProduction && <h2 className={isProduction ? css.heroSubTitlePromo : css.heroSubTitle}>
+          {isProduction ? <FormattedMessage id="SectionHero.subTitleRestaurants" /> : <FormattedMessage id="SectionHero.subTitle" />}
+        </h2>}
         {!isProduction && <NamedLink name="SearchPage" className={isProduction ? css.heroButtonPromo : css.heroButton}>
           <FormattedMessage id="SectionHero.browseButton" />
         </NamedLink>}
         {isProduction && restaurantsMailtoMarmott}
-        {isProduction && playgroundLink}
+        {isProduction && playgroundButton}
       </div>
     </div>
   );

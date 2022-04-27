@@ -50,8 +50,9 @@
 
 .heroContent {
   margin: 0 24px 0 24px;
-
+  /* overflow-y: scroll; */
   @media (--viewportMedium) {
+    /* overflow-y: hidden; */
     margin: 0 7.5vw 0 7.5vw;
   }
 
@@ -88,7 +89,8 @@
 
   composes: animation;
   animation-delay: 0.5s;
-  margin-bottom: 5px !important;
+  margin-top: -5px !important;
+  margin-bottom: 15px !important;
 
   @media (--viewportMedium) {
     margin-top: 4rem;
@@ -210,6 +212,6 @@
   animation-delay: 0.65s;
 
   @media (--viewportMedium) {
-    visibility: hidden;
+    visibility: hidden !important;
   }
 }

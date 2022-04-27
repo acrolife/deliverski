@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { PropTypes } from 'prop-types';
+import { bool, PropTypes } from 'prop-types';
 import classNames from 'classnames';
 
 import { FormattedMessage } from '../../../util/reactIntl';
@@ -58,7 +58,7 @@ const FilterLink = props => {
 // Component that shows full-width section on LandingPage.
 // Inside it shows 3 "cards" that link to SearchPage with specific filters applied.
 const SectionFilteredSearches = props => {
-  const { rootClassName, className, userProviders } = props;
+  const { rootClassName, className, userProviders, isProduction } = props;
   const classes = classNames(rootClassName || css.root, className);
 
   // const Test = () => {
@@ -120,7 +120,9 @@ const SectionFilteredSearches = props => {
   return (
     <div className={classes}>
       <div className={css.title}>
-        <FormattedMessage id="SectionFilteredSearches.title" />
+        {isProduction ? <FormattedMessage id="SectionFilteredSearches.titleRestaurants" /> :
+          <FormattedMessage id="SectionFilteredSearches.title" />}
+
       </div>
       {/* <div className={css.filteredSearches} > */}
       <div className={css.listingCards} >
@@ -171,7 +173,7 @@ const SectionFilteredSearches = props => {
   );
 };
 
-SectionFilteredSearches.defaultProps = { rootClassName: null, className: null, userProviders: [] };
+SectionFilteredSearches.defaultProps = { rootClassName: null, className: null, userProviders: [], isProduction: null };
 
 const { object, arrayOf, string } = PropTypes;
 
@@ -179,6 +181,7 @@ SectionFilteredSearches.propTypes = {
   rootClassName: string,
   className: string,
   userProviders: arrayOf(object.isRequired),
+  isProduction: bool,
 };
 
 export default SectionFilteredSearches;
