@@ -50,9 +50,9 @@
 
 .heroContent {
   margin: 0 24px 0 24px;
-  /* overflow-y: scroll; */
+  overflow-y: scroll;
   @media (--viewportMedium) {
-    /* overflow-y: hidden; */
+    overflow-y: hidden;
     margin: 0 7.5vw 0 7.5vw;
   }
 
@@ -195,10 +195,10 @@
   margin: 10px 0 10px 0;
   composes: animation;
   animation-delay: 0.65s;
-  visibility: hidden !important;
+  display: none;
 
-  @media (--viewportMedium) {
-    visibility: visible;
+  @media (--viewportSmall) {
+    display: block;
     max-width: var(--SectionHero_desktopTitleMaxWidth);
     margin: 3rem 0 10px 0;
   }
@@ -211,7 +211,7 @@
   composes: animation;
   animation-delay: 0.65s;
 
-  @media (--viewportMedium) {
-    visibility: hidden !important;
+  @media (--viewportSmall) {
+    display: none;
   }
 }
