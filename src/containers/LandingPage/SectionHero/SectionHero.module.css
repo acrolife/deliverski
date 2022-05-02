@@ -94,7 +94,7 @@
 
   @media (--viewportMedium) {
     margin-top: 4rem;
-    max-width: var(--SectionHero_desktopTitleMaxWidth);
+    /* max-width: var(--SectionHero_desktopTitleMaxWidth); */
   }
 }
 
