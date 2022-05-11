@@ -2,7 +2,7 @@ import omit from 'lodash/omit';
 
 import config from '../../config';
 import { types as sdkTypes, createImageVariantConfig } from '../../util/sdkLoader';
-import { denormalisedResponseEntities, ensureAvailabilityException } from '../../util/data';
+import { denormalisedResponseEntities, ensureAvailabilityException, restaurantNameToFilterName } from '../../util/data';
 import { isSameDate, monthIdString } from '../../util/dates';
 import { storableError } from '../../util/errors';
 import * as log from '../../util/log';
@@ -16,24 +16,6 @@ import {
 import { fetchCurrentUser } from '../../ducks/user.duck';
 
 const { UUID } = sdkTypes;
-
-const restaurantNameToFilterName = (name) => {
-  return name
-    .toLowerCase()
-    .replaceAll(' ', '-')
-    .replaceAll('é', 'e')
-    .replaceAll('è', 'e')
-    .replaceAll('à', 'a')
-    .replaceAll('+', '')
-    .replaceAll('\&', '')
-    .replaceAll('\'', '')
-    .replaceAll('\"', '')
-    .replaceAll('__', '_')
-    .replaceAll('__', '_')
-    .replaceAll('--', '-')
-    .replaceAll('--', '-')
-    .trim()
-}
 
 // Return an array of image ids
 const imageIds = images => {

@@ -6,7 +6,7 @@ import config from '../../../config';
 import { FormattedMessage, intlShape } from '../../../util/reactIntl';
 import * as validators from '../../../util/validators';
 // import getCountryCodes from '../../../translations/countryCodes';
-import residences from '../../../assets/data/residences'
+import residencesData from '../../../assets/data/residences'
 import { FieldSelect, FieldTextInput } from '../../../components';
 
 import css from './ShippingDetails.module.css';
@@ -22,8 +22,8 @@ const ShippingDetails = props => {
   // Use tha language set in config.locale to get the correct translations of the country names
   // const countryCodes = getCountryCodes(config.locale);
 
-  // const testMessages = mapValues(residences, (val, key) => key);
-  const residencesFiltered = residences ? residences.residencesRaw.filter(e => e[2]): {}
+  // const testMessages = mapValues(residencesData, (val, key) => key);
+  const residencesFiltered = residencesData ? residencesData.residencesArc1800.filter(e => e[2]): {}
 
   return (
     <div className={classes}>
