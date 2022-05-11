@@ -79,7 +79,7 @@
   margin: var(--LandingPage_sectionMarginTop) 24px 51px 24px;
 
   @media (--viewportMedium) {
-    max-width: 100%;
+    width: 100%;
     margin: var(--LandingPage_sectionMarginTopMedium) 24px 60px 24px;
   }
 
@@ -99,6 +99,7 @@
   composes: sectionContent;
   margin-top: 3vh;
 }
+
 
 /* A bar on top of light sections */
 .section:nth-of-type(2n) .sectionContent::before {

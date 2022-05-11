@@ -55,8 +55,8 @@ const LandingPageComponent = (props) => {
   const canonicalRootURL = config.canonicalRootURL ? config.canonicalRootURL : null
   const isProduction = canonicalRootURL ? !canonicalRootURL.includes('playground') : false
   // DEV
-  // const isProduction = true
-  
+  // const isProduction = false
+
   /* Example
   // Thumbnail image for the search "card"
 class ThumbnailImage extends Component {
@@ -109,9 +109,10 @@ class ThumbnailImage extends Component {
             />
           </div>
 
-          <div className={css.sectionContentFirstChild}>
-                <SectionFilteredSearches userProviders={userProviders}  isProduction={isProduction}/>
-              </div>
+          {/* <div className={isProduction ? css.sectionContentFirstChildProd : css.sectionContentFirstChild}> */}
+          <div className={css.sectionContentFirstChild}>          
+            <SectionFilteredSearches userProviders={userProviders} isProduction={isProduction} />
+          </div>
           <div className={css.imgCenterParentLanding}>
             <img src={LogoImage} width="60%"
             />
@@ -119,7 +120,7 @@ class ThumbnailImage extends Component {
 
           <ul className={css.sections}>
             <li className={css.section}>
-      
+
             </li>
             <li className={css.section}>
               <div className={css.sectionContent} id={"how-it-works"}>

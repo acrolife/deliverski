@@ -1,0 +1,217 @@
+@import '../../../styles/propertySets.css';
+
+/* Animation for the hero elements */
+
+@keyframes animationTitle {
+  0% {
+    visibility: hidden;
+    opacity: 0;
+    top: -20px;
+  }
+  100% {
+    visibility: visible;
+    opacity: 1;
+    top: 0;
+  }
+}
+
+/* Shared animation rules */
+.animation {
+  animation-name: animationTitle;
+  animation-duration: 0.5s;
+  animation-timing-function: ease-out;
+  -webkit-animation-fill-mode: forwards;
+
+  visibility: hidden;
+  opacity: 1;
+  position: relative;
+}
+
+.root {
+  /* Gradient direction and overlaying the black color on top of the image for better readability */
+  background: var(--backgroundImageDirective);
+  /* See src/styles/marketplaceDefaults.css for var definition */
+  /* background: linear-gradient(-45deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.6)),
+    url('../../../assets/hero-marmott-02.jpeg'); */
+  background-color: var(--matterColor);
+  background-size: cover;
+  background-position: center center;
+
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+
+  @media (--viewportLarge) {
+    border-radius: 40px;
+    border: solid 36px var(--matterColorBright);
+  }
+}
+
+.heroContent {
+  margin: 0 24px 0 24px;
+  overflow-y: scroll;
+  @media (--viewportMedium) {
+    overflow-y: hidden;
+    margin: 0 7.5vw 0 7.5vw;
+  }
+
+  /* Special viewport for adjusting the heroContent's placement */
+
+  @media only screen and (min-width: 1025px) and (max-width: 1366px) {
+    padding: 0 36px 0 36px;
+  }
+
+  @media only screen and (min-width: 1367px) {
+    margin: 0 auto;
+    max-width: calc(1052px + 36px + 36px);
+    width: 100%;
+    padding: 0 36px 0 36px;
+  }
+}
+
+.heroMainTitle {
+  @apply --marketplaceHeroTitleFontStyles;
+  color: var(--matterColorLight);
+
+  composes: animation;
+  animation-delay: 0.5s;
+
+  @media (--viewportMedium) {
+    margin-top: 4rem;
+    max-width: var(--SectionHero_desktopTitleMaxWidth);
+  }
+}
+
+.heroMainTitlePromo {
+  @apply --marketplaceHeroTitleFontStyles;
+  color: var(--matterColorLight);
+
+  composes: animation;
+  animation-delay: 0.5s;
+  margin-top: -5px !important;
+  margin-bottom: 15px !important;
+
+  @media (--viewportMedium) {
+    margin-top: 4rem;
+    max-width: var(--SectionHero_desktopTitleMaxWidth);
+  }
+}
+
+.heroSubTitle {
+  @apply --marketplaceH4FontStyles;
+
+  color: var(--matterColorLight);
+  margin: 0 0 32px 0;
+
+  composes: animation;
+  animation-delay: 0.65s;
+
+  @media (--viewportMedium) {
+    max-width: var(--SectionHero_desktopTitleMaxWidth);
+    margin: 0 0 47px 0;
+  }
+}
+
+.heroSubTitlePromo {
+  @apply --marketplaceH4FontStyles;
+
+  color: var(--matterColorLight);
+  margin: 0 0 18px 0;
+
+  composes: animation;
+  animation-delay: 0.65s;
+
+  @media (--viewportMedium) {
+    max-width: var(--SectionHero_desktopTitleMaxWidth);
+    margin: 0 0 47px 0;
+  }
+}
+
+.heroButton {
+  @apply --marketplaceButtonStyles;
+  composes: animation;
+
+  animation-delay: 0.8s;
+  margin-bottom: 3rem;
+
+  @media (--viewportMedium) {
+    display: block;
+    width: 260px;
+    margin-bottom: 0;
+  }
+}
+
+.heroButtonPromo {
+  @apply --marketplaceButtonStyles;
+  composes: animation;
+
+  animation-delay: 0.8s;
+
+  @media (--viewportMedium) {
+    display: block;
+    width: 260px;
+  }
+}
+
+.heroButtonPlayground {
+  @apply --marketplaceButtonStyles;
+  composes: animation;
+
+  animation-delay: 0.8s;
+  margin-top: 1rem !important;
+  background-color: orange !important;
+  color: var(--matterColor) !important; 
+  /* margin-bottom: -10px !important; */
+
+  @media (--viewportMedium) {
+    display: block;
+    width: 260px;
+  }
+}
+
+.playgroundLink {
+  /* background-color: var(--marketplaceColor); */
+  /* color: var(--matterColorLight);  */
+  color: var(--matterColor); 
+  /* margin-top: 1rem; */
+  padding: 5px 10px;
+  background-color: orange;
+  /* box-shadow: 0 2px 6px rgba(180, 179, 179, 0.75),0 0 0 1px rgba(68, 68, 68, 0.50); */
+  border-radius: 3px;
+  /* border-bottom: 1px solid var(--matterColorNegative); */
+  composes: animation;
+  animation-delay: 0.8s;
+
+  &:hover {
+    text-decoration: none;
+    background-color: var(--marketplaceColor);
+  } 
+}
+
+.messageCheckPlayground {
+  @apply --marketplaceH4FontStyles;
+  color: var(--matterColorLight);
+  margin: 10px 0 10px 0;
+  composes: animation;
+  animation-delay: 0.65s;
+  visibility: hidden !important;
+
+  @media (--viewportMedium) {
+    visibility: visible;
+    max-width: var(--SectionHero_desktopTitleMaxWidth);
+    margin: 3rem 0 10px 0;
+  }
+}
+
+.messageCheckPlaygroundMobile {
+  @apply --marketplaceH4FontStyles;
+  color: var(--matterColorLight);
+  margin: 10px 0 10px 0;
+  composes: animation;
+  animation-delay: 0.65s;
+
+  @media (--viewportMedium) {
+    visibility: hidden !important;
+  }
+}

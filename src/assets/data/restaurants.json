@@ -1,0 +1,36 @@
+{ 
+    "restaurantsArc1600": [
+        [1,
+            {
+                "restaurantName": "Mamie Crêpe",
+                "restaurantImageName": "restaurant_1800_mamiecrepe"
+            }, 
+        1]
+    ],    
+    "restaurantsArc1800": [
+        [1,
+            {
+                "restaurantName": "La Bûche",
+                "restaurantImageName": "restaurant_1600_labuche"
+            }, 
+        1],
+        [1,
+            {
+                "restaurantName": "The French Touch",
+                "restaurantImageName": "restaurant_1600_thefrenchtouch"
+            }, 
+        1],
+        [1,
+            {
+                "restaurantName": "Le Bistro de Dodo",
+                "restaurantImageName": "restaurant_1600_lebistrotdedodo"
+            }, 
+        1]                
+    ],
+    "restaurantsArc1950": [
+        [1, "Test", 1]
+    ],    
+    "restaurantsArc2000": [
+        [1, "Test", 1]
+    ]
+}

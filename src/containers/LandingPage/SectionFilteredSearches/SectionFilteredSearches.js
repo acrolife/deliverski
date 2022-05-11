@@ -10,15 +10,44 @@ import { NamedLink, Avatar } from '../../../components';
 
 import css from './SectionFilteredSearches.module.css';
 
+import config from '../../../config'
+
 // Update images by saving images to src/LandingPage/SeactionFilteredSearches/images directory.
 // If those images have been saved with the same name, no need to make changes to these imports.
 
 // import imageForFilter1 from './images/imageForFilter1_648x448.jpg';
 // import imageForFilter2 from './images/imageForFilter2_648x448.jpg';
 // import imageForFilter3 from './images/imageForFilter3_648x448.jpg';
+
+// Purple background for the restaurant who don't have a picture
 import placeHolderProfileBg from './images/placeHolderProfileBg_648x448.jpg';
 
-import config from '../../../config'
+// Production vitrine setup
+import { restaurantNameToFilterName } from '../../../util/data';
+import restaurantsData from '../../../assets/data/restaurants'
+import restaurant_1600_labuche from '../../../assets/restaurantsImages/restaurant_1600_labuche.jpg'
+import restaurant_1600_lebistrotdedodo from '../../../assets/restaurantsImages/restaurant_1600_lebistrotdedodo.jpg'
+import restaurant_1600_thefrenchtouch from '../../../assets/restaurantsImages/restaurant_1600_thefrenchtouch.jpg'
+import restaurant_1800_mamiecrepe from '../../../assets/restaurantsImages/restaurant_1800_mamiecrepe.jpg'
+
+const restaurantUrls = [{
+  url: restaurant_1600_labuche,
+  name: "restaurant_1600_labuche"
+},
+{
+  url: restaurant_1600_lebistrotdedodo,
+  name: "restaurant_1600_lebistrotdedodo"
+},
+{
+  url: restaurant_1600_thefrenchtouch,
+  name: "restaurant_1600_thefrenchtouch"
+},
+{
+  url: restaurant_1800_mamiecrepe,
+  name: "restaurant_1800_mamiecrepe"
+},
+
+]
 
 const canonicalRootUrl = config.canonicalRootURL
 
@@ -68,6 +97,40 @@ const SectionFilteredSearches = props => {
   //   )
   // }
 
+  // Production vitrine will show the restaurants tiles with a link to the restaurant's area on the playground instance
+  // TODO Tiles with link to the restaurant's area on the playground instance
+  // TODO Implement: randomize order of appearance, sorting array button, 
+  const RestaurantTilesVitrine = () => {
+
+    const canonicalRootUrlProd = canonicalRootUrl.replace('marmott.co', 'playgroud.marmott.co')
+    const restaurantsArc1600 = restaurantsData ? restaurantsData.restaurantsArc1600.filter(e => e[2]).map(e => e[1]) : {}
+    const restaurantsArc1800 = restaurantsData ? restaurantsData.restaurantsArc1800.filter(e => e[2]).map(e => e[1]) : {}
+    const restaurantsArc1950 = restaurantsData ? restaurantsData.restaurantsArc1950.filter(e => e[2]).map(e => e[1]) : {}
+    const restaurantsArc2000 = restaurantsData ? restaurantsData.restaurantsArc2000.filter(e => e[2]).map(e => e[1]) : {}
+    const restaurantsFiltered = [...restaurantsArc1600, ...restaurantsArc1800, ...restaurantsArc2000, ...restaurantsArc1950]
+
+    return (
+      [...restaurantsFiltered]
+        .filter(e => (!!e.restaurantImageName))
+        .map(e =>
+
+        (
+          e.restaurantName ?
+            // console.log(restaurantUrls.filter(el => el.name === e.restaurantImageName)[0].url)
+            <FilterLink
+              className={css.listingCard}
+              key={restaurantNameToFilterName(e.restaurantName)}
+              name={e.restaurantName}
+              image={restaurantUrls.filter(el => el.name === e.restaurantImageName)[0].url}
+              link={`${canonicalRootUrlProd}/s?pub_restaurant=${restaurantNameToFilterName(e.restaurantName)}`}
+            />
+            : null)
+        )
+    )
+  }
+
+  // image={e.restaurantImageName}
+
   const RestaurantTiles = () => {
     // DEV
     // let useProvider2 = JSON.parse('{"id":{"_sdkType":"UUID","uuid":"623332d1-3d73-4770-95cb-6b928cc5426f"},"type":"currentUser","attributes":{"deleted":false,"banned":false,"email":"funkmatch@gmail.com","stripeConnected":true,"stripePayoutsEnabled":false,"createdAt":"2022-03-17T13:08:33.713Z","stripeChargesEnabled":false,"identityProviders":[],"pendingEmail":null,"emailVerified":true,"profile":{"displayName":"Fox G","firstName":"Fox","privateData":{},"protectedData":{},"bio":null,"abbreviatedName":"FG","lastName":"Ginger","publicData":{"shoppingCart":[]},"metadata":{"freeShipping":true,"isProvider":true}}},"profileImage":{"id":{"_sdkType":"UUID","uuid":"623337bf-4fc9-4a78-83bb-2d3102cce914"},"type":"image","attributes":{"variants":{"square-small2x":{"height":480,"width":480,"url":"https://sharetribe.imgix.net/61c4d0a9-0776-4e68-a3eb-a5324ef5592f/623337bf-4fc9-4a78-83bb-2d3102cce914?auto=format&crop=edges&fit=crop&h=480&w=480&s=3fc839a2f0e88a5a51e55c4653ba2d86","name":"square-small2x"},"square-small":{"height":240,"width":240,"url":"https://sharetribe.imgix.net/61c4d0a9-0776-4e68-a3eb-a5324ef5592f/623337bf-4fc9-4a78-83bb-2d3102cce914?auto=format&crop=edges&fit=crop&h=240&w=240&s=2d031299d757eeb2e80b5f15854d572c","name":"square-small"},"square-xsmall":{"height":40,"width":40,"url":"https://sharetribe.imgix.net/61c4d0a9-0776-4e68-a3eb-a5324ef5592f/623337bf-4fc9-4a78-83bb-2d3102cce914?auto=format&crop=edges&fit=crop&h=40&w=40&s=359dc7fcf0a75058abcbc0f933a6c3f0","name":"square-xsmall"},"square-xsmall2x":{"height":80,"width":80,"url":"https://sharetribe.imgix.net/61c4d0a9-0776-4e68-a3eb-a5324ef5592f/623337bf-4fc9-4a78-83bb-2d3102cce914?auto=format&crop=edges&fit=crop&h=80&w=80&s=9edce97c0dfd57c28046a10b89b3b83a","name":"square-xsmall2x"}}}},"stripeAccount":{"id":{"_sdkType":"UUID","uuid":"623334ba-1b6a-4cf5-be47-cb805cefafbf"},"type":"stripeAccount","attributes":{"stripeAccountId":"acct_1KeJC3PZpzxQZ6Ex","stripeAccountData":null}}}')
@@ -91,6 +154,7 @@ const SectionFilteredSearches = props => {
           // >
           //   <img className={css.listingCard} src={e.profileImage ? e.profileImage.attributes.variants['scaled-medium'].url : placeHolderProfileBg} />
           // </NamedLink>
+
 
 
           <FilterLink
@@ -127,7 +191,7 @@ const SectionFilteredSearches = props => {
       {/* <div className={css.filteredSearches} > */}
       <div className={css.listingCards} >
 
-        < RestaurantTiles />
+        {isProduction ? < RestaurantTilesVitrine /> : < RestaurantTiles />}
 
         {/* className={css.box} */}
         {/* <FilterLink
