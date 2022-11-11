@@ -53,7 +53,10 @@ const LandingPageComponent = (props) => {
 
   // Logic to hide the mesage sending to playground on production
   const canonicalRootURL = config.canonicalRootURL ? config.canonicalRootURL : null
-  const isProduction = canonicalRootURL ? !canonicalRootURL.includes('playground') : false
+  const isProduction = canonicalRootURL ?
+    !(canonicalRootURL.includes('playground') ||
+    canonicalRootURL.includes('sandbox')) :
+    true
   // DEV
   // const isProduction = false
 
@@ -110,7 +113,7 @@ class ThumbnailImage extends Component {
           </div>
 
           {/* <div className={isProduction ? css.sectionContentFirstChildProd : css.sectionContentFirstChild}> */}
-          <div className={css.sectionContentFirstChild}>          
+          <div className={css.sectionContentFirstChild}>
             <SectionFilteredSearches userProviders={userProviders} isProduction={isProduction} />
           </div>
           <div className={css.imgCenterParentLanding}>
