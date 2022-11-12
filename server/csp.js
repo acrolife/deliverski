@@ -71,6 +71,8 @@ const defaultDirectives = {
     'http://localhost:3008',
     'http://localhost:3009',    
     'marmott.co',    
+    'playground.marmott.co', 
+    'sandbox.marmott.co', 
   ],
   styleSrc: [self, unsafeInline, 'fonts.googleapis.com', 'api.mapbox.com'],
 };

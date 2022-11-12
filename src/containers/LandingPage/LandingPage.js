@@ -53,12 +53,18 @@ const LandingPageComponent = (props) => {
 
   // Logic to hide the mesage sending to playground on production
   const canonicalRootURL = config.canonicalRootURL ? config.canonicalRootURL : null
+  // This means the elements conditioned on isProduction will not be shown on playground and sandbox
+  // Without value for canonicalRootURL, isProduction will be true as well
   const isProduction = canonicalRootURL ?
     !(canonicalRootURL.includes('playground') ||
     canonicalRootURL.includes('sandbox')) :
     true
+  
   // DEV
   // const isProduction = false
+  // console.log("canonicalRootURL", canonicalRootURL)
+  // console.log("incl playground", anonicalRootURL.includes('playground'))
+  // console.log("incl sandbox", anonicalRootURL.includes('sandbox'))
 
   /* Example
   // Thumbnail image for the search "card"
