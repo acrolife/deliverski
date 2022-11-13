@@ -73,7 +73,7 @@ const EditListingFeaturesPanel = props => {
         name={FEATURES_NAME}
         initialValues={initialValues}
         onSubmit={values => {
-          const { 
+          let { 
             foodType,
             drinkType,
             cuisine, 
@@ -82,6 +82,11 @@ const EditListingFeaturesPanel = props => {
             // allergens,        
             size,          
           } = values;
+
+          if (initialValues.productType == "eatable_salty" || 
+          initialValues.productType == "eatable_sweet") {
+            drinkType = ""
+          }
 
           const updatedValues = {
             publicData: { 

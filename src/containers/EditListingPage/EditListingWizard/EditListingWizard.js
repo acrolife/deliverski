@@ -74,15 +74,25 @@ const tabCompleted = (tab, listing) => {
   const productType = publicData && publicData.productType;
   // featuresData Validation depending on productType => productTypeValidation
   let productTypeValidation
+  
+  // DEV/DEBUG - CAUTION looping on validation
+  // console.log("publicData", publicData)
+
   switch (productType) {
-    case 'eatable':
+    case 'eatable_salty': // use fall-through (src: https://stackoverflow.com/questions/6513585/test-for-multiple-cases-in-a-switch-like-an-or)    
+    case 'eatable_sweet':
       productTypeValidation = !!(publicData && publicData.foodType && publicData.cuisine)
+      publicData.drinkType = 'na'
+      break
     case 'drinkable':
       // Need to enforce this to  validate the "Save" step to next tab
       publicData.cuisine = publicData.cuisine ? publicData.cuisine : 'na'
+      publicData.foodType = 'na'      
       productTypeValidation = !!(publicData && publicData.drinkType) // publicData.cuisine
+      break
     case 'composable':
       productTypeValidation = !!(publicData && publicData.cuisine && publicData.size)
+      break
   }
 
   // DEV

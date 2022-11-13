@@ -135,7 +135,7 @@ const EditListingFeaturesFormComponent = props => (
         })
       );
 
-
+      /*
       // Meal type section
       const mealTypeKey = 'mealType';
       const mealTypeOptions = findOptionsForSelectFilter(mealTypeKey, filterConfig);
@@ -154,6 +154,7 @@ const EditListingFeaturesFormComponent = props => (
           id: 'EditListingFeaturesForm.mealTypeRequired',
         })
       );
+      */
 
       // Food type section
       const foodTypeKey = 'foodType';
@@ -263,14 +264,12 @@ const EditListingFeaturesFormComponent = props => (
 
 
       // Accordions and display single or multi filter message
-      // cuisine (this first accordion is opened)
-      /*
+      // cuisine (this first accordion is opened)      
       const [accordionCuisineIsOpen, setAccordionCuisineIsOpen] = useState(true);;
       const accordionCuisineIsOpenToggle = () => {
         setAccordionCuisineIsOpen(!accordionCuisineIsOpen)
       }
-      const cuisineIsSingleFilter = true
-      */
+      const cuisineIsSingleFilter = true      
 
       // mealType
       /*
@@ -281,14 +280,13 @@ const EditListingFeaturesFormComponent = props => (
       const mealTypeIsSingleFilter = true
       */
 
-      // foodType
-      /*
+      // foodType      
       const [accordionfoodTypeIsOpen, setAccordionfoodTypeIsOpen] = useState(false);;
       const accordionfoodTypeIsOpenToggle = () => {
         setAccordionfoodTypeIsOpen(!accordionfoodTypeIsOpen)
       }
       const foodTypeIsSingleFilter = true
-      */
+      
 
       // drinkType
       const [accordionDrinkTypeIsOpen, setAccordionDrinkTypeIsOpen] = useState(true);;

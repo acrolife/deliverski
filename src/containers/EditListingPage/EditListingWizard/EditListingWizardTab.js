@@ -60,7 +60,7 @@ const redirectAfterDraftUpdate = (listingId, params, tab, marketplaceTabs, histo
   }
 
   // Redirect to next tab
-  const nextPathParams = pathParamsToNextTab(currentPathParams, tab, marketplaceTabs);
+  const nextPathParams = pathParamsToNextTab(currentPathParams, tab, marketplaceTabs);  
   const to = createResourceLocatorString('EditListingPage', routes, nextPathParams, {});
   history.push(to);
 };
@@ -111,6 +111,10 @@ const EditListingWizardTab = props => {
   };
 
   const onCompleteEditListingWizardTab = (tab, updateValues) => {
+    
+    // DEV/DEBUG
+    // console.log("updateValues", updateValues)
+
     const onUpdateListingOrCreateListingDraft = isNewURI
       ? (tab, values) => onCreateListingDraft(values)
       : onUpdateListing;
@@ -120,7 +124,7 @@ const EditListingWizardTab = props => {
       : { ...updateValues, id: currentListing.id };
 
     onUpdateListingOrCreateListingDraft(tab, updateListingValues)
-      .then(r => {
+      .then(r => {        
         if (isNewListingFlow) {
           const listingId = r.data.data.id;
           automaticRedirectsForNewListingFlow(tab, listingId);
@@ -155,8 +159,6 @@ const EditListingWizardTab = props => {
           {...panelProps(DETAILS)}
           submitButtonText={intl.formatMessage({ id: submitButtonTranslationKey })}
           onSubmit={values => {
-            // DEV
-            // console.log(values)
             onCompleteEditListingWizardTab(tab, values);
           }}
         />
@@ -170,7 +172,7 @@ const EditListingWizardTab = props => {
         <EditListingFeaturesPanel
           {...panelProps(DETAILS)}
           submitButtonText={intl.formatMessage({ id: submitButtonTranslationKey })}
-          onSubmit={values => {
+          onSubmit={values => {           
             onCompleteEditListingWizardTab(tab, values);
           }}
         />
