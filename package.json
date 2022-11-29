@@ -72,7 +72,7 @@
     "seedrandom": "^3.0.5",
     "sharetribe-flex-integration-sdk": "^1.7.0",
     "sharetribe-flex-sdk": "^1.14.1",
-    "sharetribe-scripts": "6.0.1",
+    "sharetribe-scripts": "5.0.1",
     "smoothscroll-polyfill": "^0.4.0",
     "source-map-support": "^0.5.9",
     "url": "^0.11.0"
