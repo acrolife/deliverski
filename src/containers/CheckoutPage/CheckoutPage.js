@@ -176,7 +176,7 @@ const getErrorMessages = (listingNotFound, initiateOrderError, speculateTransact
   } else if (initiateOrderError) {
     // Generic initiate order error
     initiateOrderErrorMessage = (
-      <FormattedMessage id="CheckoutPage.initiateOrderError" values={{ listingLink }} />
+      <FormattedMessage id="CheckoutPage.initiateOrderError" values={{ listingLink: '' }} />
     );
   }
 

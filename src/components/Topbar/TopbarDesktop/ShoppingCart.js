@@ -21,7 +21,7 @@ import { types as sdkTypes } from '../../../util/sdkLoader';
 import config from '../../../config';
 import routeConfiguration from '../../../routing/routeConfiguration';
 import { createResourceLocatorString, findRouteByRouteName } from '../../../util/routes';
-import { sendEnquiry, fetchTransactionLineItems } from './ShoppingCart.duck';
+// import { sendEnquiry, fetchTransactionLineItems } from './ShoppingCart.duck';
 import { setInitialValues } from '../../../containers/CheckoutPage/CheckoutPage.duck';
 import { initializeCardPaymentData } from '../../../ducks/stripe.duck.js';
 import { manageDisableScrolling, isScrollingDisabled } from '../../../ducks/UI.duck';

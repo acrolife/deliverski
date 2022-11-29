@@ -61,11 +61,13 @@ const renderForm = formRenderProps => {
     history,
     pickupEnabled,
     shippingEnabled,
-    isRestaurantOnHold
+    isRestaurantOnHold,
+    sameVendorModalOpen,
+    setSameVendorModalOpen,
+    emptyCart,
+    setEmptyCart,
   } = formRenderProps;
 
-  const [sameVendorModalOpen, setSameVendorModalOpen] = useState(false);
-  const [emptyCart, setEmptyCart] = useState(false);
   // Opens cart message modal
   const handleSVModalOpen = () => {
     setSameVendorModalOpen(true);
@@ -573,7 +575,7 @@ const renderForm = formRenderProps => {
             <FormattedMessage id="ProductOrderForm.emptyCart" />
           </Button>
 
-          <Button type='button' className={css.modalButton} onClick={() => pushToPath(redirectPathToRestaurantSpace)}>
+          <Button type='button' className={css.modalButton} onClick={() => pushToPath('' /*redirectPathToRestaurantSpace*/)}>
             <FormattedMessage id="ProductOrderForm.seeSameVendorListings" />
           </Button>
 
@@ -650,7 +652,10 @@ const renderForm = formRenderProps => {
 };
 
 const ProductOrderForm = props => {
-  const intl = useIntl();
+  const [sameVendorModalOpen, setSameVendorModalOpen] = useState(false);
+  const [emptyCart, setEmptyCart] = useState(false);
+
+const intl = useIntl();
   const { price, currentStock, pickupEnabled, shippingEnabled, isRestaurantOnHold, listingId } = props;
 
   // Should not happen for listings that go through EditListingWizard.
@@ -697,6 +702,10 @@ const ProductOrderForm = props => {
       intl={intl}
       pickupEnabled={pickupEnabled}
       shippingEnabled={shippingEnabled}
+      sameVendorModalOpen={sameVendorModalOpen}
+      setSameVendorModalOpen={setSameVendorModalOpen}
+      emptyCart={emptyCart}
+      setEmptyCart={setEmptyCart}
       render={renderForm}
     />
   );

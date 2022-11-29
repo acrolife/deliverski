@@ -291,7 +291,7 @@ const EditListingFeaturesFormComponent = props => (
       */
 
       // drinkType
-      const [accordionDrinkTypeIsOpen, setAccordionDrinkTypeIsOpen] = useState(true);;
+      const [accordionDrinkTypeIsOpen, setAccordionDrinkTypeIsOpen] = useState(true); // eslint-disable-line react-hooks/rules-of-hooks
       const accordionDrinkTypeIsOpenToggle = () => {
         setAccordionDrinkTypeIsOpen(!accordionDrinkTypeIsOpen)
       }
@@ -300,7 +300,7 @@ const EditListingFeaturesFormComponent = props => (
 
 
       // diet (this first accordion is opened)
-      const [accordionDietIsOpen, setAccordionDietIsOpen] = useState(productTypeVisibiliy.dietAccordionOpenAtLoading);
+      const [accordionDietIsOpen, setAccordionDietIsOpen] = useState(productTypeVisibiliy.dietAccordionOpenAtLoading); // eslint-disable-line react-hooks/rules-of-hooks
       const accordionDietIsOpenToggle = () => {
         setAccordionDietIsOpen(!accordionDietIsOpen)
       }
@@ -318,7 +318,7 @@ const EditListingFeaturesFormComponent = props => (
       */
 
       // size
-      const [accordionSizeIsOpen, setAccordionSizeIsOpen] = useState(false);;
+      const [accordionSizeIsOpen, setAccordionSizeIsOpen] = useState(false); // eslint-disable-line react-hooks/rules-of-hooks
       const accordionSizeIsOpenToggle = () => {
         setAccordionSizeIsOpen(!accordionSizeIsOpen)
       }
