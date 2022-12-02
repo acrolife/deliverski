@@ -4,6 +4,7 @@ import classNames from 'classnames';
 
 import { FormattedMessage } from '../../../util/reactIntl';
 import { lazyLoadWithDimensions } from '../../../util/contextHelpers';
+import { shuffleArray } from '../../../util/customFunctions';
 
 // import { NamedLink } from '../../../components';
 import { NamedLink, Avatar } from '../../../components';
@@ -12,6 +13,7 @@ import css from './SectionFilteredSearches.module.css';
 
 import config from '../../../config'
 
+
 // Update images by saving images to src/LandingPage/SeactionFilteredSearches/images directory.
 // If those images have been saved with the same name, no need to make changes to these imports.
 
@@ -19,37 +21,31 @@ import config from '../../../config'
 // import imageForFilter2 from './images/imageForFilter2_648x448.jpg';
 // import imageForFilter3 from './images/imageForFilter3_648x448.jpg';
 
-// Purple background for the restaurant who don't have a picture
-import placeHolderProfileBg from './images/placeHolderProfileBg_648x448.jpg';
+// Purple background in case there are restaurants for which we@@ b  don't have a picture
+import placeHolderProfileBg from './images/placeHolderProfileBg_marmott_648x448.jpg';
 
 // Production vitrine setup
-import { restaurantNameToFilterName } from '../../../util/data';
-import restaurantsData from '../../../assets/data/restaurants'
-import restaurant_1600_labuche from '../../../assets/restaurantsImages/restaurant_1600_labuche.jpg'
-import restaurant_1600_lebistrotdedodo from '../../../assets/restaurantsImages/restaurant_1600_lebistrotdedodo.jpg'
-import restaurant_1600_thefrenchtouch from '../../../assets/restaurantsImages/restaurant_1600_thefrenchtouch.jpg'
-import restaurant_1800_mamiecrepe from '../../../assets/restaurantsImages/restaurant_1800_mamiecrepe.jpg'
 
-const restaurantUrls = [{
-  url: restaurant_1600_labuche,
-  name: "restaurant_1600_labuche"
-},
-{
-  url: restaurant_1600_lebistrotdedodo,
-  name: "restaurant_1600_lebistrotdedodo"
-},
-{
-  url: restaurant_1600_thefrenchtouch,
-  name: "restaurant_1600_thefrenchtouch"
-},
-{
-  url: restaurant_1800_mamiecrepe,
-  name: "restaurant_1800_mamiecrepe"
-},
+/*
+ * TODO - No time to waste now, just put the data in src/assets/data/restaurants.json + copy it here
+ * How does LazyImage's prop image works ?
+ * In RestaurantTilesVitrine how can we get the /static/media/myimagename.297429.jpg that image={} needs ?
+ * See src/containers/LandingPage/SectionFilteredSearches/importImages.js
+*/
 
-]
+import { 
+  // restaurantPaths, 
+  restaurantNameToPath,
+  restaurantsFiltered 
+} from './importImages.js'
+
+// DEV DEBUG
+console.log("restaurantNameToPath", restaurantNameToPath)
+const restaurantPaths = restaurantNameToPath
+// import { restaurantNameToFilterName } from '../../../util/data'; // transforms restaurant name in an inteligible key
 
 const canonicalRootUrl = config.canonicalRootURL
+const locale = config.locale
 
 // Thumbnail image for the search "card"
 class ThumbnailImage extends Component {
@@ -84,6 +80,27 @@ const FilterLink = props => {
   );
 };
 
+// Create a "card" similar to FilterLink on SearchPage, but without link prop
+const FilterLinkVitrine = props => {
+  const { name, image } = props;
+  const nameText = <span className={css.searchName}>{name}</span>;
+  return (
+    <div className={css.searchLink}>
+      <div className={css.imageWrapper}>
+        <div className={css.aspectWrapper}>
+          <LazyImage src={image} alt={name} className={css.searchImage} />
+        </div>
+      </div>
+      <div className={css.linkText}>
+        <FormattedMessage
+          id="SectionFilteredSearches.filteredSearch"
+          values={{ filter: nameText }}
+        />
+      </div>
+    </div>
+  );
+};
+
 // Component that shows full-width section on LandingPage.
 // Inside it shows 3 "cards" that link to SearchPage with specific filters applied.
 const SectionFilteredSearches = props => {
@@ -98,38 +115,40 @@ const SectionFilteredSearches = props => {
   // }
 
   // Production vitrine will show the restaurants tiles with a link to the restaurant's area on the playground instance
-  // TODO Tiles with link to the restaurant's area on the playground instance
+  // TODO Tiles with link to the restaurant's area on the playground instance OR jsut deactivate the link 
   // TODO Implement: randomize order of appearance, sorting array button, 
   const RestaurantTilesVitrine = () => {
+    // const canonicalPlaygroundUrlProd = canonicalRootUrl.replace('marmott.co', 'playgroud.marmott.co')    
+    
+    // DEV DEBUG
+    // console.log("restaurantsFiltered", restaurantsFiltered)
+    // console.log("restaurantPaths", restaurantPaths)
+    // console.log(restaurantPaths.filter(el => el.name === "restaurant_1800_mamiecrepe")[0].path)
 
-    const canonicalRootUrlProd = canonicalRootUrl.replace('marmott.co', 'playgroud.marmott.co')
-    const restaurantsArc1600 = restaurantsData ? restaurantsData.restaurantsArc1600.filter(e => e[2]).map(e => e[1]) : {}
-    const restaurantsArc1800 = restaurantsData ? restaurantsData.restaurantsArc1800.filter(e => e[2]).map(e => e[1]) : {}
-    const restaurantsArc1950 = restaurantsData ? restaurantsData.restaurantsArc1950.filter(e => e[2]).map(e => e[1]) : {}
-    const restaurantsArc2000 = restaurantsData ? restaurantsData.restaurantsArc2000.filter(e => e[2]).map(e => e[1]) : {}
-    const restaurantsFiltered = [...restaurantsArc1600, ...restaurantsArc1800, ...restaurantsArc2000, ...restaurantsArc1950]
-
+    // Calls a custom function randomizing the elements order inside the array
+    const restaurantsFilteredShuffled = shuffleArray(restaurantsFiltered)
+      
     return (
-      [...restaurantsFiltered]
+      [...restaurantsFilteredShuffled]
         .filter(e => (!!e.restaurantImageName))
         .map(e =>
-
         (
-          e.restaurantName ?
-            // console.log(restaurantUrls.filter(el => el.name === e.restaurantImageName)[0].url)
-            <FilterLink
+          (e.restaurantName && e.restaurantImageName) ?
+            // console.log(restaurantPaths.filter(el => el.name === e.restaurantImageName)[0].path)
+            <FilterLinkVitrine
               className={css.listingCard}
-              key={restaurantNameToFilterName(e.restaurantName)}
-              name={e.restaurantName}
-              image={restaurantUrls.filter(el => el.name === e.restaurantImageName)[0].url}
-              link={`${canonicalRootUrlProd}/s?pub_restaurant=${restaurantNameToFilterName(e.restaurantName)}`}
+              key={e.restaurantImageName}
+              name={e.restaurantName}          
+              image={restaurantPaths.find(el => el.name === e.restaurantImageName) ? restaurantPaths.find(el => el.name === e.restaurantImageName).path : placeHolderProfileBg}
+              // image={""}
             />
             : null)
         )
     )
   }
-
-  // image={e.restaurantImageName}
+  // image={e.restaurantImageName} 
+  // image={restaurantPaths.filter(el => el.name === e.restaurantImageName)[0].path}
+  // image={`/static/media/${e.restaurantImageName}`}
 
   const RestaurantTiles = () => {
     // DEV
@@ -139,7 +158,7 @@ const SectionFilteredSearches = props => {
 
     return (
       userProviders.length > 0 ? [...userProviders]
-        // TODO DEV, here we put three times the array to see the result with more providers
+        // TODO DEV, here we put three times the array to see the result with artificially/in apperance more providers
         // userProviders.length > 0 ? [...userProviders, ...userProviders, ...userProviders.reverse() ]
         .map(e =>
 
@@ -171,10 +190,14 @@ const SectionFilteredSearches = props => {
     )
   }
 
-  {/*original image={imageForFilter1} */ }
+  /*original image={imageForFilter1} */
 
-  {/* Not needed here, works with initials. We want it to work with the image. This strucutre works with useProvider2.
-          <Avatar className={css.avatar} user={useProvider2} disableProfileLink />  */}
+  /* 
+    Not needed here, works with initials. 
+    We want it to work with the image. 
+    This strucutre works with useProvider2.
+    <Avatar className={css.avatar} user={useProvider2} disableProfileLink />  
+  */
 
   // FilterLink props:
   // - "name" is a string that defines what kind of search the link is going to make
@@ -237,7 +260,12 @@ const SectionFilteredSearches = props => {
   );
 };
 
-SectionFilteredSearches.defaultProps = { rootClassName: null, className: null, userProviders: [], isProduction: null };
+SectionFilteredSearches.defaultProps = { 
+  rootClassName: null, 
+  className: null, 
+  userProviders: [], 
+  isProduction: null,
+};
 
 const { object, arrayOf, string } = PropTypes;
 

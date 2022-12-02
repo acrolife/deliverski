@@ -48,8 +48,9 @@ const ListingPage = config.listingPageLayout === 'full-image' ? ListingPageFullI
 const locale = config.locale
 const urlSwitchLang = config.urlSwitchLang
 // DEV
-// console.log("locale", locale)
-// console.log("urlSwitchLang", urlSwitchLang)
+console.log("locale", locale)
+console.log("urlSwitchLang", urlSwitchLang)
+console.log("canonicalRootURL", config.canonicalRootURL)
 
 export const ACCOUNT_SETTINGS_PAGES = [
   'ContactDetailsPage',
@@ -112,6 +113,12 @@ const routeConfiguration = () => {
     //   name: 'AboutPage',
     //   component: AboutPage,
     // },
+    // Redirecting to the vitrine page    
+    {
+      path: `/${localeSubPath}vitrine`,
+      name: 'RedirectToLandingPage',
+      component: RedirectToLandingPage,
+    },    
     {
       path: `/${localeSubPath}s`,
       name: 'SearchPage',
