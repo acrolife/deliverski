@@ -26,9 +26,9 @@ const NotFoundComponent = props => {
         const { search, selectedPlace } = values.location;
         const { origin, bounds } = selectedPlace;
         const searchParams = { address: search, origin, bounds };
-        history.push(
+        /*history.push(
             createResourceLocatorString('SearchPage', routeConfiguration(), {}, searchParams)
-        );
+        );*/
 
     };
 

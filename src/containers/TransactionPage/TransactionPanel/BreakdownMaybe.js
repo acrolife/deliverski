@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import config from '../../../config';
 import { FormattedMessage } from '../../../util/reactIntl';
 import { DATE_TYPE_DATE } from '../../../util/types';
+import { ensureBooking } from '../../../util/data';
 
 import { OrderBreakdown } from '../../../components';
 
