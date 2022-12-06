@@ -3,6 +3,7 @@ import { clearCurrentUser, fetchCurrentUser } from './user.duck';
 import { createUserWithIdp } from '../util/api';
 import { storableError } from '../util/errors';
 import * as log from '../util/log';
+import { removeOneSignalExternalUserId } from '../util/onesignal';
 
 const authenticated = authInfo => authInfo && authInfo.isAnonymous === false;
 
@@ -210,6 +211,7 @@ export const logout = () => (dispatch, getState, sdk) => {
       dispatch(logoutSuccess());
       dispatch(clearCurrentUser());
       log.clearUserId();
+      removeOneSignalExternalUserId();
       dispatch(userLogout());
     })
     .catch(e => dispatch(logoutError(storableError(e))));

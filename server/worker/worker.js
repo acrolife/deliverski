@@ -36,27 +36,22 @@ const querySharetribeEvents = args => {
   return integrationSdk.events.query(params);
 };
 
-const analyzeSharetribeEvent = async shEvent => {
+const analyzeSharetribeEvent = shEvent => {
   const { eventType } = shEvent.attributes;
   //console.log('shEvent=', JSON.stringify(shEvent,null,2));
   //console.log('event=', eventType, shEvent.attributes.createdAt, shEvent.attributes.sequenceId);
 
   switch (eventType) {
     case 'transaction/initiated':
-      handleTransactionInitiated(shEvent);
-      break;
+      return handleTransactionInitiated(shEvent);
     case 'booking/created':
-      handleBookingCreated(shEvent);
-      break;
+      return handleBookingCreated(shEvent);
     case 'message/created':
-      handleMessageCreated(shEvent);
-      break;
+      return handleMessageCreated(shEvent);
 
     default:
       break;
   }
-
-  return 'Event handled';
 };
 
 pollEventsQueue.add(null, { repeat: { cron: '*/10 * * * * *' } });
@@ -69,6 +64,9 @@ pollEventsQueue.process(async (_, done) => {
       sequenceId && !isNaN(sequenceId)
         ? { startAfterSequenceId: sequenceId }
         : { createdAtStart: startTime };
+    /* Uncomment this if you want read all transactions from 2022-12-04 over and over again
+    const params = { createdAtStart: new Date('2022-12-04') };
+    */
 
     const res = await querySharetribeEvents(params);
 
@@ -95,7 +93,7 @@ handleEventsQueue.process(async ({ data: shEvent }, done) => {
     await analyzeSharetribeEvent(shEvent);
     done();
   } catch (error) {
-    log.error(error, 'handle-event-error', shEvent);
+    log.error(error, 'handle-event-error', { sharetribeEvent: shEvent, data: error.data });
     done(new Error(error));
   }
 });
