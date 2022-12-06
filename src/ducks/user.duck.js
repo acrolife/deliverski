@@ -6,6 +6,7 @@ import * as log from '../util/log';
 import { authInfo } from './Auth.duck';
 import { stripeAccountCreateSuccess } from './stripeConnectAccount.duck';
 import { util as sdkUtil } from '../util/sdkLoader';
+import { setOneSignalExternalUserId } from '../util/onesignal';
 
 // ================ Action types ================ //
 
@@ -364,7 +365,10 @@ export const fetchCurrentUser = (params = null) => (dispatch, getState, sdk) => 
 
       // Make sure auth info is up to date
       dispatch(authInfo());
+
+      return setOneSignalExternalUserId(currentUser.id.uuid);
     })
+    .then(resOneSignal => true)
     .catch(e => {
       // Make sure auth info is up to date
       dispatch(authInfo());
