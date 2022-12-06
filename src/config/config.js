@@ -246,6 +246,11 @@ const maps = {
   },
 };
 
+const onesignal = {
+  appId: process.env.REACT_APP_ONESIGNAL_APP_ID,
+  safari_web_id: process.env.REACT_APP_ONESIGNAL_SAFARI_WEB_ID,
+};
+
 // NOTE: only expose configuration that should be visible in the
 // client side, don't add any server secrets in this file.
 const config = {
@@ -294,6 +299,7 @@ const config = {
   listing,
   maps,
   custom,
+  onesignal,
 };
 
 export default config;

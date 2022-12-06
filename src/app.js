@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ReactDOMServer from 'react-dom/server';
 
@@ -18,6 +18,7 @@ import configureStore from './store';
 import routeConfiguration from './routing/routeConfiguration';
 import Routes from './routing/Routes';
 import config from './config';
+import { initOneSignal } from './util/onesignal';
 
 // Flex template application uses English translations as default.
 // import defaultMessages from './translations/en.json';
@@ -93,6 +94,9 @@ const setupLocale = () => {
 export const ClientApp = props => {
   const { store } = props;
   setupLocale();
+  useEffect(() => {
+    initOneSignal();
+  })
   return (
     <IntlProvider locale={config.locale} messages={localeMessages} textComponent="span">
       <Provider store={store}>
