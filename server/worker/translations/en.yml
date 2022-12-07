@@ -1,0 +1,4 @@
+push:
+  TransactionInitiated:
+    heading: New Order
+    content: You have new order
