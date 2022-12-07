@@ -1,5 +1,6 @@
 const { createInstance, types } = require('sharetribe-flex-integration-sdk');
 const OneSignal = require('onesignal-node');
+const { intlEn, intlFr } = require('./intl');
 
 const clientId = process.env.REACT_APP_FLEX_INTEGRATION_CLIENT_ID;
 const clientSecret = process.env.REACT_APP_FLEX_INTEGRATION_CLIENT_SECRET;
@@ -31,6 +32,13 @@ const showTransaction = transactionId => {
   });
 };
 
+const tr = (key, options = {}) => {
+  return {
+    en: intlEn.formatMessage({ id: key }, options),
+    fr: intlFr.formatMessage({ id: key }, options),
+  };
+};
+
 const handleTransactionInitiated = async shEvent => {
   const transactionId = shEvent.attributes.resourceId;
   console.log(`Transaction initiated event ID=${shEvent.id.uuid} tx ID=${transactionId.uuid}`);
@@ -47,7 +55,8 @@ const handleTransactionInitiated = async shEvent => {
 
   const notification = {
     app_id: oneSignalClientAppId,
-    template_id: '2fc79728-fe06-4f36-be0c-4cc315a0599d', // OneSignal "New order" template
+    headings: tr('push.TransactionInitiated.heading'),
+    contents: tr('push.TransactionInitiated.content'),
     channel_for_external_user_ids: 'push',
     include_external_user_ids: [providerId],
   };
