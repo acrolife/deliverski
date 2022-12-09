@@ -7,6 +7,8 @@ import { FormattedMessage, injectIntl, intlShape } from '../../../util/reactIntl
 import { formatDateWithProximity } from '../../../util/dates';
 import { ensureTransaction, ensureUser, ensureListing } from '../../../util/data';
 import {
+  TRANSITION_ACCEPT,
+  TRANSITION_DECLINE,
   TRANSITION_CONFIRM_PAYMENT,
   TRANSITION_AUTO_CANCEL,
   TRANSITION_CANCEL,
@@ -28,7 +30,7 @@ import {
   isRelevantPastTransition,
   // transitionIsReviewed,
   // txIsInFirstReviewBy,
-  txIsCompleted,
+  // txIsCompleted,
   // txIsReviewed,
   // txRoleIsCustomer,
   txRoleIsProvider,
@@ -133,6 +135,18 @@ const resolveTransitionMessage = (
           values={{ displayName, listingTitle }}
         />
       );
+    case TRANSITION_ACCEPT:
+      return isOwnTransition ? (
+        <FormattedMessage id="ActivityFeed.ownTransitionAccept" />
+      ) : (
+        <FormattedMessage id="ActivityFeed.transitionAccept" values={{ displayName }} />
+      );
+    case TRANSITION_DECLINE:
+      return isOwnTransition ? (
+        <FormattedMessage id="ActivityFeed.ownTransitionDecline" />
+      ) : (
+        <FormattedMessage id="ActivityFeed.transitionDecline" values={{ displayName }} />
+      );
     case TRANSITION_AUTO_CANCEL:
     case TRANSITION_CANCEL:
     case TRANSITION_AUTO_CANCEL_FROM_DISPUTED:
@@ -155,6 +169,7 @@ const resolveTransitionMessage = (
 
       return reviewAsFirstLink || <FormattedMessage id="ActivityFeed.transitionMarkReceived" />;
       */
+    // eslint-disable-next-line no-fallthrough
     case TRANSITION_MARK_DELIVERED: {
       const isShipped = transaction.attributes?.protectedData?.deliveryMethod === 'shipping';
       return isOwnTransition && isShipped ? (
@@ -225,11 +240,13 @@ const resolveTransitionMessage = (
   }
 };
 
+/*
 const reviewByAuthorId = (transaction, userId) => {
   return transaction.reviews.filter(
     r => !r.attributes.deleted && r.author.id.uuid === userId.uuid
   )[0];
 };
+*/
 
 const Transition = props => {
   const { transition, transaction, currentUser, intl, onOpenReviewModal } = props;
@@ -244,7 +261,7 @@ const Transition = props => {
   const listingTitle = currentTransaction.listing.attributes.deleted
     ? deletedListing
     : currentTransaction.listing.attributes.title;
-  const lastTransition = currentTransaction.attributes.lastTransition;
+  // const lastTransition = currentTransaction.attributes.lastTransition;
 
   const ownRole = getUserTxRole(currentUser.id, currentTransaction);
 
@@ -262,9 +279,9 @@ const Transition = props => {
     otherUsersName,
     onOpenReviewModal
   );
-  const currentTransition = transition.transition;
+  // const currentTransition = transition.transition;
 
-  const deletedReviewContent = intl.formatMessage({ id: 'ActivityFeed.deletedReviewContent' });
+  // const deletedReviewContent = intl.formatMessage({ id: 'ActivityFeed.deletedReviewContent' });
   let reviewComponent = null;
 
   /*
