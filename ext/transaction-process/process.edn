@@ -57,6 +57,17 @@
     {:name :action/decline-stock-reservation}],
    :from :state/pending-payment,
    :to :state/payment-expired}
+  {:name :transition/expire-accept,
+   :at
+   {:fn/plus
+    [{:fn/timepoint [:time/first-entered-state :state/preauthorized]}
+     {:fn/period ["PT15M"]}]},
+   :actions
+   [{:name :action/calculate-full-refund}
+    {:name :action/stripe-refund-payment}
+    {:name :action/decline-stock-reservation}],
+   :from :state/preauthorized,
+   :to :state/declined}
   {:name :transition/mark-received-from-purchased,
    :actor :actor.role/customer,
    :actions [{:name :action/stripe-create-payout}],

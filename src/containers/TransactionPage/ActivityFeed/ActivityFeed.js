@@ -119,11 +119,14 @@ const resolveTransitionMessage = (
   listingTitle,
   ownRole,
   otherUsersName,
-  onOpenReviewModal
+  onOpenReviewModal,
+  intl
 ) => {
   const isOwnTransition = transition.by === ownRole;
   const currentTransition = transition.transition;
   const displayName = otherUsersName;
+  const isSystemTransition = transition.by === 'system';
+  const systemName = intl.formatMessage({ id: 'ActivityFeed.system' });
 
   switch (currentTransition) {
     case TRANSITION_CONFIRM_PAYMENT:
@@ -145,7 +148,7 @@ const resolveTransitionMessage = (
       return isOwnTransition ? (
         <FormattedMessage id="ActivityFeed.ownTransitionDecline" />
       ) : (
-        <FormattedMessage id="ActivityFeed.transitionDecline" values={{ displayName }} />
+        <FormattedMessage id="ActivityFeed.transitionDecline" values={{ displayName: isSystemTransition ? systemName : displayName }} />
       );
     case TRANSITION_AUTO_CANCEL:
     case TRANSITION_CANCEL:
@@ -277,7 +280,8 @@ const Transition = props => {
     listingTitle,
     ownRole,
     otherUsersName,
-    onOpenReviewModal
+    onOpenReviewModal,
+    intl
   );
   // const currentTransition = transition.transition;
 

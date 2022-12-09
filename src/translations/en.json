@@ -11,6 +11,7 @@
   "ActivityFeed.ownTransitionReview": "You left a review for { displayName }.",
   "ActivityFeed.ownTransitionShipped": "The order was marked as shipped.",
   "ActivityFeed.showOlderMessages": "Show older",
+  "ActivityFeed.system": "System",
   "ActivityFeed.today": "Today",
   "ActivityFeed.transitionAccept": "{ displayName } accepted the booking request.",
   "ActivityFeed.transitionDecline": "{ displayName } declined the booking request.",
