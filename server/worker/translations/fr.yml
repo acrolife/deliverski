@@ -2,3 +2,17 @@ push:
   TransactionInitiated:
     heading: New Order
     content: You have new order
+  TransitionAccept:
+    pickup:
+      heading: Your order has been confirmed!
+      content: |
+        The preparation will take approx. { preparationTime } minutes.
+        You’ll receive an update { mealIsReadyTime } minutes before your meal will
+        be ready to pickup at { deliveryFromAddress }!
+    shipping:
+      heading: Your order has been confirmed!
+      content: |
+        The preparation will take approx. { preparationTime } minutes. 
+        You’ll receive an update { deliveryTime } minutes before the courier
+        knocks your door, please remain available on your phone!
+
