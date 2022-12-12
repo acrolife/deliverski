@@ -47,7 +47,7 @@ const WeeklySchedulerForm = (props) => {
                           <FieldSelect className={css.selectField} id={`${name}.startHour`} name={`${name}.startHour`}>
                           {hoursOptions.map(o => {
                             return(
-                              <option value={o}>{o}</option>
+                              <option value={o} key={o}>{o}</option>
                             )
                           })}
                         </FieldSelect>    
@@ -55,7 +55,7 @@ const WeeklySchedulerForm = (props) => {
                         <FieldSelect className={css.selectField} id={`${name}.startMinute`} name={`${name}.startMinute`}>
                           {minutesOptions.map(o => {
                             return(
-                              <option value={o}>{o}</option>
+                              <option value={o} key={o}>{o}</option>
                             )
                           })}
                         </FieldSelect>                      
@@ -65,7 +65,7 @@ const WeeklySchedulerForm = (props) => {
                           <FieldSelect className={css.selectField} id={`${name}.endHour`} name={`${name}.endHour`}>
                           {hoursOptions.map(o => {
                             return(
-                              <option value={o}>{o}</option>
+                              <option value={o} key={o}>{o}</option>
                             )
                           })}
                         </FieldSelect>    
@@ -73,7 +73,7 @@ const WeeklySchedulerForm = (props) => {
                         <FieldSelect className={css.selectField} id={`${name}.endMinute`} name={`${name}.endMinute`}>
                           {minutesOptions.map(o => {
                             return(
-                              <option value={o}>{o}</option>
+                              <option value={o} key={o}>{o}</option>
                             )
                           })}
                         </FieldSelect>  

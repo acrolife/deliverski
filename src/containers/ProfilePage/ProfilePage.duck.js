@@ -169,7 +169,7 @@ export const queryUserListings = userId => (dispatch, getState, sdk) => {
       try {
         dispatch(showUserProfileCustomData(userProfileCustom))        
       } catch (e) {
-        dispatch(showUserProfileCustomDataError(storableError(e)))
+        dispatch(storableError(e))
       }
 
       return response;

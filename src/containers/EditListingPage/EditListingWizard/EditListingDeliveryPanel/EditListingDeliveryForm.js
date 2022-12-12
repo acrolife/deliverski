@@ -63,7 +63,7 @@ export const EditListingDeliveryFormComponent = props => (
       // if this fix causes trouble in future dependency updates.
       const { pauseValidation, resumeValidation } = form;
       pauseValidation(false);
-      useEffect(() => resumeValidation(), [values]);
+      useEffect(() => resumeValidation(), [values]); // eslint-disable-line react-hooks/rules-of-hooks
 
       const shippingEnabled = values.deliveryOptions?.includes('shipping');
       const pickupEnabled = values.deliveryOptions?.includes('pickup');
