@@ -50,9 +50,10 @@ const showTransaction = transactionId => {
 };
 
 const tr = (key, options = {}) => {
+  const missing = `Missing translation: ${key}`;
   return {
-    en: intlEn.formatMessage({ id: key }, options),
-    fr: intlFr.formatMessage({ id: key }, options),
+    en: intlEn.formatMessage({ id: key, defaultMessage: `en: ${missing}` }, options),
+    fr: intlFr.formatMessage({ id: key, defaultMessage: `fr: ${missing}` }, options),
   };
 };
 
@@ -127,6 +128,32 @@ const handleTransitionAccept = async transaction => {
   oneSignalCreateNotification(notification);
 };
 
+const handleTransitionDecline = async transaction => {
+  console.log(`Transaction tx ID=${transaction.id.uuid} transition/decline`);
+  // const providerId = getProviderId(transaction);
+  const customerId = getCustomerId(transaction);
+  const { transitions } = transaction.attributes;
+  const transition = transitions.at(-1);
+  const isSystemTransition = transition.by === 'system';
+  const notification = {
+    app_id: oneSignalClientAppId,
+    channel_for_external_user_ids: 'push',
+    include_external_user_ids: [customerId],
+  };
+
+  if(isSystemTransition) {
+    notification.headings = tr('push.TransitionDecline.system.heading');
+    notification.contents = tr('push.TransitionDecline.system.content', {
+      autoDeclineTime: '15',
+    });
+  } else {
+    notification.headings = tr('push.TransitionDecline.provider.heading');
+    notification.contents = tr('push.TransitionDecline.provider.content');
+  }
+
+  oneSignalCreateNotification(notification);
+}
+
 const handleTransactionTransitioned = shEvent => {
   const transactionId = shEvent.attributes.resourceId;
   console.log(`Transaction transitioned event ID=${shEvent.id.uuid} tx ID=${transactionId.uuid}`);
@@ -135,6 +162,9 @@ const handleTransactionTransitioned = shEvent => {
   switch (lastTransition) {
     case 'transition/accept':
       return handleTransitionAccept(resource);
+
+    case 'transition/decline':
+      return handleTransitionDecline(resource);
 
     default:
       break;
