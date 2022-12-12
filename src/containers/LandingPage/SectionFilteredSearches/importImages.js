@@ -2,6 +2,8 @@
  * Dynamically import static assets
  */
 
+import restaurantsData from '../../../assets/data/restaurants'
+
 // for (const [index, restaurantImageName] of restaurantsFiltered.map(e => e.restaurantImageName).entries()) {
 //   let path
 //   import path from `../../../assets/restaurantsImages/${restaurantImageName}.jpg`
@@ -10,7 +12,7 @@
 
 // Src: https://stackoverflow.com/questions/42118296/dynamically-import-images-from-a-directory-using-webpack
 const importAll = (r) => r.keys().map(r)
-  
+
 let restaurantImagePaths = importAll(require.context('../../../assets/restaurantsImages/', false, /\.(jpg)$/));
 // false, /\.(png|jpe?g|svg)$/));
 
@@ -28,8 +30,6 @@ const restaurantNameToPath = restaurantImagePaths.map(e =>
 // DEV DEBUG
 // console.log(restaurantNameToPath)
 
-
-import restaurantsData from '../../../assets/data/restaurants'
 
 /* 
  * Manually import static assets // Not needed anymore
