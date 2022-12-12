@@ -12,6 +12,7 @@ import * as validators from '../../../util/validators';
 import arrayMutators from 'final-form-arrays';
 import Switch from '@mui/material/Switch';
 import { isUploadImageOverLimitError } from '../../../util/errors';
+import DelayTimes from './DelayTimes';
 
 import {
   Form,
@@ -228,6 +229,7 @@ class ProfileSettingsFormComponent extends Component {
           const submitInProgress = updateInProgress;
           const submittedOnce = Object.keys(this.submittedValues).length > 0;
           const pristineSinceLastSubmit = submittedOnce && isEqual(values, this.submittedValues);
+          // eslint-disable-next-line no-unused-vars
           const submitDisabled =
             invalid || pristine || pristineSinceLastSubmit || uploadInProgress || submitInProgress;
 
@@ -444,7 +446,7 @@ class ProfileSettingsFormComponent extends Component {
               </div>}
 
 
-              {isProvider && <div className={classNames(css.sectionContainer, css.lastSection)}>
+              {isProvider && <div className={css.sectionContainer}>
                 <h3 className={css.sectionTitle}>
                   <FormattedMessage id="ProfileSettingsForm.onHoldTitle" />
                   <br />
@@ -519,6 +521,7 @@ class ProfileSettingsFormComponent extends Component {
                 </Modal>
               }
 
+              {isProvider && <DelayTimes intl={intl} css={css}/>}
 
               {submitError}
               <Button
