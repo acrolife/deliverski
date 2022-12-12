@@ -208,7 +208,7 @@
     ],    
     "restaurantsArc2000": [
         {
-            "online": true,
+            "online": false,
             "restaurantName": "Le Kilimandjaro",
             "restaurantImageName": "restaurant_2000_lekilimandjaro"
         },
