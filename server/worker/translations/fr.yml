@@ -15,4 +15,14 @@ push:
         The preparation will take approx. { preparationTime } minutes. 
         You’ll receive an update { deliveryTime } minutes before the courier
         knocks your door, please remain available on your phone!
+  TransitionDecline:
+    provider:
+      heading: Your order has been declined!
+      content: Your order has been rejected because the provider is overloaded.
+    system:
+      heading: Your order has been declined!
+      content: |
+        The service provider has { autoDeclineTime } minutes to confirm or
+        cancel, but took no action. Therefore, the system automatically
+        canceled this order.
 
