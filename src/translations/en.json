@@ -734,6 +734,7 @@
   "ProfileSettingsForm.restaurantOnline": "Your restaurant is online now.",
   "ProfileSettingsForm.warningSwitch": "By using this switch, you can put your business on hold or back online.",
   "ProfileSettingsForm.setOnHold": "Set my restaurant on Hold",
+  "ProfileSettingsForm.setOnHoldShort": "On Hold",
   "ProfileSettingsForm.setOnline": "Set my restaurant back Online",
   "ProfileSettingsForm.goBack": "Cancel",
   "ResponsiveImage.noImage": "No image",
