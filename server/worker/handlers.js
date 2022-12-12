@@ -19,9 +19,26 @@ const integrationSdk = createInstance({
 
 const oneSignalClient = new OneSignal.Client(oneSignalClientAppId, oneSignalClientApiKey);
 
+const oneSignalCreateNotification = async notification => {
+  const oneSignalRes = await oneSignalClient.createNotification(notification);
+  if (oneSignalRes.body.id === '') {
+    if(oneSignalRes.body.recipients === 0) {
+      console.error('oneSignal: Zero recipients ', JSON.stringify(oneSignalRes.body.errors));
+      return true; // Ignore the error if recipients are not subscribed
+    }
+
+    const err = new Error('oneSignal: Failed create notification');
+    err.data = {
+      notification,
+      errors: oneSignalRes.body.errors,
+    };
+    throw err;
+  }
+};
+
 // eslint-disable-next-line no-unused-vars
 const showUser = userId => {
-  return integrationSdk.users.show({ id: new UUID(userId) });
+  return integrationSdk.users.show({ id: new UUID(userId) }).then(response => response.data.data);
 };
 
 // eslint-disable-next-line no-unused-vars
@@ -39,19 +56,31 @@ const tr = (key, options = {}) => {
   };
 };
 
+const getProviderId = transaction => {
+  return transaction.relationships.provider.data.id.uuid;
+};
+
+const getCustomerId = transaction => {
+  return transaction.relationships.customer.data.id.uuid;
+};
+
+// eslint-disable-next-line no-unused-vars
+const isShipping = transaction => {
+  return transaction?.attributes?.protectedData?.deliveryMethod === 'shipping';
+};
+
+// eslint-disable-next-line no-unused-vars
+const isPickup = transaction => {
+  return transaction?.attributes?.protectedData?.deliveryMethod === 'pickup';
+};
+
 const handleTransactionInitiated = async shEvent => {
   const transactionId = shEvent.attributes.resourceId;
   console.log(`Transaction initiated event ID=${shEvent.id.uuid} tx ID=${transactionId.uuid}`);
   const transaction = shEvent.attributes.resource;
   // console.log('transaction=', JSON.stringify(transaction,null,2));
 
-  const providerId = transaction.relationships.provider.data.id.uuid;
-
-  /*
-  const customerId = transaction.relationships.customer.data.id.uuid;
-  const customerResponse = await showUser(customerId);
-  const customer = customerResponse.data.data;
-  */
+  const providerId = getProviderId(transaction);
 
   const notification = {
     app_id: oneSignalClientAppId,
@@ -61,14 +90,54 @@ const handleTransactionInitiated = async shEvent => {
     include_external_user_ids: [providerId],
   };
 
-  const oneSignalRes = await oneSignalClient.createNotification(notification);
-  if (oneSignalRes.body.id === '') {
-    const err = new Error('Failed create notification');
-    err.data = {
-      notification,
-      errors: oneSignalRes.body.errors,
-    };
-    throw err;
+  oneSignalCreateNotification(notification);
+};
+
+const handleTransitionAccept = async transaction => {
+  console.log(`Transaction tx ID=${transaction.id.uuid} transition/accept`);
+  const providerId = getProviderId(transaction);
+  const customerId = getCustomerId(transaction);
+  const provider = await showUser(providerId);
+  const providerPublicData = provider.attributes.profile.publicData || {};
+  const preparationTime = providerPublicData.preparationTime;
+  const mealIsReadyTime = providerPublicData.mealIsReadyTime;
+  const deliveryTime = providerPublicData.deliveryTime;
+  const deliveryFromAddress = providerPublicData.deliveryFromAddress;
+  const notification = {
+    app_id: oneSignalClientAppId,
+    channel_for_external_user_ids: 'push',
+    include_external_user_ids: [customerId],
+  };
+
+  if (isPickup(transaction)) {
+    notification.headings = tr('push.TransitionAccept.pickup.heading');
+    notification.contents = tr('push.TransitionAccept.pickup.content', {
+      preparationTime,
+      mealIsReadyTime,
+      deliveryFromAddress,
+    });
+  } else {
+    notification.headings = tr('push.TransitionAccept.shipping.heading');
+    notification.contents = tr('push.TransitionAccept.shipping.content', {
+      preparationTime,
+      deliveryTime,
+    });
+  }
+
+  oneSignalCreateNotification(notification);
+};
+
+const handleTransactionTransitioned = shEvent => {
+  const transactionId = shEvent.attributes.resourceId;
+  console.log(`Transaction transitioned event ID=${shEvent.id.uuid} tx ID=${transactionId.uuid}`);
+  const { resource } = shEvent.attributes;
+  const { lastTransition } = resource.attributes;
+  switch (lastTransition) {
+    case 'transition/accept':
+      return handleTransitionAccept(resource);
+
+    default:
+      break;
   }
 };
 
@@ -83,6 +152,7 @@ const handleMessageCreated = async shEvent => {
 module.exports = {
   integrationSdk,
   handleTransactionInitiated,
+  handleTransactionTransitioned,
   handleBookingCreated,
   handleMessageCreated,
 };

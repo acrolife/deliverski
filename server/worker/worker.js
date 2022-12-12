@@ -7,6 +7,7 @@ const { handleEventsQueue, pollEventsQueue } = require('./queues');
 const {
   integrationSdk,
   handleTransactionInitiated,
+  handleTransactionTransitioned,
   handleBookingCreated,
   handleMessageCreated,
 } = require('./handlers');
@@ -38,12 +39,14 @@ const querySharetribeEvents = args => {
 
 const analyzeSharetribeEvent = shEvent => {
   const { eventType } = shEvent.attributes;
-  //console.log('shEvent=', JSON.stringify(shEvent,null,2));
+  //console.log('shEvent=', JSON.stringify(shEvent, null, 2));
   //console.log('event=', eventType, shEvent.attributes.createdAt, shEvent.attributes.sequenceId);
 
   switch (eventType) {
     case 'transaction/initiated':
       return handleTransactionInitiated(shEvent);
+    case 'transaction/transitioned':
+      return handleTransactionTransitioned(shEvent);
     case 'booking/created':
       return handleBookingCreated(shEvent);
     case 'message/created':
@@ -65,7 +68,7 @@ pollEventsQueue.process(async (_, done) => {
         ? { startAfterSequenceId: sequenceId }
         : { createdAtStart: startTime };
     /* Uncomment this if you want read all transactions from 2022-12-04 over and over again
-    const params = { createdAtStart: new Date('2022-12-04') };
+    const params = { createdAtStart: new Date('2022-12-07') };
     */
 
     const res = await querySharetribeEvents(params);
@@ -93,7 +96,7 @@ handleEventsQueue.process(async ({ data: shEvent }, done) => {
     await analyzeSharetribeEvent(shEvent);
     done();
   } catch (error) {
-    log.error(error, 'handle-event-error', { sharetribeEvent: shEvent, data: error.data });
+    log.error(error, 'handle-event-error', { sharetribeEvent: shEvent.id.uuid, data: error.data });
     done(new Error(error));
   }
 });
