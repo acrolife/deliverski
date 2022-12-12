@@ -372,3 +372,7 @@ line-height: 32px;
   color: rgb(34, 255, 60);
   font-weight: 800;
 } 
+
+.selectField {
+  margin-bottom: 20px;
+}
