@@ -29,6 +29,11 @@ export const TRANSITION_CONFIRM_PAYMENT = 'transition/confirm-payment';
 // the transaction will expire automatically.
 export const TRANSITION_EXPIRE_PAYMENT = 'transition/expire-payment';
 
+// When the provider accepts or declines a transaction from the
+// SalePage, it is transitioned with the accept or decline transition.
+export const TRANSITION_ACCEPT = 'transition/accept';
+export const TRANSITION_DECLINE = 'transition/decline';
+
 // Provider can mark the product shipped/delivered
 export const TRANSITION_MARK_DELIVERED = 'transition/mark-delivered';
 
@@ -107,6 +112,8 @@ const STATE_INITIAL = 'initial';
 const STATE_ENQUIRY = 'enquiry';
 const STATE_PENDING_PAYMENT = 'pending-payment';
 const STATE_PAYMENT_EXPIRED = 'payment-expired';
+const STATE_PREAUTHORIZED = 'preauthorized';
+const STATE_DECLINED = 'declined';
 const STATE_PURCHASED = 'purchased';
 const STATE_DELIVERED = 'delivered';
 const STATE_RECEIVED = 'received';
@@ -159,11 +166,20 @@ const stateDescription = {
     [STATE_PENDING_PAYMENT]: {
       on: {
         [TRANSITION_EXPIRE_PAYMENT]: STATE_PAYMENT_EXPIRED,
-        [TRANSITION_CONFIRM_PAYMENT]: STATE_PURCHASED,
+        [TRANSITION_CONFIRM_PAYMENT]: STATE_PREAUTHORIZED,
       },
     },
 
     [STATE_PAYMENT_EXPIRED]: {},
+    [STATE_PREAUTHORIZED]: {
+      on: {
+        [TRANSITION_DECLINE]: STATE_DECLINED,
+        [TRANSITION_EXPIRE_PAYMENT]: STATE_PAYMENT_EXPIRED,
+        [TRANSITION_ACCEPT]: STATE_PURCHASED,
+      },
+    },
+
+    [STATE_DECLINED]: {},
     [STATE_PURCHASED]: {
       on: {
         [TRANSITION_MARK_DELIVERED]: STATE_DELIVERED,
@@ -277,6 +293,14 @@ export const txIsPaymentExpired = tx =>
 export const txIsPurchased = tx =>
   getTransitionsToState(STATE_PURCHASED).includes(txLastTransition(tx));
 
+// Note: state name used in Marketplace API docs (and here) is actually preauthorized
+// However, word "requested" is used in many places so that we decided to keep it.
+export const txIsRequested = tx =>
+  getTransitionsToState(STATE_PREAUTHORIZED).includes(txLastTransition(tx));
+
+export const txIsDeclined = tx =>
+  getTransitionsToState(STATE_DECLINED).includes(txLastTransition(tx));
+
 export const txIsCanceled = tx =>
   getTransitionsToState(STATE_CANCELED).includes(txLastTransition(tx));
 
@@ -351,6 +375,8 @@ export const getReview2Transition = isCustomer =>
 // The first transition and most of the expiration transitions made by system are not relevant
 export const isRelevantPastTransition = transition => {
   return [
+    TRANSITION_ACCEPT,
+    TRANSITION_DECLINE,
     TRANSITION_CONFIRM_PAYMENT,
     TRANSITION_AUTO_CANCEL,
     TRANSITION_CANCEL,

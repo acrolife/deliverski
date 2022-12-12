@@ -8,6 +8,8 @@ import config from '../../config';
 import { FormattedMessage, injectIntl, intlShape } from '../../util/reactIntl';
 import {
   txIsCanceled,
+  txIsDeclined,
+  txIsRequested,
   txIsEnquired,
   txIsPurchased,
   txIsDelivered,
@@ -20,7 +22,7 @@ import {
   // txIsReviewedByProvider,
   // txIsReviewed,
 } from '../../util/transaction';
-import { propTypes, DATE_TYPE_DATE } from '../../util/types';
+import { propTypes /*, DATE_TYPE_DATE*/ } from '../../util/types';
 import { ensureCurrentUser } from '../../util/data';
 import { formatDateIntoPartials } from '../../util/dates';
 import { getMarketplaceEntities } from '../../ducks/marketplaceData.duck';
@@ -39,7 +41,7 @@ import {
   LayoutWrapperFooter,
   Footer,
   IconSpinner,
-  UserDisplayName,
+  // UserDisplayName,
 } from '../../components';
 
 import TopbarContainer from '../../containers/TopbarContainer/TopbarContainer';
@@ -59,6 +61,28 @@ export const txState = (intl, tx, type) => {
         id: 'InboxPage.stateEnquiry',
       }),
     };
+  } else if (txIsRequested(tx)) {
+    const requested = isOrder
+      ? {
+          nameClassName: css.nameNotEmphasized,
+          bookingClassName: css.bookingNoActionNeeded,
+          lastTransitionedAtClassName: css.lastTransitionedAtEmphasized,
+          stateClassName: css.stateActionNeeded,
+          state: intl.formatMessage({
+            id: 'InboxPage.stateRequested',
+          }),
+        }
+      : {
+          nameClassName: css.nameEmphasized,
+          bookingClassName: css.bookingActionNeeded,
+          lastTransitionedAtClassName: css.lastTransitionedAtEmphasized,
+          stateClassName: css.stateActionNeeded,
+          state: intl.formatMessage({
+            id: 'InboxPage.statePending',
+          }),
+        };
+
+    return requested;
   } else if (txIsPaymentPending(tx)) {
     return {
       stateClassName: isOrder ? css.stateActionNeeded : css.stateNoActionNeeded,
@@ -71,6 +95,16 @@ export const txState = (intl, tx, type) => {
       stateClassName: css.stateNoActionNeeded,
       state: intl.formatMessage({
         id: 'InboxPage.statePaymentExpired',
+      }),
+    };
+  } else if (txIsDeclined(tx)) {
+    return {
+      nameClassName: css.nameNotEmphasized,
+      bookingClassName: css.bookingNoActionNeeded,
+      lastTransitionedAtClassName: css.lastTransitionedAtNotEmphasized,
+      stateClassName: css.stateNoActionNeeded,
+      state: intl.formatMessage({
+        id: 'InboxPage.stateDeclined',
       }),
     };
   } else if (txIsCanceled(tx)) {
@@ -155,7 +189,7 @@ export const InboxItem = props => {
   const quantity = unitPurchase ? unitPurchase.quantity.toString() : null;
 
   const otherUser = isOrder ? provider : customer;
-  const otherUserDisplayName = <UserDisplayName user={otherUser} intl={intl} />;
+  // const otherUserDisplayName = <UserDisplayName user={otherUser} intl={intl} />;
   const isOtherUserBanned = otherUser.attributes.banned;
 
   const isSaleNotification = !isOrder && txIsPurchased(tx);

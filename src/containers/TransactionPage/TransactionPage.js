@@ -35,6 +35,8 @@ import ReviewModal from './ReviewModal/ReviewModal';
 import TransactionPanel from './TransactionPanel/TransactionPanel';
 
 import {
+  acceptSale,
+  declineSale,
   dispute,
   markReceived,
   markReceivedFromPurchased,
@@ -81,6 +83,12 @@ export const TransactionPageComponent = props => {
     sendReviewInProgress,
     transaction,
     transactionRole,
+    acceptInProgress,
+    acceptSaleError,
+    declineInProgress,
+    declineSaleError,
+    onAcceptSale,
+    onDeclineSale,
     disputeInProgress,
     disputeError,
     onDispute,
@@ -136,6 +144,7 @@ export const TransactionPageComponent = props => {
     currentTransaction.attributes.lineItems
   ) {
     const currentBooking = ensureListing(currentTransaction.booking);
+    const apiTimeZone = 'Etc/UTC';
     const bookingDatesMaybe = currentBooking.id
       ? {
           bookingDates: {
@@ -149,7 +158,6 @@ export const TransactionPageComponent = props => {
         }
       : {};
 
-    const apiTimeZone = 'Etc/UTC';
     const initialValues = {
       listing: currentListing,
       // Transaction with payment pending should be passed to CheckoutPage
@@ -319,6 +327,12 @@ export const TransactionPageComponent = props => {
       onOpenReviewModal={onOpenReviewModal}
       onOpenDisputeModal={onOpenDisputeModal}
       transactionRole={transactionRole}
+      onAcceptSale={onAcceptSale}
+      onDeclineSale={onDeclineSale}
+      acceptInProgress={acceptInProgress}
+      declineInProgress={declineInProgress}
+      acceptSaleError={acceptSaleError}
+      declineSaleError={declineSaleError}
       markReceivedProps={{
         inProgress: markReceivedInProgress,
         error: markReceivedError,
@@ -418,6 +432,8 @@ export const TransactionPageComponent = props => {
 TransactionPageComponent.defaultProps = {
   currentUser: null,
   fetchTransactionError: null,
+  acceptSaleError: null,
+  declineSaleError: null,
   disputeError: null,
   markDeliveredError: null,
   markReceivedError: null,
@@ -438,6 +454,12 @@ TransactionPageComponent.propTypes = {
   transactionRole: oneOf([PROVIDER, CUSTOMER]).isRequired,
   currentUser: propTypes.currentUser,
   fetchTransactionError: propTypes.error,
+  acceptSaleError: propTypes.error,
+  declineSaleError: propTypes.error,
+  acceptInProgress: bool.isRequired,
+  declineInProgress: bool.isRequired,
+  onAcceptSale: func.isRequired,
+  onDeclineSale: func.isRequired,
   markReceivedInProgress: bool.isRequired,
   markReceivedError: propTypes.error,
   onMarkReceived: func.isRequired,
@@ -488,6 +510,10 @@ TransactionPageComponent.propTypes = {
 const mapStateToProps = state => {
   const {
     fetchTransactionError,
+    acceptSaleError,
+    declineSaleError,
+    acceptInProgress,
+    declineInProgress,
     disputeInProgress,
     disputeError,
     markReceivedInProgress,
@@ -523,6 +549,10 @@ const mapStateToProps = state => {
   return {
     currentUser,
     fetchTransactionError,
+    acceptSaleError,
+    declineSaleError,
+    acceptInProgress,
+    declineInProgress,
     disputeInProgress,
     disputeError,
     markReceivedInProgress,
@@ -555,6 +585,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    onAcceptSale: transactionId => dispatch(acceptSale(transactionId)),
+    onDeclineSale: transactionId => dispatch(declineSale(transactionId)),
     onDispute: (transactionId, disputeReason) => dispatch(dispute(transactionId, disputeReason)),
     onMarkReceived: transactionId => dispatch(markReceived(transactionId)),
     onMarkReceivedFromPurchased: transactionId =>
