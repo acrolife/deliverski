@@ -477,6 +477,7 @@ class ProfileSettingsFormComponent extends Component {
 
               {
                 isProvider && <Modal
+                  id='on_hold_modal'
                   isOpen={this.state.onHoldModalOpen}
                   onClose={() => {
                     setOnHoldModalOpen(false);
