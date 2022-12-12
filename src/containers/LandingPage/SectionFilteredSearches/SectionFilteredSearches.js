@@ -10,7 +10,7 @@ import { NamedLink, Avatar } from '../../../components';
 
 import css from './SectionFilteredSearches.module.css';
 
-import config from '../../../config'
+import config from '../../../config';
 
 // Update images by saving images to src/LandingPage/SeactionFilteredSearches/images directory.
 // If those images have been saved with the same name, no need to make changes to these imports.
@@ -24,32 +24,32 @@ import placeHolderProfileBg from './images/placeHolderProfileBg_648x448.jpg';
 
 // Production vitrine setup
 import { restaurantNameToFilterName } from '../../../util/data';
-import restaurantsData from '../../../assets/data/restaurants'
-import restaurant_1600_labuche from '../../../assets/restaurantsImages/restaurant_1600_labuche.jpg'
-import restaurant_1600_lebistrotdedodo from '../../../assets/restaurantsImages/restaurant_1600_lebistrotdedodo.jpg'
-import restaurant_1600_thefrenchtouch from '../../../assets/restaurantsImages/restaurant_1600_thefrenchtouch.jpg'
-import restaurant_1800_mamiecrepe from '../../../assets/restaurantsImages/restaurant_1800_mamiecrepe.jpg'
+import restaurantsData from '../../../assets/data/restaurants';
+import restaurant_1600_labuche from '../../../assets/restaurantsImages/restaurant_1600_labuche.jpg';
+import restaurant_1600_lebistrotdedodo from '../../../assets/restaurantsImages/restaurant_1600_lebistrotdedodo.jpg';
+import restaurant_1600_thefrenchtouch from '../../../assets/restaurantsImages/restaurant_1600_thefrenchtouch.jpg';
+import restaurant_1800_mamiecrepe from '../../../assets/restaurantsImages/restaurant_1800_mamiecrepe.jpg';
 
-const restaurantUrls = [{
-  url: restaurant_1600_labuche,
-  name: "restaurant_1600_labuche"
-},
-{
-  url: restaurant_1600_lebistrotdedodo,
-  name: "restaurant_1600_lebistrotdedodo"
-},
-{
-  url: restaurant_1600_thefrenchtouch,
-  name: "restaurant_1600_thefrenchtouch"
-},
-{
-  url: restaurant_1800_mamiecrepe,
-  name: "restaurant_1800_mamiecrepe"
-},
+const restaurantUrls = [
+  {
+    url: restaurant_1600_labuche,
+    name: 'restaurant_1600_labuche',
+  },
+  {
+    url: restaurant_1600_lebistrotdedodo,
+    name: 'restaurant_1600_lebistrotdedodo',
+  },
+  {
+    url: restaurant_1600_thefrenchtouch,
+    name: 'restaurant_1600_thefrenchtouch',
+  },
+  {
+    url: restaurant_1800_mamiecrepe,
+    name: 'restaurant_1800_mamiecrepe',
+  },
+];
 
-]
-
-const canonicalRootUrl = config.canonicalRootURL
+const canonicalRootUrl = config.canonicalRootURL;
 
 // Thumbnail image for the search "card"
 class ThumbnailImage extends Component {
@@ -99,35 +99,45 @@ const SectionFilteredSearches = props => {
 
   // Production vitrine will show the restaurants tiles with a link to the restaurant's area on the playground instance
   // TODO Tiles with link to the restaurant's area on the playground instance
-  // TODO Implement: randomize order of appearance, sorting array button, 
+  // TODO Implement: randomize order of appearance, sorting array button,
   const RestaurantTilesVitrine = () => {
+    const canonicalRootUrlProd = canonicalRootUrl.replace('marmott.co', 'playgroud.marmott.co');
+    const restaurantsArc1600 = restaurantsData
+      ? restaurantsData.restaurantsArc1600.filter(e => e[2]).map(e => e[1])
+      : {};
+    const restaurantsArc1800 = restaurantsData
+      ? restaurantsData.restaurantsArc1800.filter(e => e[2]).map(e => e[1])
+      : {};
+    const restaurantsArc1950 = restaurantsData
+      ? restaurantsData.restaurantsArc1950.filter(e => e[2]).map(e => e[1])
+      : {};
+    const restaurantsArc2000 = restaurantsData
+      ? restaurantsData.restaurantsArc2000.filter(e => e[2]).map(e => e[1])
+      : {};
+    const restaurantsFiltered = [
+      ...restaurantsArc1600,
+      ...restaurantsArc1800,
+      ...restaurantsArc2000,
+      ...restaurantsArc1950,
+    ];
 
-    const canonicalRootUrlProd = canonicalRootUrl.replace('marmott.co', 'playgroud.marmott.co')
-    const restaurantsArc1600 = restaurantsData ? restaurantsData.restaurantsArc1600.filter(e => e[2]).map(e => e[1]) : {}
-    const restaurantsArc1800 = restaurantsData ? restaurantsData.restaurantsArc1800.filter(e => e[2]).map(e => e[1]) : {}
-    const restaurantsArc1950 = restaurantsData ? restaurantsData.restaurantsArc1950.filter(e => e[2]).map(e => e[1]) : {}
-    const restaurantsArc2000 = restaurantsData ? restaurantsData.restaurantsArc2000.filter(e => e[2]).map(e => e[1]) : {}
-    const restaurantsFiltered = [...restaurantsArc1600, ...restaurantsArc1800, ...restaurantsArc2000, ...restaurantsArc1950]
-
-    return (
-      [...restaurantsFiltered]
-        .filter(e => (!!e.restaurantImageName))
-        .map(e =>
-
-        (
-          e.restaurantName ?
-            // console.log(restaurantUrls.filter(el => el.name === e.restaurantImageName)[0].url)
-            <FilterLink
-              className={css.listingCard}
-              key={restaurantNameToFilterName(e.restaurantName)}
-              name={e.restaurantName}
-              image={restaurantUrls.filter(el => el.name === e.restaurantImageName)[0].url}
-              link={`${canonicalRootUrlProd}/s?pub_restaurant=${restaurantNameToFilterName(e.restaurantName)}`}
-            />
-            : null)
-        )
-    )
-  }
+    return [...restaurantsFiltered]
+      .filter(e => !!e.restaurantImageName)
+      .map(e =>
+        e.restaurantName ? (
+          // console.log(restaurantUrls.filter(el => el.name === e.restaurantImageName)[0].url)
+          <FilterLink
+            className={css.listingCard}
+            key={restaurantNameToFilterName(e.restaurantName)}
+            name={e.restaurantName}
+            image={restaurantUrls.filter(el => el.name === e.restaurantImageName)[0].url}
+            link={`${canonicalRootUrlProd}/s?pub_restaurant=${restaurantNameToFilterName(
+              e.restaurantName
+            )}`}
+          />
+        ) : null
+      );
+  };
 
   // image={e.restaurantImageName}
 
@@ -137,12 +147,11 @@ const SectionFilteredSearches = props => {
 
     // console.log(userProviders)
 
-    return (
-      userProviders.length > 0 ? [...userProviders]
+    return userProviders.length > 0 ? (
+      [...userProviders]
         // TODO DEV, here we put three times the array to see the result with more providers
         // userProviders.length > 0 ? [...userProviders, ...userProviders, ...userProviders.reverse() ]
-        .map(e =>
-
+        .map(e => (
           // <NamedLink
           //   to={{
           //     search: `?pub_restaurant=${e.attributes.profile.publicData.restaurant}`,
@@ -155,26 +164,32 @@ const SectionFilteredSearches = props => {
           //   <img className={css.listingCard} src={e.profileImage ? e.profileImage.attributes.variants['scaled-medium'].url : placeHolderProfileBg} />
           // </NamedLink>
 
-
-
           <FilterLink
             className={css.listingCard}
             key={e.id.uuid}
             name={e.attributes.profile.publicData.restaurantName}
-            image={e.profileImage ? e.profileImage.attributes.variants['scaled-medium'].url : placeHolderProfileBg}
+            image={
+              e.profileImage
+                ? e.profileImage.attributes.variants['scaled-medium'].url
+                : placeHolderProfileBg
+            }
             link={`${canonicalRootUrl}/s?pub_restaurant=${e.attributes.profile.publicData.restaurant}`}
           />
-        )
+        ))
+    ) : (
+      // : <div>'Pulling data...'</div>
+      <div></div>
+    );
+  };
 
-        // : <div>'Pulling data...'</div>
-        : <div></div>
-    )
+  {
+    /*original image={imageForFilter1} */
   }
 
-  {/*original image={imageForFilter1} */ }
-
-  {/* Not needed here, works with initials. We want it to work with the image. This strucutre works with useProvider2.
-          <Avatar className={css.avatar} user={useProvider2} disableProfileLink />  */}
+  {
+    /* Not needed here, works with initials. We want it to work with the image. This strucutre works with useProvider2.
+          <Avatar className={css.avatar} user={useProvider2} disableProfileLink />  */
+  }
 
   // FilterLink props:
   // - "name" is a string that defines what kind of search the link is going to make
@@ -184,14 +199,15 @@ const SectionFilteredSearches = props => {
   return (
     <div className={classes}>
       <div className={css.title}>
-        {isProduction ? <FormattedMessage id="SectionFilteredSearches.titleRestaurants" /> :
-          <FormattedMessage id="SectionFilteredSearches.title" />}
-
+        {isProduction ? (
+          <FormattedMessage id="SectionFilteredSearches.titleRestaurants" />
+        ) : (
+          <FormattedMessage id="SectionFilteredSearches.title" />
+        )}
       </div>
       {/* <div className={css.filteredSearches} > */}
-      <div className={css.listingCards} >
-
-        {isProduction ? < RestaurantTilesVitrine /> : < RestaurantTiles />}
+      <div className={css.listingCards}>
+        {isProduction ? <RestaurantTilesVitrine /> : <RestaurantTiles />}
 
         {/* className={css.box} */}
         {/* <FilterLink
@@ -209,7 +225,6 @@ const SectionFilteredSearches = props => {
           image={imageForFilter3}
           link="http://localhost:3000/s?pub_size=breakfast"
         /> */}
-
       </div>
     </div>
     //   <div className={classes}>
@@ -237,7 +252,12 @@ const SectionFilteredSearches = props => {
   );
 };
 
-SectionFilteredSearches.defaultProps = { rootClassName: null, className: null, userProviders: [], isProduction: null };
+SectionFilteredSearches.defaultProps = {
+  rootClassName: null,
+  className: null,
+  userProviders: [],
+  isProduction: null,
+};
 
 const { object, arrayOf, string } = PropTypes;
 

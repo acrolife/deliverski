@@ -111,11 +111,11 @@ export class ListingPageComponent extends Component {
     const { bookingDates, quantity: quantityRaw, deliveryMethod, ...otherOrderData } = values;
     const bookingDatesMaybe = bookingDates
       ? {
-        bookingDates: {
-          bookingStart: bookingDates.startDate,
-          bookingEnd: bookingDates.endDate,
-        },
-      }
+          bookingDates: {
+            bookingStart: bookingDates.startDate,
+            bookingEnd: bookingDates.endDate,
+          },
+        }
       : {};
 
     const initialValues = {
@@ -348,11 +348,11 @@ export class ListingPageComponent extends Component {
     const ensuredAuthor = ensureUser(currentAuthor);
 
     // UserCard should be used only in a Provider's listing page or in a product page, so we set restaurantName instead of displayName
-    const restaurantName = ensuredAuthor.attributes.profile.publicData.restaurantName
+    const restaurantName = ensuredAuthor.attributes.profile.publicData.restaurantName;
 
     // When user is banned or deleted the listing is also deleted.
     // Because listing can be never showed with banned or deleted user we don't have to provide
-    // banned or deleted display names for the function    
+    // banned or deleted display names for the function
     const authorDisplayName = userDisplayNameAsString(ensuredAuthor, '');
 
     const { formattedPrice, priceTitle } = priceData(price, intl);
@@ -428,9 +428,11 @@ export class ListingPageComponent extends Component {
         </span>
       ) : null;
 
-      const restaurantStatus = isRestaurantOpen(currentListing?.author?.attributes.profile.publicData);
-      const isRestaurantOnHold = restaurantStatus?.onHold;
-  
+    const restaurantStatus = isRestaurantOpen(
+      currentListing?.author?.attributes.profile.publicData
+    );
+    const isRestaurantOnHold = restaurantStatus?.onHold;
+
     return (
       <Page
         title={schemaTitle}
@@ -485,7 +487,6 @@ export class ListingPageComponent extends Component {
                     showContactUser={showContactUser}
                     onContactUser={this.onContactUser}
                     restaurantStatus={restaurantStatus}
-
                   />
                 </div>
                 <SectionDescriptionMaybe description={description} listingTitle={richTitle} />
@@ -677,10 +678,7 @@ const mapDispatchToProps = dispatch => ({
 // See: https://github.com/ReactTraining/react-router/issues/4671
 const ListingPage = compose(
   withRouter,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   injectIntl
 )(ListingPageComponent);
 

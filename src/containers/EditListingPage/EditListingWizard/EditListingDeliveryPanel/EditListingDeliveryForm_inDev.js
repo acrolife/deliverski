@@ -140,7 +140,7 @@ export const EditListingDeliveryFormComponent = props => (
               label={titleRequiredMessage}
               // validate={isFromLesArcs(values.location)}
               disabled={true}
-            /> 
+            />
 
             {/* 
             Originally field.
@@ -197,7 +197,7 @@ export const EditListingDeliveryFormComponent = props => (
             className={css.deliveryCheckbox}
             name="deliveryOptions"
             label={shippingLabel}
-            value={"shipping"}
+            value={'shipping'}
           />
 
           <div className={shippingClasses}>
@@ -216,10 +216,10 @@ export const EditListingDeliveryFormComponent = props => (
               validate={
                 shippingEnabled
                   ? required(
-                    intl.formatMessage({
-                      id: 'EditListingDeliveryForm.shippingOneItemRequired',
-                    })
-                  )
+                      intl.formatMessage({
+                        id: 'EditListingDeliveryForm.shippingOneItemRequired',
+                      })
+                    )
                   : null
               }
               hideErrorMessage={!shippingEnabled}

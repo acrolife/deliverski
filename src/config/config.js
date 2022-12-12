@@ -9,9 +9,11 @@ const dev = process.env.REACT_APP_ENV === 'development';
 // If you want to change the language, remember to also change the
 // locale data and the messages in the app.js file.
 // const locale = 'fr';
-const locale = process.env.REACT_APP_LOCALE ? process.env.REACT_APP_LOCALE.toLowerCase() : 'en'
-const localeSwitch = process.env.REACT_APP_LOCALE_SWITCH ? process.env.REACT_APP_LOCALE_SWITCH.toLowerCase() : null
-const urlSwitchLang = localeSwitch ? process.env.REACT_APP_URL_SWITCH : null
+const locale = process.env.REACT_APP_LOCALE ? process.env.REACT_APP_LOCALE.toLowerCase() : 'en';
+const localeSwitch = process.env.REACT_APP_LOCALE_SWITCH
+  ? process.env.REACT_APP_LOCALE_SWITCH.toLowerCase()
+  : null;
+const urlSwitchLang = localeSwitch ? process.env.REACT_APP_URL_SWITCH : null;
 
 // DEV
 // console.log("locale", locale)
@@ -56,11 +58,11 @@ const sortSearchByDistance = false;
 // In a way, 'processAlias' defines which transaction process (or processes)
 // this particular web application is able to handle.
 
-
 // Original
 // const transactionProcessAlias = 'flex-product-default-process/release-1';
 // New versions
-const transactionProcessAlias = 'flex-product-default-process/auto-delivered-120--auto-received-90-prod-v3';
+const transactionProcessAlias =
+  'flex-product-default-process/auto-delivered-120--auto-received-90-prod-v3';
 // DEV
 // const transactionProcessAlias = 'flex-product-default-process/auto-delivered-120--auto-received-90-test';
 // const transactionProcessAlias = 'flex-product-default-process/dev-periods-chge-90-v10';
@@ -141,7 +143,7 @@ const postalCode = '73700';
 const streetAddress = 'Rue de la Chaudanne';
 
 // Canonical root url is needed in social media sharing and SEO optimization purposes.
-const canonicalRootURL = process.env.REACT_APP_CANONICAL_ROOT_URL 
+const canonicalRootURL = process.env.REACT_APP_CANONICAL_ROOT_URL;
 
 // Site title is needed in meta tags (bots and social media sharing reads those)
 const siteTitle = 'Marmott';

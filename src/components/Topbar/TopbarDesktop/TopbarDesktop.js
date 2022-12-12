@@ -19,14 +19,14 @@ import {
   ExternalLink,
 } from '../../../components';
 
-import LangIconPng from '../../../assets/icons/lang-icon-en-fr.png'
+import LangIconPng from '../../../assets/icons/lang-icon-en-fr.png';
 import TopbarSearchForm from '../TopbarSearchForm/TopbarSearchForm';
 
 import css from './TopbarDesktop.module.css';
 
 // Custom implementation of the langage switcher
-const urlSwitchLang = config.urlSwitchLang
-const langageSwitch = config.locale === 'en' ? 'Français' : 'English'
+const urlSwitchLang = config.urlSwitchLang;
+const langageSwitch = config.locale === 'en' ? 'Français' : 'English';
 
 const TopbarDesktop = props => {
   const {
@@ -42,7 +42,7 @@ const TopbarDesktop = props => {
     onLogout,
     onSearchSubmit,
     initialSearchFormValues,
-    history
+    history,
   } = props;
   const [mounted, setMounted] = useState(false);
 
@@ -54,14 +54,14 @@ const TopbarDesktop = props => {
   const isAuthenticatedOrJustHydrated = isAuthenticated || !mounted;
 
   // Conditional rendering of the provider/customer UI elements
-  const isProvider = currentUser ? !!currentUser.attributes.profile.metadata.isProvider : false
+  const isProvider = currentUser ? !!currentUser.attributes.profile.metadata.isProvider : false;
 
   const classes = classNames(rootClassName || css.root, className);
-  const restaurant = 'veggielesarcs'
+  const restaurant = 'veggielesarcs';
 
   const searchParamMyRestaurant = {
-    search: `?pub_restaurant=${restaurant}`
-  }
+    search: `?pub_restaurant=${restaurant}`,
+  };
 
   const search = (
     <TopbarSearchForm
@@ -89,22 +89,25 @@ const TopbarDesktop = props => {
   ) : null;
 
   // Change profileMenuIsOpen
-  const langLink = (<Menu>
+  const langLink = (
+    <Menu>
+      <MenuLabel
+        className={css.langageMenuLabelDesktop}
+        isOpenClassName={css.langageMenuIsOpenDesktop}
+      >
+        <img className={css.langIconDesktop} src={LangIconPng} />
+      </MenuLabel>
 
-    <MenuLabel className={css.langageMenuLabelDesktop} isOpenClassName={css.langageMenuIsOpenDesktop}>
-      <img className={css.langIconDesktop} src={LangIconPng} />
-    </MenuLabel>
-
-    <MenuContent className={css.langageMenuContentDesktop} >
-      {/* CAUTION menuItemLangDesktop is an empty class */}
-      <MenuItem key="ChangeLangage" className={css.menuItemLangDesktop}>
-        <ExternalLink href={urlSwitchLang} className={css.langLinkDesktop}>
-          {langageSwitch}
-        </ExternalLink >
-      </MenuItem>
-    </MenuContent>
-  </Menu>);
-
+      <MenuContent className={css.langageMenuContentDesktop}>
+        {/* CAUTION menuItemLangDesktop is an empty class */}
+        <MenuItem key="ChangeLangage" className={css.menuItemLangDesktop}>
+          <ExternalLink href={urlSwitchLang} className={css.langLinkDesktop}>
+            {langageSwitch}
+          </ExternalLink>
+        </MenuItem>
+      </MenuContent>
+    </Menu>
+  );
 
   const currentPageClass = page => {
     const isAccountSettingsPage =
@@ -118,28 +121,28 @@ const TopbarDesktop = props => {
         <Avatar className={css.avatar} user={currentUser} disableProfileLink />
       </MenuLabel>
       <MenuContent className={css.profileMenuContent}>
-
-
         <MenuItem key="ManageListingsPage">
-          {isProvider &&
+          {isProvider && (
             <NamedLink
               className={classNames(css.yourListingsLink, currentPageClass('ManageListingsPage'))}
               name="ManageListingsPage"
             >
               <span className={css.menuItemBorder} />
               <FormattedMessage id="TopbarDesktop.yourListingsLink" />
-            </NamedLink>}
+            </NamedLink>
+          )}
         </MenuItem>
 
         <MenuItem key="NewListingPage">
-          {isProvider &&
+          {isProvider && (
             <NamedLink
               className={classNames(css.yourListingsLink, currentPageClass('NewListingPage'))}
               name="NewListingPage"
             >
               <span className={css.menuItemBorder} />
               <FormattedMessage id="TopbarDesktop.newListingLink" />
-            </NamedLink>}
+            </NamedLink>
+          )}
         </MenuItem>
 
         {/* <MenuItem key="SearchRestaurantPage">
@@ -200,7 +203,6 @@ const TopbarDesktop = props => {
 
   return (
     <nav className={classes}>
-
       <NamedLink className={css.logoLink} name="LandingPage">
         <Logo
           format="desktop"
@@ -211,21 +213,17 @@ const TopbarDesktop = props => {
 
       {search}
 
-      {
-        isProvider && <NamedLink className={css.manageListingsLink} name="ManageListingsPage">
+      {isProvider && (
+        <NamedLink className={css.manageListingsLink} name="ManageListingsPage">
           <span className={css.manageListings}>
             <FormattedMessage id="TopbarDesktop.manageListings" />
           </span>
         </NamedLink>
-      }
+      )}
 
       {inboxLink}
 
-      <ShoppingCart
-        intl={intl}
-        history={history}
-        currentUser={currentUser}
-      />
+      <ShoppingCart intl={intl} history={history} currentUser={currentUser} />
 
       {langLink}
 

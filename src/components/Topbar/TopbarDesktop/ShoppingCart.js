@@ -31,23 +31,18 @@ const minOrderAmount = process.env.REACT_APP_MIN_CHECKOUT_AMOUNT;
 const { UUID } = sdkTypes;
 const sharetribeSdk = require('sharetribe-flex-sdk');
 const sdk = sharetribeSdk.createInstance({
-  clientId: process.env.REACT_APP_SHARETRIBE_SDK_CLIENT_ID
+  clientId: process.env.REACT_APP_SHARETRIBE_SDK_CLIENT_ID,
 });
 
 const { Money } = sdkTypes;
-const locale = config.locale
-const localePath = locale ? `/${locale}` : ''
+const locale = config.locale;
+const localePath = locale ? `/${locale}` : '';
 
 // Manage redirection
-const onClickAfterAddToCart = `${localePath}/s`
+const onClickAfterAddToCart = `${localePath}/s`;
 
-const ShoppingCartComponent = (props) => {
-
-  const {
-    mobile,
-    intl,
-    callSetInitialValues
-  } = props;
+const ShoppingCartComponent = props => {
+  const { mobile, intl, callSetInitialValues } = props;
 
   const [isOpen, setIsOpen] = useState(false);
   const [shoppingCartItems, setShoppingCartItems] = useState([]);
@@ -56,128 +51,144 @@ const ShoppingCartComponent = (props) => {
 
   // # Useeffect ----------------------------------------------------------------------- #
   useEffect(() => {
-    sdk.currentUser.show().then(res => {
-      setCurrentUser(res.data.data)
-      const shoppingCart = res.data.data.attributes.profile.publicData.shoppingCart;
-      if (shoppingCart && shoppingCart?.length > 0) {
-        setShoppingCartItems(shoppingCart.map(item => {
-          return ({
-            listing: JSON.parse(item.listing),
-            checkoutValues: JSON.parse(item.checkoutValues)
-          })
-        }))
-      }
-    }).catch(e => {
-      if (typeof window !== 'undefined') {
-        const shoppingCart = JSON.parse(window.sessionStorage.getItem('shoppingCart'));
-
+    sdk.currentUser
+      .show()
+      .then(res => {
+        setCurrentUser(res.data.data);
+        const shoppingCart = res.data.data.attributes.profile.publicData.shoppingCart;
         if (shoppingCart && shoppingCart?.length > 0) {
-          setShoppingCartItems(shoppingCart.map(item => {
-            return ({
-              listing: JSON.parse(typeof item.listing === 'string' ? item.listing : JSON.stringify(item.listing)),
-              checkoutValues: JSON.parse(typeof item.checkoutValues === 'string' ? item.checkoutValues : JSON.stringify(item.checkoutValues))
+          setShoppingCartItems(
+            shoppingCart.map(item => {
+              return {
+                listing: JSON.parse(item.listing),
+                checkoutValues: JSON.parse(item.checkoutValues),
+              };
             })
-          }))
+          );
         }
+      })
+      .catch(e => {
+        if (typeof window !== 'undefined') {
+          const shoppingCart = JSON.parse(window.sessionStorage.getItem('shoppingCart'));
 
-      }
-      return console.log(e)
-    })
-  }, [isOpen])
+          if (shoppingCart && shoppingCart?.length > 0) {
+            setShoppingCartItems(
+              shoppingCart.map(item => {
+                return {
+                  listing: JSON.parse(
+                    typeof item.listing === 'string' ? item.listing : JSON.stringify(item.listing)
+                  ),
+                  checkoutValues: JSON.parse(
+                    typeof item.checkoutValues === 'string'
+                      ? item.checkoutValues
+                      : JSON.stringify(item.checkoutValues)
+                  ),
+                };
+              })
+            );
+          }
+        }
+        return console.log(e);
+      });
+  }, [isOpen]);
 
   // # Delete all items ---------------------------------------------------------------- #
-  const deleteAllItems = (id) => {
-
-    let newShoppingCart = [...shoppingCartItems]
+  const deleteAllItems = id => {
+    let newShoppingCart = [...shoppingCartItems];
 
     const indexOfRemovingItem = newShoppingCart.findIndex(item => {
-      return item.listing.id.uuid === id
-    })
+      return item.listing.id.uuid === id;
+    });
 
     if (indexOfRemovingItem > -1) {
       newShoppingCart.splice(indexOfRemovingItem, 1); // 2nd parameter means remove one item only
     }
 
     if (currentUser) {
-      return sdk.currentUser.updateProfile({
-        publicData: {
-          shoppingCart: newShoppingCart.map(item => {
-            return ({
-              listing: JSON.stringify({ ...item.listing }),
-              checkoutValues: JSON.stringify({ ...item.checkoutValues })
-            })
-          })
-        },
-      }).then(res => {
-        setShoppingCartItems(newShoppingCart)
-      }).catch(e => console.log(e))
+      return sdk.currentUser
+        .updateProfile({
+          publicData: {
+            shoppingCart: newShoppingCart.map(item => {
+              return {
+                listing: JSON.stringify({ ...item.listing }),
+                checkoutValues: JSON.stringify({ ...item.checkoutValues }),
+              };
+            }),
+          },
+        })
+        .then(res => {
+          setShoppingCartItems(newShoppingCart);
+        })
+        .catch(e => console.log(e));
     } else {
-      window.sessionStorage.setItem('shoppingCart', JSON.stringify(newShoppingCart))
-      setShoppingCartItems(newShoppingCart)
+      window.sessionStorage.setItem('shoppingCart', JSON.stringify(newShoppingCart));
+      setShoppingCartItems(newShoppingCart);
     }
-
-  }
+  };
 
   // # Add one item -------------------------------------------------------------------- #
-  const addOneItem = (id) => {
-    let newShoppingCart = [...shoppingCartItems]
+  const addOneItem = id => {
+    let newShoppingCart = [...shoppingCartItems];
     newShoppingCart.map(item => {
-      let newItem = { ...item }
+      let newItem = { ...item };
       if (newItem.listing.id.uuid === id) {
         // Validation: if cart cardinality for this item = current stock, can't add an item
-        const currentCartItemCardinality = Number(newItem.checkoutValues.quantity) 
-        const itemCurrentStock = Number(newItem?.listing.currentStock?.attributes?.quantity)
+        const currentCartItemCardinality = Number(newItem.checkoutValues.quantity);
+        const itemCurrentStock = Number(newItem?.listing.currentStock?.attributes?.quantity);
         if (currentCartItemCardinality < itemCurrentStock) {
           // New value from the selected operation (soustraction)
-          newItem.checkoutValues.quantity = (Number(newItem.checkoutValues.quantity) + 1).toString();
-        }   
-      }   
-      return newItem
-    })
+          newItem.checkoutValues.quantity = (
+            Number(newItem.checkoutValues.quantity) + 1
+          ).toString();
+        }
+      }
+      return newItem;
+    });
 
     if (currentUser) {
-      return sdk.currentUser.updateProfile({
-        publicData: {
-          shoppingCart: newShoppingCart.map(item => {
-            return ({
-              listing: JSON.stringify({ ...item.listing }),
-              checkoutValues: JSON.stringify({ ...item.checkoutValues })
-            })
-          })
-        },
-      }).then(res => {
-        setShoppingCartItems(newShoppingCart)
-      }).catch(e => console.log(e))
+      return sdk.currentUser
+        .updateProfile({
+          publicData: {
+            shoppingCart: newShoppingCart.map(item => {
+              return {
+                listing: JSON.stringify({ ...item.listing }),
+                checkoutValues: JSON.stringify({ ...item.checkoutValues }),
+              };
+            }),
+          },
+        })
+        .then(res => {
+          setShoppingCartItems(newShoppingCart);
+        })
+        .catch(e => console.log(e));
     } else {
-      window.sessionStorage.setItem('shoppingCart', JSON.stringify(newShoppingCart))
-      setShoppingCartItems(newShoppingCart)
+      window.sessionStorage.setItem('shoppingCart', JSON.stringify(newShoppingCart));
+      setShoppingCartItems(newShoppingCart);
     }
+  };
 
-  }
-
-  // # Remove one item ----------------------------------------------------------------- # 
-  const removeOneItem = (id) => {
+  // # Remove one item ----------------------------------------------------------------- #
+  const removeOneItem = id => {
     let newShoppingCart = [...shoppingCartItems];
 
     const foundItem = newShoppingCart.find(item => {
-      return item.listing.id.uuid === id
+      return item.listing.id.uuid === id;
     });
 
     const isQuantityOne = Number(foundItem.checkoutValues.quantity) === 1;
 
     if (isQuantityOne) {
-      return deleteAllItems(id)
+      return deleteAllItems(id);
     } else {
-
       // Mapping action on all the elements of the cart array
       newShoppingCart.map(item => {
-
-        let newItem = { ...item }
+        let newItem = { ...item };
 
         // If the item targetted by the operation if the right one
         if (newItem.listing.id.uuid === id) {
-
-          newItem.checkoutValues.quantity = (Number(newItem.checkoutValues.quantity) - 1).toString();
+          newItem.checkoutValues.quantity = (
+            Number(newItem.checkoutValues.quantity) - 1
+          ).toString();
 
           /* Do we wan this behaviour ?
           // Validation: user can substract items until there remains one, then should use delete
@@ -189,41 +200,48 @@ const ShoppingCartComponent = (props) => {
           }
           */
         }
-        return newItem
-      })
+        return newItem;
+      });
 
       if (currentUser) {
-        return sdk.currentUser.updateProfile({
-          publicData: {
-            shoppingCart: newShoppingCart.map(item => {
-              return ({
-                listing: JSON.stringify({ ...item.listing }),
-                checkoutValues: JSON.stringify({ ...item.checkoutValues })
-              })
-            })
-          },
-        }).then(res => {
-          setShoppingCartItems(newShoppingCart)
-        }).catch(e => console.log(e))
+        return sdk.currentUser
+          .updateProfile({
+            publicData: {
+              shoppingCart: newShoppingCart.map(item => {
+                return {
+                  listing: JSON.stringify({ ...item.listing }),
+                  checkoutValues: JSON.stringify({ ...item.checkoutValues }),
+                };
+              }),
+            },
+          })
+          .then(res => {
+            setShoppingCartItems(newShoppingCart);
+          })
+          .catch(e => console.log(e));
       } else {
-        window.sessionStorage.setItem('shoppingCart', JSON.stringify(newShoppingCart))
-        setShoppingCartItems(newShoppingCart)
+        window.sessionStorage.setItem('shoppingCart', JSON.stringify(newShoppingCart));
+        setShoppingCartItems(newShoppingCart);
       }
-
     }
-
-  }
+  };
 
   // # Managing totla price and amounts ------------------------------------------------ #
-  let totalPrice
-  let totalOrderAmount = 0
+  let totalPrice;
+  let totalOrderAmount = 0;
 
   if (shoppingCartItems.length > 0) {
-    const amountsArray = shoppingCartItems.map(i => { return i.listing.attributes.price.amount * Number(i.checkoutValues.quantity) });
+    const amountsArray = shoppingCartItems.map(i => {
+      return i.listing.attributes.price.amount * Number(i.checkoutValues.quantity);
+    });
     const totalAmount = amountsArray.reduce(
-      (previousValue, currentValue) => previousValue + currentValue, 0);
-    totalOrderAmount = totalAmount
-    totalPrice = intl ? formatMoney(intl, new Money(totalAmount, config.currency)) : `${totalAmount / 100} ${config.currency}`;
+      (previousValue, currentValue) => previousValue + currentValue,
+      0
+    );
+    totalOrderAmount = totalAmount;
+    totalPrice = intl
+      ? formatMoney(intl, new Money(totalAmount, config.currency))
+      : `${totalAmount / 100} ${config.currency}`;
   }
 
   const isBelowMininumAmount = totalOrderAmount < Number(minOrderAmount) * 100;
@@ -235,9 +253,7 @@ const ShoppingCartComponent = (props) => {
   // # Checkout operations ------------------------------------------------------------- #
   const toCheckout = () => {
     if (currentUser) {
-      const {
-        history,
-      } = props;
+      const { history } = props;
       const listingId = new UUID(shoppingCartItems[0].listing.id.uuid);
       const listing = shoppingCartItems[0].listing;
 
@@ -277,79 +293,88 @@ const ShoppingCartComponent = (props) => {
         )
       );
     } else {
-      setNotLoggedInWarning(true)
+      setNotLoggedInWarning(true);
     }
-
-  }
+  };
 
   // #  shippingItem and quantityTotal ------------------------------------------------- #
   const shippingItem = shoppingCartItems.find(item => {
-    return item.checkoutValues.deliveryMethod === "shipping"
-  })
+    return item.checkoutValues.deliveryMethod === 'shipping';
+  });
 
   let quantityTotal = 0;
 
   shoppingCartItems.forEach(item => {
-    quantityTotal += Number(item.checkoutValues.quantity)
-  })
+    quantityTotal += Number(item.checkoutValues.quantity);
+  });
 
   return (
     <>
       <div className={css.shoppingCartWrapper} onClick={() => setIsOpen(true)}>
         {
-          // mobile ? 
+          // mobile ?
           // <span className={css.mobileLabel}>
           //     <FormattedMessage id="ShoppingCart.mobileLabel" />
-          // </span> 
-          // : 
+          // </span>
+          // :
           <ShoppingCartIcon className={css.cartIcon} />
-
         }
-        {shoppingCartItems.length > 0 ?
-          <div className={css.dotInfo}>
-            {quantityTotal}
-          </div> : null
-        }
+        {shoppingCartItems.length > 0 ? <div className={css.dotInfo}>{quantityTotal}</div> : null}
       </div>
 
       <Modal
-        id='shoppingCartModal'
+        id="shoppingCartModal"
         isOpen={isOpen}
         onClose={() => {
           setIsOpen(false);
         }}
-        onManageDisableScrolling={() => { }}
+        onManageDisableScrolling={() => {}}
         doubleModal={mobile}
       >
-        {shoppingCartItems.length === 0 ?
-          <>  {mobile ? <br /> : null}
-            <center><h2><FormattedMessage id="ShoppingCart.emptyTitle" /></h2></center>
+        {shoppingCartItems.length === 0 ? (
+          <>
+            {' '}
+            {mobile ? <br /> : null}
+            <center>
+              <h2>
+                <FormattedMessage id="ShoppingCart.emptyTitle" />
+              </h2>
+            </center>
             <br />
             <Button onClick={() => pushToPath(onClickAfterAddToCart)}>
               <FormattedMessage id="ShoppingCart.searchListing" />
             </Button>
-          </> :
+          </>
+        ) : (
           <div className={css.cartItemsWrapper}>
             {shoppingCartItems.map(item => {
-
               // Manage redirection ----------------------------------------------------------------------- #
-              // TODO if not possible to have /l and /s?pub_restaurant on the same page, 
+              // TODO if not possible to have /l and /s?pub_restaurant on the same page,
               // redirect to /s?pub_restaurant but emphasizing the pdocut with color background
               // const restaurant = item ? item.listing.attributes.publicData.restaurant : false;
               // const restaurantSpaceSubpath = `${localePath}/s?pub_restaurant=${restaurant}`
-              const onClickProductLink = item ? `${localePath}/l/${item.listing.attributes.title.replace(' ', '-')}/${item.listing.id.uuid}` : ''
+              const onClickProductLink = item
+                ? `${localePath}/l/${item.listing.attributes.title.replace(' ', '-')}/${
+                    item.listing.id.uuid
+                  }`
+                : '';
               // ------------------------------------------------------------------------------------------ #
 
-              const totalItemAmount = item.listing.attributes.price.amount * Number(item.checkoutValues.quantity);
+              const totalItemAmount =
+                item.listing.attributes.price.amount * Number(item.checkoutValues.quantity);
               const totalPriceOfItem = new Money(totalItemAmount, config.currency);
-              const formattedPrice = intl ? formatMoney(intl, totalPriceOfItem) : `${totalItemAmount / 100} ${totalPriceOfItem.currency}`;
+              const formattedPrice = intl
+                ? formatMoney(intl, totalPriceOfItem)
+                : `${totalItemAmount / 100} ${totalPriceOfItem.currency}`;
 
               return (
                 <div className={css.cartItem} key={item.listing.id.uuid}>
-
                   <div className={css.cartItemLeft}>
                     <span>
-                      {item.checkoutValues.quantity} x <a onClick={() => pushToPath(onClickProductLink)}>{item.listing.attributes.title}</a>
+                      {item.checkoutValues.quantity} x{' '}
+                      <a onClick={() => pushToPath(onClickProductLink)}>
+                        {item.listing.attributes.title}
+                      </a>
                     </span>
                     <div className={css.buttonsWrapper}>
                       <RemoveIcon
@@ -371,43 +396,64 @@ const ShoppingCartComponent = (props) => {
                     <span>{formattedPrice}</span>
                   </div>
                 </div>
-              )
+              );
             })}
 
             <div className={css.total}>
-              <span> <FormattedMessage id="ShoppingCart.total" /></span>
+              <span>
+                {' '}
+                <FormattedMessage id="ShoppingCart.total" />
+              </span>
               <span>{totalPrice}</span>
             </div>
 
-            {shippingItem ?
+            {shippingItem ? (
               <p className={css.infoTextTotal}>
                 <FormattedMessage id="ShoppingCart.beforeCostMessage" />
               </p>
-              : null}
-
+            ) : null}
 
             <br />
-            {isBelowMininumAmount && shippingItem ?
+            {isBelowMininumAmount && shippingItem ? (
               <p className={css.infoText}>
-                <FormattedMessage id="ShoppingCart.minAmountOrder" values={{ amount: minOrderAmount }} />
+                <FormattedMessage
+                  id="ShoppingCart.minAmountOrder"
+                  values={{ amount: minOrderAmount }}
+                />
               </p>
-              : null}
+            ) : null}
 
-            {notLoggedInWarning ?
+            {notLoggedInWarning ? (
               <>
-                <p className={css.notLoggedInText1}>You need to <NamedLink name="LoginPage" className={css.logoLink}>log in</NamedLink> to proceed to checkout</p>
-                <p className={css.notLoggedInText2}>You don't have an account ? Create one in <NamedLink name="SignupPage" className={css.logoLink}>here</NamedLink></p>
+                <p className={css.notLoggedInText1}>
+                  You need to{' '}
+                  <NamedLink name="LoginPage" className={css.logoLink}>
+                    log in
+                  </NamedLink>{' '}
+                  to proceed to checkout
+                </p>
+                <p className={css.notLoggedInText2}>
+                  You don't have an account ? Create one in{' '}
+                  <NamedLink name="SignupPage" className={css.logoLink}>
+                    here
+                  </NamedLink>
+                </p>
               </>
-              : null}
+            ) : null}
 
-            <Button type='button' disabled={isBelowMininumAmount && shippingItem} onClick={toCheckout}><FormattedMessage id="ShoppingCart.checkout" /></Button>
-
+            <Button
+              type="button"
+              disabled={isBelowMininumAmount && shippingItem}
+              onClick={toCheckout}
+            >
+              <FormattedMessage id="ShoppingCart.checkout" />
+            </Button>
           </div>
-        }
+        )}
       </Modal>
     </>
-  )
-}
+  );
+};
 
 ShoppingCartComponent.defaultProps = {
   currentUser: null,
@@ -438,8 +484,6 @@ const mapStateToProps = state => {
   const { isAuthenticated } = state.Auth;
   const { currentUser } = state.user;
 
-
-
   return {
     isAuthenticated,
     currentUser,
@@ -455,16 +499,10 @@ const mapDispatchToProps = dispatch => ({
   onInitializeCardPaymentData: () => dispatch(initializeCardPaymentData()),
 });
 
-
 const ShoppingCart = compose(
   withRouter,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   injectIntl
 )(ShoppingCartComponent);
 
 export default ShoppingCart;
-
-

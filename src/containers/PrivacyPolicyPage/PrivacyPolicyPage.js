@@ -84,9 +84,6 @@ const mapStateToProps = state => {
   };
 };
 
-const PrivacyPolicyPage = compose(
-  connect(mapStateToProps),
-  injectIntl
-)(PrivacyPolicyPageComponent);
+const PrivacyPolicyPage = compose(connect(mapStateToProps), injectIntl)(PrivacyPolicyPageComponent);
 
 export default PrivacyPolicyPage;

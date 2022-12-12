@@ -213,7 +213,9 @@ const saveEmailAndPhoneNumber = params => (dispatch, getState, sdk) => {
 
       // merge the protected data from the user object returned
       // by the phone update operation
-      const protectedData = {phoneNumber: savePhoneNumberUser.attributes.profile.publicData.phoneNumber};
+      const protectedData = {
+        phoneNumber: savePhoneNumberUser.attributes.profile.publicData.phoneNumber,
+      };
       const phoneNumberMergeSource = { attributes: { profile: { protectedData } } };
 
       const currentUser = merge(saveEmailUser, phoneNumberMergeSource);

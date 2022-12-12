@@ -14,12 +14,12 @@ const linkClassesGenerator = (className, disabled, selected, isSmall) => {
     [css.selectedLink]: selected,
     [css.disabled]: disabled,
   });
-  return isSmall ? linkClassesSmall : linkClassesNormal
-}
+  return isSmall ? linkClassesSmall : linkClassesNormal;
+};
 
 const Tab = props => {
   const { className, id, disabled, text, selected, linkProps, isSmall } = props;
-  const linkClasses = linkClassesGenerator(className, disabled, selected, isSmall)
+  const linkClasses = linkClassesGenerator(className, disabled, selected, isSmall);
 
   return (
     <div id={id} className={className}>
@@ -48,12 +48,12 @@ const TabNav = props => {
   const classes = classNames(rootClassName || css.root, className);
   const tabClasses = tabRootClassName || css.tab;
 
-  // Conditional rendering of the provider/customer UI elements, based on isProvider 
-  let filteredTabs = tabs
+  // Conditional rendering of the provider/customer UI elements, based on isProvider
+  let filteredTabs = tabs;
 
-  const isInboxMenuCase = tabs ? tabs[0].linkProps.params?.tab === 'sales' : false
+  const isInboxMenuCase = tabs ? tabs[0].linkProps.params?.tab === 'sales' : false;
   if (!isProvider && isInboxMenuCase) {
-    filteredTabs = tabs.filter(e => e.linkProps.params.tab !== 'sales')
+    filteredTabs = tabs.filter(e => e.linkProps.params.tab !== 'sales');
   }
 
   return (
@@ -61,9 +61,17 @@ const TabNav = props => {
       {filteredTabs.map((tab, index) => {
         const id = typeof tab.id === 'string' ? tab.id : `${index}`;
         if (isProvider && isInboxMenuCase) {
-          return <Tab key={id} id={id} className={tabClasses} {...tab} isSmall={tab.linkProps.params.tab !== 'sales'} />
+          return (
+            <Tab
+              key={id}
+              id={id}
+              className={tabClasses}
+              {...tab}
+              isSmall={tab.linkProps.params.tab !== 'sales'}
+            />
+          );
         } else {
-          return <Tab key={id} id={id} className={tabClasses} {...tab} />
+          return <Tab key={id} id={id} className={tabClasses} {...tab} />;
         }
         // return <Tab key={id} id={id} className={tabClasses} {...tab} />
       })}

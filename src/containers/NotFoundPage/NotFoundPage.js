@@ -53,7 +53,6 @@ export class NotFoundPageComponent extends Component {
       history.push(
         createResourceLocatorString('SearchPage', routeConfiguration(), {}, searchParams)
       );
-
     };
 
     // const initialSearchFormValues = []

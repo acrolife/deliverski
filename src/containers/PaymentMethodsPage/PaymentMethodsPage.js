@@ -52,7 +52,7 @@ const PaymentMethodsPageComponent = props => {
   } = props;
 
   // Conditional rendering of the provider/customer UI elements
-  const isProvider = currentUser ? !!currentUser.attributes.profile.metadata.isProvider : false
+  const isProvider = currentUser ? !!currentUser.attributes.profile.metadata.isProvider : false;
 
   const getClientSecret = setupIntent => {
     return setupIntent && setupIntent.attributes ? setupIntent.attributes.clientSecret : null;
@@ -162,7 +162,10 @@ const PaymentMethodsPageComponent = props => {
           />
           <UserNav selectedPageName="PaymentMethodsPage" />
         </LayoutWrapperTopbar>
-        <LayoutWrapperAccountSettingsSideNav currentTab="PaymentMethodsPage" isProvider={isProvider} />
+        <LayoutWrapperAccountSettingsSideNav
+          currentTab="PaymentMethodsPage"
+          isProvider={isProvider}
+        />
         <LayoutWrapperMain>
           <div className={css.content}>
             <h1 className={css.title}>
@@ -268,10 +271,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const PaymentMethodsPage = compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   injectIntl
 )(PaymentMethodsPageComponent);
 

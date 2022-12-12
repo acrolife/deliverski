@@ -29,7 +29,7 @@
 
     /* Commented to avoid a double loading of the bg at mount */
     /* background: linear-gradient(-45deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.6)), */
-      /* url('../../assets/hero-marmott-01.jpeg'); */
+    /* url('../../assets/hero-marmott-01.jpeg'); */
 
     /* Add loading color for the div */
     background-color: var(--matterColor);

@@ -142,9 +142,9 @@ const resolveTransitionMessage = (
     case TRANSITION_MARK_RECEIVED:
     case TRANSITION_AUTO_MARK_RECEIVED:
     case TRANSITION_MARK_RECEIVED_FROM_DISPUTED:
-      // Show the leave a review link if the state is completed and
-      // if the current user is the first to leave a review
-      /*
+    // Show the leave a review link if the state is completed and
+    // if the current user is the first to leave a review
+    /*
       const reviewPeriodJustStarted = txIsCompleted(transaction);
 
       const reviewAsFirstLink = reviewPeriodJustStarted ? (

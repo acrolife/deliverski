@@ -1,4 +1,3 @@
-
 import { JoinFull } from '@mui/icons-material';
 import { storableError } from '../../util/errors';
 import { fetchCurrentUser } from '../../ducks/user.duck';
@@ -27,7 +26,11 @@ export default function landingPageReducer(state = initialState, action = {}) {
     case SET_INITIAL_STATE:
       return { ...initialState };
     case SHOW_USER_PROVIDER_DATA:
-      return { ...state, userProviders: [...state.userProviders, payload], showUserProvidersError: null };
+      return {
+        ...state,
+        userProviders: [...state.userProviders, payload],
+        showUserProvidersError: null,
+      };
     case SHOW_USER_PROVIDER_DATA_ERROR:
       return { ...state, userProviders: [], showUserProvidersError: payload };
     case SHOW_LISTING_ERROR:
@@ -118,9 +121,8 @@ export const queryUserProviders = () => (dispatch, getState, sdk) => {
 }
 */
 
-
 // Second way to get the listings author profile data and profileImage
-// Code taken from src/containers/ListingPage/ListingPage.duck.js, 
+// Code taken from src/containers/ListingPage/ListingPage.duck.js,
 // because the listing page shows a component where the author imageProfile is displayed
 
 export const queryListingsAuthorData = () => (dispatch, getState, sdk) => {
@@ -148,7 +150,8 @@ export const queryListingsAuthorData = () => (dispatch, getState, sdk) => {
   };
 
   // return sdk.listings.show(params)
-  return sdk.listings.query(params)
+  return sdk.listings
+    .query(params)
     .then(data => {
       // DEV DEBUG
       // console.log("From LandingPage.ducks.js")
@@ -163,65 +166,87 @@ export const queryListingsAuthorData = () => (dispatch, getState, sdk) => {
           attributes: {
             deleted: false,
             banned: false,
-            profile: e.attributes.profile
+            profile: e.attributes.profile,
           },
-          profileImage: e.relationships.profileImage.data ? e.relationships.profileImage.data : null,
+          profileImage: e.relationships.profileImage.data
+            ? e.relationships.profileImage.data
+            : null,
           type: 'currentUser',
-        }))
+        }));
 
+      const profileImages = data.data.included.filter(e => e.type === 'image');
 
-      const profileImages = data.data.included.filter(e => e.type === 'image')
-
-      let restaurantNameToFilter = []
-      data.data.data.map(e => e.attributes.publicData.restaurant ? restaurantNameToFilter.push([e.attributes.publicData.restaurantName, e.attributes.publicData.restaurant]) : null)
+      let restaurantNameToFilter = [];
+      data.data.data.map(e =>
+        e.attributes.publicData.restaurant
+          ? restaurantNameToFilter.push([
+              e.attributes.publicData.restaurantName,
+              e.attributes.publicData.restaurant,
+            ])
+          : null
+      );
       // Filtering out the element (from listings) where restaurant or restaurantName is undefined (data from incomplete/not updated listings wrt the provider's profile)
-      restaurantNameToFilter = restaurantNameToFilter.filter(e => (e[0] !== undefined))
+      restaurantNameToFilter = restaurantNameToFilter.filter(e => e[0] !== undefined);
 
       // Filtering duplicates won't work the classical way for an array of arrays
       // https://www.kirupa.com/javascript/removing_duplicate_arrays_from_array.htm
-      const restaurantNameToFilterString = restaurantNameToFilter.map(JSON.stringify)
+      const restaurantNameToFilterString = restaurantNameToFilter.map(JSON.stringify);
       // .filter((value, index, self) => self.indexOf(value) == index)
-      const restaurantNameToFilterUniquesString = restaurantNameToFilterString.filter((v, i, a) => a.indexOf(v) === i);
-      const restaurantNameToFilterUniques = restaurantNameToFilterUniquesString.map(JSON.parse)
-      const restaurantNameUniques = restaurantNameToFilterUniques.map(e => e[0])
-      const restaurantUniques = restaurantNameToFilterUniques.map(e => e[1])
-
+      const restaurantNameToFilterUniquesString = restaurantNameToFilterString.filter(
+        (v, i, a) => a.indexOf(v) === i
+      );
+      const restaurantNameToFilterUniques = restaurantNameToFilterUniquesString.map(JSON.parse);
+      const restaurantNameUniques = restaurantNameToFilterUniques.map(e => e[0]);
+      const restaurantUniques = restaurantNameToFilterUniques.map(e => e[1]);
 
       // Prevent error if provider's profile's restaurant name is not sync with the listings related data
-      const userProvidersRestaurantName = userProviders.map(e => e.attributes.profile.publicData.restaurantName ? e.attributes.profile.publicData.restaurantName : null)
-      const zeroValueAtPositionToFilterout = userProvidersRestaurantName.map(e => restaurantNameUniques.indexOf(e) + 1)
-      const indexToFilerOut = zeroValueAtPositionToFilterout.map((e, i) => !e ? i : null)
+      const userProvidersRestaurantName = userProviders.map(e =>
+        e.attributes.profile.publicData.restaurantName
+          ? e.attributes.profile.publicData.restaurantName
+          : null
+      );
+      const zeroValueAtPositionToFilterout = userProvidersRestaurantName.map(
+        e => restaurantNameUniques.indexOf(e) + 1
+      );
+      const indexToFilerOut = zeroValueAtPositionToFilterout.map((e, i) => (!e ? i : null));
       // Removing user from userProviders array if there's inconsistency in restaurant name/path data to prevent the home page to bug
       // The restaurant will still display in home page, but only the updated listings will show in the restaurant X page
-      indexToFilerOut.forEach(e => e !== null ? userProviders.splice(e, 1) : null)
+      indexToFilerOut.forEach(e => (e !== null ? userProviders.splice(e, 1) : null));
 
       // For each user of the above list, we try to assign a profileImage variant from a matching on the profileImage id
       // If the user doesn't have a profileImage, we set it to null
       for (const user of userProviders) {
         // CAUTION: Remember this special kind of for loop can only output one console log, because it is assigning it to the item
-        // restaurant to restaurantName mapping (the provider's public data contains only the restaurantName, 
-        // the restaurant property (path part) is computed in only one place; at listing creation)       
+        // restaurant to restaurantName mapping (the provider's public data contains only the restaurantName,
+        // the restaurant property (path part) is computed in only one place; at listing creation)
         if (user.attributes.profile.publicData.restaurantName) {
-          const restaurantName = user.attributes.profile.publicData.restaurantName
-          const indexOfrestaurantName = restaurantNameToFilterUniques.map(e => e[0]).indexOf(restaurantName)
-          user.attributes.profile.publicData.restaurant = restaurantNameToFilterUniques[indexOfrestaurantName][1]
+          const restaurantName = user.attributes.profile.publicData.restaurantName;
+          const indexOfrestaurantName = restaurantNameToFilterUniques
+            .map(e => e[0])
+            .indexOf(restaurantName);
+          user.attributes.profile.publicData.restaurant =
+            restaurantNameToFilterUniques[indexOfrestaurantName][1];
         }
 
         // Profile image mapping
-        const profileImageMaybe = user.profileImage ? profileImages.filter(e => e.id.uuid === (user.profileImage.id.uuid)) : null
-        user.profileImage = profileImageMaybe ? ({
-          id: profileImageMaybe[0].id,
-          type: 'image',
-          attributes: {
-            variants: profileImageMaybe[0].attributes.variants
-          }
-        }) : null
+        const profileImageMaybe = user.profileImage
+          ? profileImages.filter(e => e.id.uuid === user.profileImage.id.uuid)
+          : null;
+        user.profileImage = profileImageMaybe
+          ? {
+              id: profileImageMaybe[0].id,
+              type: 'image',
+              attributes: {
+                variants: profileImageMaybe[0].attributes.variants,
+              },
+            }
+          : null;
       }
 
       // Ordering userProviders array, user without ProfileImage at the end
-      const userProvidersWithoutProfileImage = userProviders.filter(e => !e.profileImage)
-      const userProvidersWithProfileImage = userProviders.filter(e => e.profileImage)
-      userProviders = [...userProvidersWithProfileImage, ...userProvidersWithoutProfileImage]
+      const userProvidersWithoutProfileImage = userProviders.filter(e => !e.profileImage);
+      const userProvidersWithProfileImage = userProviders.filter(e => e.profileImage);
+      userProviders = [...userProvidersWithProfileImage, ...userProvidersWithoutProfileImage];
 
       // const urlScaledMedium = data.data.included[0].attributes.variants['scaled-medium'].url
       // return userProviders;
@@ -229,21 +254,17 @@ export const queryListingsAuthorData = () => (dispatch, getState, sdk) => {
       // console.log("userProviders, from LandingPage.duck.js", userProviders)
       // dispatch(showUserProvidersData(userProviders))
       try {
-        userProviders.map(e => dispatch(showUserProvidersData(e)))
+        userProviders.map(e => dispatch(showUserProvidersData(e)));
       } catch (e) {
-        dispatch(showUserProvidersError(storableError(e)))
+        dispatch(showUserProvidersError(storableError(e)));
       }
-
-
     })
     .catch(e => {
       dispatch(showListingError(storableError(e)));
     });
 };
 
-
 export const loadData = () => (dispatch, getState, sdk) => {
-
   // Clear state so that previously loaded data is not visible
   // in case this page load fails.
   dispatch(setInitialState());
@@ -259,4 +280,4 @@ export const loadData = () => (dispatch, getState, sdk) => {
     dispatch(queryListingsAuthorData()),
     dispatch(fetchCurrentUser()),
   ]);
-}
+};

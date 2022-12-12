@@ -25,7 +25,7 @@ import defaultMessagesEn from './translations/en.json';
 import defaultMessagesFr from './translations/fr.json';
 
 // Custom implementation
-const defaultMessages = config.locale === 'en' ? defaultMessagesEn : defaultMessagesFr
+const defaultMessages = config.locale === 'en' ? defaultMessagesEn : defaultMessagesFr;
 
 // If you want to change the language, change the imports to match the wanted locale:
 //   1) Change the language in the config.js file!

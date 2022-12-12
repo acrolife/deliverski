@@ -24,7 +24,8 @@ export const QUERY_REVIEWS_SUCCESS = 'app/ProfilePage/QUERY_REVIEWS_SUCCESS';
 export const QUERY_REVIEWS_ERROR = 'app/ProfilePage/QUERY_REVIEWS_ERROR';
 
 export const SHOW_USER_PROFILE_CUSTOM_DATA = 'app/ProfilePage/SHOW_USER_PROFILE_CUSTOM_DATA';
-export const SHOW_USER_PROFILE_CUSTOM_DATA_ERROR = 'app/ProfilePage/SHOW_USER_PROFILE_CUSTOM_DATA_ERROR';
+export const SHOW_USER_PROFILE_CUSTOM_DATA_ERROR =
+  'app/ProfilePage/SHOW_USER_PROFILE_CUSTOM_DATA_ERROR';
 
 // ================ Reducer ================ //
 
@@ -163,13 +164,13 @@ export const queryUserListings = userId => (dispatch, getState, sdk) => {
       const listingRefs = response.data.data.map(({ id, type }) => ({ id, type }));
       dispatch(addMarketplaceEntities(response));
       dispatch(queryListingsSuccess(listingRefs));
-     
+
       // Getting userProfileCustom data from the api and to the store
-      const userProfileCustom = response.data.included[0].attributes.profile          
+      const userProfileCustom = response.data.included[0].attributes.profile;
       try {
-        dispatch(showUserProfileCustomData(userProfileCustom))        
+        dispatch(showUserProfileCustomData(userProfileCustom));
       } catch (e) {
-        dispatch(storableError(e))
+        dispatch(storableError(e));
       }
 
       return response;
@@ -178,7 +179,6 @@ export const queryUserListings = userId => (dispatch, getState, sdk) => {
 };
 
 export const queryUserReviews = userId => (dispatch, getState, sdk) => {
-
   sdk.reviews
     .query({
       subject_id: userId,

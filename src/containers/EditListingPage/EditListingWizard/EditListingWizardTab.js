@@ -30,7 +30,7 @@ export const PHOTOS = 'photos';
 // export const RESTAURANT = 'restaurant';
 
 // EditListingWizardTab component supports these tabs
-export const SUPPORTED_TABS = [DETAILS, FEATURES, PRICING, DELIVERY, PHOTOS ]
+export const SUPPORTED_TABS = [DETAILS, FEATURES, PRICING, DELIVERY, PHOTOS];
 // , RESTAURANT];
 
 const pathParamsToNextTab = (params, tab, marketplaceTabs) => {
@@ -60,7 +60,7 @@ const redirectAfterDraftUpdate = (listingId, params, tab, marketplaceTabs, histo
   }
 
   // Redirect to next tab
-  const nextPathParams = pathParamsToNextTab(currentPathParams, tab, marketplaceTabs);  
+  const nextPathParams = pathParamsToNextTab(currentPathParams, tab, marketplaceTabs);
   const to = createResourceLocatorString('EditListingPage', routes, nextPathParams, {});
   history.push(to);
 };
@@ -111,7 +111,6 @@ const EditListingWizardTab = props => {
   };
 
   const onCompleteEditListingWizardTab = (tab, updateValues) => {
-    
     // DEV/DEBUG
     // console.log("updateValues", updateValues)
 
@@ -124,7 +123,7 @@ const EditListingWizardTab = props => {
       : { ...updateValues, id: currentListing.id };
 
     onUpdateListingOrCreateListingDraft(tab, updateListingValues)
-      .then(r => {        
+      .then(r => {
         if (isNewListingFlow) {
           const listingId = r.data.data.id;
           automaticRedirectsForNewListingFlow(tab, listingId);
@@ -172,12 +171,12 @@ const EditListingWizardTab = props => {
         <EditListingFeaturesPanel
           {...panelProps(DETAILS)}
           submitButtonText={intl.formatMessage({ id: submitButtonTranslationKey })}
-          onSubmit={values => {           
+          onSubmit={values => {
             onCompleteEditListingWizardTab(tab, values);
           }}
         />
       );
-    }    
+    }
     case DELIVERY: {
       const submitButtonTranslationKey = isNewListingFlow
         ? 'EditListingWizard.saveNewDelivery'

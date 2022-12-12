@@ -2,7 +2,6 @@
 @import './customMediaQueries.css';
 @import './propertySets.css';
 
-
 /* ================ Custom Properties aka CSS variables ================ */
 
 /**
@@ -15,10 +14,7 @@
  * https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties
  */
 
- 
 :root {
-
-
   /* ================ Colors ================ */
 
   --marketplaceColor: #5d2bc0; /* hsl(260, 63%, 46%) */

@@ -115,19 +115,24 @@ export const EditListingDeliveryFormComponent = props => (
 
       const pickupClasses = classNames(css.deliveryOption, !pickupEnabled ? css.disabled : null);
       const shippingClasses = classNames(css.deliveryOption);
-      const isShippingSelected = values.deliveryOptions ? values.deliveryOptions.includes("shipping") : false;
+      const isShippingSelected = values.deliveryOptions
+        ? values.deliveryOptions.includes('shipping')
+        : false;
 
-        const handleOnChange = (formValues) => {
-          const valuesInfo = formValues.values;
-          const isShippingNoLongerSelected = valuesInfo.deliveryOptions ? !valuesInfo.deliveryOptions.includes("shipping") : false;
-          const isFreeShippingSelected = valuesInfo.freeShipping ? valuesInfo.freeShipping.includes("yes") : false;
-          if(isShippingNoLongerSelected && isFreeShippingSelected){
-            form.change('freeShipping', [])
-          }
+      const handleOnChange = formValues => {
+        const valuesInfo = formValues.values;
+        const isShippingNoLongerSelected = valuesInfo.deliveryOptions
+          ? !valuesInfo.deliveryOptions.includes('shipping')
+          : false;
+        const isFreeShippingSelected = valuesInfo.freeShipping
+          ? valuesInfo.freeShipping.includes('yes')
+          : false;
+        if (isShippingNoLongerSelected && isFreeShippingSelected) {
+          form.change('freeShipping', []);
         }
+      };
       return (
         <Form className={classes} onSubmit={handleSubmit}>
-
           <FormSpy onChange={handleOnChange} />
           <FieldCheckbox
             id="pickup"
@@ -186,20 +191,17 @@ export const EditListingDeliveryFormComponent = props => (
             className={css.deliveryCheckbox}
             name="deliveryOptions"
             label={shippingLabel}
-            value={"shipping"}
+            value={'shipping'}
           />
 
           <div className={shippingClasses}>
-
-                
-          <FieldCheckbox
-            id="freeShipping"
-            className={ isShippingSelected ? css.deliveryCheckbox : css.deliveryCheckboxDisabled}
-            name="freeShipping"
-            label={"Free shipping"}
-            value={'yes'}
-          />
-
+            <FieldCheckbox
+              id="freeShipping"
+              className={isShippingSelected ? css.deliveryCheckbox : css.deliveryCheckboxDisabled}
+              name="freeShipping"
+              label={'Free shipping'}
+              value={'yes'}
+            />
 
             {/* <FieldCurrencyInput
               id="shippingPriceInSubunitsOneItem"
@@ -232,16 +234,6 @@ export const EditListingDeliveryFormComponent = props => (
               key={shippingEnabled ? 'oneItemValidation' : 'noOneItemValidation'}
               disabled={true}
             /> */}
-
-
-
-
-
-
-
-
-
-
 
             {/* <FieldCurrencyInput
               id="shippingPriceInSubunitsAdditionalItems"

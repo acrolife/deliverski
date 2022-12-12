@@ -90,13 +90,13 @@ export const txState = (intl, tx, type) => {
   } else if (txIsDelivered(tx)) {
     return isOrder
       ? {
-        stateClassName: css.stateActionNeeded,
-        state: intl.formatMessage({ id: 'InboxPage.stateDeliveredCustomer' }),
-      }
+          stateClassName: css.stateActionNeeded,
+          state: intl.formatMessage({ id: 'InboxPage.stateDeliveredCustomer' }),
+        }
       : {
-        stateClassName: css.stateNoActionNeeded,
-        state: intl.formatMessage({ id: 'InboxPage.stateDeliveredProvider' }),
-      };
+          stateClassName: css.stateNoActionNeeded,
+          state: intl.formatMessage({ id: 'InboxPage.stateDeliveredProvider' }),
+        };
   } else if (txIsDisputed(tx)) {
     return {
       stateClassName: css.stateActionNeeded,
@@ -111,7 +111,7 @@ export const txState = (intl, tx, type) => {
         id: 'InboxPage.stateReceived',
       }),
     };
-  }
+  } else {
   /*
   else if (txIsReviewedByCustomer(tx)) {
     const translationKey = isOrder ? 'InboxPage.stateReviewGiven' : 'InboxPage.stateReviewNeeded';
@@ -138,7 +138,6 @@ export const txState = (intl, tx, type) => {
     };
   } 
   */
-  else {
     console.warn('This transition is unknown:', tx.attributes.lastTransition);
     return null;
   }
@@ -166,7 +165,9 @@ export const InboxItem = props => {
     [css.bannedUserLink]: isOtherUserBanned,
   });
 
-  const restaurantName = provider.attributes.profile.publicData ? provider.attributes.profile.publicData.restaurantName : null
+  const restaurantName = provider.attributes.profile.publicData
+    ? provider.attributes.profile.publicData.restaurantName
+    : null;
 
   return (
     <div className={css.item}>
@@ -226,7 +227,7 @@ export const InboxPageComponent = props => {
   const { tab } = params;
   const ensuredCurrentUser = ensureCurrentUser(currentUser);
   // Conditional rendering of the provider/customer UI elements
-  const isProvider = currentUser ? !!currentUser.attributes.profile.metadata.isProvider : false
+  const isProvider = currentUser ? !!currentUser.attributes.profile.metadata.isProvider : false;
 
   const validTab = tab === 'orders' || tab === 'sales';
   if (!validTab) {
@@ -300,11 +301,11 @@ export const InboxPageComponent = props => {
     {
       text: (
         <span>
-          {isProvider ?
-            <FormattedMessage id="InboxPage.ordersTabTitleProvider" /> :
+          {isProvider ? (
+            <FormattedMessage id="InboxPage.ordersTabTitleProvider" />
+          ) : (
             <FormattedMessage id="InboxPage.ordersTabTitle" />
-          }
-
+          )}
         </span>
       ),
       selected: isOrders,
@@ -314,7 +315,14 @@ export const InboxPageComponent = props => {
       },
     },
   ];
-  const nav = <TabNav rootClassName={css.tabs} tabRootClassName={css.tab} tabs={tabs} isProvider={isProvider} />;
+  const nav = (
+    <TabNav
+      rootClassName={css.tabs}
+      tabRootClassName={css.tab}
+      tabs={tabs}
+      isProvider={isProvider}
+    />
+  );
 
   return (
     <Page title={title} scrollingDisabled={scrollingDisabled}>
@@ -344,7 +352,6 @@ export const InboxPageComponent = props => {
               </li>
             )}
             {isProvider && noResults}
-
           </ul>
           {pagingLinks}
         </LayoutWrapperMain>
@@ -398,9 +405,6 @@ const mapStateToProps = state => {
   };
 };
 
-const InboxPage = compose(
-  connect(mapStateToProps),
-  injectIntl
-)(InboxPageComponent);
+const InboxPage = compose(connect(mapStateToProps), injectIntl)(InboxPageComponent);
 
 export default InboxPage;

@@ -17,20 +17,20 @@ export const LISTING_PAGE_PARAM_TYPES = [
 
 // push to path
 
-export const pushToPath = (path) => {
-  if(typeof window !== 'undefined'){
-    document.location.href = path
+export const pushToPath = path => {
+  if (typeof window !== 'undefined') {
+    document.location.href = path;
   }
-}
+};
 
 export const getValuesFromQueryString = () => {
-  if(typeof window !== 'undefined'){
+  if (typeof window !== 'undefined') {
     const urlSearchParams = new URLSearchParams(window.location.search);
     const params = Object.fromEntries(urlSearchParams.entries());
 
-    return params
+    return params;
   }
-}
+};
 
 // Create slug from random texts
 // From Gist thread: https://gist.github.com/mathewbyrne/1280286

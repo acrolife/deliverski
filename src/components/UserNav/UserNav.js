@@ -38,7 +38,13 @@ const UserNav = props => {
   ];
 
   return (
-    <LinkTabNavHorizontal className={classes} tabRootClassName={css.tab} tabs={tabs} skin="dark" currentUser={currentUser} />
+    <LinkTabNavHorizontal
+      className={classes}
+      tabRootClassName={css.tab}
+      tabs={tabs}
+      skin="dark"
+      currentUser={currentUser}
+    />
   );
 };
 

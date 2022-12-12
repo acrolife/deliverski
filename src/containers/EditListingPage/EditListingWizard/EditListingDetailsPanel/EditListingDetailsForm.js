@@ -13,7 +13,13 @@ import { maxLength, required, composeValidators } from '../../../../util/validat
 import { findConfigForSelectFilter } from '../../../../util/search';
 
 // Import shared components
-import { Form, Button, FieldTextInput, FieldSelect, FieldCheckboxGroup } from '../../../../components';
+import {
+  Form,
+  Button,
+  FieldTextInput,
+  FieldSelect,
+  FieldCheckboxGroup,
+} from '../../../../components';
 // Import modules from this directory
 import CustomFieldEnum from '../CustomFieldEnum';
 import css from './EditListingDetailsForm.module.css';
@@ -65,7 +71,7 @@ const EditListingDetailsFormComponent = props => (
         </p>
       ) : null;
 
-      // Title section 
+      // Title section
       const titleMessage = intl.formatMessage({ id: 'EditListingDetailsForm.title' });
       const titlePlaceholderMessage = intl.formatMessage({
         id: 'EditListingDetailsForm.titlePlaceholder',
@@ -80,7 +86,7 @@ const EditListingDetailsFormComponent = props => (
         }
       );
 
-      // Description section 
+      // Description section
       const descriptionMessage = intl.formatMessage({
         id: 'EditListingDetailsForm.description',
       });

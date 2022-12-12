@@ -26,40 +26,31 @@ import twitterImage from '../../assets/marmottTwitter-600x314.jpg';
 
 import SectionHero from './SectionHero/SectionHero';
 import SectionHowItWorks from './SectionHowItWorks/SectionHowItWorks';
-import SectionContactUs from './SectionContactUs/SectionContactUs'
+import SectionContactUs from './SectionContactUs/SectionContactUs';
 import SectionFilteredSearches from './SectionFilteredSearches/SectionFilteredSearches';
 import css from './LandingPage.module.css';
 
-
-const LandingPageComponent = (props) => {
-
-  const {
-    history,
-    intl,
-    location,
-    scrollingDisabled,
-    currentUser,
-  } = props;
+const LandingPageComponent = props => {
+  const { history, intl, location, scrollingDisabled, currentUser } = props;
 
   const [userProviders, setUserProviders] = useState([]);
-  // 
+  //
   useEffect(() => {
     if (props.userProviders) {
-      setUserProviders(props.userProviders)
+      setUserProviders(props.userProviders);
     }
   }, [props.userProviders]);
 
-  const isLoggedIn = !!currentUser
+  const isLoggedIn = !!currentUser;
 
   // Logic to hide the mesage sending to playground on production
-  const canonicalRootURL = config.canonicalRootURL ? config.canonicalRootURL : null
+  const canonicalRootURL = config.canonicalRootURL ? config.canonicalRootURL : null;
   // This means the elements conditioned on isProduction will not be shown on playground and sandbox
   // Without value for canonicalRootURL, isProduction will be true as well
-  const isProduction = canonicalRootURL ?
-    !(canonicalRootURL.includes('playground') ||
-    canonicalRootURL.includes('sandbox')) :
-    true
-  
+  const isProduction = canonicalRootURL
+    ? !(canonicalRootURL.includes('playground') || canonicalRootURL.includes('sandbox'))
+    : true;
+
   // DEV
   // const isProduction = false
   // console.log("canonicalRootURL", canonicalRootURL)
@@ -123,19 +114,16 @@ class ThumbnailImage extends Component {
             <SectionFilteredSearches userProviders={userProviders} isProduction={isProduction} />
           </div>
           <div className={css.imgCenterParentLanding}>
-            <img src={LogoImage} width="60%"
-            />
+            <img src={LogoImage} width="60%" />
           </div>
 
           <ul className={css.sections}>
+            <li className={css.section}></li>
             <li className={css.section}>
-
-            </li>
-            <li className={css.section}>
-              <div className={css.sectionContent} id={"how-it-works"}>
+              <div className={css.sectionContent} id={'how-it-works'}>
                 <SectionHowItWorks isLoggedIn={isLoggedIn} />
               </div>
-              <div className={css.sectionContent} id={"contact-us"}>
+              <div className={css.sectionContent} id={'contact-us'}>
                 <SectionContactUs isLoggedIn={isLoggedIn} />
               </div>
             </li>
@@ -148,7 +136,6 @@ class ThumbnailImage extends Component {
     </Page>
   );
 };
-
 
 LandingPageComponent.defaultProps = {
   currentUser: null,
@@ -178,13 +165,10 @@ LandingPageComponent.propTypes = {
 
 const mapStateToProps = state => {
   const { currentUser } = state.user;
-  const {
-    userProviders,
-    showUserProvidersError,
-  } = state.LandingPage;
+  const { userProviders, showUserProvidersError } = state.LandingPage;
 
   if (showUserProvidersError) {
-    console.log(`Error while pulling providers data: ${showUserProvidersError}`)
+    console.log(`Error while pulling providers data: ${showUserProvidersError}`);
   }
 
   return {
@@ -201,10 +185,6 @@ const mapStateToProps = state => {
 // lifecycle hook.
 //
 // See: https://github.com/ReactTraining/react-router/issues/4671
-const LandingPage = compose(
-  withRouter,
-  connect(mapStateToProps),
-  injectIntl
-)(LandingPageComponent);
+const LandingPage = compose(withRouter, connect(mapStateToProps), injectIntl)(LandingPageComponent);
 
 export default LandingPage;

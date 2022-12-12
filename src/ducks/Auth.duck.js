@@ -174,23 +174,24 @@ export const login = (username, password) => (dispatch, getState, sdk) => {
     .then(resp => {
       const shoppingCart = JSON.parse(window.sessionStorage.getItem('shoppingCart'));
 
-      const publicData = shoppingCart && shoppingCart?.length > 0 ? {
-          shoppingCart: shoppingCart
+      const publicData =
+        shoppingCart && shoppingCart?.length > 0
+          ? {
+              shoppingCart: shoppingCart,
+            }
+          : false;
+
+      if (publicData) {
+        return sdk.currentUser
+          .updateProfile({
+            publicData: publicData,
+          })
+          .catch(e => {
+            console.log(e);
+          });
+      } else {
+        return true;
       }
-      :
-      false;
-
-      if(publicData){
-        return sdk.currentUser.updateProfile({
-          publicData: publicData,
-        }).catch(e => {
-          console.log(e)
-        })
-      }else{
-        return true
-      }
-
-
     })
     .catch(e => dispatch(loginError(storableError(e))));
 };
@@ -224,13 +225,14 @@ export const signup = params => (dispatch, getState, sdk) => {
 
   const shoppingCart = JSON.parse(window.sessionStorage.getItem('shoppingCart'));
 
-  const publicData = shoppingCart && shoppingCart?.length > 0 ? {
-    publicData: {
-      shoppingCart: shoppingCart
-    }
-  }
-  :
-  {};
+  const publicData =
+    shoppingCart && shoppingCart?.length > 0
+      ? {
+          publicData: {
+            shoppingCart: shoppingCart,
+          },
+        }
+      : {};
 
   const createUserParams = isEmpty(rest)
     ? { email, password, firstName, lastName, ...publicData }
@@ -257,13 +259,14 @@ export const signupWithIdp = params => (dispatch, getState, sdk) => {
 
   const shoppingCart = JSON.parse(window.sessionStorage.getItem('shoppingCart'));
 
-  const publicData = shoppingCart && shoppingCart?.length > 0 ? {
-      shoppingCart: shoppingCart
-  }
-  :
-  false;
+  const publicData =
+    shoppingCart && shoppingCart?.length > 0
+      ? {
+          shoppingCart: shoppingCart,
+        }
+      : false;
 
-  if(publicData){
+  if (publicData) {
     params.publicData = publicData;
   }
 

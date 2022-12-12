@@ -87,8 +87,16 @@ export class ProfilePageComponent extends Component {
     // XXX CAUTION here the current user's metadata "isProvider" is not what determines the rendering
     // The rendering is conditionned against the user who owns the visited profile, "profileUser" !
 
-    const isProvider = profileUser.attributes.profile.metadata ? profileUser.attributes.profile.metadata.isProvider ? profileUser.attributes.profile.metadata.isProvider : false : false
-    const restaurantName = isProvider ? profileUser.attributes.profile.publicData ? profileUser.attributes.profile.publicData.restaurantName : null : null
+    const isProvider = profileUser.attributes.profile.metadata
+      ? profileUser.attributes.profile.metadata.isProvider
+        ? profileUser.attributes.profile.metadata.isProvider
+        : false
+      : false;
+    const restaurantName = isProvider
+      ? profileUser.attributes.profile.publicData
+        ? profileUser.attributes.profile.publicData.restaurantName
+        : null
+      : null;
 
     const displayName = profileUser.attributes.profile.displayName;
     const bio = profileUser.attributes.profile.bio;
@@ -112,9 +120,15 @@ export class ProfilePageComponent extends Component {
         <AvatarLarge className={css.avatar} user={user} disableProfileLink />
         <h1 className={css.mobileHeading}>
           {isProvider ? (
-            <FormattedMessage id="ProfilePage.mobileHeading" values={{ name: restaurantName, linebreak: <br /> }} />
+            <FormattedMessage
+              id="ProfilePage.mobileHeading"
+              values={{ name: restaurantName, linebreak: <br /> }}
+            />
           ) : (
-            <FormattedMessage id="ProfilePage.mobileHeading" values={{ name: displayName, linebreak: <br /> }} />
+            <FormattedMessage
+              id="ProfilePage.mobileHeading"
+              values={{ name: displayName, linebreak: <br /> }}
+            />
           )}
         </h1>
         {editLinkMobile}
@@ -206,32 +220,35 @@ export class ProfilePageComponent extends Component {
     const mainContent = (
       <div>
         <h1 className={css.desktopHeading}>
-          {isProvider ?
-            (<FormattedMessage id="ProfilePage.desktopHeadingRestaurant" values={{ name: restaurantName }} />) :
-            (<FormattedMessage id="ProfilePage.desktopHeading" values={{ name: displayName }} />)}
-
-
+          {isProvider ? (
+            <FormattedMessage
+              id="ProfilePage.desktopHeadingRestaurant"
+              values={{ name: restaurantName }}
+            />
+          ) : (
+            <FormattedMessage id="ProfilePage.desktopHeading" values={{ name: displayName }} />
+          )}
         </h1>
         {hasBio ? <p className={css.bio}>{bio}</p> : null}
         {hasListings ? (
           <div className={listingsContainerClasses}>
             <h2 className={css.listingsTitle}>
-              {isProvider && <FormattedMessage
-                id="ProfilePage.listingsTitle"
-                values={{ count: listings.length, name: restaurantName }}
-              />}
-
+              {isProvider && (
+                <FormattedMessage
+                  id="ProfilePage.listingsTitle"
+                  values={{ count: listings.length, name: restaurantName }}
+                />
+              )}
             </h2>
-            {
-              listings.length && <ul className={css.listings}>
+            {listings.length && (
+              <ul className={css.listings}>
                 {listings.map(l => (
                   <li className={css.listing} key={l.id.uuid}>
                     <ListingCard listing={l} showAuthorInfo={false} />
                   </li>
                 ))}
               </ul>
-            }
-
+            )}
           </div>
         ) : null}
         {/* Commenting out reviews */}
@@ -339,7 +356,7 @@ const mapStateToProps = state => {
   } = state.ProfilePage;
 
   if (showUserProfileCustomError) {
-    console.log(`Error while pulling providers data: ${showUserProfileCustomError}`)
+    console.log(`Error while pulling providers data: ${showUserProfileCustomError}`);
   }
 
   const userMatches = getMarketplaceEntities(state, [{ type: 'user', id: userId }]);

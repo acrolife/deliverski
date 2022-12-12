@@ -13,7 +13,14 @@ import { maxLength, required, composeValidators } from '../../../../util/validat
 import { propTypes } from '../../../../util/types';
 
 // Import shared components
-import { Button, FieldCheckboxGroup, FieldSelect, Form, Accordion, IconPlus } from '../../../../components';
+import {
+  Button,
+  FieldCheckboxGroup,
+  FieldSelect,
+  Form,
+  Accordion,
+  IconPlus,
+} from '../../../../components';
 
 // Import modules from this directory
 import CustomFieldEnum from '../CustomFieldEnum';
@@ -43,8 +50,8 @@ const EditListingFeaturesFormComponent = props => (
       } = formRenderProps;
 
       // Get productType value to condition the rendering and required property of some select sections
-      const { initialValues } = props
-      const productType = initialValues?.productType
+      const { initialValues } = props;
+      const productType = initialValues?.productType;
 
       const productTypeVisibiliy = {
         foodType: productType === 'eatable_salty' || productType === 'eatable_sweet',
@@ -54,12 +61,12 @@ const EditListingFeaturesFormComponent = props => (
         diet: true,
         size: true,
         dietAccordionOpenAtLoading: productType === 'drinkable',
-      }
+      };
       const productTypeExcludeKeys = {
         foodType: {
-          drinkable: ['halal']
-        }
-      }
+          drinkable: ['halal'],
+        },
+      };
 
       const classes = classNames(rootClassName || css.root, className);
       const submitReady = (updated && pristine) || ready;
@@ -79,9 +86,13 @@ const EditListingFeaturesFormComponent = props => (
         </p>
       ) : null;
 
-      const AccordionHead = (props) => {
+      const AccordionHead = props => {
         const {
-          accordionLabel, isSingleFilter, accordionIsOpen, accordionIsOpenToggle, customMessageSubKey
+          accordionLabel,
+          isSingleFilter,
+          accordionIsOpen,
+          accordionIsOpenToggle,
+          customMessageSubKey,
         } = props;
 
         return (
@@ -101,20 +112,20 @@ const EditListingFeaturesFormComponent = props => (
                 </span>
               </span>
             </button>
-            {accordionIsOpen && <span className={css.postLabelAccordion}>
-              {
-                customMessageSubKey ?
-                  <FormattedMessage id={`EditListingFeaturesForm.${customMessageSubKey}`} /> :
-                  (isSingleFilter ?
-                    <FormattedMessage id="EditListingFeaturesForm.chooseOneValue" /> :
-                    <FormattedMessage id="EditListingFeaturesForm.chooseAtLeastOneValue" />)
-
-              }
-
-            </span>}
+            {accordionIsOpen && (
+              <span className={css.postLabelAccordion}>
+                {customMessageSubKey ? (
+                  <FormattedMessage id={`EditListingFeaturesForm.${customMessageSubKey}`} />
+                ) : isSingleFilter ? (
+                  <FormattedMessage id="EditListingFeaturesForm.chooseOneValue" />
+                ) : (
+                  <FormattedMessage id="EditListingFeaturesForm.chooseAtLeastOneValue" />
+                )}
+              </span>
+            )}
           </div>
-        )
-      }
+        );
+      };
 
       // Cuisine section
       const cuisineKey = 'cuisine';
@@ -160,7 +171,7 @@ const EditListingFeaturesFormComponent = props => (
       const foodTypeKey = 'foodType';
       const foodTypeOptions = findOptionsForSelectFilter(foodTypeKey, filterConfig);
       // const foodTypeObject = filterConfig.filter(e => e.id === foodTypeKey)
-      // const foodTypeLabel = foodTypeObject.length ? foodTypeObject[0].label : null      
+      // const foodTypeLabel = foodTypeObject.length ? foodTypeObject[0].label : null
       const foodTypeConfig = findConfigForSelectFilter('foodType', filterConfig);
       const foodTypeSchemaType = foodTypeConfig ? foodTypeConfig.schemaType : null;
       const foodTypeLabel = intl.formatMessage({
@@ -179,7 +190,7 @@ const EditListingFeaturesFormComponent = props => (
       const drinkTypeKey = 'drinkType';
       const drinkTypeOptions = findOptionsForSelectFilter(drinkTypeKey, filterConfig);
       // const drinkTypeObject = filterConfig.filter(e => e.id === drinkTypeKey)
-      // const drinkTypeLabel = drinkTypeObject.length ? drinkTypeObject[0].label : null      
+      // const drinkTypeLabel = drinkTypeObject.length ? drinkTypeObject[0].label : null
       const drinkTypeConfig = findConfigForSelectFilter('drinkType', filterConfig);
       const drinkTypeSchemaType = drinkTypeConfig ? drinkTypeConfig.schemaType : null;
       const drinkTypeLabel = intl.formatMessage({
@@ -198,7 +209,7 @@ const EditListingFeaturesFormComponent = props => (
       const dietKey = 'diet';
       let dietOptions = findOptionsForSelectFilter(dietKey, filterConfig);
       // const dietObject = filterConfig.filter(e => e.id === dietKey)
-      // const dietLabel = dietObject.length ? dietObject[0].label : null      
+      // const dietLabel = dietObject.length ? dietObject[0].label : null
       const dietConfig = findConfigForSelectFilter('diet', filterConfig);
       const dietschemaType = dietConfig ? dietConfig.schemaType : null;
       const diet = dietConfig && dietConfig.options ? dietConfig.options : [];
@@ -215,10 +226,12 @@ const EditListingFeaturesFormComponent = props => (
       );
 
       // Exclude options, keys and labels in function of productType
-      // TODO could build a filter named "excluded" and place there all keys we want to exclude, 
+      // TODO could build a filter named "excluded" and place there all keys we want to exclude,
       // build one array and jsut make the test on each option array for each attribute-category
       if (productType === 'drinkable' && productTypeExcludeKeys?.foodType?.drinkable) {
-        dietOptions = dietOptions.filter(e => !productTypeExcludeKeys.foodType.drinkable.includes(e.key))
+        dietOptions = dietOptions.filter(
+          e => !productTypeExcludeKeys.foodType.drinkable.includes(e.key)
+        );
       }
 
       // Allergen section
@@ -247,7 +260,7 @@ const EditListingFeaturesFormComponent = props => (
       const sizeKey = 'size';
       const sizeOptions = findOptionsForSelectFilter(sizeKey, filterConfig);
       // const sizeObject = filterConfig.filter(e => e.id === sizeKey)
-      // const sizeLabel = sizeObject.length ? sizeObject[0].label : null      
+      // const sizeLabel = sizeObject.length ? sizeObject[0].label : null
       const sizeConfig = findConfigForSelectFilter('size', filterConfig);
       const sizeSchemaType = sizeConfig ? sizeConfig.schemaType : null;
       const sizeLabel = intl.formatMessage({
@@ -262,14 +275,13 @@ const EditListingFeaturesFormComponent = props => (
         })
       );
 
-
       // Accordions and display single or multi filter message
-      // cuisine (this first accordion is opened)      
-      const [accordionCuisineIsOpen, setAccordionCuisineIsOpen] = useState(true);;
+      // cuisine (this first accordion is opened)
+      const [accordionCuisineIsOpen, setAccordionCuisineIsOpen] = useState(true);
       const accordionCuisineIsOpenToggle = () => {
-        setAccordionCuisineIsOpen(!accordionCuisineIsOpen)
-      }
-      const cuisineIsSingleFilter = true      
+        setAccordionCuisineIsOpen(!accordionCuisineIsOpen);
+      };
+      const cuisineIsSingleFilter = true;
 
       // mealType
       /*
@@ -280,30 +292,30 @@ const EditListingFeaturesFormComponent = props => (
       const mealTypeIsSingleFilter = true
       */
 
-      // foodType      
-      const [accordionfoodTypeIsOpen, setAccordionfoodTypeIsOpen] = useState(false);;
+      // foodType
+      const [accordionfoodTypeIsOpen, setAccordionfoodTypeIsOpen] = useState(false);
       const accordionfoodTypeIsOpenToggle = () => {
-        setAccordionfoodTypeIsOpen(!accordionfoodTypeIsOpen)
-      }
-      const foodTypeIsSingleFilter = true
-      
+        setAccordionfoodTypeIsOpen(!accordionfoodTypeIsOpen);
+      };
+      const foodTypeIsSingleFilter = true;
 
       // drinkType
       const [accordionDrinkTypeIsOpen, setAccordionDrinkTypeIsOpen] = useState(true); // eslint-disable-line react-hooks/rules-of-hooks
       const accordionDrinkTypeIsOpenToggle = () => {
-        setAccordionDrinkTypeIsOpen(!accordionDrinkTypeIsOpen)
-      }
-      const drinkTypeIsSingleFilter = false
-      const drinkTypeCustomMessageSubKey = "drinkTypePlaceholder"
-
+        setAccordionDrinkTypeIsOpen(!accordionDrinkTypeIsOpen);
+      };
+      const drinkTypeIsSingleFilter = false;
+      const drinkTypeCustomMessageSubKey = 'drinkTypePlaceholder';
 
       // diet (this first accordion is opened)
-      const [accordionDietIsOpen, setAccordionDietIsOpen] = useState(productTypeVisibiliy.dietAccordionOpenAtLoading); // eslint-disable-line react-hooks/rules-of-hooks
+      const [accordionDietIsOpen, setAccordionDietIsOpen] = useState(
+        productTypeVisibiliy.dietAccordionOpenAtLoading
+      ); // eslint-disable-line react-hooks/rules-of-hooks
       const accordionDietIsOpenToggle = () => {
-        setAccordionDietIsOpen(!accordionDietIsOpen)
-      }
-      const dietIsSingleFilter = false
-      const dietCustomMessageSubKey = "dietPlaceholder"
+        setAccordionDietIsOpen(!accordionDietIsOpen);
+      };
+      const dietIsSingleFilter = false;
+      const dietCustomMessageSubKey = 'dietPlaceholder';
 
       // allergen
       /*
@@ -318,10 +330,10 @@ const EditListingFeaturesFormComponent = props => (
       // size
       const [accordionSizeIsOpen, setAccordionSizeIsOpen] = useState(false); // eslint-disable-line react-hooks/rules-of-hooks
       const accordionSizeIsOpenToggle = () => {
-        setAccordionSizeIsOpen(!accordionSizeIsOpen)
-      }
-      const sizeIsSingleFilter = false
-      const sizeCustomMessageSubKey = "sizePlaceholder"
+        setAccordionSizeIsOpen(!accordionSizeIsOpen);
+      };
+      const sizeIsSingleFilter = false;
+      const sizeCustomMessageSubKey = 'sizePlaceholder';
 
       /*
       // TODO if want to change the select color to marketplace color, just use the CustomFieldEnum css file
@@ -340,10 +352,9 @@ const EditListingFeaturesFormComponent = props => (
           {errorMessageShowListing}
 
           <div className={css.featuresWrapper}>
-
             {/* # foodType ------------------------------------------------------ # */}
-            {
-              productTypeVisibiliy.foodType && <CustomFieldEnum
+            {productTypeVisibiliy.foodType && (
+              <CustomFieldEnum
                 id="foodType"
                 name="foodType"
                 options={foodTypeOptions}
@@ -352,8 +363,7 @@ const EditListingFeaturesFormComponent = props => (
                 validate={foodTypeRequiredMessage}
                 schemaType={foodTypeSchemaType}
               />
-            }
-
+            )}
 
             {/* <AccordionHead
               accordionLabel={foodTypeLabel}
@@ -371,8 +381,8 @@ const EditListingFeaturesFormComponent = props => (
               />} */}
 
             {/* # drinkType ------------------------------------------------------ # */}
-            {
-              productTypeVisibiliy.drinkType && <CustomFieldEnum
+            {productTypeVisibiliy.drinkType && (
+              <CustomFieldEnum
                 id="drinkType"
                 name="drinkType"
                 options={drinkTypeOptions}
@@ -381,11 +391,11 @@ const EditListingFeaturesFormComponent = props => (
                 validate={drinkTypeRequiredMessage}
                 schemaType={drinkTypeSchemaType}
               />
-            }
+            )}
 
             {/* # cuisine ------------------------------------------------------ # */}
-            {
-              productTypeVisibiliy.cuisine && <CustomFieldEnum
+            {productTypeVisibiliy.cuisine && (
+              <CustomFieldEnum
                 id="cuisine"
                 name="cuisine"
                 options={cuisineOptions}
@@ -394,7 +404,7 @@ const EditListingFeaturesFormComponent = props => (
                 validate={cuisineRequiredMessage}
                 schemaType={cuisineSchemaType}
               />
-            }
+            )}
 
             {/* <AccordionHead
               accordionLabel={cuisineLabel}
@@ -438,24 +448,24 @@ const EditListingFeaturesFormComponent = props => (
               />} */}
 
             {/* # diet ------------------------------------------------------ # */}
-            {
-              productTypeVisibiliy.diet && <AccordionHead
+            {productTypeVisibiliy.diet && (
+              <AccordionHead
                 accordionLabel={dietLabel}
                 isSingleFilter={dietIsSingleFilter}
                 accordionIsOpen={accordionDietIsOpen}
                 accordionIsOpenToggle={accordionDietIsOpenToggle}
                 customMessageSubKey={dietCustomMessageSubKey}
               />
-            }
-            {productTypeVisibiliy.diet && accordionDietIsOpen &&
+            )}
+            {productTypeVisibiliy.diet && accordionDietIsOpen && (
               <FieldCheckboxGroup
                 className={css.featuresItems}
                 id={dietKey}
                 name={dietKey}
                 options={dietOptions}
-              // validate={sizeRequiredMessage}
+                // validate={sizeRequiredMessage}
               />
-            }
+            )}
 
             {/* # allergen ------------------------------------------------------ # */}
             {/* <AccordionHead
@@ -487,22 +497,24 @@ const EditListingFeaturesFormComponent = props => (
               />
             } */}
 
-            {productTypeVisibiliy.size && <AccordionHead
-              accordionLabel={sizeLabel}
-              isSingleFilter={sizeIsSingleFilter}
-              accordionIsOpen={accordionSizeIsOpen}
-              accordionIsOpenToggle={accordionSizeIsOpenToggle}
-              customMessageSubKey={sizeCustomMessageSubKey}
-            />}
-            {productTypeVisibiliy.size && accordionSizeIsOpen &&
+            {productTypeVisibiliy.size && (
+              <AccordionHead
+                accordionLabel={sizeLabel}
+                isSingleFilter={sizeIsSingleFilter}
+                accordionIsOpen={accordionSizeIsOpen}
+                accordionIsOpenToggle={accordionSizeIsOpenToggle}
+                customMessageSubKey={sizeCustomMessageSubKey}
+              />
+            )}
+            {productTypeVisibiliy.size && accordionSizeIsOpen && (
               <FieldCheckboxGroup
                 className={css.featuresItems}
                 id={sizeKey}
                 name={sizeKey}
                 options={sizeOptions}
-              // validate={sizeRequiredMessage}
-              />}
-
+                // validate={sizeRequiredMessage}
+              />
+            )}
           </div>
 
           {/* TODO https://flaviocopes.com/react-how-to-loop/ */}

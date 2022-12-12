@@ -15,7 +15,7 @@ const SectionHeading = props => {
     authorLink,
     showContactUser,
     onContactUser,
-    restaurantStatus
+    restaurantStatus,
   } = props;
 
   const unitType = config.lineItemUnitType;
@@ -28,10 +28,16 @@ const SectionHeading = props => {
     ? 'ListingPage.perDay'
     : 'ListingPage.perUnit';
 
-    const restaurantDot = <p className={restaurantStatus.status === 'open' ? css.openDot : css.closedDot}>•</p>;
-    const restaurantScheduleMessageKey = restaurantStatus.message ? restaurantStatus.message.key : null
-    const restaurantScheduleMessageValues = restaurantStatus.message ? restaurantStatus.message.values : null
-    
+  const restaurantDot = (
+    <p className={restaurantStatus.status === 'open' ? css.openDot : css.closedDot}>•</p>
+  );
+  const restaurantScheduleMessageKey = restaurantStatus.message
+    ? restaurantStatus.message.key
+    : null;
+  const restaurantScheduleMessageValues = restaurantStatus.message
+    ? restaurantStatus.message.values
+    : null;
+
   return (
     <div className={css.sectionHeading}>
       <div className={css.desktopPriceContainer}>
@@ -43,11 +49,18 @@ const SectionHeading = props => {
         </div>
       </div>
       <div className={css.heading}>
-
-        <h1 className={css.title}>{richTitle} {restaurantDot}</h1>
-        <p className={restaurantStatus.status === 'open' ? css.scheduleInfoTextOpen : css.scheduleInfoTextClosed}>
+        <h1 className={css.title}>
+          {richTitle} {restaurantDot}
+        </h1>
+        <p
+          className={
+            restaurantStatus.status === 'open'
+              ? css.scheduleInfoTextOpen
+              : css.scheduleInfoTextClosed
+          }
+        >
           <FormattedMessage id={restaurantScheduleMessageKey} />
-          </p>
+        </p>
 
         <div className={css.author}>
           {category}

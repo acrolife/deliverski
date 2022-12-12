@@ -22,7 +22,7 @@ import {
   IconSpinner,
   FieldTextInput,
   SecondaryButton,
-  Modal
+  Modal,
 } from '../../../components';
 
 import css from './ProfileSettingsForm.module.css';
@@ -32,7 +32,7 @@ const UPLOAD_CHANGE_DELAY = 2000; // Show spinner so that browser has time to lo
 
 const sharetribeSdk = require('sharetribe-flex-sdk');
 const sdk = sharetribeSdk.createInstance({
-  clientId: process.env.REACT_APP_SHARETRIBE_SDK_CLIENT_ID
+  clientId: process.env.REACT_APP_SHARETRIBE_SDK_CLIENT_ID,
 });
 class ProfileSettingsFormComponent extends Component {
   constructor(props) {
@@ -42,7 +42,7 @@ class ProfileSettingsFormComponent extends Component {
     this.state = {
       uploadDelay: false,
       offline: this.props.isOffline,
-      onHoldModalOpen: false
+      onHoldModalOpen: false,
     };
     this.submittedValues = {};
   }
@@ -62,8 +62,6 @@ class ProfileSettingsFormComponent extends Component {
     window.clearTimeout(this.uploadDelayTimeoutId);
   }
 
-
-
   render() {
     return (
       <FinalForm
@@ -73,8 +71,8 @@ class ProfileSettingsFormComponent extends Component {
           fillSchedule: (args, state, utils) => {
             const formValues = args[0];
             const mondaySchedule = formValues.schedule.find(s => {
-              return s.day === 'monday'
-            })
+              return s.day === 'monday';
+            });
             utils.changeValue(state, 'schedule', () => {
               return formValues.schedule.map(i => {
                 i.endHour = mondaySchedule.endHour;
@@ -82,10 +80,10 @@ class ProfileSettingsFormComponent extends Component {
                 i.startHour = mondaySchedule.startHour;
                 i.startMinute = mondaySchedule.startMinute;
 
-                return i
-              })
-            })
-          }
+                return i;
+              });
+            });
+          },
         }}
         render={fieldRenderProps => {
           const {
@@ -108,7 +106,9 @@ class ProfileSettingsFormComponent extends Component {
 
           const user = ensureCurrentUser(currentUser);
           // Conditional rendering of the provider/customer UI elements
-          const isProvider = currentUser ? !!currentUser.attributes.profile.metadata.isProvider : false
+          const isProvider = currentUser
+            ? !!currentUser.attributes.profile.metadata.isProvider
+            : false;
 
           // First name
           const firstNameLabel = intl.formatMessage({
@@ -233,55 +233,53 @@ class ProfileSettingsFormComponent extends Component {
           const submitDisabled =
             invalid || pristine || pristineSinceLastSubmit || uploadInProgress || submitInProgress;
 
-          const onChangeSpy = (formValues) => {
+          const onChangeSpy = formValues => {
             // console.log(formValues.values)
-          }
+          };
 
-          const handleOfflineSwitch = (event) => {
+          const handleOfflineSwitch = event => {
             if (this.props.isOffline) {
-              return sdk.currentUser.updateProfile({
-                publicData: {
-                  onHoldByOwner: !this.props.isOffline
-                }
-              }).then(res => {
-                if (typeof window !== "undefined") {
-                  window.location.reload()
-                }
-              })
+              return sdk.currentUser
+                .updateProfile({
+                  publicData: {
+                    onHoldByOwner: !this.props.isOffline,
+                  },
+                })
+                .then(res => {
+                  if (typeof window !== 'undefined') {
+                    window.location.reload();
+                  }
+                });
             } else {
               this.setState({
-                onHoldModalOpen: true
-              })
-
+                onHoldModalOpen: true,
+              });
             }
-
-
 
             // this.setState({
             //   offline: event.target.checked
             // })
-          }
-
+          };
 
           const setOnlineOffline = () => {
+            return sdk.currentUser
+              .updateProfile({
+                publicData: {
+                  onHoldByOwner: !this.props.isOffline,
+                },
+              })
+              .then(res => {
+                if (typeof window !== 'undefined') {
+                  window.location.reload();
+                }
+              });
+          };
 
-            return sdk.currentUser.updateProfile({
-              publicData: {
-                onHoldByOwner: !this.props.isOffline
-              }
-            }).then(res => {
-              if (typeof window !== "undefined") {
-                window.location.reload()
-              }
-            })
-          }
-
-
-          const setOnHoldModalOpen = (value) => {
+          const setOnHoldModalOpen = value => {
             this.setState({
-              onHoldModalOpen: value
-            })
-          }
+              onHoldModalOpen: value,
+            });
+          };
 
           return (
             <Form
@@ -355,11 +353,11 @@ class ProfileSettingsFormComponent extends Component {
                     );
                   }}
                 </Field>
-                {
-                  isProvider && <div className={css.tip}>
+                {isProvider && (
+                  <div className={css.tip}>
                     <FormattedMessage id="ProfileSettingsForm.tip" />
                   </div>
-                }
+                )}
                 <div className={css.fileInfo}>
                   <FormattedMessage id="ProfileSettingsForm.fileInfo" />
                 </div>
@@ -390,7 +388,7 @@ class ProfileSettingsFormComponent extends Component {
                 {/* validate={lastNameRequired} */}
               </div>
 
-              {isProvider &&
+              {isProvider && (
                 <div className={classNames(css.sectionContainer)}>
                   <h3 className={css.sectionTitle}>
                     <FormattedMessage id="ProfileSettingsForm.restaurantHeading" />
@@ -406,85 +404,93 @@ class ProfileSettingsFormComponent extends Component {
                   <p className={css.bioInfo}>
                     <FormattedMessage id="ProfileSettingsForm.restaurantInfo" />
                   </p>
-                </div>}
+                </div>
+              )}
 
-              {isProvider && <div className={classNames(css.sectionContainer, css.lastSection)}>
-                <h3 className={css.sectionTitle}>
-                  <FormattedMessage id="ProfileSettingsForm.bioHeading" />
-                </h3>
-                <FieldTextInput
-                  type="textarea"
-                  id="bio"
-                  name="bio"
-                  label={bioLabel}
-                  placeholder={bioPlaceholder}
-                />
-                <p className={css.bioInfo}>
-                  <FormattedMessage id="ProfileSettingsForm.bioInfo" />
-                </p>
-              </div>}
-
-              {isProvider && <div className={classNames(css.sectionContainer)}>
-                <h3 className={css.sectionTitle}>
-                  <FormattedMessage id="ProfileSettingsForm.scheduleTitle" />
-                </h3>
-                <div className={css.buttonWrapper}>
+              {isProvider && (
+                <div className={classNames(css.sectionContainer, css.lastSection)}>
+                  <h3 className={css.sectionTitle}>
+                    <FormattedMessage id="ProfileSettingsForm.bioHeading" />
+                  </h3>
+                  <FieldTextInput
+                    type="textarea"
+                    id="bio"
+                    name="bio"
+                    label={bioLabel}
+                    placeholder={bioPlaceholder}
+                  />
                   <p className={css.bioInfo}>
-                    <FormattedMessage id="ProfileSettingsForm.copyMondaySchedule" />
+                    <FormattedMessage id="ProfileSettingsForm.bioInfo" />
+                  </p>
+                </div>
+              )}
+
+              {isProvider && (
+                <div className={classNames(css.sectionContainer)}>
+                  <h3 className={css.sectionTitle}>
+                    <FormattedMessage id="ProfileSettingsForm.scheduleTitle" />
+                  </h3>
+                  <div className={css.buttonWrapper}>
+                    <p className={css.bioInfo}>
+                      <FormattedMessage id="ProfileSettingsForm.copyMondaySchedule" />
+                    </p>
+
+                    <SecondaryButton
+                      className={css.fillDaysButton}
+                      type="button"
+                      onClick={() => {
+                        form.mutators.fillSchedule(values);
+                      }}
+                    >
+                      <FormattedMessage id="ProfileSettingsForm.fillAllDays" />
+                    </SecondaryButton>
+                  </div>
+
+                  <WeeklySchedulerForm />
+                </div>
+              )}
+
+              {isProvider && (
+                <div className={css.sectionContainer}>
+                  <h3 className={css.sectionTitle}>
+                    <FormattedMessage id="ProfileSettingsForm.onHoldTitle" />
+                    <br />
+
+                    {this.props.isOffline ? (
+                      <p className={css.onHoldStatus}>
+                        <FormattedMessage id="ProfileSettingsForm.restaurantOnHold" />
+                      </p>
+                    ) : (
+                      <p className={css.onlineStatus}>
+                        <FormattedMessage id="ProfileSettingsForm.restaurantOnline" />
+                      </p>
+                    )}
+                  </h3>
+
+                  <p className={css.bioInfo}>
+                    <FormattedMessage id="ProfileSettingsForm.warningSwitch" />
                   </p>
 
-                  <SecondaryButton
-                    className={css.fillDaysButton}
-                    type="button"
-                    onClick={() => { form.mutators.fillSchedule(values) }}
-                  >
-                    <FormattedMessage id="ProfileSettingsForm.fillAllDays" />
-                  </SecondaryButton>
+                  <div className={css.switchWrapper}>
+                    {this.props.isOffline ? (
+                      <FormattedMessage id="ProfileSettingsForm.setOnline" />
+                    ) : (
+                      <FormattedMessage id="ProfileSettingsForm.setOnHold" />
+                    )}
+
+                    <Switch checked={this.state.offline} onChange={handleOfflineSwitch} />
+                  </div>
                 </div>
+              )}
 
-                <WeeklySchedulerForm />
-              </div>}
-
-
-              {isProvider && <div className={css.sectionContainer}>
-                <h3 className={css.sectionTitle}>
-                  <FormattedMessage id="ProfileSettingsForm.onHoldTitle" />
-                  <br />
-
-                  {this.props.isOffline ?
-                    (<p className={css.onHoldStatus}>
-                      <FormattedMessage id="ProfileSettingsForm.restaurantOnHold" />
-                    </p>)
-                    : (<p className={css.onlineStatus}>
-                      <FormattedMessage id="ProfileSettingsForm.restaurantOnline" />
-                    </p>)}
-
-                </h3>
-
-                <p className={css.bioInfo}>
-                  <FormattedMessage id="ProfileSettingsForm.warningSwitch" />
-                </p>
-
-                <div className={css.switchWrapper}>
-                  {this.props.isOffline ?
-                    <FormattedMessage id="ProfileSettingsForm.setOnline" /> :
-                    <FormattedMessage id="ProfileSettingsForm.setOnHold" />}
-
-                  <Switch
-                    checked={this.state.offline}
-                    onChange={handleOfflineSwitch}
-                  />
-                </div>
-              </div>}
-
-              {
-                isProvider && <Modal
-                  id='on_hold_modal'
+              {isProvider && (
+                <Modal
+                  id="on_hold_modal"
                   isOpen={this.state.onHoldModalOpen}
                   onClose={() => {
                     setOnHoldModalOpen(false);
                   }}
-                  onManageDisableScrolling={() => { }}
+                  onManageDisableScrolling={() => {}}
                 >
                   <center>
                     <h2>
@@ -497,11 +503,9 @@ class ProfileSettingsFormComponent extends Component {
                     </h2>
                   </center>
 
-
                   <div className={css.modalButtonsWrapper}>
-
                     <SecondaryButton
-                      type='button'
+                      type="button"
                       className={css.modalButton1}
                       onClick={setOnlineOffline}
                     >
@@ -510,18 +514,17 @@ class ProfileSettingsFormComponent extends Component {
                     <br />
 
                     <SecondaryButton
-                      type='button'
+                      type="button"
                       className={css.modalButton2}
                       onClick={() => setOnHoldModalOpen(false)}
                     >
-                       <FormattedMessage id="ProfileSettingsForm.goBack" />
+                      <FormattedMessage id="ProfileSettingsForm.goBack" />
                     </SecondaryButton>
-
                   </div>
                 </Modal>
-              }
+              )}
 
-              {isProvider && <DelayTimes intl={intl} css={css}/>}
+              {isProvider && <DelayTimes intl={intl} css={css} />}
 
               {submitError}
               <Button
@@ -533,10 +536,9 @@ class ProfileSettingsFormComponent extends Component {
               >
                 <FormattedMessage id="ProfileSettingsForm.saveChanges" />
               </Button>
-            </Form >
+            </Form>
           );
-        }
-        }
+        }}
       />
     );
   }

@@ -8,7 +8,6 @@ import { NamedLink, LayoutWrapperMain } from '../../components';
 import css from './NotFoundComponent.module.css';
 import LogoImage from '../../assets/logos/marmott-logo-sansfond.png';
 
-
 // Related the the geolocalion search feature
 // import config from '../../config';
 // import routeConfiguration from '../../routing/routeConfiguration';
@@ -19,24 +18,23 @@ import LogoImage from '../../assets/logos/marmott-logo-sansfond.png';
 // TODO if implement this serachbar, should reuse same component, not duplicate
 
 const NotFoundComponent = props => {
-    const { rootClassName, className } = props;
-    const classes = classNames(rootClassName || css.root, className);
+  const { rootClassName, className } = props;
+  const classes = classNames(rootClassName || css.root, className);
 
-    const handleSearchSubmit = values => {
-        const { search, selectedPlace } = values.location;
-        const { origin, bounds } = selectedPlace;
-        const searchParams = { address: search, origin, bounds };
-        /*history.push(
+  const handleSearchSubmit = values => {
+    const { search, selectedPlace } = values.location;
+    const { origin, bounds } = selectedPlace;
+    const searchParams = { address: search, origin, bounds };
+    /*history.push(
             createResourceLocatorString('SearchPage', routeConfiguration(), {}, searchParams)
         );*/
+  };
 
-    };
+  // const initialSearchFormValues = []
+  // const appConfig = config
 
-    // const initialSearchFormValues = []
-    // const appConfig = config
-
-    // prettier-ignore
-    return (
+  // prettier-ignore
+  return (
         <div className={classes}>
             <LayoutWrapperMain>
                 <div className={css.root}>
@@ -74,15 +72,15 @@ const NotFoundComponent = props => {
 };
 
 NotFoundComponent.defaultProps = {
-    rootClassName: null,
-    className: null,
+  rootClassName: null,
+  className: null,
 };
 
 const { string } = PropTypes;
 
 NotFoundComponent.propTypes = {
-    rootClassName: string,
-    className: string,
+  rootClassName: string,
+  className: string,
 };
 
 export default NotFoundComponent;

@@ -113,7 +113,7 @@ export class ModalComponent extends Component {
       isClosedClassName,
       isOpen,
       usePortal,
-      doubleModal
+      doubleModal,
     } = this.props;
 
     const closeModalMessage = intl.formatMessage({ id: 'Modal.closeModal' });

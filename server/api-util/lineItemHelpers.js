@@ -26,13 +26,13 @@ const LINE_ITEM_DAY = 'line-item/day';
 exports.calculateShippingFee = (
   shippingPriceInSubunitsOneItem,
   shippingPriceInSubunitsAdditionalItems,
-  currency,
+  currency
   // quantity
 ) => {
   // if (shippingPriceInSubunitsOneItem && currency && quantity === 1) {
   if (shippingPriceInSubunitsOneItem && currency) {
     return new Money(shippingPriceInSubunitsOneItem, currency);
-  } 
+  }
   // else if (
   //   shippingPriceInSubunitsOneItem &&
   //   shippingPriceInSubunitsAdditionalItems &&
