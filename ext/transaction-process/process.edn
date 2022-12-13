@@ -65,7 +65,7 @@
    :actions
    [{:name :action/calculate-full-refund}
     {:name :action/stripe-refund-payment}
-    {:name :action/decline-stock-reservation}],
+    {:name :action/cancel-stock-reservation}],
    :from :state/preauthorized,
    :to :state/declined}
   {:name :transition/mark-received-from-purchased,
