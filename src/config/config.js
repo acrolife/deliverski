@@ -61,8 +61,7 @@ const sortSearchByDistance = false;
 // Original
 // const transactionProcessAlias = 'flex-product-default-process/release-1';
 // New versions
-const transactionProcessAlias =
-  'flex-product-default-process/auto-delivered-120--auto-received-90-prod-v3';
+const transactionProcessAlias = 'flex-product-default-process/accept-decline-v1';
 // DEV
 // const transactionProcessAlias = 'flex-product-default-process/auto-delivered-120--auto-received-90-test';
 // const transactionProcessAlias = 'flex-product-default-process/dev-periods-chge-90-v10';

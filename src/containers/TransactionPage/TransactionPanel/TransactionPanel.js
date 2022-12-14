@@ -6,7 +6,9 @@ import config from '../../../config';
 import {
   TRANSITION_REQUEST_PAYMENT_AFTER_ENQUIRY,
   txHasBeenReceived,
+  txIsRequested,
   txIsCanceled,
+  txIsDeclined,
   txIsDelivered,
   txIsDisputed,
   txIsEnquired,
@@ -41,11 +43,14 @@ import DeliveryInfoMaybe from './DeliveryInfoMaybe';
 import FeedSection from './FeedSection';
 import ActionButtonsMaybe from './ActionButtonsMaybe';
 import DiminishedActionButtonMaybe from './DiminishedActionButtonMaybe';
+import SaleActionButtonsMaybe from './SaleActionButtonsMaybe';
 import PanelHeading, {
   HEADING_ENQUIRED,
   HEADING_PAYMENT_PENDING,
   HEADING_PAYMENT_EXPIRED,
+  HEADING_REQUESTED,
   HEADING_CANCELED,
+  HEADING_DECLINED,
   HEADING_PURCHASED,
   HEADING_DELIVERED,
   HEADING_DISPUTED,
@@ -169,6 +174,12 @@ export class TransactionPanelComponent extends Component {
       onShowMoreMessages,
       transactionRole,
       intl,
+      onAcceptSale,
+      onDeclineSale,
+      acceptInProgress,
+      declineInProgress,
+      acceptSaleError,
+      declineSaleError,
       markReceivedProps,
       markReceivedFromPurchasedProps,
       markDeliveredProps,
@@ -245,12 +256,23 @@ export class TransactionPanelComponent extends Component {
           headingState: HEADING_PAYMENT_EXPIRED,
           showDetailCardHeadings: isCustomer,
         };
+      } else if (txIsRequested(tx)) {
+        return {
+          headingState: HEADING_REQUESTED,
+          showDetailCardHeadings: isCustomer,
+          showSaleButtons: isProvider && !isCustomerBanned,
+        };
       } else if (txIsPurchased(tx)) {
         return {
           headingState: HEADING_PURCHASED,
           showDetailCardHeadings: isCustomer,
           showActionButtons: true,
           primaryButtonProps: isCustomer ? markReceivedFromPurchasedProps : markDeliveredProps,
+        };
+      } else if (txIsDeclined(tx)) {
+        return {
+          headingState: HEADING_DECLINED,
+          showDetailCardHeadings: isCustomer,
         };
       } else if (txIsCanceled(tx)) {
         return {
@@ -325,6 +347,18 @@ export class TransactionPanelComponent extends Component {
 
     const firstImage =
       currentListing.images && currentListing.images.length > 0 ? currentListing.images[0] : null;
+
+    const saleButtons = (
+      <SaleActionButtonsMaybe
+        showButtons={stateData.showSaleButtons}
+        acceptInProgress={acceptInProgress}
+        declineInProgress={declineInProgress}
+        acceptSaleError={acceptSaleError}
+        declineSaleError={declineSaleError}
+        onAcceptSale={() => onAcceptSale(currentTransaction.id)}
+        onDeclineSale={() => onDeclineSale(currentTransaction.id)}
+      />
+    );
 
     const actionButtons = (
       <ActionButtonsMaybe
@@ -459,6 +493,10 @@ export class TransactionPanelComponent extends Component {
               <div className={css.sendingMessageNotAllowed}>{sendingMessageNotAllowed}</div>
             )}
 
+            {stateData.showSaleButtons ? (
+              <div className={css.mobileActionButtons}>{saleButtons}</div>
+            ) : null}
+
             {stateData.showActionButtons ? (
               <div className={css.mobileActionButtons}>{actionButtons}</div>
             ) : null}
@@ -516,6 +554,10 @@ export class TransactionPanelComponent extends Component {
                   <p className={css.shippingWarning}>
                     Caution! Some items need to be picked up at the restaurant
                   </p>
+                ) : null}
+
+                {stateData.showSaleButtons ? (
+                  <div className={css.desktopActionButtons}>{saleButtons}</div>
                 ) : null}
 
                 {stateData.showActionButtons ? (
