@@ -15,6 +15,7 @@ export const HEADING_REQUESTED = 'requested';
 export const HEADING_CANCELED = 'canceled';
 export const HEADING_DECLINED = 'declined';
 export const HEADING_PURCHASED = 'purchased';
+export const HEADING_PREPARED = 'prepared';
 export const HEADING_DELIVERED = 'delivered';
 export const HEADING_DISPUTED = 'disputed';
 export const HEADING_RECEIVED = 'received';
@@ -245,6 +246,22 @@ const PanelHeading = props => {
           className={titleClasses}
           id="TransactionPanel.saleCanceledTitle"
           values={{ customerName, listingLink }}
+        />
+      );
+    case HEADING_PREPARED:
+      return isCustomer ? (
+        <HeadingCustomer
+          className={titleClasses}
+          id="TransactionPanel.orderPreparedTitle"
+          values={{ customerName, listingLink }}
+          isCustomerBanned={isCustomerBanned}
+        />
+      ) : (
+        <HeadingProvider
+          className={titleClasses}
+          id="TransactionPanel.salePreparedTitle"
+          values={{ customerName, listingLink }}
+          isCustomerBanned={isCustomerBanned}
         />
       );
     case HEADING_DELIVERED:
