@@ -10,13 +10,11 @@ const LineItemShippingFeeMaybe = props => {
 
   const isProvider = userRole === 'provider';
 
-  const lineItems = isProvider ?
-  props.lineItems.filter(l => {
-    return l.includeFor.includes('provider')
-  })
-  :
-  props.lineItems;
-
+  const lineItems = isProvider
+    ? props.lineItems.filter(l => {
+        return l.includeFor.includes('provider');
+      })
+    : props.lineItems;
 
   const shippingFeeLineItem = lineItems.find(
     item => item.code === LINE_ITEM_SHIPPING_FEE && !item.reversal

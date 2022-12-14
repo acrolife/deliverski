@@ -36,7 +36,6 @@
   display: flex;
   flex-direction: column;
   padding: 16px 0 2px 0;
-
 }
 
 .price {
@@ -130,7 +129,7 @@
   hyphens: auto;
 }
 
-.bulletWrapper{
+.bulletWrapper {
   position: absolute;
   left: 0;
   z-index: 1;
@@ -139,20 +138,20 @@
   width: 100%;
 }
 
-.reviewsBadge{
+.reviewsBadge {
   width: auto;
   margin: 0;
   /* filter: invert(64%) sepia(66%) saturate(376%) hue-rotate(153deg) brightness(89%) contrast(111%); */
 }
 
-.reviewsBadge2{
+.reviewsBadge2 {
   width: auto;
   margin: 0;
   margin-top: -8px;
   filter: invert(64%) sepia(66%) saturate(376%) hue-rotate(153deg) brightness(89%) contrast(111%);
 }
 
-.badgeWrapper{
+.badgeWrapper {
   position: absolute;
   right: 0;
   z-index: 1;
@@ -174,22 +173,22 @@
   text-shadow: 0 0.1rem 0.3rem rgb(132, 132, 132);
 } */
 
-.openedRestaurant{
+.openedRestaurant {
   width: auto;
   margin: 0;
   font-size: 80px;
-  /* color: var(--successColor); */ 
+  /* color: var(--successColor); */
   /* text-shadow: 0 0.1rem 0.3rem rgb(132, 132, 132); */
   color: transparent;
   /* border-color: var(--successColor);
   border: 2px; */
 }
 
-.stock{
+.stock {
   display: flex;
 }
 
-.yellowDot{
+.yellowDot {
   margin: 0;
   font-size: 45px;
   color: orange;
@@ -198,7 +197,7 @@
   margin-left: 5px;
 }
 
-.greenDot{
+.greenDot {
   margin: 0;
   font-size: 45px;
   color: var(--successColor);
@@ -207,8 +206,7 @@
   margin-left: 5px;
 }
 
-
-.redDot{
+.redDot {
   margin: 0;
   font-size: 45px;
   color: red;
@@ -217,7 +215,7 @@
   margin-left: 5px;
 }
 
-.closedRestaurant{
+.closedRestaurant {
   width: auto;
   margin: 0;
   font-size: 80px;
@@ -225,8 +223,7 @@
   text-shadow: 0 0.1rem 0.3rem rgb(132, 132, 132);
 }
 
-.messageWrapper{
-  
+.messageWrapper {
   display: flex;
   position: absolute;
   top: 0;
@@ -234,16 +231,16 @@
   width: 100%;
   height: 100%;
   padding: 0 10px;
-  &:hover{  
+  &:hover {
     z-index: 3;
     background-color: rgba(56, 56, 56, 0.7);
-    
+
     justify-content: center;
     align-items: center;
   }
 }
 
-.scheduleMessage{
+.scheduleMessage {
   z-index: 4;
   width: 100%;
   text-align: center;
@@ -252,7 +249,7 @@
   height: 100%;
   padding-top: 15%;
   padding-bottom: 10%;
-  &:hover{
+  &:hover {
     color: white;
   }
 }

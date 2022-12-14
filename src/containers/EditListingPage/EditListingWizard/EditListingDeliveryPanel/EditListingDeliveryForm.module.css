@@ -16,7 +16,7 @@
 .error {
   color: var(--failColor);
 }
-.inputShippingFee{
+.inputShippingFee {
   visibility: hidden;
 }
 .deliveryOption {
@@ -26,7 +26,7 @@
   }
 }
 
-.deliveryCheckboxDisabled{
+.deliveryCheckboxDisabled {
   pointer-events: none;
   margin-bottom: 24px;
 }

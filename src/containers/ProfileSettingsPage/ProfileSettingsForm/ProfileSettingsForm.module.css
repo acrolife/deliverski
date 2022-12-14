@@ -47,8 +47,6 @@
   }
 }
 
-
-
 .uploadAvatarInput {
   display: none;
 }
@@ -304,7 +302,7 @@
   margin-bottom: 56px;
 }
 
-.buttonWrapper{
+.buttonWrapper {
   display: flex;
   flex-direction: column;
 }
@@ -313,10 +311,10 @@
   color: var(--matterColorAnti);
   margin-top: 0;
   font-size: 16px;
-line-height: 32px;
+  line-height: 32px;
 }
 
-.fillDaysButton{
+.fillDaysButton {
   /* color: var(--matterColorAnti); */
   height: 2pc;
   width: 12pc;
@@ -324,14 +322,14 @@ line-height: 32px;
   box-shadow: 2px;
   background-color: var(--marketplaceColor);
   color: white;
- 
+
   &:hover {
     color: var(--marketplaceColor);
-    background-color: white
+    background-color: white;
   }
 }
 
-.switchWrapper{
+.switchWrapper {
   display: flex;
 }
 
@@ -343,7 +341,7 @@ line-height: 32px;
   margin-top: 3px;
 }
 
-.infoText{
+.infoText {
   color: var(--matterColorAnti);
   margin-top: 11px;
   margin: 0;
@@ -354,11 +352,11 @@ line-height: 32px;
   }
 }
 
-.modalButton1{
+.modalButton1 {
   background-color: rgb(255, 34, 34);
   color: white;
 
-  &:hover{
+  &:hover {
     background-color: rgb(253, 98, 98);
   }
 }
@@ -366,9 +364,9 @@ line-height: 32px;
 .onHoldStatus {
   color: rgb(255, 34, 34);
   font-weight: 800;
-} 
+}
 
 .onlineStatus {
   color: rgb(34, 255, 60);
   font-weight: 800;
-} 
+}

@@ -33,7 +33,8 @@ export const STRIPE_CUSTOMER_SUCCESS = 'app/CheckoutPage/STRIPE_CUSTOMER_SUCCESS
 export const STRIPE_CUSTOMER_ERROR = 'app/CheckoutPage/STRIPE_CUSTOMER_ERROR';
 
 export const SHOW_USER_PROFILE_CUSTOM_DATA = 'app/CheckoutPage/SHOW_USER_PROFILE_CUSTOM_DATA';
-export const SHOW_USER_PROFILE_CUSTOM_DATA_ERROR = 'app/CheckoutPage/SHOW_USER_PROFILE_CUSTOM_DATA_ERROR';
+export const SHOW_USER_PROFILE_CUSTOM_DATA_ERROR =
+  'app/CheckoutPage/SHOW_USER_PROFILE_CUSTOM_DATA_ERROR';
 
 // ================ Reducer ================ //
 
@@ -48,7 +49,7 @@ const initialState = {
   confirmPaymentError: null,
   stripeCustomerFetched: false,
   userProfileCustom: {},
-  showUserProfileCustomError: null,  
+  showUserProfileCustomError: null,
 };
 
 export default function checkoutPageReducer(state = initialState, action = {}) {
@@ -102,10 +103,10 @@ export default function checkoutPageReducer(state = initialState, action = {}) {
       console.error(payload); // eslint-disable-line no-console
       return { ...state, stripeCustomerFetchError: payload };
 
-      case SHOW_USER_PROFILE_CUSTOM_DATA:
-        return { ...state, userProfileCustom: payload, showuserProfileCustomError: null };
-      case SHOW_USER_PROFILE_CUSTOM_DATA_ERROR:
-        return { ...state, userProfileCustom: {}, showuserProfileCustomError: payload };      
+    case SHOW_USER_PROFILE_CUSTOM_DATA:
+      return { ...state, userProfileCustom: payload, showuserProfileCustomError: null };
+    case SHOW_USER_PROFILE_CUSTOM_DATA_ERROR:
+      return { ...state, userProfileCustom: {}, showuserProfileCustomError: payload };
 
     default:
       return state;
@@ -196,25 +197,26 @@ export const initiateOrder = (orderParams, transactionId) => (dispatch, getState
   const quantityMaybe = quantity ? { stockReservationQuantity: Number(quantity) } : {};
   const bookingParamsMaybe = bookingDates || {};
 
-  const restOfShoppingCartItems = orderParams.restOfShoppingCartItems ? {
-    restOfShoppingCartItems: orderParams.restOfShoppingCartItems
-  } : {}
+  const restOfShoppingCartItems = orderParams.restOfShoppingCartItems
+    ? {
+        restOfShoppingCartItems: orderParams.restOfShoppingCartItems,
+      }
+    : {};
 
-
-  const metadataWithShoppingCart = orderParams.restOfShoppingCartItems ? {
-    metadata: {
-      restOfShoppingCartItems: orderParams.restOfShoppingCartItems.map(item => {
-        return (
-          JSON.stringify(item)
-        )
-      })
-    }
-  } : {}
+  const metadataWithShoppingCart = orderParams.restOfShoppingCartItems
+    ? {
+        metadata: {
+          restOfShoppingCartItems: orderParams.restOfShoppingCartItems.map(item => {
+            return JSON.stringify(item);
+          }),
+        },
+      }
+    : {};
 
   // Parameters only for client app's server
   const orderData = {
     deliveryMethod,
-    ...restOfShoppingCartItems
+    ...restOfShoppingCartItems,
   };
 
   // Parameters for Flex API
@@ -230,7 +232,7 @@ export const initiateOrder = (orderParams, transactionId) => (dispatch, getState
         transition,
         params: {
           ...transitionParams,
-          ...metadataWithShoppingCart
+          ...metadataWithShoppingCart,
         },
       }
     : {
@@ -238,8 +240,8 @@ export const initiateOrder = (orderParams, transactionId) => (dispatch, getState
         transition,
         params: {
           ...transitionParams,
-        ...metadataWithShoppingCart
-      },
+          ...metadataWithShoppingCart,
+        },
       };
   const queryParams = {
     include: ['booking', 'provider'],
@@ -411,14 +413,16 @@ export const speculateTransaction = (orderParams, transactionId) => (dispatch, g
   const quantityMaybe = quantity ? { stockReservationQuantity: Number(quantity) } : {};
   const bookingParamsMaybe = bookingDates || {};
 
-  const restOfShoppingCartItems = orderParams.orderData?.restOfShoppingCartItems ? {
-    restOfShoppingCartItems: orderParams.orderData.restOfShoppingCartItems
-  } : {}
+  const restOfShoppingCartItems = orderParams.orderData?.restOfShoppingCartItems
+    ? {
+        restOfShoppingCartItems: orderParams.orderData.restOfShoppingCartItems,
+      }
+    : {};
 
   // Parameters only for client app's server
   const orderData = {
     deliveryMethod,
-    ...restOfShoppingCartItems
+    ...restOfShoppingCartItems,
   };
 
   // Parameters for Flex API
@@ -504,7 +508,7 @@ export const stripeCustomer = () => (dispatch, getState, sdk) => {
     });
 };
 
-  /*
+/*
 export const loadData = () => (dispatch, getState, sdk) => {
 
   // Clear state so that previously loaded data is not visible

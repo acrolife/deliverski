@@ -50,7 +50,6 @@
   }
 }
 
-
 /* Accordion styles */
 .filterHeaderAccordion {
   margin-top: 10px;
@@ -114,8 +113,7 @@
 
 .postLabelAccordion {
   @apply --marketplaceSmallFontStyles;
-
-} 
+}
 
 .labelSelectedAccordion {
   color: var(--marketplaceColor);

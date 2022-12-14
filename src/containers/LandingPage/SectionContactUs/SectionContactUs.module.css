@@ -1,6 +1,5 @@
 @import '../../../styles/propertySets.css';
 
-
 .title {
   @apply --marketplaceH1FontStyles;
   margin-top: 0;
@@ -50,5 +49,5 @@
 }
 
 .textContact {
-  color: var(--marketplaceColor)
+  color: var(--marketplaceColor);
 }

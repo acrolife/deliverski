@@ -1,6 +1,5 @@
 @import '../../../styles/propertySets.css';
 
-
 .title {
   @apply --marketplaceH1FontStyles;
 
@@ -58,8 +57,6 @@
   width: 100%;
   border-radius: 4px !important;
 }
-
-
 
 .searchLink {
   width: 100%;

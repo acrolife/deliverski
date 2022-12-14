@@ -2,7 +2,11 @@ import omit from 'lodash/omit';
 
 import config from '../../config';
 import { types as sdkTypes, createImageVariantConfig } from '../../util/sdkLoader';
-import { denormalisedResponseEntities, ensureAvailabilityException, restaurantNameToFilterName } from '../../util/data';
+import {
+  denormalisedResponseEntities,
+  ensureAvailabilityException,
+  restaurantNameToFilterName,
+} from '../../util/data';
 import { isSameDate, monthIdString } from '../../util/dates';
 import { storableError } from '../../util/errors';
 import * as log from '../../util/log';
@@ -39,13 +43,13 @@ const updateUloadedImagesState = (state, payload) => {
   );
   return duplicateImageEntities.length > 0
     ? {
-      uploadedImages: {},
-      uploadedImagesOrder: [],
-    }
+        uploadedImages: {},
+        uploadedImagesOrder: [],
+      }
     : {
-      uploadedImages,
-      uploadedImagesOrder,
-    };
+        uploadedImages,
+        uploadedImagesOrder,
+      };
 };
 
 const getImageVariantInfo = () => {
@@ -599,8 +603,6 @@ const updateStockOfListingMaybe = (listingId, stockTotals, dispatch) => {
 // create, set stock, show listing (to get updated currentStock entity)
 export function requestCreateListingDraft(data) {
   return (dispatch, getState, sdk) => {
-
-
     dispatch(createListingDraftRequest(data));
     const { stockUpdate, images, ...rest } = data;
 
@@ -609,18 +611,16 @@ export function requestCreateListingDraft(data) {
     const imageProperty = typeof images !== 'undefined' ? { images: imageIds(images) } : {};
     let ownListingValues = { ...imageProperty, ...rest };
 
-
     // Using provider's publicData to add restaurantName and restaurantFilterName (used for the SelectSingleFilter) to the listing's publicData
-    const currentUser = getState().user.currentUser
-    const restaurantName = currentUser ? currentUser.attributes.profile.publicData.restaurantName : null
-    const restaurantFilterName = restaurantName ? restaurantNameToFilterName(restaurantName) : null
-
+    const currentUser = getState().user.currentUser;
+    const restaurantName = currentUser
+      ? currentUser.attributes.profile.publicData.restaurantName
+      : null;
+    const restaurantFilterName = restaurantName ? restaurantNameToFilterName(restaurantName) : null;
 
     // Updating the newly created listing with the values
-    ownListingValues.publicData.restaurantName = restaurantName
-    ownListingValues.publicData.restaurant = restaurantFilterName
-
-
+    ownListingValues.publicData.restaurantName = restaurantName;
+    ownListingValues.publicData.restaurant = restaurantFilterName;
 
     const imageVariantInfo = getImageVariantInfo();
     const queryParams = {
@@ -681,16 +681,20 @@ export function requestUpdateListing(tab, data) {
      // using this function.
      FIXME CAUTION ! The filter name would remain to be changed though
     */
-    // Using provider's publicData to build restaurantName and restaurantFilterName 
+    // Using provider's publicData to build restaurantName and restaurantFilterName
     if (stockUpdate) {
-      const currentUser = getState().user.currentUser
-      const restaurantName = currentUser ? currentUser.attributes.profile.publicData.restaurantName : null
-      const restaurantFilterName = restaurantName ? restaurantNameToFilterName(restaurantName) : null
+      const currentUser = getState().user.currentUser;
+      const restaurantName = currentUser
+        ? currentUser.attributes.profile.publicData.restaurantName
+        : null;
+      const restaurantFilterName = restaurantName
+        ? restaurantNameToFilterName(restaurantName)
+        : null;
 
       // Updating the listing publicData with restaurantName and restaurantFilterName
-      ownListingUpdateValues.publicData = {}
-      ownListingUpdateValues.publicData.restaurantName = restaurantName
-      ownListingUpdateValues.publicData.restaurant = restaurantFilterName
+      ownListingUpdateValues.publicData = {};
+      ownListingUpdateValues.publicData.restaurantName = restaurantName;
+      ownListingUpdateValues.publicData.restaurant = restaurantFilterName;
     }
 
     // Note: if update values include stockUpdate, we'll do that first

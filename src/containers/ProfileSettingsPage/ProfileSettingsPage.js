@@ -54,11 +54,11 @@ export class ProfileSettingsPageComponent extends Component {
       // Ensure that the optional bio is a string
       const bio = rawBio || '';
 
-      let lastNameValidated
+      let lastNameValidated;
       if (!lastName || lastName === ' ') {
-        lastNameValidated = ' '
+        lastNameValidated = ' ';
       } else {
-        lastNameValidated = lastName.trim()
+        lastNameValidated = lastName.trim();
       }
 
       // Add our restaurant name to the user public data
@@ -69,7 +69,7 @@ export class ProfileSettingsPageComponent extends Component {
         firstName: firstName.trim(),
         lastName: lastNameValidated,
         bio,
-        publicData
+        publicData,
       };
 
       const uploadedImage = this.props.image;
@@ -85,14 +85,24 @@ export class ProfileSettingsPageComponent extends Component {
 
     const user = ensureCurrentUser(currentUser);
     // Conditional rendering of the provider/customer UI elements
-    const isProvider = currentUser ? !!currentUser.attributes.profile.metadata.isProvider : false
+    const isProvider = currentUser ? !!currentUser.attributes.profile.metadata.isProvider : false;
 
     const { firstName, lastName, bio } = user.attributes.profile;
     const publicData = user.attributes.profile.publicData;
-    const restaurantName = publicData ? publicData.restaurantName : null
+    const restaurantName = publicData ? publicData.restaurantName : null;
     const profileImageId = user.profileImage ? user.profileImage.id : null;
     const profileImage = image || { imageId: profileImageId };
-    const weekdays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'].map(d => {return ({day: d})});
+    const weekdays = [
+      'monday',
+      'tuesday',
+      'wednesday',
+      'thursday',
+      'friday',
+      'saturday',
+      'sunday',
+    ].map(d => {
+      return { day: d };
+    });
 
     const savedSchedule = currentUser?.attributes.profile.publicData.schedule;
     const basicSchedule = [
@@ -101,59 +111,66 @@ export class ProfileSettingsPageComponent extends Component {
         startHour: '00',
         startMinute: '00',
         endHour: '23',
-        endMinute: '00'
+        endMinute: '00',
       },
       {
         day: 'tuesday',
         startHour: '00',
         startMinute: '00',
         endHour: '23',
-        endMinute: '00'
+        endMinute: '00',
       },
       {
         day: 'wednesday',
         startHour: '00',
         startMinute: '00',
         endHour: '23',
-        endMinute: '00'
+        endMinute: '00',
       },
       {
         day: 'thursday',
         startHour: '00',
         startMinute: '00',
         endHour: '23',
-        endMinute: '00'
+        endMinute: '00',
       },
       {
         day: 'friday',
         startHour: '00',
         startMinute: '00',
         endHour: '23',
-        endMinute: '00'
+        endMinute: '00',
       },
       {
         day: 'saturday',
         startHour: '00',
         startMinute: '00',
         endHour: '23',
-        endMinute: '00'
+        endMinute: '00',
       },
       {
         day: 'sunday',
         startHour: '00',
         startMinute: '00',
         endHour: '23',
-        endMinute: '00'
+        endMinute: '00',
       },
-    ]
-    const scheduleValue = savedSchedule ?? basicSchedule
+    ];
+    const scheduleValue = savedSchedule ?? basicSchedule;
     const isOffline = !!user?.attributes?.profile.publicData?.onHoldByOwner;
 
     const profileSettingsForm = user.id ? (
       <ProfileSettingsForm
         className={css.form}
         currentUser={currentUser}
-        initialValues={{ firstName, lastName, bio, restaurantName, profileImage: user.profileImage, schedule: scheduleValue }}
+        initialValues={{
+          firstName,
+          lastName,
+          bio,
+          restaurantName,
+          profileImage: user.profileImage,
+          schedule: scheduleValue,
+        }}
         profileImage={profileImage}
         onImageUpload={e => onImageUploadHandler(e, onImageUpload)}
         uploadInProgress={uploadInProgress}
@@ -167,7 +184,6 @@ export class ProfileSettingsPageComponent extends Component {
     ) : null;
 
     const title = intl.formatMessage({ id: 'ProfileSettingsPage.title' });
-
 
     return (
       <Page className={css.root} title={title} scrollingDisabled={scrollingDisabled}>
@@ -259,10 +275,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const ProfileSettingsPage = compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   injectIntl
 )(ProfileSettingsPageComponent);
 

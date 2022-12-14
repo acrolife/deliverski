@@ -14,9 +14,9 @@ const Tab = props => {
   const { className, disabled, text, selected, onClick, linkProps, isDark } = props;
   const darkSkinClasses = isDark
     ? classNames(css.tabContentDarkSkin, {
-      [css.selectedTabContentDarkSkin]: selected,
-      [css.disabledDarkSkin]: disabled,
-    })
+        [css.selectedTabContentDarkSkin]: selected,
+        [css.disabledDarkSkin]: disabled,
+      })
     : null;
 
   const linkClasses = classNames(
@@ -70,10 +70,10 @@ Tab.propTypes = {
 const TabNavHorizontal = props => {
   const { className, rootClassName, tabRootClassName, tabs, skin, isProvider } = props;
 
-  // Conditional rendering of the provider/customer UI elements, based on isProvider 
-  let filteredTabs = tabs
+  // Conditional rendering of the provider/customer UI elements, based on isProvider
+  let filteredTabs = tabs;
   if (!isProvider && tabs) {
-    filteredTabs = tabs.filter(e => e.linkProps.name !== 'ManageListingsPage')
+    filteredTabs = tabs.filter(e => e.linkProps.name !== 'ManageListingsPage');
   }
 
   const isDark = skin === DARK_SKIN;

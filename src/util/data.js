@@ -36,7 +36,6 @@ export const combinedResourceObjects = (oldRes, newRes) => {
   return { id, type, ...attrs, ...rels };
 };
 
-
 /**
  * Combine the resource objects form the given api response to the
  * existing entities.
@@ -396,39 +395,48 @@ export const humanizeLineItemCode = code => {
  *  Written by Robert Bogos - to be completed
  * @returns xxxx
  */
-export const isRestaurantOpen = (publicData) => {
-
+export const isRestaurantOpen = publicData => {
   const schedule = publicData?.schedule;
   const onHoldByOwner = publicData?.onHoldByOwner;
   const phoneNumber = publicData?.phoneNumber;
 
   if (onHoldByOwner) {
     return {
-      status: "closed",
+      status: 'closed',
       message: {
-        key: phoneNumber ? 'ListingCard.restaurantIsOnHoldPhoneNumberMessage' : 'ListingCard.restaurantIsOnHoldMessage',
-        values: phoneNumber ? { phoneNumber } : null
+        key: phoneNumber
+          ? 'ListingCard.restaurantIsOnHoldPhoneNumberMessage'
+          : 'ListingCard.restaurantIsOnHoldMessage',
+        values: phoneNumber ? { phoneNumber } : null,
       },
       checkoutMessage: null,
-      onHold: true
-    }
+      onHold: true,
+    };
   } else {
     if (!schedule) {
       return {
-        status: "open",
+        status: 'open',
         message: {
           key: 'ListingCard.restaurantOpenMessage',
-          values: null
+          values: null,
         },
         checkoutMessage: null,
-        onHold: false
-      }
+        onHold: false,
+      };
     } else {
-      const weekdays = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+      const weekdays = [
+        'sunday',
+        'monday',
+        'tuesday',
+        'wednesday',
+        'thursday',
+        'friday',
+        'saturday',
+      ];
       const currentDay = weekdays[new Date().getDay()];
       const scheduleForCurrentDay = schedule.find(i => {
-        return i.day === currentDay
-      })
+        return i.day === currentDay;
+      });
 
       const openingHour = Number(scheduleForCurrentDay.startHour);
       const openingMinute = Number(scheduleForCurrentDay.startMinute);
@@ -439,23 +447,21 @@ export const isRestaurantOpen = (publicData) => {
       const openingDate = new Date();
       const closingDate = new Date();
 
-
       openingDate.setHours(openingHour);
       openingDate.setMinutes(openingMinute);
       closingDate.setHours(closingHour);
       closingDate.setMinutes(closingMinute);
-
 
       if (currentDate > openingDate && currentDate < closingDate) {
         return {
           status: 'open',
           message: {
             key: 'ListingCard.restaurantOpenMessage',
-            values: null
+            values: null,
           },
           checkoutMessage: null,
-          onHold: false
-        }
+          onHold: false,
+        };
       }
 
       if (currentDate < openingDate || currentDate > closingDate) {
@@ -468,32 +474,28 @@ export const isRestaurantOpen = (publicData) => {
               openingMinute,
               closingHour,
               closingMinute,
-            }
+            },
           },
           checkoutMessage: {
             key: 'ListingCard.restaurantClosedCheckoutMessage',
             values: {
               openingHour,
               openingMinute,
-            }
+            },
           },
-          onHold: false
-        }
+          onHold: false,
+        };
       }
-
     }
-
   }
-
-}
-
+};
 
 /**
  * Utility : converting the restaurant name to an url-formatted name
  * @param {String} restaurantName : the human readable restaurant name
  * @returns {String} restaurant : the url-formatted restaurant name
  */
-export const restaurantNameToFilterName = (restaurantName) => {
+export const restaurantNameToFilterName = restaurantName => {
   return restaurantName
     .toLowerCase()
     .replaceAll(' ', '-')
@@ -502,13 +504,12 @@ export const restaurantNameToFilterName = (restaurantName) => {
     .replaceAll('è', 'e')
     .replaceAll('à', 'a')
     .replaceAll('+', '')
-    .replaceAll('\&', '')
-    .replaceAll('\'', '')
-    .replaceAll('\"', '')
+    .replaceAll('&', '')
+    .replaceAll("'", '')
+    .replaceAll('"', '')
     .replaceAll('__', '_')
     .replaceAll('__', '_')
     .replaceAll('--', '-')
     .replaceAll('--', '-')
-    .trim()
-}
-
+    .trim();
+};

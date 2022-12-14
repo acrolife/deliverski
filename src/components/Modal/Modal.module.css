@@ -60,7 +60,7 @@
   z-index: 9;
 }
 
-.upperLeverClose{
+.upperLeverClose {
   @apply --marketplaceModalCloseStyles;
   z-index: 9999;
 }
@@ -68,7 +68,6 @@
 .closeText {
   @apply --marketplaceModalCloseText;
 }
-
 
 .closeIcon {
   @apply --marketplaceModalCloseIcon;

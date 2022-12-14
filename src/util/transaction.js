@@ -137,7 +137,7 @@ const stateDescription = {
   // id is defined only to support Xstate format.
   // However if you have multiple transaction processes defined,
   // it is best to keep them in sync with transaction process aliases.
-  
+
   // Original
   // id: 'flex-product-default-process/release-1',
   // New version

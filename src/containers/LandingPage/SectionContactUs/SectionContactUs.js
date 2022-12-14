@@ -26,10 +26,11 @@ const SectionContactUs = props => {
           <p className={css.textContact}>
             <FormattedMessage id="SectionContactUs.part1Text" />
           </p>
-          {isLoggedIn && 
-          <p>
-             <FormattedMessage id="SectionContactUs.emailCustomer" />
-          </p>}
+          {isLoggedIn && (
+            <p>
+              <FormattedMessage id="SectionContactUs.emailCustomer" />
+            </p>
+          )}
         </div>
 
         <div className={css.stepContact}>
@@ -39,10 +40,11 @@ const SectionContactUs = props => {
           <p className={css.textContact}>
             <FormattedMessage id="SectionContactUs.part2Text" />
           </p>
-          {isLoggedIn && 
-          <p>
-             <FormattedMessage id="SectionContactUs.emailProvider" />
-          </p>}          
+          {isLoggedIn && (
+            <p>
+              <FormattedMessage id="SectionContactUs.emailProvider" />
+            </p>
+          )}
         </div>
 
         <div className={css.stepContact}>
@@ -52,19 +54,21 @@ const SectionContactUs = props => {
           <p className={css.textContact}>
             <FormattedMessage id="SectionContactUs.part3Text" />
           </p>
-          {isLoggedIn && 
-          <p>
-             <FormattedMessage id="SectionContactUs.emailCourier" />
-          </p>}           
+          {isLoggedIn && (
+            <p>
+              <FormattedMessage id="SectionContactUs.emailCourier" />
+            </p>
+          )}
         </div>
       </div>
 
-      {!isLoggedIn && <div className={css.createListingLink}>
-        <NamedLink name="LoginPage" className={css.loginLink}>
-          <FormattedMessage id="SectionContactUs.contact" />
-        </NamedLink>
-      </div>}
-
+      {!isLoggedIn && (
+        <div className={css.createListingLink}>
+          <NamedLink name="LoginPage" className={css.loginLink}>
+            <FormattedMessage id="SectionContactUs.contact" />
+          </NamedLink>
+        </div>
+      )}
     </div>
   );
 };
@@ -76,7 +80,7 @@ const { string, bool } = PropTypes;
 SectionContactUs.propTypes = {
   rootClassName: string,
   className: string,
-  isLoggedIn: bool
+  isLoggedIn: bool,
 };
 
 export default SectionContactUs;

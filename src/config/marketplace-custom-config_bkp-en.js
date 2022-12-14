@@ -56,10 +56,10 @@ export const filters = [
         { key: 'legumes-et-vie', label: 'Légumes et Vie' },
         { key: 'albert-cookies', label: 'Albert Cookies' },
         { key: 'made-in-les-arcs', label: 'Made in Les Arcs' },
-        { key: 'fondus-de-ski', label: 'Fondus de Ski' },      
-        { key: 'mountain-cake', label: 'Mountain Cake' },        
-        { key: 'green-and-good', label: 'Green And Good' },  
-        { key: 'soups-smoothies', label: 'Soups & Smoothies'}        
+        { key: 'fondus-de-ski', label: 'Fondus de Ski' },
+        { key: 'mountain-cake', label: 'Mountain Cake' },
+        { key: 'green-and-good', label: 'Green And Good' },
+        { key: 'soups-smoothies', label: 'Soups & Smoothies' },
       ],
     },
   },
@@ -74,7 +74,7 @@ export const filters = [
       options: [
         { key: 'drinkable', label: 'To Drink' },
         { key: 'eatable', label: 'To Eat' },
-        { key: 'composable', label: 'Menu' }
+        { key: 'composable', label: 'Menu' },
       ],
     },
   },
@@ -147,7 +147,7 @@ export const filters = [
   },
 
   // Here is an example of multi-enum search filter.
-  
+
   {
     id: 'amenities',
     label: 'Amenities',

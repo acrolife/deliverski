@@ -61,12 +61,11 @@ const LineItemSubTotalMaybe = props => {
   const { unitType, userRole, intl } = props;
   const isProvider = userRole === 'provider';
 
-  const lineItems = isProvider ?
-  props.lineItems.filter(l => {
-    return l.includeFor.includes('provider')
-  })
-  :
-  props.lineItems;
+  const lineItems = isProvider
+    ? props.lineItems.filter(l => {
+        return l.includeFor.includes('provider');
+      })
+    : props.lineItems;
 
   const refund = lineItems.find(item => item.code === unitType && item.reversal);
 

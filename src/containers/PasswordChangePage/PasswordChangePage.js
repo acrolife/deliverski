@@ -40,7 +40,7 @@ export const PasswordChangePageComponent = props => {
   } = props;
 
   // Conditional rendering of the provider/customer UI elements
-  const isProvider = currentUser ? !!currentUser.attributes.profile.metadata.isProvider : false
+  const isProvider = currentUser ? !!currentUser.attributes.profile.metadata.isProvider : false;
 
   const changePasswordForm =
     currentUser && currentUser.id ? (
@@ -71,7 +71,10 @@ export const PasswordChangePageComponent = props => {
           />
           <UserNav selectedPageName="PasswordChangePage" />
         </LayoutWrapperTopbar>
-        <LayoutWrapperAccountSettingsSideNav currentTab="PasswordChangePage"isProvider={isProvider}  />
+        <LayoutWrapperAccountSettingsSideNav
+          currentTab="PasswordChangePage"
+          isProvider={isProvider}
+        />
         <LayoutWrapperMain>
           <div className={css.content}>
             <h1 className={css.title}>
@@ -140,10 +143,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const PasswordChangePage = compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   injectIntl
 )(PasswordChangePageComponent);
 

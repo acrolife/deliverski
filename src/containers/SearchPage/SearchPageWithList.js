@@ -197,8 +197,8 @@ export class SearchPageComponent extends Component {
     const isArray = Array.isArray(queryParamNames);
     return isArray
       ? queryParamNames.reduce((acc, paramName) => {
-        return { ...acc, [paramName]: getInitialValue(paramName) };
-      }, {})
+          return { ...acc, [paramName]: getInitialValue(paramName) };
+        }, {})
       : {};
   }
 
@@ -319,9 +319,9 @@ export class SearchPageComponent extends Component {
       const mobileClassesMaybe =
         mode === 'mobile'
           ? {
-            rootClassName: css.sortBy,
-            menuLabelRootClassName: css.sortByMenuLabel,
-          }
+              rootClassName: css.sortBy,
+              menuLabelRootClassName: css.sortByMenuLabel,
+            }
           : { className: css.sortByDesktop };
       return sortConfig.active ? (
         <SortBy
@@ -352,19 +352,20 @@ export class SearchPageComponent extends Component {
     const hasSearchParams = location.search?.length > 0;
 
     // Build conditional UI for search listing as Restaurant's page
-    let restaurantName = ''
+    let restaurantName = '';
     // TODO Write a more striaghtforwadr way to get those data
     // Check src/containers/LandingPage/LandingPage.duck.js
-    const restaurantSearchParam = 'pub_restaurant='
+    const restaurantSearchParam = 'pub_restaurant=';
     // DEV
     // console.log("listings", listings)
-    const hasRestaurantSearchParam = hasSearchParams && location.search.includes(restaurantSearchParam)
+    const hasRestaurantSearchParam =
+      hasSearchParams && location.search.includes(restaurantSearchParam);
     if (hasRestaurantSearchParam) {
-      const restaurant = location.search.split(restaurantSearchParam)[1].split('&')[0]
+      const restaurant = location.search.split(restaurantSearchParam)[1].split('&')[0];
       // DEV
       // console.log("restaurant", restaurant)
       if (listings.length) {
-        restaurantName = listings[0].author.attributes.profile.publicData.restaurantName
+        restaurantName = listings[0].author.attributes.profile.publicData.restaurantName;
         // DEV
         // console.log("restaurantName", restaurantName)
       }
@@ -429,15 +430,16 @@ export class SearchPageComponent extends Component {
 
           <div className={css.layoutWrapperMain} role="main">
             <div className={css.searchResultContainer}>
-
-              {
-                restaurantName &&
+              {restaurantName && (
                 <div>
                   <h1 className={css.mobileHeadingSearchPage}>
-                    <FormattedMessage id="ProfilePage.mobileHeading" values={{ name: restaurantName, linebreak: <br/> }} />
+                    <FormattedMessage
+                      id="ProfilePage.mobileHeading"
+                      values={{ name: restaurantName, linebreak: <br /> }}
+                    />
                   </h1>
                 </div>
-              }
+              )}
 
               <SearchFiltersMobile
                 className={css.searchFiltersMobileList}
@@ -473,15 +475,16 @@ export class SearchPageComponent extends Component {
                 })}
               </SearchFiltersMobile>
 
-              {
-                restaurantName &&
+              {restaurantName && (
                 <div>
                   <h1 className={css.desktopHeadingSearchPage}>
-                    <FormattedMessage id="ProfilePage.desktopHeadingRestaurant" values={{ name: restaurantName }} />
+                    <FormattedMessage
+                      id="ProfilePage.desktopHeadingRestaurant"
+                      values={{ name: restaurantName }}
+                    />
                   </h1>
                 </div>
-              }
-
+              )}
 
               <MainPanelHeader
                 className={css.mainPanel}
@@ -588,10 +591,7 @@ const mapDispatchToProps = dispatch => ({
 // See: https://github.com/ReactTraining/react-router/issues/4671
 const SearchPage = compose(
   withRouter,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   injectIntl
 )(SearchPageComponent);
 

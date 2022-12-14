@@ -102,7 +102,6 @@ Review.propTypes = {
   rating: number.isRequired,
 };
 
-
 const hasUserLeftAReviewFirst = (userRole, transaction) => {
   // Because function txIsInFirstReviewBy uses isCustomer to check in which state the reviews are
   // we should also use isCustomer insted of isProvider
@@ -266,7 +265,6 @@ const Transition = props => {
   const deletedReviewContent = intl.formatMessage({ id: 'ActivityFeed.deletedReviewContent' });
   let reviewComponent = null;
 
-
   if (transitionIsReviewed(lastTransition)) {
     if (isCustomerReview(currentTransition)) {
       const review = reviewByAuthorId(currentTransaction, customer.id);
@@ -284,7 +282,6 @@ const Transition = props => {
       );
     }
   }
-
 
   const todayString = intl.formatMessage({ id: 'ActivityFeed.today' });
 

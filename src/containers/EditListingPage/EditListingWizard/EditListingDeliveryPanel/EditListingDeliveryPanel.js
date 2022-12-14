@@ -19,7 +19,6 @@ import css from './EditListingDeliveryPanel.module.css';
 const { Money } = sdkTypes;
 const shippingAmount = process.env.REACT_APP_SHIPPING_CUSTOMER;
 
-
 class EditListingDeliveryPanel extends Component {
   constructor(props) {
     super(props);
@@ -81,7 +80,7 @@ class EditListingDeliveryPanel extends Component {
         : { search: undefined, selectedPlace: undefined },
       deliveryOptions,
       shippingPriceInSubunitsOneItem: new Money(shippingAmount * 100, config.currency),
-      freeShipping: publicData?.freeShipping
+      freeShipping: publicData?.freeShipping,
       // shippingPriceInSubunitsAdditionalItems: shippingAdditionalItemsAsMoney,
     };
   }
@@ -114,7 +113,7 @@ class EditListingDeliveryPanel extends Component {
     ) : (
       <FormattedMessage id="EditListingDeliveryPanel.createListingTitle" />
     );
-      // console.log(this.state.initialValues)
+    // console.log(this.state.initialValues)
     return (
       <div className={classes}>
         <h1 className={css.title}>{panelTitle}</h1>
@@ -128,7 +127,7 @@ class EditListingDeliveryPanel extends Component {
               shippingPriceInSubunitsOneItem,
               // shippingPriceInSubunitsAdditionalItems,
               deliveryOptions,
-              freeShipping
+              freeShipping,
             } = values;
 
             const shippingEnabled = deliveryOptions.includes('shipping');
@@ -157,7 +156,7 @@ class EditListingDeliveryPanel extends Component {
                 ...pickupDataMaybe,
                 shippingEnabled,
                 ...shippingDataMaybe,
-                freeShipping
+                freeShipping,
               },
             };
             this.setState({
@@ -167,18 +166,18 @@ class EditListingDeliveryPanel extends Component {
                 shippingPriceInSubunitsOneItem,
                 // shippingPriceInSubunitsAdditionalItems,
                 deliveryOptions,
-                freeShipping
+                freeShipping,
               },
             });
             onSubmit(updateValues);
-              // onSubmit({
-              //   geolocation: null,
-              //   publicData: {
-              //     pickupEnabled:false,
-              //     shippingEnabled:true,
-              //     shippingPriceInSubunitsOneItem: shippingAmount * 100
-              //   }
-              // })
+            // onSubmit({
+            //   geolocation: null,
+            //   publicData: {
+            //     pickupEnabled:false,
+            //     shippingEnabled:true,
+            //     shippingPriceInSubunitsOneItem: shippingAmount * 100
+            //   }
+            // })
           }}
           onChange={onChange}
           saveActionMsg={submitButtonText}

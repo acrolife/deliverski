@@ -78,7 +78,7 @@ const LayoutWrapperAccountSettingsSideNavComponent = props => {
   ];
 
   if (!isProvider) {
-    tabs = tabs.filter(e => e.id !== 'StripePayoutPageTab')
+    tabs = tabs.filter(e => e.id !== 'StripePayoutPageTab');
   }
 
   return <LayoutWrapperSideNav tabs={tabs} />;

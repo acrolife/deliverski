@@ -161,7 +161,7 @@
   animation-delay: 0.8s;
   margin-top: 1rem !important;
   background-color: orange !important;
-  color: var(--matterColor) !important; 
+  color: var(--matterColor) !important;
   /* margin-bottom: -10px !important; */
 
   @media (--viewportMedium) {
@@ -173,7 +173,7 @@
 .playgroundLink {
   /* background-color: var(--marketplaceColor); */
   /* color: var(--matterColorLight);  */
-  color: var(--matterColor); 
+  color: var(--matterColor);
   /* margin-top: 1rem; */
   padding: 5px 10px;
   background-color: orange;
@@ -186,7 +186,7 @@
   &:hover {
     text-decoration: none;
     background-color: var(--marketplaceColor);
-  } 
+  }
 }
 
 .messageCheckPlayground {

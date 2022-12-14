@@ -61,8 +61,10 @@ const ListingCardComponent = props => {
   const { title = '', price } = currentListing.attributes;
   const slug = createSlug(title);
   const author = ensureUser(listing.author);
-  const authorName = author.attributes.profile.publicData.restaurantName ? author.attributes.profile.publicData.restaurantName : null;
-  // const authorName = author.attributes.profile.displayName;  
+  const authorName = author.attributes.profile.publicData.restaurantName
+    ? author.attributes.profile.publicData.restaurantName
+    : null;
+  // const authorName = author.attributes.profile.displayName;
   const firstImage =
     currentListing.images && currentListing.images.length > 0 ? currentListing.images[0] : null;
 
@@ -79,37 +81,47 @@ const ListingCardComponent = props => {
   const unitTranslationKey = isNightly
     ? 'ListingCard.perNight'
     : isDaily
-      ? 'ListingCard.perDay'
-      : 'ListingCard.perUnit';
+    ? 'ListingCard.perDay'
+    : 'ListingCard.perUnit';
 
   const setActivePropsMaybe = setActiveListing
     ? {
-      onMouseEnter: () => setActiveListing(currentListing.id),
-      onMouseLeave: () => setActiveListing(null),
-    }
+        onMouseEnter: () => setActiveListing(currentListing.id),
+        onMouseLeave: () => setActiveListing(null),
+      }
     : null;
 
   const restaurantStatus = isRestaurantOpen(listing?.author?.attributes.profile?.publicData);
-  let restaurantMessageIdAndValues = []
+  let restaurantMessageIdAndValues = [];
   if (restaurantStatus) {
-    restaurantMessageIdAndValues.push({ id: restaurantStatus.message.key })
+    restaurantMessageIdAndValues.push({ id: restaurantStatus.message.key });
 
     if (restaurantStatus.message.values) {
-      const messageValue = restaurantStatus.message.values
-      let restaurantMessageValues = {}
-      restaurantMessageValues.openingHour = JSON.stringify(messageValue.openingHour) ? messageValue.openingHour : null
-      restaurantMessageValues.openingMinute = JSON.stringify(messageValue.openingMinute) ? messageValue.openingMinute : null
-      restaurantMessageValues.closingHour = JSON.stringify(messageValue.closingHour) ? messageValue.closingHour : null
-      restaurantMessageValues.closingMinute = JSON.stringify(messageValue.closingMinute) ? messageValue.closingMinute : null
-      restaurantMessageValues.phoneNumber = JSON.stringify(messageValue.phoneNumber) ? messageValue.phoneNumber : null
+      const messageValue = restaurantStatus.message.values;
+      let restaurantMessageValues = {};
+      restaurantMessageValues.openingHour = JSON.stringify(messageValue.openingHour)
+        ? messageValue.openingHour
+        : null;
+      restaurantMessageValues.openingMinute = JSON.stringify(messageValue.openingMinute)
+        ? messageValue.openingMinute
+        : null;
+      restaurantMessageValues.closingHour = JSON.stringify(messageValue.closingHour)
+        ? messageValue.closingHour
+        : null;
+      restaurantMessageValues.closingMinute = JSON.stringify(messageValue.closingMinute)
+        ? messageValue.closingMinute
+        : null;
+      restaurantMessageValues.phoneNumber = JSON.stringify(messageValue.phoneNumber)
+        ? messageValue.phoneNumber
+        : null;
       for (const k of Object.keys(restaurantMessageValues)) {
         if (restaurantMessageValues[k] === null) {
-          delete restaurantMessageValues[k]
+          delete restaurantMessageValues[k];
         } else if (JSON.stringify(restaurantMessageValues[k]).length === 1) {
-          restaurantMessageValues[k] = '0' + JSON.stringify(restaurantMessageValues[k])
+          restaurantMessageValues[k] = '0' + JSON.stringify(restaurantMessageValues[k]);
         }
       }
-      restaurantMessageIdAndValues.push(restaurantMessageValues)
+      restaurantMessageIdAndValues.push(restaurantMessageValues);
     }
   }
 
@@ -120,9 +132,7 @@ const ListingCardComponent = props => {
   const isOnHold = listing?.author?.attributes?.profile.publicData.onHoldByOwner;
   const stock = listing?.currentStock?.attributes?.quantity ?? 0;
   const ContentDiv = () => {
-
     return (
-
       <div>
         <AspectRatioWrapper
           className={css.aspectRatioWrapper}
@@ -132,29 +142,31 @@ const ListingCardComponent = props => {
         >
           <div className={css.bulletWrapper}>
             {/* <img src={badge} className={css.reviewsBadge} /> */}
-            <p className={restaurantStatus?.status === "open" ? css.openedRestaurant : css.closedRestaurant} >•</p>
+            <p
+              className={
+                restaurantStatus?.status === 'open' ? css.openedRestaurant : css.closedRestaurant
+              }
+            >
+              •
+            </p>
           </div>
 
           <div className={css.messageWrapper}>
             {/* <img src={badge} className={css.reviewsBadge} /> */}
-            <p className={css.scheduleMessage} >
+            <p className={css.scheduleMessage}>
               {intl.formatMessage(...restaurantMessageIdAndValues)}
             </p>
           </div>
 
-          {!pickupEnabled || !shippingEnabled || isOnHold ?
+          {!pickupEnabled || !shippingEnabled || isOnHold ? (
             <div className={css.badgeWrapper}>
               {/* <img src={badge} className={css.reviewsBadge} /> */}
-              <p className={css.reviewsBadge} >
-                {
-                  isOnHold ?
-                    intl.formatMessage({ id: 'ListingCard.restaurantIsOnHold' })
-                    :
-                    (
-                      !shippingEnabled ?
-                        intl.formatMessage({ id: 'ListingCard.productShippingDisabled' }) : null
-                    )
-                }
+              <p className={css.reviewsBadge}>
+                {isOnHold
+                  ? intl.formatMessage({ id: 'ListingCard.restaurantIsOnHold' })
+                  : !shippingEnabled
+                  ? intl.formatMessage({ id: 'ListingCard.productShippingDisabled' })
+                  : null}
                 {/* 
                 Here we'll show a pill also for no-pickup case - not nice UX
                 {
@@ -169,7 +181,7 @@ const ListingCardComponent = props => {
                 } */}
               </p>
             </div>
-            : null}
+          ) : null}
 
           <LazyImage
             rootClassName={css.rootForImage}
@@ -179,7 +191,7 @@ const ListingCardComponent = props => {
             sizes={renderSizes}
           />
         </AspectRatioWrapper>
-        <div >
+        <div>
           <div className={css.info}>
             <div className={css.price}>
               <div className={css.priceValue} title={priceTitle}>
@@ -197,73 +209,76 @@ const ListingCardComponent = props => {
                   longWordMinLength: MIN_LENGTH_FOR_LONG_WORDS,
                   longWordClass: css.longWord,
                 })}
-
               </div>
               {showAuthorInfo ? (
                 <div className={css.authorInfo}>
                   <FormattedMessage id="ListingCard.author" values={{ authorName }} />
-                  <span className={css.stock}> {intl.formatMessage({ id: "ListingCard.stock" })}:
-                    <p className={
-                      stock === 0 ? css.redDot :
-                        (
-                          stock > 0 && stock <= 3 ?
-                            css.yellowDot
-                            :
-                            css.greenDot
-                        )
-                    } >•</p>
+                  <span className={css.stock}>
+                    {' '}
+                    {intl.formatMessage({ id: 'ListingCard.stock' })}:
+                    <p
+                      className={
+                        stock === 0
+                          ? css.redDot
+                          : stock > 0 && stock <= 3
+                          ? css.yellowDot
+                          : css.greenDot
+                      }
+                    >
+                      •
+                    </p>
                   </span>
-
                 </div>
               ) : null}
             </div>
           </div>
         </div>
-      </div>)
-  }
+      </div>
+    );
+  };
 
   // Build conditional UI for search listing as Restaurant's page
-  let restaurantName = ''
+  let restaurantName = '';
   // TODO Write a more straightforward way to get those data
   // Check src/containers/LandingPage/LandingPage.duck.js
   // DEV
   // console.log("listings", listings)
-  const hasSearchParams = search ? (Object.keys(search).length > 0) : null
-  const hasRestaurantSearchParam = hasSearchParams ? !!search.pub_restaurant : null
-  // Adding control on listing.attributes.publicData?.restaurant, otherwise when clicking a product of 
+  const hasSearchParams = search ? Object.keys(search).length > 0 : null;
+  const hasRestaurantSearchParam = hasSearchParams ? !!search.pub_restaurant : null;
+  // Adding control on listing.attributes.publicData?.restaurant, otherwise when clicking a product of
   // a restaurant who changed its name without actualizing its stock, the search would show nothing
   // Because of pub_restaurant=undefined url query param
 
-  // From SearchPage, we apply the filter pub_restaurant 
+  // From SearchPage, we apply the filter pub_restaurant
   // if hasSearchParams=false, i.e. there is not pub_restaurant in the url
   // if the listing contains a value for restaurant i.e. listing.attributes.publicData?.restaurant
-  const showRestaurantAfterTileClick = !hasRestaurantSearchParam && listing.attributes.publicData?.restaurant
+  const showRestaurantAfterTileClick =
+    !hasRestaurantSearchParam && listing.attributes.publicData?.restaurant;
 
- // DEV
-//  console.log("showRestaurantAfterTileClick", showRestaurantAfterTileClick)
-
+  // DEV
+  //  console.log("showRestaurantAfterTileClick", showRestaurantAfterTileClick)
 
   const NamedLinkRestaurant = () => {
     return (
-      <NamedLink className={classes} to={{ search: `?pub_restaurant=${listing.attributes.publicData?.restaurant}` }}
-        name="SearchPage">
-        < ContentDiv />
+      <NamedLink
+        className={classes}
+        to={{ search: `?pub_restaurant=${listing.attributes.publicData?.restaurant}` }}
+        name="SearchPage"
+      >
+        <ContentDiv />
       </NamedLink>
-    )
-  }
+    );
+  };
 
   const NamedLinkListing = () => {
     return (
-      <NamedLink
-        className={classes} name="ListingPage" params={{ id, slug }}>
-        < ContentDiv />
+      <NamedLink className={classes} name="ListingPage" params={{ id, slug }}>
+        <ContentDiv />
       </NamedLink>
-    )
-  }
+    );
+  };
 
-  return (
-    showRestaurantAfterTileClick ? <NamedLinkRestaurant /> : <NamedLinkListing />
-  );
+  return showRestaurantAfterTileClick ? <NamedLinkRestaurant /> : <NamedLinkListing />;
 };
 
 ListingCardComponent.defaultProps = {

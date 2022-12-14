@@ -47,12 +47,13 @@ const SectionHowItWorks = props => {
         </div>
       </div>
 
-      {!isLoggedIn && <div className={css.createListingLink}>
-        <NamedLink name="LoginPage" className={css.loginLink}>
-          <FormattedMessage id="SectionHowItWorks.login" />
-        </NamedLink>
-      </div>}
-
+      {!isLoggedIn && (
+        <div className={css.createListingLink}>
+          <NamedLink name="LoginPage" className={css.loginLink}>
+            <FormattedMessage id="SectionHowItWorks.login" />
+          </NamedLink>
+        </div>
+      )}
     </div>
   );
 };
@@ -64,7 +65,7 @@ const { string, bool } = PropTypes;
 SectionHowItWorks.propTypes = {
   rootClassName: string,
   className: string,
-  isLoggedIn: bool
+  isLoggedIn: bool,
 };
 
 export default SectionHowItWorks;

@@ -39,32 +39,39 @@ const LineItemUnknownItemsMaybe = props => {
         const formattedTotal = formatMoney(intl, item.lineTotal);
         const formattedUnit = formatMoney(intl, item.unitPrice);
 
-
         // const isBaseItem = baseListing?.attributes.price.amount === item.unitPrice.amount;
         const shoppingCartItem = restOfShoppingCartItems?.find(x => {
-          return x.listing.id.uuid ===  item.code?.replace('line-item/','')
-        })
-
+          return x.listing.id.uuid === item.code?.replace('line-item/', '');
+        });
 
         return (
           <div key={shoppingCartItem?.listing?.id?.uuid}>
-          <div className={css.lineItem}>
-                <span className={css.itemLabel}>
-                  {/* {isBaseItem ?
+            <div className={css.lineItem}>
+              <span className={css.itemLabel}>
+                {/* {isBaseItem ?
                     <a href={`/l/${baseListing?.attributes.title.replace(' ','-')}/${baseListing?.id.uuid}`}>{baseListing?.attributes.title}</a>
                     : */}
-                    <a href={`/l/${shoppingCartItem?.listing?.attributes?.title.replace(' ','-')}/${shoppingCartItem?.listing.id?.uuid}`}>{shoppingCartItem?.listing.attributes?.title}</a>
-                 {/* } */}
-                </span>
-              </div>
-              <div className={css.lineItem}>
-                <span className={css.itemLabel}>
-                  <FormattedMessage id="BookingBreakdown.productUnit" values={{ quantity, formattedUnit }}/>
-                </span>
-                <span className={css.itemValue}>
-                  <FormattedMessage id="BookingBreakdown.productTotal" values={{ formattedTotal }} />
-                </span>
-              </div> 
+                <a
+                  href={`/l/${shoppingCartItem?.listing?.attributes?.title.replace(' ', '-')}/${
+                    shoppingCartItem?.listing.id?.uuid
+                  }`}
+                >
+                  {shoppingCartItem?.listing.attributes?.title}
+                </a>
+                {/* } */}
+              </span>
+            </div>
+            <div className={css.lineItem}>
+              <span className={css.itemLabel}>
+                <FormattedMessage
+                  id="BookingBreakdown.productUnit"
+                  values={{ quantity, formattedUnit }}
+                />
+              </span>
+              <span className={css.itemValue}>
+                <FormattedMessage id="BookingBreakdown.productTotal" values={{ formattedTotal }} />
+              </span>
+            </div>
           </div>
         );
       })}

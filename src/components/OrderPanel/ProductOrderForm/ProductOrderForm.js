@@ -13,7 +13,7 @@ import {
   InlineTextButton,
   PrimaryButton,
   Modal,
-  Button
+  Button,
 } from '../../../components';
 import { pushToPath } from '../../../util/urlHelpers';
 
@@ -21,7 +21,7 @@ import EstimatedCustomerBreakdownMaybe from '../EstimatedCustomerBreakdownMaybe'
 
 import css from './ProductOrderForm.module.css';
 
-// Toastify 
+// Toastify
 // Doesnt work with original setup (*) => haad to copy the css in one fine in same dir
 import { ToastContainer, toast } from 'react-toastify';
 // (*) import 'react-toastify/dist/ReactToastify.css';
@@ -29,15 +29,14 @@ import './Toast.css';
 
 const sharetribeSdk = require('sharetribe-flex-sdk');
 const sdk = sharetribeSdk.createInstance({
-  clientId: process.env.REACT_APP_SHARETRIBE_SDK_CLIENT_ID
+  clientId: process.env.REACT_APP_SHARETRIBE_SDK_CLIENT_ID,
 });
 
 // Manage path redirection and locale
-const locale = config.locale
-const localePath = locale ? `/${locale}` : ''
+const locale = config.locale;
+const localePath = locale ? `/${locale}` : '';
 
 const renderForm = formRenderProps => {
-
   const {
     // FormRenderProps from final-form
     handleSubmit,
@@ -88,7 +87,7 @@ const renderForm = formRenderProps => {
   // Toaster settings
   const settingsToastAddedToBasket = {
     params: {
-      position: "top-right",
+      position: 'top-right',
       autoClose: 1500,
       hideProgressBar: false,
       closeOnClick: true,
@@ -97,8 +96,8 @@ const renderForm = formRenderProps => {
       progress: undefined,
     },
     message: intl.formatMessage({ id: 'ProductOrderForm.toastMessageAddedToCart' }),
-    delayMs: 1500
-  }
+    delayMs: 1500,
+  };
 
   const handleOnChange = formValues => {
     const { quantity: quantityRaw, deliveryMethod } = formValues.values;
@@ -115,13 +114,11 @@ const renderForm = formRenderProps => {
   // In case quantity and deliveryMethod are missing focus on that select-input.
   // Otherwise continue with the default handleSubmit function.
   const handleFormSubmit = e => {
-
     const restaurant = listing ? listing.attributes?.publicData?.restaurant : false;
-    const redirectPathToRestaurantSpace = `${localePath}/s?pub_restaurant=${restaurant}`
+    const redirectPathToRestaurantSpace = `${localePath}/s?pub_restaurant=${restaurant}`;
     // Previous implementation of redirection
-    // const hostIdOfFirstItem = currentShopCartUnwrapped.length > 0 ? currentShopCartUnwrapped[0].listing.author.id.uuid : false;  
+    // const hostIdOfFirstItem = currentShopCartUnwrapped.length > 0 ? currentShopCartUnwrapped[0].listing.author.id.uuid : false;
     if (currentUser) {
-
       const { quantity, deliveryMethod } = values || {};
       if (!quantity || quantity < 1) {
         e.preventDefault();
@@ -136,87 +133,103 @@ const renderForm = formRenderProps => {
       } else {
         e.preventDefault();
         const currentListing = listing;
-        return sdk.currentUser.show().then(res => {
-          const currentShoppingCart = res.data.data.attributes.profile.publicData.shoppingCart ?
-            res.data.data.attributes.profile.publicData.shoppingCart
-            : [];
+        return sdk.currentUser
+          .show()
+          .then(res => {
+            const currentShoppingCart = res.data.data.attributes.profile.publicData.shoppingCart
+              ? res.data.data.attributes.profile.publicData.shoppingCart
+              : [];
 
-          const currentShoppingCartUnwrapped = currentShoppingCart.map(item => {
-            return ({
-              listing: typeof item.listing === 'string' ? JSON.parse(item.listing) : item.listing,
-              checkoutValues: typeof item.checkoutValues === 'string' ? JSON.parse(item.checkoutValues) : item.checkoutValues
-            })
-          })
-          const isFromSameVendor = currentShoppingCartUnwrapped.length === 0 || currentShoppingCartUnwrapped.find(item => {
-            return item.listing.author.id.uuid === currentListing.author.id.uuid
-          })
+            const currentShoppingCartUnwrapped = currentShoppingCart.map(item => {
+              return {
+                listing: typeof item.listing === 'string' ? JSON.parse(item.listing) : item.listing,
+                checkoutValues:
+                  typeof item.checkoutValues === 'string'
+                    ? JSON.parse(item.checkoutValues)
+                    : item.checkoutValues,
+              };
+            });
+            const isFromSameVendor =
+              currentShoppingCartUnwrapped.length === 0 ||
+              currentShoppingCartUnwrapped.find(item => {
+                return item.listing.author.id.uuid === currentListing.author.id.uuid;
+              });
 
-          if (isFromSameVendor) {
+            if (isFromSameVendor) {
+              const isAlreadyInTheBasket = currentShoppingCartUnwrapped.find(i => {
+                return i.listing.id.uuid === currentListing.id.uuid;
+              });
 
-            const isAlreadyInTheBasket = currentShoppingCartUnwrapped.find(i => {
-              return i.listing.id.uuid === currentListing.id.uuid
-            })
+              if (isAlreadyInTheBasket) {
+                // # ----------------------------------------------------- #
+                // #               Update EXISTING item qty                #
+                // # ------------------------------------------------------#
+                const updatedShoppingCard = currentShoppingCartUnwrapped.map(i => {
+                  if (i.listing.id.uuid === currentListing.id.uuid) {
+                    i.checkoutValues.quantity = (
+                      Number(i.checkoutValues.quantity) + Number(quantity)
+                    ).toString();
+                    return i;
+                  } else {
+                    return i;
+                  }
+                });
 
-            if (isAlreadyInTheBasket) {
-              // # ----------------------------------------------------- #
-              // #               Update EXISTING item qty                #
-              // # ------------------------------------------------------# 
-              const updatedShoppingCard = currentShoppingCartUnwrapped.map(i => {
-                if (i.listing.id.uuid === currentListing.id.uuid) {
-                  i.checkoutValues.quantity = (Number(i.checkoutValues.quantity) + Number(quantity)).toString()
-                  return i
-                } else {
-                  return i
-                }
+                const stringifyUpdatedShoppingCart = updatedShoppingCard.map(item => {
+                  return {
+                    listing: JSON.stringify(item.listing),
+                    checkoutValues: JSON.stringify(item.checkoutValues),
+                  };
+                });
 
-              })
+                return sdk.currentUser
+                  .updateProfile({
+                    publicData: {
+                      shoppingCart: [...stringifyUpdatedShoppingCart],
+                    },
+                  })
+                  .then(res => {
+                    toast.success(
+                      settingsToastAddedToBasket.message,
+                      settingsToastAddedToBasket.params
+                    );
+                    setTimeout(function() {
+                      return history.push(redirectPathToRestaurantSpace);
+                    }, settingsToastAddedToBasket.delayMs);
+                  })
+                  .catch(e => console.log(e));
+              } else {
+                // # ----------------------------------------------------- #
+                // #             Add NEW item to cart                      #
+                // # ------------------------------------------------------#
 
-              const stringifyUpdatedShoppingCart = updatedShoppingCard.map(item => {
-                return ({
-                  listing: JSON.stringify(item.listing),
-                  checkoutValues: JSON.stringify(item.checkoutValues)
-                })
-              })
-
-              return sdk.currentUser.updateProfile({
-                publicData: {
-                  shoppingCart: [...stringifyUpdatedShoppingCart]
-                },
-              }).then(res => {
-                toast.success(
-                  settingsToastAddedToBasket.message,
-                  settingsToastAddedToBasket.params
-                )
-                setTimeout(function () { return history.push(redirectPathToRestaurantSpace) }, settingsToastAddedToBasket.delayMs)
-
-              }).catch(e => console.log(e))
-
-            } else {
-              // # ----------------------------------------------------- #
-              // #             Add NEW item to cart                      #
-              // # ------------------------------------------------------# 
-
-              const shoppingCartItem = {
-                listing: JSON.stringify({ ...currentListing }),
-                checkoutValues: JSON.stringify({ ...values })
+                const shoppingCartItem = {
+                  listing: JSON.stringify({ ...currentListing }),
+                  checkoutValues: JSON.stringify({ ...values }),
+                };
+                return sdk.currentUser
+                  .updateProfile({
+                    publicData: {
+                      shoppingCart: [...currentShoppingCart, shoppingCartItem],
+                    },
+                  })
+                  .then(res => {
+                    toast.success(
+                      settingsToastAddedToBasket.message,
+                      settingsToastAddedToBasket.params
+                    );
+                    setTimeout(function() {
+                      history.push(redirectPathToRestaurantSpace);
+                    }, settingsToastAddedToBasket.delayMs);
+                  })
+                  .catch(e => console.log(e));
               }
-              return sdk.currentUser.updateProfile({
-                publicData: {
-                  shoppingCart: [...currentShoppingCart, shoppingCartItem]
-                },
-              }).then(res => {
-                toast.success(
-                  settingsToastAddedToBasket.message,
-                  settingsToastAddedToBasket.params
-                )
-                setTimeout(function () { history.push(redirectPathToRestaurantSpace) }, settingsToastAddedToBasket.delayMs)
-              }).catch(e => console.log(e))
+            } else {
+              // Opens cart message modal
+              handleSVModalOpen();
             }
-          } else {
-            // Opens cart message modal
-            handleSVModalOpen()
-          }
-        }).catch(e => console.log(e))
+          })
+          .catch(e => console.log(e));
 
         // handleSubmit(e);
       }
@@ -239,96 +252,99 @@ const renderForm = formRenderProps => {
         const currentShoppingCart = JSON.parse(window.sessionStorage.getItem('shoppingCart')) ?? [];
 
         const currentShoppingCartUnwrapped = currentShoppingCart.map(item => {
-          return ({
+          return {
             listing: typeof item.listing === 'string' ? JSON.parse(item.listing) : item.listing,
-            checkoutValues: typeof item.checkoutValues === 'string' ? JSON.parse(item.checkoutValues) : item.checkoutValues
-          })
-        })
-        const isFromSameVendor = currentShoppingCartUnwrapped.length === 0 || currentShoppingCartUnwrapped.find(item => {
-          return item.listing.author.id.uuid === currentListing.author.id.uuid
-        })
+            checkoutValues:
+              typeof item.checkoutValues === 'string'
+                ? JSON.parse(item.checkoutValues)
+                : item.checkoutValues,
+          };
+        });
+        const isFromSameVendor =
+          currentShoppingCartUnwrapped.length === 0 ||
+          currentShoppingCartUnwrapped.find(item => {
+            return item.listing.author.id.uuid === currentListing.author.id.uuid;
+          });
 
         if (isFromSameVendor) {
-
           const isAlreadyInTheBasket = currentShoppingCartUnwrapped.find(i => {
-            return i.listing.id.uuid === currentListing.id.uuid
-          })
+            return i.listing.id.uuid === currentListing.id.uuid;
+          });
 
           if (isAlreadyInTheBasket) {
             // # ----------------------------------------------------- #
             // #               Update EXISTING item qty                #
-            // # ------------------------------------------------------# 
+            // # ------------------------------------------------------#
             const updatedShoppingCard = currentShoppingCartUnwrapped.map(i => {
               if (i.listing.id.uuid === currentListing.id.uuid) {
-                i.checkoutValues.quantity = (Number(i.checkoutValues.quantity) + Number(quantity)).toString()
-                return i
+                i.checkoutValues.quantity = (
+                  Number(i.checkoutValues.quantity) + Number(quantity)
+                ).toString();
+                return i;
               } else {
-                return i
+                return i;
               }
-
-            })
+            });
 
             const stringifyUpdatedShoppingCart = updatedShoppingCard.map(item => {
-              return ({
+              return {
                 listing: JSON.stringify(item.listing),
-                checkoutValues: JSON.stringify(item.checkoutValues)
-              })
-            })
+                checkoutValues: JSON.stringify(item.checkoutValues),
+              };
+            });
 
-
-            window.sessionStorage.setItem('shoppingCart', JSON.stringify([...stringifyUpdatedShoppingCart]))
-            toast
-              .success(
-                settingsToastAddedToBasket.message,
-                settingsToastAddedToBasket.params
-              )
-            setTimeout(function () { history.push(redirectPathToRestaurantSpace) }, settingsToastAddedToBasket.delayMs)
-
-
+            window.sessionStorage.setItem(
+              'shoppingCart',
+              JSON.stringify([...stringifyUpdatedShoppingCart])
+            );
+            toast.success(settingsToastAddedToBasket.message, settingsToastAddedToBasket.params);
+            setTimeout(function() {
+              history.push(redirectPathToRestaurantSpace);
+            }, settingsToastAddedToBasket.delayMs);
           } else {
             //ADD NEW ITEM TO CART
 
             const shoppingCartItem = {
               listing: JSON.stringify({ ...currentListing }),
-              checkoutValues: JSON.stringify({ ...values })
-            }
+              checkoutValues: JSON.stringify({ ...values }),
+            };
 
-            window.sessionStorage.setItem('shoppingCart', JSON.stringify([...currentShoppingCart, shoppingCartItem]))
-            toast
-              .success(
-                settingsToastAddedToBasket.message,
-                settingsToastAddedToBasket.params
-              )
-            setTimeout(function () { history.push(redirectPathToRestaurantSpace) }, settingsToastAddedToBasket.delayMs)
+            window.sessionStorage.setItem(
+              'shoppingCart',
+              JSON.stringify([...currentShoppingCart, shoppingCartItem])
+            );
+            toast.success(settingsToastAddedToBasket.message, settingsToastAddedToBasket.params);
+            setTimeout(function() {
+              history.push(redirectPathToRestaurantSpace);
+            }, settingsToastAddedToBasket.delayMs);
           }
         } else {
           // Opens cart message modal
-          handleSVModalOpen()
+          handleSVModalOpen();
         }
         // handleSubmit(e);
       }
     }
-
   };
-
 
   const clearBasket = () => {
     if (typeof window !== 'undefined') {
       if (currentUser) {
-        return sdk.currentUser.updateProfile({
-          publicData: {
-            shoppingCart: []
-          },
-        }).then(res => {
-          window.location.reload()
-        }).catch(e => console.log(e))
+        return sdk.currentUser
+          .updateProfile({
+            publicData: {
+              shoppingCart: [],
+            },
+          })
+          .then(res => {
+            window.location.reload();
+          })
+          .catch(e => console.log(e));
       } else {
-        return window.sessionStorage.setItem('shoppingCart', JSON.stringify([]))
-
+        return window.sessionStorage.setItem('shoppingCart', JSON.stringify([]));
       }
     }
-  }
-
+  };
 
   const breakdownData = {};
   const showBreakdown =
@@ -368,61 +384,55 @@ const renderForm = formRenderProps => {
   const submitInProgress = fetchLineItemsInProgress;
   const submitDisabled = !hasStock;
 
+  const shoppingCartFromSession =
+    typeof window !== 'undefined' ? JSON.parse(window.sessionStorage.getItem('shoppingCart')) : [];
 
-  const shoppingCartFromSession = typeof window !== 'undefined' ?
-    JSON.parse(window.sessionStorage.getItem('shoppingCart'))
-    :
-    [];
-
-
-
-  const currentShopCart = currentUser ?
-    (
-      currentUser.attributes.profile.publicData.shoppingCart ?
-        currentUser.attributes.profile.publicData.shoppingCart
-        : []
-    )
-    :
-    (
-      shoppingCartFromSession ?? []
-    );
+  const currentShopCart = currentUser
+    ? currentUser.attributes.profile.publicData.shoppingCart
+      ? currentUser.attributes.profile.publicData.shoppingCart
+      : []
+    : shoppingCartFromSession ?? [];
 
   const currentShopCartUnwrapped = currentShopCart.map(item => {
-    return ({
+    return {
       listing: typeof item.listing === 'string' ? JSON.parse(item.listing) : item.listing,
-      checkoutValues: typeof item.checkoutValues === 'string' ? JSON.parse(item.checkoutValues) : item.checkoutValues
-    })
+      checkoutValues:
+        typeof item.checkoutValues === 'string'
+          ? JSON.parse(item.checkoutValues)
+          : item.checkoutValues,
+    };
   });
 
-  const deliveryMethodOfItemsAdded = currentShopCartUnwrapped && currentShopCartUnwrapped.length > 0 ?
-    currentShopCartUnwrapped[0].checkoutValues.deliveryMethod
-    :
-    false;
+  const deliveryMethodOfItemsAdded =
+    currentShopCartUnwrapped && currentShopCartUnwrapped.length > 0
+      ? currentShopCartUnwrapped[0].checkoutValues.deliveryMethod
+      : false;
 
-  const pickup = pickupEnabled ? [{
-    value: 'pickup',
-    label: 'ProductOrderForm.pickupOption'
-  }]
-    :
-    [];
+  const pickup = pickupEnabled
+    ? [
+        {
+          value: 'pickup',
+          label: 'ProductOrderForm.pickupOption',
+        },
+      ]
+    : [];
 
-  const shipping = shippingEnabled ? [{
-    value: 'shipping',
-    label: 'ProductOrderForm.shippingOption'
-  }]
-    :
-    [];
+  const shipping = shippingEnabled
+    ? [
+        {
+          value: 'shipping',
+          label: 'ProductOrderForm.shippingOption',
+        },
+      ]
+    : [];
 
   const deliveryMethodsOptions = [...pickup, ...shipping];
 
-  const missingDeliveryMethod = deliveryMethodOfItemsAdded ?
-    !(
-      !!deliveryMethodsOptions.find(x => {
-        return x.value === deliveryMethodOfItemsAdded
+  const missingDeliveryMethod = deliveryMethodOfItemsAdded
+    ? !!!deliveryMethodsOptions.find(x => {
+        return x.value === deliveryMethodOfItemsAdded;
       })
-    )
-    :
-    false;
+    : false;
 
   return (
     <Form onSubmit={handleFormSubmit} key={formId}>
@@ -455,11 +465,9 @@ const renderForm = formRenderProps => {
         </FieldSelect>
       )}
 
-      {hasNoStockLeft || missingDeliveryMethod ?
-        (
-          missingDeliveryMethod &&
-          (<p className={css.infoText}>
-
+      {hasNoStockLeft || missingDeliveryMethod ? (
+        missingDeliveryMethod && (
+          <p className={css.infoText}>
             <HelpOutlineIcon
               className={css.helpIcon}
               // Empty cart action
@@ -471,16 +479,16 @@ const renderForm = formRenderProps => {
               id="ProductOrderForm.deliveryMethodErrorDeliveryMethodCart"
               values={{
                 method:
-                  deliveryMethodsOptions[0].value === 'pickup' ?
-                    intl.formatMessage({ id: "ProductOrderForm.deliveryMethodToPickup" }) :
-                    intl.formatMessage({ id: "ProductOrderForm.deliveryMethodToShip" })
-              }} />
+                  deliveryMethodsOptions[0].value === 'pickup'
+                    ? intl.formatMessage({ id: 'ProductOrderForm.deliveryMethodToPickup' })
+                    : intl.formatMessage({ id: 'ProductOrderForm.deliveryMethodToShip' }),
+              }}
+            />
 
             {/* {`You cannot add this product for ${deliveryMethodsOptions[0].value}, please choose ${deliveryMethodsOptions[0].value === 'pickup' ? 'shippable' : 'pickup'} items or empty your cart to add this one.`} */}
-
-          </p>)
+          </p>
         )
-        :
+      ) : (
         // hasMultipleDeliveryMethods ? (
         <FieldSelect
           id={`${formId}.deliveryMethod`}
@@ -494,52 +502,45 @@ const renderForm = formRenderProps => {
             {intl.formatMessage({ id: 'ProductOrderForm.selectDeliveryMethodOption' })}
           </option>
 
-          {
-            deliveryMethodOfItemsAdded ?
-              deliveryMethodsOptions
+          {deliveryMethodOfItemsAdded
+            ? deliveryMethodsOptions
                 .filter(o => {
-                  return o.value === deliveryMethodOfItemsAdded
+                  return o.value === deliveryMethodOfItemsAdded;
                 })
                 .map(i => {
-                  return (
-                    <option value={i.value}>
-                      {intl.formatMessage({ id: i.label })}
-                    </option>
-                  )
+                  return <option value={i.value}>{intl.formatMessage({ id: i.label })}</option>;
                 })
-              :
-              deliveryMethodsOptions
-                .map(i => {
-                  return (
-                    <option value={i.value}>
-                      {intl.formatMessage({ id: i.label })}
-                    </option>
-                  )
-                })
-          }
+            : deliveryMethodsOptions.map(i => {
+                return <option value={i.value}>{intl.formatMessage({ id: i.label })}</option>;
+              })}
         </FieldSelect>
-        // ) 
-        // : (
-        //   <div className={css.deliveryField}>
-        //     <label>{intl.formatMessage({ id: 'ProductOrderForm.deliveryMethodLabel' })}</label>
-        //     <p className={css.singleDeliveryMethodSelected}>
-        //       {values.deliveryMethod === 'shipping'
-        //         ? intl.formatMessage({ id: 'ProductOrderForm.shippingOption' })
-        //         : intl.formatMessage({ id: 'ProductOrderForm.pickupOption' })}
-        //     </p>
-        //     <FieldTextInput
-        //       id={`${formId}.deliveryMethod`}
-        //       className={css.deliveryField}
-        //       name="deliveryMethod"
-        //       type="hidden"
-        //     />
-        //   </div>
-        // )
+      )
+      // )
+      // : (
+      //   <div className={css.deliveryField}>
+      //     <label>{intl.formatMessage({ id: 'ProductOrderForm.deliveryMethodLabel' })}</label>
+      //     <p className={css.singleDeliveryMethodSelected}>
+      //       {values.deliveryMethod === 'shipping'
+      //         ? intl.formatMessage({ id: 'ProductOrderForm.shippingOption' })
+      //         : intl.formatMessage({ id: 'ProductOrderForm.pickupOption' })}
+      //     </p>
+      //     <FieldTextInput
+      //       id={`${formId}.deliveryMethod`}
+      //       className={css.deliveryField}
+      //       name="deliveryMethod"
+      //       type="hidden"
+      //     />
+      //   </div>
+      // )
       }
 
       {breakdown}
       <div className={css.submitButton}>
-        <PrimaryButton type="submit" inProgress={submitInProgress} disabled={submitDisabled || missingDeliveryMethod || isRestaurantOnHold}>
+        <PrimaryButton
+          type="submit"
+          inProgress={submitInProgress}
+          disabled={submitDisabled || missingDeliveryMethod || isRestaurantOnHold}
+        >
           {hasStock ? (
             <FormattedMessage id="BookingDatesForm.addToCart" />
           ) : (
@@ -558,41 +559,45 @@ const renderForm = formRenderProps => {
       {/* not same vendor warning */}
 
       <Modal
-        id='sameVendorModal'
+        id="sameVendorModal"
         isOpen={sameVendorModalOpen}
         onClose={() => {
           // Closes cart message modal
-          handleSVModalClose()
+          handleSVModalClose();
         }}
-        onManageDisableScrolling={() => { }}
+        onManageDisableScrolling={() => {}}
       >
-        <center><h2><FormattedMessage id="ProductOrderForm.sameVendorModalTitle" /></h2></center>
-
+        <center>
+          <h2>
+            <FormattedMessage id="ProductOrderForm.sameVendorModalTitle" />
+          </h2>
+        </center>
 
         <div className={css.modalButtonsWrapper}>
-
-          <Button type='button' className={css.modalButton} onClick={clearBasket}>
+          <Button type="button" className={css.modalButton} onClick={clearBasket}>
             <FormattedMessage id="ProductOrderForm.emptyCart" />
           </Button>
 
-          <Button type='button' className={css.modalButton} onClick={() => pushToPath('' /*redirectPathToRestaurantSpace*/)}>
+          <Button
+            type="button"
+            className={css.modalButton}
+            onClick={() => pushToPath('' /*redirectPathToRestaurantSpace*/)}
+          >
             <FormattedMessage id="ProductOrderForm.seeSameVendorListings" />
           </Button>
-
         </div>
       </Modal>
-
 
       {/* empty cart modal / when delivery method needs to change */}
 
       <Modal
-        id='emptyCartModal'
+        id="emptyCartModal"
         isOpen={emptyCart}
         onClose={() => {
           // Cart not empty action
-          handleNotEmptyCart()
+          handleNotEmptyCart();
         }}
-        onManageDisableScrolling={() => { }}
+        onManageDisableScrolling={() => {}}
       >
         <center>
           <h2>
@@ -600,39 +605,37 @@ const renderForm = formRenderProps => {
               id="ProductOrderForm.emptyCartModalTitle"
               values={{
                 method:
-                  deliveryMethodsOptions[0].value === 'pickup' ?
-                    intl.formatMessage({
-                      id: 'ProductOrderForm.deliveryMethodToShip'
-                    }) :
-                    intl.formatMessage({
-                      id: 'ProductOrderForm.deliveryMethodToPickup'
-                    })
-              }} />
+                  deliveryMethodsOptions[0].value === 'pickup'
+                    ? intl.formatMessage({
+                        id: 'ProductOrderForm.deliveryMethodToShip',
+                      })
+                    : intl.formatMessage({
+                        id: 'ProductOrderForm.deliveryMethodToPickup',
+                      }),
+              }}
+            />
           </h2>
         </center>
 
-        <div className={css.deliveryMethodErrorInfo} >
+        <div className={css.deliveryMethodErrorInfo}>
           <FormattedMessage
             id="ProductOrderForm.deliveryMethodErrorCartMoreInfo"
-            values={
-              {
-                method:
-                  deliveryMethodsOptions[0].value === 'pickup' ?
-                    intl.formatMessage({
-                      id: 'ProductOrderForm.deliveryMethodToShip'
-                    }) :
-                    intl.formatMessage({
-                      id: 'ProductOrderForm.deliveryMethodToPickup'
+            values={{
+              method:
+                deliveryMethodsOptions[0].value === 'pickup'
+                  ? intl.formatMessage({
+                      id: 'ProductOrderForm.deliveryMethodToShip',
                     })
-              }
-            }
+                  : intl.formatMessage({
+                      id: 'ProductOrderForm.deliveryMethodToPickup',
+                    }),
+            }}
           />
         </div>
 
-        <Button type='button' onClick={clearBasket}>
+        <Button type="button" onClick={clearBasket}>
           <FormattedMessage id="ProductOrderForm.emptyCart" />
         </Button>
-
       </Modal>
 
       <ToastContainer />
@@ -655,8 +658,15 @@ const ProductOrderForm = props => {
   const [sameVendorModalOpen, setSameVendorModalOpen] = useState(false);
   const [emptyCart, setEmptyCart] = useState(false);
 
-const intl = useIntl();
-  const { price, currentStock, pickupEnabled, shippingEnabled, isRestaurantOnHold, listingId } = props;
+  const intl = useIntl();
+  const {
+    price,
+    currentStock,
+    pickupEnabled,
+    shippingEnabled,
+    isRestaurantOnHold,
+    listingId,
+  } = props;
 
   // Should not happen for listings that go through EditListingWizard.
   // However, this might happen for imported listings.
@@ -686,11 +696,11 @@ const intl = useIntl();
     // shippingEnabled ?
     // { deliveryMethod: 'shipping' }
     // :
-    (shippingEnabled && !pickupEnabled
+    shippingEnabled && !pickupEnabled
       ? { deliveryMethod: 'shipping' }
       : !shippingEnabled && pickupEnabled
-        ? { deliveryMethod: 'pickup' }
-        : { deliveryMethod: 'shipping' });
+      ? { deliveryMethod: 'pickup' }
+      : { deliveryMethod: 'shipping' };
   const hasMultipleDeliveryMethods = pickupEnabled && shippingEnabled;
   const initialValues = { ...quantityMaybe, ...singleDeliveryMethodAvailableMaybe };
 

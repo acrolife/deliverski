@@ -90,7 +90,7 @@ const replacer = (key = null, value) => {
   return types.replacer(key, cleanedValue);
 };
 
-exports.render = function (requestUrl, context, preloadedState, renderApp, webExtractor) {
+exports.render = function(requestUrl, context, preloadedState, renderApp, webExtractor) {
   // Bind webExtractor as "this" for collectChunks call.
   const collectWebChunks = webExtractor.collectChunks.bind(webExtractor);
 
@@ -129,7 +129,8 @@ exports.render = function (requestUrl, context, preloadedState, renderApp, webEx
 
   // DEV trial, we can put this code here instead of directly in public/index.html
   // TODO implement via GTM !
-  const userReportScript = '<script src="https://sak.userreport.com/marmott/launcher.js" async id="userreport-launcher-script"></script>'
+  const userReportScript =
+    '<script src="https://sak.userreport.com/marmott/launcher.js" async id="userreport-launcher-script"></script>';
   // const userReportScript = () => {
   //   console.log("helooooo")
   // }

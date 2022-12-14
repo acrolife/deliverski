@@ -9,7 +9,7 @@
   /* Dimensions */
   width: 100vw;
   /* padding: 5px 0; */
-  padding: 12px 0;  
+  padding: 12px 0;
 
   /* Layout */
   display: flex;
@@ -23,12 +23,10 @@
   color: var(--matterColorNegative); */
   /* color: white; */
 
-
-
   /* Cover Topbar on desktop */
   @media (--viewportMedium) {
     /* padding: 8px 0; */
-    padding: 18px 0;    
+    padding: 18px 0;
     border-radius: 4px;
     margin-bottom: 10px;
     width: 98vw;

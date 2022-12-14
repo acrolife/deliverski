@@ -30,7 +30,7 @@ export const PHOTOS = 'photos';
 // export const RESTAURANT = 'restaurant';
 
 // EditListingWizardTab component supports these tabs
-export const SUPPORTED_TABS = [DETAILS, FEATURES, PRICING, DELIVERY, PHOTOS ]
+export const SUPPORTED_TABS = [DETAILS, FEATURES, PRICING, DELIVERY, PHOTOS];
 // , RESTAURANT];
 
 const pathParamsToNextTab = (params, tab, marketplaceTabs) => {
@@ -175,7 +175,7 @@ const EditListingWizardTab = props => {
           }}
         />
       );
-    }    
+    }
     case DELIVERY: {
       const submitButtonTranslationKey = isNewListingFlow
         ? 'EditListingWizard.saveNewDelivery'

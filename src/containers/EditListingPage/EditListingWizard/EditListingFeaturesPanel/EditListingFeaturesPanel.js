@@ -49,20 +49,20 @@ const EditListingFeaturesPanel = props => {
   const foodType = publicData && publicData.foodType;
   const drinkType = publicData && publicData.drinkType;
   const cuisine = publicData && publicData.cuisine;
-    // const mealType = publicData && publicData.mealType;
+  // const mealType = publicData && publicData.mealType;
   const diet = publicData && publicData.diet;
   // const allergen = publicData && publicData.allergen;
   const size = publicData && publicData.size;
 
-  const initialValues = { 
+  const initialValues = {
     productType,
-    foodType,   
-    drinkType, 
-    cuisine, 
-    // mealType,    
+    foodType,
+    drinkType,
+    cuisine,
+    // mealType,
     diet,
     // allergen,
-    size 
+    size,
   };
 
   return (
@@ -73,25 +73,25 @@ const EditListingFeaturesPanel = props => {
         name={FEATURES_NAME}
         initialValues={initialValues}
         onSubmit={values => {
-          const { 
+          const {
             foodType,
             drinkType,
-            cuisine, 
+            cuisine,
             // mealType,
-            diet,    
-            // allergens,        
-            size,          
+            diet,
+            // allergens,
+            size,
           } = values;
 
           const updatedValues = {
-            publicData: { 
+            publicData: {
               foodType,
               drinkType,
-              cuisine, 
+              cuisine,
               // mealType,
-              diet,    
-              // allergens,        
-              size,       
+              diet,
+              // allergens,
+              size,
             },
           };
           onSubmit(updatedValues);

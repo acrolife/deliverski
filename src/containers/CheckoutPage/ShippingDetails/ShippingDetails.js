@@ -6,7 +6,7 @@ import config from '../../../config';
 import { FormattedMessage, intlShape } from '../../../util/reactIntl';
 import * as validators from '../../../util/validators';
 // import getCountryCodes from '../../../translations/countryCodes';
-import residencesData from '../../../assets/data/residences'
+import residencesData from '../../../assets/data/residences';
 import { FieldSelect, FieldTextInput } from '../../../components';
 
 import css from './ShippingDetails.module.css';
@@ -23,7 +23,9 @@ const ShippingDetails = props => {
   // const countryCodes = getCountryCodes(config.locale);
 
   // const testMessages = mapValues(residencesData, (val, key) => key);
-  const residencesFiltered = residencesData ? residencesData.residencesArc1800.filter(e => e[2]): {}
+  const residencesFiltered = residencesData
+    ? residencesData.residencesArc1800.filter(e => e[2])
+    : {};
 
   return (
     <div className={classes}>
@@ -53,9 +55,7 @@ const ShippingDetails = props => {
         className={css.fieldFullWidth}
         type="text"
         autoComplete="shipping phoneNumber"
-        label={intl.formatMessage(
-          { id: 'ShippingDetails.recipientPhoneNumberLabel' },
-        )}
+        label={intl.formatMessage({ id: 'ShippingDetails.recipientPhoneNumberLabel' })}
         placeholder={intl.formatMessage({
           id: 'ShippingDetails.recipientPhoneNumberPlaceholder',
         })}
@@ -101,46 +101,46 @@ const ShippingDetails = props => {
           onUnmount={() => form.change('recipientAddressLine2', undefined)}
         />
       </div>       */}
-        <FieldSelect
-          id={`${fieldId}.recipientAddressLine1`}
-          name="recipientAddressLine1"
-          disabled={disabled}
-          className={css.fieldFullWidth}
-          label={intl.formatMessage({ id: 'ShippingDetails.addressLine1Label' })}
-          validate={validators.required(
-            intl.formatMessage({ id: 'ShippingDetails.addressLine1Required' })
-          )}
-        >
-          <option disabled value="">
-            {intl.formatMessage({ id: 'ShippingDetails.addressLine1Placeholder' })}
-          </option>
-          {residencesFiltered.map((e, i) => {
-            return (
-              <option key={i} value={`${e[1]} - Ref #${e[0]} Arc 1800`}>
-                {`${e[1]} - Ref #${e[0]} Arc 1800`}
-              </option>
-            );
-          })}
-        </FieldSelect>
-        <FieldTextInput
-          id={`${fieldId}.recipientAddressLine2`}
-          name="recipientAddressLine2"
-          disabled={disabled}
-          className={css.fieldFullWidth}
-          type="text"
-          autoComplete="shipping address-line2"
-          label={intl.formatMessage(
-            { id: 'ShippingDetails.addressLine2Label' },
-            { optionalText: optionalText }
-          )}
-          placeholder={intl.formatMessage({
-            id: 'ShippingDetails.addressLine2Placeholder',
-          })}
-          validate={validators.required(
-            intl.formatMessage({ id: 'ShippingDetails.addressLine2Required' })
-          )}
-          onUnmount={() => form.change('recipientAddressLine2', undefined)}
-        />
+      <FieldSelect
+        id={`${fieldId}.recipientAddressLine1`}
+        name="recipientAddressLine1"
+        disabled={disabled}
+        className={css.fieldFullWidth}
+        label={intl.formatMessage({ id: 'ShippingDetails.addressLine1Label' })}
+        validate={validators.required(
+          intl.formatMessage({ id: 'ShippingDetails.addressLine1Required' })
+        )}
+      >
+        <option disabled value="">
+          {intl.formatMessage({ id: 'ShippingDetails.addressLine1Placeholder' })}
+        </option>
+        {residencesFiltered.map((e, i) => {
+          return (
+            <option key={i} value={`${e[1]} - Ref #${e[0]} Arc 1800`}>
+              {`${e[1]} - Ref #${e[0]} Arc 1800`}
+            </option>
+          );
+        })}
+      </FieldSelect>
+      <FieldTextInput
+        id={`${fieldId}.recipientAddressLine2`}
+        name="recipientAddressLine2"
+        disabled={disabled}
+        className={css.fieldFullWidth}
+        type="text"
+        autoComplete="shipping address-line2"
+        label={intl.formatMessage(
+          { id: 'ShippingDetails.addressLine2Label' },
+          { optionalText: optionalText }
+        )}
+        placeholder={intl.formatMessage({
+          id: 'ShippingDetails.addressLine2Placeholder',
+        })}
+        validate={validators.required(
+          intl.formatMessage({ id: 'ShippingDetails.addressLine2Required' })
+        )}
+        onUnmount={() => form.change('recipientAddressLine2', undefined)}
+      />
       <div className={css.formRow}>
         <FieldTextInput
           id={`${fieldId}.recipientPostalCode`}
@@ -180,9 +180,7 @@ const ShippingDetails = props => {
           className={css.field}
           type="text"
           autoComplete="shipping address-level1"
-          label={intl.formatMessage(
-            { id: 'ShippingDetails.stateLabel' }
-          )}
+          label={intl.formatMessage({ id: 'ShippingDetails.stateLabel' })}
           placeholder={intl.formatMessage({ id: 'ShippingDetails.statePlaceholder' })}
           onUnmount={() => form.change('recipientState', undefined)}
         />

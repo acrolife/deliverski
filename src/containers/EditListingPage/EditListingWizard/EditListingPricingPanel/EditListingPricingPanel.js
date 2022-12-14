@@ -77,8 +77,8 @@ const EditListingPricingPanel = props => {
           price,
           ...stockUpdateMaybe,
           publicData: {
-            dailyStock: stock
-          }
+            dailyStock: stock,
+          },
         };
         onSubmit(updateValues);
       }}

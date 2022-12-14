@@ -27,7 +27,13 @@ import {
 } from '../../../components';
 
 // Import modules from this directory
-import EditListingWizardTab, { DETAILS, FEATURES, PRICING, DELIVERY, PHOTOS } from './EditListingWizardTab';
+import EditListingWizardTab, {
+  DETAILS,
+  FEATURES,
+  PRICING,
+  DELIVERY,
+  PHOTOS,
+} from './EditListingWizardTab';
 import css from './EditListingWizard.module.css';
 
 // You can reorder these panels.
@@ -73,16 +79,16 @@ const tabCompleted = (tab, listing) => {
 
   const productType = publicData && publicData.productType;
   // featuresData Validation depending on productType => productTypeValidation
-  let productTypeValidation
+  let productTypeValidation;
   switch (productType) {
     case 'eatable':
-      productTypeValidation = !!(publicData && publicData.foodType && publicData.cuisine)
+      productTypeValidation = !!(publicData && publicData.foodType && publicData.cuisine);
     case 'drinkable':
       // Need to enforce this to  validate the "Save" step to next tab
-      publicData.cuisine = publicData.cuisine ? publicData.cuisine : 'na'
-      productTypeValidation = !!(publicData && publicData.drinkType) // publicData.cuisine
+      publicData.cuisine = publicData.cuisine ? publicData.cuisine : 'na';
+      productTypeValidation = !!(publicData && publicData.drinkType); // publicData.cuisine
     case 'composable':
-      productTypeValidation = !!(publicData && publicData.cuisine && publicData.size)
+      productTypeValidation = !!(publicData && publicData.cuisine && publicData.size);
   }
 
   // DEV
@@ -523,7 +529,4 @@ EditListingWizard.propTypes = {
   intl: intlShape.isRequired,
 };
 
-export default compose(
-  withViewport,
-  injectIntl
-)(EditListingWizard);
+export default compose(withViewport, injectIntl)(EditListingWizard);

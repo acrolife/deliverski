@@ -55,7 +55,7 @@ export const ContactDetailsPageComponent = props => {
   const publicData = user.attributes.profile.publicData || {};
 
   // Conditional rendering of the provider/customer UI elements
-  const isProvider = currentUser ? !!currentUser.attributes.profile.metadata.isProvider : false
+  const isProvider = currentUser ? !!currentUser.attributes.profile.metadata.isProvider : false;
 
   const currentPhoneNumber = publicData.phoneNumber || '';
   const contactInfoForm = user.id ? (
@@ -91,7 +91,10 @@ export const ContactDetailsPageComponent = props => {
           />
           <UserNav selectedPageName="ContactDetailsPage" />
         </LayoutWrapperTopbar>
-        <LayoutWrapperAccountSettingsSideNav currentTab="ContactDetailsPage" isProvider={isProvider} />
+        <LayoutWrapperAccountSettingsSideNav
+          currentTab="ContactDetailsPage"
+          isProvider={isProvider}
+        />
         <LayoutWrapperMain>
           <div className={css.content}>
             <h1 className={css.title}>
@@ -171,10 +174,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const ContactDetailsPage = compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   injectIntl
 )(ContactDetailsPageComponent);
 
