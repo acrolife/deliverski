@@ -148,7 +148,10 @@ const resolveTransitionMessage = (
       return isOwnTransition ? (
         <FormattedMessage id="ActivityFeed.ownTransitionDecline" />
       ) : (
-        <FormattedMessage id="ActivityFeed.transitionDecline" values={{ displayName: isSystemTransition ? systemName : displayName }} />
+        <FormattedMessage
+          id="ActivityFeed.transitionDecline"
+          values={{ displayName: isSystemTransition ? systemName : displayName }}
+        />
       );
     case TRANSITION_AUTO_CANCEL:
     case TRANSITION_CANCEL:

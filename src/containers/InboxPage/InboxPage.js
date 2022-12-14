@@ -146,7 +146,7 @@ export const txState = (intl, tx, type) => {
       }),
     };
   } else {
-  /*
+    /*
   else if (txIsReviewedByCustomer(tx)) {
     const translationKey = isOrder ? 'InboxPage.stateReviewGiven' : 'InboxPage.stateReviewNeeded';
     return {
