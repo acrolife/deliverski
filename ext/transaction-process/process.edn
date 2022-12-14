@@ -65,7 +65,7 @@
    :actions
    [{:name :action/calculate-full-refund}
     {:name :action/stripe-refund-payment}
-    {:name :action/decline-stock-reservation}],
+    {:name :action/cancel-stock-reservation}],
    :from :state/preauthorized,
    :to :state/declined}
   {:name :transition/mark-received-from-purchased,
@@ -73,10 +73,20 @@
    :actions [{:name :action/stripe-create-payout}],
    :from :state/purchased,
    :to :state/received}
-  {:name :transition/mark-delivered,
+  {:name :transition/mark-prepared,
    :actor :actor.role/provider,
    :actions [],
    :from :state/purchased,
+   :to :state/prepared}
+  {:name :transition/mark-delivered-from-purchased,
+   :actor :actor.role/provider,
+   :actions [],
+   :from :state/purchased,
+   :to :state/delivered}
+  {:name :transition/mark-delivered,
+   :actor :actor.role/provider,
+   :actions [],
+   :from :state/prepared,
    :to :state/delivered}
   {:name :transition/mark-received,
    :actor :actor.role/customer,
