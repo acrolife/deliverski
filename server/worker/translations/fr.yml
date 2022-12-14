@@ -25,4 +25,15 @@ push:
         The service provider has { autoDeclineTime } minutes to confirm or
         cancel, but took no action. Therefore, the system automatically
         canceled this order.
+  TransitionMarkPrepared:
+    pickup:
+      heading: Update about your order { transactionId }!
+      content: |
+        Your meal will be ready for pickup in approximately { mealIsReadyTime }
+        minutes.
+    shipping:
+      heading: Update about your order { transactionId }!
+      content: |
+        The courier will knock your door in approximately { deliveryTime } minutes.
+        Please remain reachable on your phone!
 

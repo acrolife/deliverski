@@ -22,7 +22,7 @@ const oneSignalClient = new OneSignal.Client(oneSignalClientAppId, oneSignalClie
 const oneSignalCreateNotification = async notification => {
   const oneSignalRes = await oneSignalClient.createNotification(notification);
   if (oneSignalRes.body.id === '') {
-    if(oneSignalRes.body.recipients === 0) {
+    if (oneSignalRes.body.recipients === 0) {
       console.error('oneSignal: Zero recipients ', JSON.stringify(oneSignalRes.body.errors));
       return true; // Ignore the error if recipients are not subscribed
     }
@@ -141,7 +141,7 @@ const handleTransitionDecline = async transaction => {
     include_external_user_ids: [customerId],
   };
 
-  if(isSystemTransition) {
+  if (isSystemTransition) {
     notification.headings = tr('push.TransitionDecline.system.heading');
     notification.contents = tr('push.TransitionDecline.system.content', {
       autoDeclineTime: '15',
@@ -152,7 +152,41 @@ const handleTransitionDecline = async transaction => {
   }
 
   oneSignalCreateNotification(notification);
-}
+};
+
+const handleTransitionMarkPrepared = async transaction => {
+  console.log(`Transaction tx ID=${transaction.id.uuid} transition/mark-prepared`);
+  const providerId = getProviderId(transaction);
+  const customerId = getCustomerId(transaction);
+  const provider = await showUser(providerId);
+  const providerPublicData = provider.attributes.profile.publicData || {};
+  const mealIsReadyTime = providerPublicData.mealIsReadyTime;
+  const deliveryTime = providerPublicData.deliveryTime;
+  const transactionId = transaction.id.uuid;
+  const notification = {
+    app_id: oneSignalClientAppId,
+    channel_for_external_user_ids: 'push',
+    include_external_user_ids: [customerId],
+  };
+
+  if (isPickup(transaction)) {
+    notification.headings = tr('push.TransitionMarkPrepared.pickup.heading', {
+      transactionId,
+    });
+    notification.contents = tr('push.TransitionMarkPrepared.pickup.content', {
+      mealIsReadyTime,
+    });
+  } else {
+    notification.headings = tr('push.TransitionMarkPrepared.shipping.heading', {
+      transactionId,
+    });
+    notification.contents = tr('push.TransitionMarkPrepared.shipping.content', {
+      deliveryTime,
+    });
+  }
+
+  oneSignalCreateNotification(notification);
+};
 
 const handleTransactionTransitioned = shEvent => {
   const transactionId = shEvent.attributes.resourceId;
@@ -165,6 +199,9 @@ const handleTransactionTransitioned = shEvent => {
 
     case 'transition/decline':
       return handleTransitionDecline(resource);
+
+    case 'transition/mark-prepared':
+      return handleTransitionMarkPrepared(resource);
 
     default:
       break;
