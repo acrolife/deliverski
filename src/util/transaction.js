@@ -34,8 +34,14 @@ export const TRANSITION_EXPIRE_PAYMENT = 'transition/expire-payment';
 export const TRANSITION_ACCEPT = 'transition/accept';
 export const TRANSITION_DECLINE = 'transition/decline';
 
+// Provider can mark the meal prepared
+export const TRANSITION_MARK_PREPARED = 'transition/mark-prepared';
+
 // Provider can mark the product shipped/delivered
 export const TRANSITION_MARK_DELIVERED = 'transition/mark-delivered';
+
+// Provider can mark the product shipped/delivered bypassing prepared
+export const TRANSITION_MARK_DELIVERED_FROM_PURCHASED = 'transition/mark-delivered-from-purchased';
 
 // Customer can mark the product received (e.g. picked up from provider)
 export const TRANSITION_MARK_RECEIVED_FROM_PURCHASED = 'transition/mark-received-from-purchased';
@@ -115,6 +121,7 @@ const STATE_PAYMENT_EXPIRED = 'payment-expired';
 const STATE_PREAUTHORIZED = 'preauthorized';
 const STATE_DECLINED = 'declined';
 const STATE_PURCHASED = 'purchased';
+const STATE_PREPARED = 'prepared';
 const STATE_DELIVERED = 'delivered';
 const STATE_RECEIVED = 'received';
 const STATE_DISPUTED = 'disputed';
@@ -182,10 +189,16 @@ const stateDescription = {
     [STATE_DECLINED]: {},
     [STATE_PURCHASED]: {
       on: {
-        [TRANSITION_MARK_DELIVERED]: STATE_DELIVERED,
+        [TRANSITION_MARK_PREPARED]: STATE_PREPARED,
+        [TRANSITION_MARK_DELIVERED_FROM_PURCHASED]: STATE_DELIVERED,
         [TRANSITION_MARK_RECEIVED_FROM_PURCHASED]: STATE_RECEIVED,
         [TRANSITION_AUTO_CANCEL]: STATE_CANCELED,
         [TRANSITION_CANCEL]: STATE_CANCELED,
+      },
+    },
+    [STATE_PREPARED]: {
+      on: {
+        [TRANSITION_MARK_DELIVERED]: STATE_DELIVERED,
       },
     },
 
@@ -304,6 +317,9 @@ export const txIsDeclined = tx =>
 export const txIsCanceled = tx =>
   getTransitionsToState(STATE_CANCELED).includes(txLastTransition(tx));
 
+export const txIsPrepared = tx =>
+  getTransitionsToState(STATE_PREPARED).includes(txLastTransition(tx));
+
 export const txIsDelivered = tx =>
   getTransitionsToState(STATE_DELIVERED).includes(txLastTransition(tx));
 
@@ -381,6 +397,8 @@ export const isRelevantPastTransition = transition => {
     TRANSITION_AUTO_CANCEL,
     TRANSITION_CANCEL,
     TRANSITION_MARK_RECEIVED_FROM_PURCHASED,
+    TRANSITION_MARK_PREPARED,
+    TRANSITION_MARK_DELIVERED_FROM_PURCHASED,
     TRANSITION_MARK_DELIVERED,
     TRANSITION_DISPUTE,
     TRANSITION_MARK_RECEIVED,

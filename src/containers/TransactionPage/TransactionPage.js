@@ -40,6 +40,8 @@ import {
   dispute,
   markReceived,
   markReceivedFromPurchased,
+  markPrepared,
+  markDeliveredFromPurchased,
   markDelivered,
   sendMessage,
   sendReview,
@@ -98,6 +100,12 @@ export const TransactionPageComponent = props => {
     markReceivedFromPurchasedInProgress,
     markReceivedFromPurchasedError,
     onMarkReceivedFromPurchased,
+    markPreparedInProgress,
+    markPreparedError,
+    onMarkPrepared,
+    markDeliveredFromPurchasedInProgress,
+    markDeliveredFromPurchasedError,
+    onMarkDeliveredFromPurchased,
     markDeliveredInProgress,
     markDeliveredError,
     onMarkDelivered,
@@ -355,6 +363,28 @@ export const TransactionPageComponent = props => {
           id: 'TransactionPage.markReceivedFromPurchased.actionError',
         }),
       }}
+      markPreparedProps={{
+        inProgress: markPreparedInProgress,
+        error: markPreparedError,
+        onTransition: () => onMarkPrepared(currentTransaction.id),
+        buttonText: intl.formatMessage({
+          id: 'TransactionPage.markPrepared.actionButton',
+        }),
+        errorText: intl.formatMessage({ id: 'TransactionPage.markPrepared.actionError' }),
+      }}
+      markDeliveredFromPurchasedProps={{
+        inProgress: markDeliveredFromPurchasedInProgress,
+        error: markDeliveredFromPurchasedError,
+        onTransition: () => onMarkDeliveredFromPurchased(currentTransaction.id),
+        buttonText: intl.formatMessage({
+          id: isShippable
+            ? 'TransactionPage.markShippedFromPurchased.actionButton'
+            : 'TransactionPage.markDeliveredFromPurchased.actionButton',
+        }),
+        errorText: intl.formatMessage({
+          id: 'TransactionPage.markDeliveredFromPurchased.actionError',
+        }),
+      }}
       markDeliveredProps={{
         inProgress: markDeliveredInProgress,
         error: markDeliveredError,
@@ -435,6 +465,8 @@ TransactionPageComponent.defaultProps = {
   acceptSaleError: null,
   declineSaleError: null,
   disputeError: null,
+  markPreparedError: null,
+  markDeliveredFromPurchasedError: null,
   markDeliveredError: null,
   markReceivedError: null,
   markReceivedFromPurchasedError: null,
@@ -466,6 +498,10 @@ TransactionPageComponent.propTypes = {
   markReceivedFromPurchasedInProgress: bool.isRequired,
   markReceivedFromPurchasedError: propTypes.error,
   onMarkReceivedFromPurchased: func.isRequired,
+  markPreparedInProgress: bool.isRequired,
+  markPreparedError: propTypes.error,
+  markDeliveredFromPurchasedInProgress: bool.isRequired,
+  markDeliveredFromPurchasedError: propTypes.error,
   markDeliveredInProgress: bool.isRequired,
   markDeliveredError: propTypes.error,
   onMarkDelivered: func.isRequired,
@@ -520,6 +556,10 @@ const mapStateToProps = state => {
     markReceivedError,
     markReceivedFromPurchasedInProgress,
     markReceivedFromPurchasedError,
+    markPreparedInProgress,
+    markPreparedError,
+    markDeliveredFromPurchasedInProgress,
+    markDeliveredFromPurchasedError,
     markDeliveredInProgress,
     markDeliveredError,
     transactionRef,
@@ -559,6 +599,10 @@ const mapStateToProps = state => {
     markReceivedError,
     markReceivedFromPurchasedInProgress,
     markReceivedFromPurchasedError,
+    markPreparedInProgress,
+    markPreparedError,
+    markDeliveredFromPurchasedInProgress,
+    markDeliveredFromPurchasedError,
     markDeliveredInProgress,
     markDeliveredError,
     scrollingDisabled: isScrollingDisabled(state),
@@ -591,6 +635,9 @@ const mapDispatchToProps = dispatch => {
     onMarkReceived: transactionId => dispatch(markReceived(transactionId)),
     onMarkReceivedFromPurchased: transactionId =>
       dispatch(markReceivedFromPurchased(transactionId)),
+    onMarkPrepared: transactionId => dispatch(markPrepared(transactionId)),
+    onMarkDeliveredFromPurchased: transactionId =>
+      dispatch(markDeliveredFromPurchased(transactionId)),
     onMarkDelivered: transactionId => dispatch(markDelivered(transactionId)),
     onShowMoreMessages: txId => dispatch(fetchMoreMessages(txId)),
     onSendMessage: (txId, message) => dispatch(sendMessage(txId, message)),

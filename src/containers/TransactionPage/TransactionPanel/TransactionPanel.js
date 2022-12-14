@@ -9,15 +9,16 @@ import {
   txIsRequested,
   txIsCanceled,
   txIsDeclined,
+  txIsPrepared,
   txIsDelivered,
   txIsDisputed,
   txIsEnquired,
   txIsPaymentExpired,
   txIsPaymentPending,
   txIsPurchased,
-  txIsReceived,
-  txIsCompleted,
-  txIsInFirstReviewBy,
+  // txIsReceived,
+  // txIsCompleted,
+  // txIsInFirstReviewBy,
 } from '../../../util/transaction';
 import { FormattedMessage, injectIntl, intlShape } from '../../../util/reactIntl';
 import { LINE_ITEM_NIGHT, LINE_ITEM_DAY, propTypes } from '../../../util/types';
@@ -52,6 +53,7 @@ import PanelHeading, {
   HEADING_CANCELED,
   HEADING_DECLINED,
   HEADING_PURCHASED,
+  HEADING_PREPARED,
   HEADING_DELIVERED,
   HEADING_DISPUTED,
   HEADING_RECEIVED,
@@ -182,8 +184,10 @@ export class TransactionPanelComponent extends Component {
       declineSaleError,
       markReceivedProps,
       markReceivedFromPurchasedProps,
+      markPreparedProps,
+      markDeliveredFromPurchasedProps,
       markDeliveredProps,
-      leaveReviewProps,
+      // leaveReviewProps,
       onSubmitOrderRequest,
       timeSlots,
       fetchTimeSlotsError,
@@ -229,6 +233,7 @@ export class TransactionPanelComponent extends Component {
     const isProviderBanned = isProviderLoaded && currentProvider.attributes.banned;
     const isProviderDeleted = isProviderLoaded && currentProvider.attributes.deleted;
 
+    // eslint-disable-next-line no-unused-vars
     const restaurantStatus = isRestaurantOpen(
       currentListing?.author?.attributes.profile.publicData
     );
@@ -267,7 +272,8 @@ export class TransactionPanelComponent extends Component {
           headingState: HEADING_PURCHASED,
           showDetailCardHeadings: isCustomer,
           showActionButtons: true,
-          primaryButtonProps: isCustomer ? markReceivedFromPurchasedProps : markDeliveredProps,
+          primaryButtonProps: isCustomer ? markReceivedFromPurchasedProps : markPreparedProps,
+          secondaryButtonProps: isProvider ? markDeliveredFromPurchasedProps : null,
         };
       } else if (txIsDeclined(tx)) {
         return {
@@ -278,6 +284,14 @@ export class TransactionPanelComponent extends Component {
         return {
           headingState: HEADING_CANCELED,
           showDetailCardHeadings: isCustomer,
+        };
+      } else if (txIsPrepared(tx)) {
+        const primaryButtonProps = isProvider ? { primaryButtonProps: markDeliveredProps } : {};
+        return {
+          headingState: HEADING_PREPARED,
+          showDetailCardHeadings: isCustomer,
+          showActionButtons: isProvider,
+          ...primaryButtonProps,
         };
       } else if (txIsDelivered(tx)) {
         const primaryButtonPropsMaybe = isCustomer ? { primaryButtonProps: markReceivedProps } : {};
@@ -628,6 +642,8 @@ TransactionPanelComponent.propTypes = {
   // Tx process transition related props
   markReceivedProps: actionButtonShape.isRequired,
   markReceivedFromPurchasedProps: actionButtonShape.isRequired,
+  markPreparedProps: actionButtonShape.isRequired,
+  markDeliveredFromPurchasedProps: actionButtonShape.isRequired,
   markDeliveredProps: actionButtonShape.isRequired,
   leaveReviewProps: actionButtonShape.isRequired,
 

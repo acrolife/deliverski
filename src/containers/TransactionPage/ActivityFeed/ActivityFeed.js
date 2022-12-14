@@ -18,6 +18,8 @@ import {
   TRANSITION_MARK_RECEIVED,
   TRANSITION_AUTO_MARK_RECEIVED,
   TRANSITION_MARK_RECEIVED_FROM_DISPUTED,
+  TRANSITION_MARK_PREPARED,
+  TRANSITION_MARK_DELIVERED_FROM_PURCHASED,
   TRANSITION_MARK_DELIVERED,
   TRANSITION_DISPUTE,
   // TRANSITION_REVIEW_1_BY_CUSTOMER,
@@ -162,9 +164,9 @@ const resolveTransitionMessage = (
     case TRANSITION_MARK_RECEIVED:
     case TRANSITION_AUTO_MARK_RECEIVED:
     case TRANSITION_MARK_RECEIVED_FROM_DISPUTED:
-    // Show the leave a review link if the state is completed and
-    // if the current user is the first to leave a review
-    /*
+      // Show the leave a review link if the state is completed and
+      // if the current user is the first to leave a review
+      /*
       const reviewPeriodJustStarted = txIsCompleted(transaction);
 
       const reviewAsFirstLink = reviewPeriodJustStarted ? (
@@ -175,7 +177,14 @@ const resolveTransitionMessage = (
 
       return reviewAsFirstLink || <FormattedMessage id="ActivityFeed.transitionMarkReceived" />;
       */
-    // eslint-disable-next-line no-fallthrough
+      return <FormattedMessage id="ActivityFeed.transitionMarkReceived" />;
+    case TRANSITION_MARK_PREPARED:
+      return isOwnTransition ? (
+        <FormattedMessage id="ActivityFeed.ownTransitionPrepared" />
+      ) : (
+        <FormattedMessage id="ActivityFeed.transitionPrepared" />
+      );
+    case TRANSITION_MARK_DELIVERED_FROM_PURCHASED:
     case TRANSITION_MARK_DELIVERED: {
       const isShipped = transaction.attributes?.protectedData?.deliveryMethod === 'shipping';
       return isOwnTransition && isShipped ? (
