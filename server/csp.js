@@ -74,6 +74,7 @@ const defaultDirectives = {
     'playground.marmott.co',
     'sandbox.marmott.co',
     'https://cdn.onesignal.com',
+    'https://onesignal.com',
   ],
   styleSrc: [self, unsafeInline, 'fonts.googleapis.com', 'api.mapbox.com'],
 };
