@@ -28,8 +28,96 @@ import css from './EditListingFeaturesForm.module.css';
 import { red } from '@mui/material/colors';
 import { color } from '@mui/system';
 
-const EditListingFeaturesFormComponent = props => (
-  <FinalForm
+
+// Main component
+const EditListingFeaturesFormComponent = (props) => {
+
+      // State management XXX
+
+      // Accordions and display single or multi filter message
+      // cuisine (this first accordion is opened)
+      /*
+      const [accordionCuisineIsOpen, setAccordionCuisineIsOpen] = useState(true);
+      const accordionCuisineIsOpenToggle = () => {
+        setAccordionCuisineIsOpen(!accordionCuisineIsOpen);
+      };
+      const cuisineIsSingleFilter = true;
+      */
+      
+      // mealType
+      /*
+      const [accordionMealTypeIsOpen, setAccordionMealTypeIsOpen] = useState(false);;
+      const accordionMealTypeIsOpenToggle = () => {
+        setAccordionMealTypeIsOpen(!accordionMealTypeIsOpen)
+      }
+      const mealTypeIsSingleFilter = true
+      */
+      
+      // foodType
+      /*
+      const [accordionfoodTypeIsOpen, setAccordionfoodTypeIsOpen] = useState(false);
+      const accordionfoodTypeIsOpenToggle = () => {
+        setAccordionfoodTypeIsOpen(!accordionfoodTypeIsOpen);
+      };
+      const foodTypeIsSingleFilter = true;
+      */
+      
+      // drinkType
+      /*
+      const [accordionDrinkTypeIsOpen, setAccordionDrinkTypeIsOpen] = useState(true); // eslint-disable-line react-hooks/rules-of-hooks
+      const accordionDrinkTypeIsOpenToggle = () => {
+        setAccordionDrinkTypeIsOpen(!accordionDrinkTypeIsOpen);
+      };
+      const drinkTypeIsSingleFilter = false;
+      const drinkTypeCustomMessageSubKey = 'drinkTypePlaceholder';
+      */
+      
+      // allergen
+      /*
+      const [accordionAllergenIsOpen, setAccordionAllergenIsOpen] = useState(false);;
+      const accordionAllergenIsOpenToggle = () => {
+        setAccordionAllergenIsOpen(!accordionAllergenIsOpen)
+      }
+      const allergenIsSingleFilter = false
+      const allergenCustomMessageSubKey = "allergenPlaceholder"
+      */
+
+
+      // Get productType value to condition the rendering and required property of some select sections
+      const { initialValues } = props;
+      const productType = initialValues?.productType;
+
+      const productTypeVisibiliy = {
+        foodType: productType === 'eatable_salty' || productType === 'eatable_sweet',
+        drinkType: productType === 'drinkable',
+        cuisine: productType !== 'drinkable',
+        // mealType:  productType !== 'eatable',
+        diet: true,
+        size: true,
+        dietAccordionOpenAtLoading: productType === 'drinkable',
+      };
+
+      // diet attribute (this first accordion is opened)
+      const [accordionDietIsOpen, setAccordionDietIsOpen] = useState(
+        productTypeVisibiliy.dietAccordionOpenAtLoading
+      );   
+      const accordionDietIsOpenToggle = () => {
+        setAccordionDietIsOpen(!accordionDietIsOpen);
+      };
+      const dietIsSingleFilter = false;
+      const dietCustomMessageSubKey = 'dietPlaceholder';
+
+      // size attribute
+      const [accordionSizeIsOpen, setAccordionSizeIsOpen] = useState(false); // eslint-disable-line react-hooks/rules-of-hooks
+      const accordionSizeIsOpenToggle = () => {
+        setAccordionSizeIsOpen(!accordionSizeIsOpen);
+      };
+
+      const sizeIsSingleFilter = false;
+      const sizeCustomMessageSubKey = 'sizePlaceholder';
+
+      return (
+        <FinalForm
     {...props}
     mutators={{ ...arrayMutators }}
     render={formRenderProps => {
@@ -49,19 +137,9 @@ const EditListingFeaturesFormComponent = props => (
         filterConfig,
       } = formRenderProps;
 
-      // Get productType value to condition the rendering and required property of some select sections
-      const { initialValues } = props;
-      const productType = initialValues?.productType;
-
-      const productTypeVisibiliy = {
-        foodType: productType === 'eatable_salty' || productType === 'eatable_sweet',
-        drinkType: productType === 'drinkable',
-        cuisine: productType !== 'drinkable',
-        // mealType:  productType !== 'eatable',
-        diet: true,
-        size: true,
-        dietAccordionOpenAtLoading: productType === 'drinkable',
-      };
+      // Get toggles
+      //  const { accordionDietIsOpenToggle, accordionSizeIsOpenToggle} = toggles
+      
       const productTypeExcludeKeys = {
         foodType: {
           drinkable: ['halal'],
@@ -74,6 +152,8 @@ const EditListingFeaturesFormComponent = props => (
       const submitDisabled = disabled || submitInProgress;
 
       const { updateListingError, showListingsError } = fetchErrors || {};
+      
+
       const errorMessage = updateListingError ? (
         <p className={css.error}>
           <FormattedMessage id="EditListingFeaturesForm.updateFailed" />
@@ -273,67 +353,7 @@ const EditListingFeaturesFormComponent = props => (
         intl.formatMessage({
           id: 'EditListingFeaturesForm.sizeRequired',
         })
-      );
-
-      // Accordions and display single or multi filter message
-      // cuisine (this first accordion is opened)
-      const [accordionCuisineIsOpen, setAccordionCuisineIsOpen] = useState(true);
-      const accordionCuisineIsOpenToggle = () => {
-        setAccordionCuisineIsOpen(!accordionCuisineIsOpen);
-      };
-      const cuisineIsSingleFilter = true;
-
-      // mealType
-      /*
-      const [accordionMealTypeIsOpen, setAccordionMealTypeIsOpen] = useState(false);;
-      const accordionMealTypeIsOpenToggle = () => {
-        setAccordionMealTypeIsOpen(!accordionMealTypeIsOpen)
-      }
-      const mealTypeIsSingleFilter = true
-      */
-
-      // foodType
-      const [accordionfoodTypeIsOpen, setAccordionfoodTypeIsOpen] = useState(false);
-      const accordionfoodTypeIsOpenToggle = () => {
-        setAccordionfoodTypeIsOpen(!accordionfoodTypeIsOpen);
-      };
-      const foodTypeIsSingleFilter = true;
-
-      // drinkType
-      const [accordionDrinkTypeIsOpen, setAccordionDrinkTypeIsOpen] = useState(true); // eslint-disable-line react-hooks/rules-of-hooks
-      const accordionDrinkTypeIsOpenToggle = () => {
-        setAccordionDrinkTypeIsOpen(!accordionDrinkTypeIsOpen);
-      };
-      const drinkTypeIsSingleFilter = false;
-      const drinkTypeCustomMessageSubKey = 'drinkTypePlaceholder';
-
-      // diet (this first accordion is opened)
-      const [accordionDietIsOpen, setAccordionDietIsOpen] = useState(
-        productTypeVisibiliy.dietAccordionOpenAtLoading
-      ); // eslint-disable-line react-hooks/rules-of-hooks
-      const accordionDietIsOpenToggle = () => {
-        setAccordionDietIsOpen(!accordionDietIsOpen);
-      };
-      const dietIsSingleFilter = false;
-      const dietCustomMessageSubKey = 'dietPlaceholder';
-
-      // allergen
-      /*
-      const [accordionAllergenIsOpen, setAccordionAllergenIsOpen] = useState(false);;
-      const accordionAllergenIsOpenToggle = () => {
-        setAccordionAllergenIsOpen(!accordionAllergenIsOpen)
-      }
-      const allergenIsSingleFilter = false
-      const allergenCustomMessageSubKey = "allergenPlaceholder"
-      */
-
-      // size
-      const [accordionSizeIsOpen, setAccordionSizeIsOpen] = useState(false); // eslint-disable-line react-hooks/rules-of-hooks
-      const accordionSizeIsOpenToggle = () => {
-        setAccordionSizeIsOpen(!accordionSizeIsOpen);
-      };
-      const sizeIsSingleFilter = false;
-      const sizeCustomMessageSubKey = 'sizePlaceholder';
+      );      
 
       /*
       // TODO if want to change the select color to marketplace color, just use the CustomFieldEnum css file
@@ -533,7 +553,8 @@ const EditListingFeaturesFormComponent = props => (
       );
     }}
   />
-);
+      )
+}
 
 EditListingFeaturesFormComponent.defaultProps = {
   rootClassName: null,

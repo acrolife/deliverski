@@ -124,7 +124,7 @@
     "test-server": "jest ./server/**/*.test.js",
     "heroku-postbuild": "yarn run build",
     "translate": "node scripts/translations.js",
-    "worker:start": "node server/worker.js",
+    "worker:start": "node server/worker/worker.js",
     "worker:dev": "export NODE_ENV=development&& nodemon server/worker/worker.js"
   },
   "browserslist": {
