@@ -63,6 +63,7 @@ const defaultDirectives = {
 
     // OneSignal
     'https://onesignal.com',
+    'https://img.onesignal.com',
   ],
   scriptSrc: [
     self,
