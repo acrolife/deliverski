@@ -153,7 +153,9 @@ const stateDescription = {
   // id: 'flex-product-default-process/auto-delivered-120--auto-received-90-test',
   // id: 'flex-product-default-process/dev-periods-chge-90-v10',
   // DEV ITH
-  id: 'flex-product-default-process/accept-decline-v1',
+  // id: 'flex-product-default-process/accept-decline-v1',
+  // DEV ITH sandbox
+  id: 'flex-default-process/accept-decline-v1',
 
   // This 'initial' state is a starting point for new transaction
   initial: STATE_INITIAL,
