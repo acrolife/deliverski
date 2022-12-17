@@ -76,7 +76,13 @@ const defaultDirectives = {
     'https://cdn.onesignal.com',
     'https://onesignal.com',
   ],
-  styleSrc: [self, unsafeInline, 'fonts.googleapis.com', 'api.mapbox.com'],
+  styleSrc: [
+    self, 
+    unsafeInline, 
+    'fonts.googleapis.com', 
+    'api.mapbox.com',
+    'https://onesignal.com',
+  ],
 };
 
 /**
