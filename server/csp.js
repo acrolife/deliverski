@@ -31,6 +31,9 @@ const defaultDirectives = {
 
     'sentry.io',
     '*.stripe.com',
+
+    // OneSignal
+    'https://onesignal.com',
   ],
   fontSrc: [self, data, 'assets-sharetribecom.sharetribe.com', 'fonts.gstatic.com'],
   frameSrc: [self, '*.stripe.com'],
@@ -57,6 +60,9 @@ const defaultDirectives = {
     'stats.g.doubleclick.net',
 
     '*.stripe.com',
+
+    // OneSignal
+    'https://onesignal.com',
   ],
   scriptSrc: [
     self,
@@ -73,6 +79,8 @@ const defaultDirectives = {
     'marmott.co',
     'playground.marmott.co',
     'sandbox.marmott.co',
+
+    // OneSignal
     'https://cdn.onesignal.com',
     'https://onesignal.com',
   ],
@@ -81,6 +89,8 @@ const defaultDirectives = {
     unsafeInline, 
     'fonts.googleapis.com', 
     'api.mapbox.com',
+
+    // OneSignal
     'https://onesignal.com',
   ],
 };
