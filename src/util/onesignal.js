@@ -11,7 +11,7 @@ export const initOneSignal = async () => {
     },
     subdomainName: 'marmott',
     allowLocalhostAsSecureOrigin: config.dev,
-    serviceWorkerPath: 'static/scripts/onesignal/OneSignalSDKWorker.js',
+    serviceWorkerPath: '/static/scripts/onesignal/OneSignalSDKWorker.js',
   });
   OneSignal.showSlidedownPrompt();
 };
