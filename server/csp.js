@@ -17,6 +17,15 @@ const defaultDirectives = {
   baseUri: [self],
   defaultSrc: [self],
   childSrc: [blob],
+  workerSrc: [
+    'https://www.webmobilefirst.com',
+    'marmott.co',
+    'playground.marmott.co',
+    'sandbox.marmott.co',
+    'www.marmott.co',
+    'www.playground.marmott.co',
+    'www.sandbox.marmott.co',
+  ],
   connectSrc: [
     self,
     baseUrl,
@@ -80,6 +89,9 @@ const defaultDirectives = {
     'marmott.co',
     'playground.marmott.co',
     'sandbox.marmott.co',
+    'www.marmott.co',
+    'www.playground.marmott.co',
+    'www.sandbox.marmott.co',
 
     // OneSignal
     'https://cdn.onesignal.com',
