@@ -68,7 +68,7 @@ const sortSearchByDistance = false;
 // DEV ITH
 // const transactionProcessAlias = 'flex-product-default-process/accept-decline-v1'
 // DEV ITH sandbox
-const transactionProcessAlias = 'flex-default-process/accept-decline-v1'
+const transactionProcessAlias = 'flex-default-process/accept-decline-v1';
 
 // The transaction line item code for the main unit type for listings.
 //

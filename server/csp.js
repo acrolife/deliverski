@@ -86,9 +86,9 @@ const defaultDirectives = {
     'https://onesignal.com',
   ],
   styleSrc: [
-    self, 
-    unsafeInline, 
-    'fonts.googleapis.com', 
+    self,
+    unsafeInline,
+    'fonts.googleapis.com',
     'api.mapbox.com',
 
     // OneSignal
