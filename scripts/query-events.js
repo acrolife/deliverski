@@ -39,24 +39,27 @@ const run = async () => {
 
   // const EXAMINE_TX_ID='63908b90-fbb1-4db4-ab92-2f445e97643b'; // decline
   // const EXAMINE_TX_ID='63931f94-d9ad-47b9-b955-7b4012322e8d'; // stuck in 'confirm-payment'
-  const EXAMINE_TX_ID='63931b66-4417-4344-ab82-c9a4fc895fd5'; // accept
+  const EXAMINE_TX_ID = '63931b66-4417-4344-ab82-c9a4fc895fd5'; // accept
   events.forEach(shEvent => {
     const { eventType, resourceId } = shEvent.attributes;
-    console.log('------ resourceId=', resourceId.uuid, ' eventType=', eventType, );
+    console.log('------ resourceId=', resourceId.uuid, ' eventType=', eventType);
     if (resourceId.uuid === EXAMINE_TX_ID && eventType === 'transaction/transitioned') {
       const { resource, previousValues } = shEvent.attributes;
       // console.log('shEvent=', JSON.stringify(shEvent,null,2));
-      console.log('resource=', JSON.stringify(resource,null,2));
-      const { transitions: previousTransitions, lastTransition: previousLastTransition } = previousValues.attributes;
+      console.log('resource=', JSON.stringify(resource, null, 2));
+      const {
+        transitions: previousTransitions,
+        lastTransition: previousLastTransition,
+      } = previousValues.attributes;
       const { transitions, lastTransition } = resource.attributes;
 
       // console.log('previousTransitions=', JSON.stringify(previousTransitions,null,2));
       // console.log('transitions=', JSON.stringify(transitions,null,2));
       console.log('======');
-      console.log('previousLastTransition=', JSON.stringify(previousLastTransition,null,2));
-      console.log('lastTransition=', JSON.stringify(lastTransition,null,2));
+      console.log('previousLastTransition=', JSON.stringify(previousLastTransition, null, 2));
+      console.log('lastTransition=', JSON.stringify(lastTransition, null, 2));
     }
   });
-}
+};
 
 run();

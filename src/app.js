@@ -96,7 +96,7 @@ export const ClientApp = props => {
   setupLocale();
   useEffect(() => {
     initOneSignal();
-  })
+  });
   return (
     <IntlProvider locale={config.locale} messages={localeMessages} textComponent="span">
       <Provider store={store}>

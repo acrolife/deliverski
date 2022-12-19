@@ -85,6 +85,6 @@ exports.error = (e, code, data) => {
   } else {
     console.error(e);
     console.error(code);
-    console.error(JSON.stringify(data,null,2));
+    console.error(JSON.stringify(data, null, 2));
   }
 };
