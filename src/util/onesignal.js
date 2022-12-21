@@ -9,7 +9,7 @@ export const initOneSignal = async () => {
     notifyButton: {
       enable: true,
     },
-    subdomainName: 'marmott',
+    subdomainName: config.onesignal.subdomainName,
     allowLocalhostAsSecureOrigin: config.dev,
     serviceWorkerPath: '/static/scripts/onesignal/OneSignalSDKWorker.js',
   });

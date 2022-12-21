@@ -249,6 +249,7 @@ const maps = {
 const onesignal = {
   appId: process.env.REACT_APP_ONESIGNAL_APP_ID,
   safari_web_id: process.env.REACT_APP_ONESIGNAL_SAFARI_WEB_ID,
+  subdomainName: process.env.REACT_APP_ONESIGNAL_SUBDOMAIN_NAME,
 };
 
 // NOTE: only expose configuration that should be visible in the
