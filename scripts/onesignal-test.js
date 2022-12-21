@@ -14,11 +14,13 @@ the flex console. If this user has logged in flex, he will receive a notificatio
 */
 const providerId = '6385c71e-a424-4505-b650-309a76c41c3b';
 /* This corresponds OneSignal template ID */
-const template_id = '2fc79728-fe06-4f36-be0c-4cc315a0599d';
+//const template_id = '2fc79728-fe06-4f36-be0c-4cc315a0599d';
 
 const notification = {
   app_id: oneSignalClientAppId,
-  template_id,
+  contents: {
+    en: 'test notification'
+  },
   channel_for_external_user_ids: 'push',
   include_external_user_ids: [providerId],
 };
@@ -31,6 +33,7 @@ const run = async () => {
       notification,
       errors: oneSignalRes.body.errors,
     };
+    console.error('error=', JSON.stringify(err.data,null,2));
     throw err;
   }
 };
