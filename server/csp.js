@@ -73,6 +73,8 @@ const defaultDirectives = {
     'marmott.co',
     'playground.marmott.co',
     'sandbox.marmott.co',
+    'onesignal.com',
+    'cdn.onesignal.com',
   ],
   styleSrc: [self, unsafeInline, 'fonts.googleapis.com', 'api.mapbox.com'],
 };
