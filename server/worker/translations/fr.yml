@@ -36,4 +36,42 @@ push:
       content: |
         The courier will knock your door in approximately { deliveryTime } minutes.
         Please remain reachable on your phone!
+sms:
+  TransactionInitiated:
+    content: You have new order
+  TransitionAccept:
+    pickup:
+      content: |
+        Your order has been confirmed!
+        The preparation will take approx. { preparationTime } minutes.
+        You’ll receive an update { mealIsReadyTime } minutes before your meal will
+        be ready to pickup at { deliveryFromAddress }!
+    shipping:
+      content: |
+        Your order has been confirmed!
+        The preparation will take approx. { preparationTime } minutes. 
+        You’ll receive an update { deliveryTime } minutes before the courier
+        knocks your door, please remain available on your phone!
+  TransitionDecline:
+    provider:
+      content: |
+        Your order has been declined!
+        Your order has been rejected because the provider is overloaded.
+    system:
+      content: |
+        Your order has been declined!
+        The service provider has { autoDeclineTime } minutes to confirm or
+        cancel, but took no action. Therefore, the system automatically
+        canceled this order.
+  TransitionMarkPrepared:
+    pickup:
+      content: |
+        Update about your order { transactionId }!
+        Your meal will be ready for pickup in approximately { mealIsReadyTime }
+        minutes.
+    shipping:
+      content: |
+        Update about your order { transactionId }!
+        The courier will knock your door in approximately { deliveryTime } minutes.
+        Please remain reachable on your phone!
 

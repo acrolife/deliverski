@@ -54,3 +54,21 @@ If a red bell does not appear, something is wrong with the settings. My
 experience is to delete the app and start over. For reasons unknown to us, the
 corrections are not appearing. Errors can be seen in the browser console.
 
+## SMS
+
+Please follow the OneSignal documentation and connect your twilio account.
+
+
+# OneSignal env
+
+Please fill in the .env file
+
+```
+REACT_APP_ONESIGNAL_APP_ID=
+REACT_APP_ONESIGNAL_SAFARI_WEB_ID=
+# this is for localhost only
+REACT_APP_ONESIGNAL_SUBDOMAIN_NAME=
+ONE_SIGNAL_API_KEY=
+# This phone number is provided by twilio
+ONE_SIGNAL_SMS_FROM=
+```

@@ -8,6 +8,7 @@ const baseUrl = process.env.FLEX_INTEGRATION_BASE_URL || 'https://flex-integ-api
 
 const oneSignalClientAppId = process.env.REACT_APP_ONESIGNAL_APP_ID;
 const oneSignalClientApiKey = process.env.ONE_SIGNAL_API_KEY;
+const oneSignalSmsFrom = process.env.ONE_SIGNAL_SMS_FROM;
 
 const { UUID } = types;
 
@@ -65,6 +66,10 @@ const getCustomerId = transaction => {
   return transaction.relationships.customer.data.id.uuid;
 };
 
+const getPhoneNumber = user => {
+  return user && user.attributes.profile.privateData?.phoneNumber;
+};
+
 // eslint-disable-next-line no-unused-vars
 const isShipping = transaction => {
   return transaction?.attributes?.protectedData?.deliveryMethod === 'shipping';
@@ -75,6 +80,10 @@ const isPickup = transaction => {
   return transaction?.attributes?.protectedData?.deliveryMethod === 'pickup';
 };
 
+const getTransactionPhoneNumber = transaction => {
+  return isShipping(transaction) ? transaction?.attributes?.protectedData?.shippingDetails?.phoneNumber : null;
+};
+
 const handleTransactionInitiated = async shEvent => {
   const transactionId = shEvent.attributes.resourceId;
   console.log(`Transaction initiated event ID=${shEvent.id.uuid} tx ID=${transactionId.uuid}`);
@@ -82,6 +91,8 @@ const handleTransactionInitiated = async shEvent => {
   // console.log('transaction=', JSON.stringify(transaction,null,2));
 
   const providerId = getProviderId(transaction);
+  const provider = await showUser(providerId);
+  const providerPhoneNumber = getPhoneNumber(provider);
 
   const notification = {
     app_id: oneSignalClientAppId,
@@ -92,6 +103,19 @@ const handleTransactionInitiated = async shEvent => {
   };
 
   oneSignalCreateNotification(notification);
+
+  if (providerPhoneNumber) {
+    const notificationSMS = {
+      app_id: oneSignalClientAppId,
+      name: 'Transaction Initiated',
+      sms_from: oneSignalSmsFrom,
+      contents: tr('sms.TransactionInitiated.content'),
+      // can be added public available images
+      // sms_media_urls: [],
+      include_phone_numbers: [providerPhoneNumber],
+    };
+    oneSignalCreateNotification(notificationSMS);
+  }
 };
 
 const handleTransitionAccept = async transaction => {
@@ -104,15 +128,27 @@ const handleTransitionAccept = async transaction => {
   const mealIsReadyTime = providerPublicData.mealIsReadyTime;
   const deliveryTime = providerPublicData.deliveryTime;
   const deliveryFromAddress = providerPublicData.deliveryFromAddress;
+  const customerPhoneNumber = getTransactionPhoneNumber(transaction) ;
   const notification = {
     app_id: oneSignalClientAppId,
     channel_for_external_user_ids: 'push',
     include_external_user_ids: [customerId],
   };
+  const notificationSMS = {
+    app_id: oneSignalClientAppId,
+    name: 'Transaction Accept',
+    sms_from: oneSignalSmsFrom,
+    include_phone_numbers: [customerPhoneNumber],
+  };
 
   if (isPickup(transaction)) {
     notification.headings = tr('push.TransitionAccept.pickup.heading');
     notification.contents = tr('push.TransitionAccept.pickup.content', {
+      preparationTime,
+      mealIsReadyTime,
+      deliveryFromAddress,
+    });
+    notificationSMS.contents = tr('sms.TransitionAccept.pickup.content', {
       preparationTime,
       mealIsReadyTime,
       deliveryFromAddress,
@@ -123,15 +159,24 @@ const handleTransitionAccept = async transaction => {
       preparationTime,
       deliveryTime,
     });
+    notificationSMS.contents = tr('sms.TransitionAccept.shipping.content', {
+      preparationTime,
+      deliveryTime,
+    });
   }
 
   oneSignalCreateNotification(notification);
+
+  if (customerPhoneNumber) {
+    oneSignalCreateNotification(notificationSMS);
+  }
 };
 
 const handleTransitionDecline = async transaction => {
   console.log(`Transaction tx ID=${transaction.id.uuid} transition/decline`);
   // const providerId = getProviderId(transaction);
   const customerId = getCustomerId(transaction);
+  const customerPhoneNumber = getTransactionPhoneNumber(transaction) ;
   const { transitions } = transaction.attributes;
   const transition = transitions.at(-1);
   const isSystemTransition = transition.by === 'system';
@@ -140,18 +185,32 @@ const handleTransitionDecline = async transaction => {
     channel_for_external_user_ids: 'push',
     include_external_user_ids: [customerId],
   };
+  const notificationSMS = {
+    app_id: oneSignalClientAppId,
+    name: 'Transaction Decline',
+    sms_from: oneSignalSmsFrom,
+    include_phone_numbers: [customerPhoneNumber],
+  };
 
   if (isSystemTransition) {
     notification.headings = tr('push.TransitionDecline.system.heading');
     notification.contents = tr('push.TransitionDecline.system.content', {
       autoDeclineTime: '15',
     });
+    notificationSMS.contents = tr('sms.TransitionDecline.system.content', {
+      autoDeclineTime: '15',
+    });
   } else {
     notification.headings = tr('push.TransitionDecline.provider.heading');
     notification.contents = tr('push.TransitionDecline.provider.content');
+    notificationSMS.contents = tr('sms.TransitionDecline.provider.content');
   }
 
   oneSignalCreateNotification(notification);
+
+  if (customerPhoneNumber) {
+    oneSignalCreateNotification(notificationSMS);
+  }
 };
 
 const handleTransitionMarkPrepared = async transaction => {
@@ -163,10 +222,17 @@ const handleTransitionMarkPrepared = async transaction => {
   const mealIsReadyTime = providerPublicData.mealIsReadyTime;
   const deliveryTime = providerPublicData.deliveryTime;
   const transactionId = transaction.id.uuid;
+  const customerPhoneNumber = getTransactionPhoneNumber(transaction) ;
   const notification = {
     app_id: oneSignalClientAppId,
     channel_for_external_user_ids: 'push',
     include_external_user_ids: [customerId],
+  };
+  const notificationSMS = {
+    app_id: oneSignalClientAppId,
+    name: 'Transaction Mark Prepared',
+    sms_from: oneSignalSmsFrom,
+    include_phone_numbers: [customerPhoneNumber],
   };
 
   if (isPickup(transaction)) {
@@ -176,6 +242,10 @@ const handleTransitionMarkPrepared = async transaction => {
     notification.contents = tr('push.TransitionMarkPrepared.pickup.content', {
       mealIsReadyTime,
     });
+    notificationSMS.contents = tr('sms.TransitionMarkPrepared.pickup.content', {
+      transactionId,
+      mealIsReadyTime,
+    });
   } else {
     notification.headings = tr('push.TransitionMarkPrepared.shipping.heading', {
       transactionId,
@@ -183,9 +253,17 @@ const handleTransitionMarkPrepared = async transaction => {
     notification.contents = tr('push.TransitionMarkPrepared.shipping.content', {
       deliveryTime,
     });
+    notificationSMS.contents = tr('sms.TransitionMarkPrepared.shipping.content', {
+      transactionId,
+      deliveryTime,
+    });
   }
 
   oneSignalCreateNotification(notification);
+
+  if (customerPhoneNumber) {
+    oneSignalCreateNotification(notificationSMS);
+  }
 };
 
 const handleTransactionTransitioned = shEvent => {

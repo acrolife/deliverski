@@ -16,10 +16,17 @@ export const initOneSignal = async () => {
   OneSignal.showSlidedownPrompt();
 };
 
-export const setOneSignalExternalUserId = async userId => {
-  await OneSignal.setExternalUserId(userId);
+export const setOneSignalExternalUserId = user => {
+  const userId = user.id.uuid;
+  const phoneNumber = user.attributes.profile.privateData?.phoneNumber;
+  OneSignal.setExternalUserId(userId);
+  if (phoneNumber) {
+    OneSignal.setSMSNumber(phoneNumber);
+  }
+  console.log('OneSignal set userId=', userId, 'phoneNumber=', phoneNumber);
 };
 
-export const removeOneSignalExternalUserId = async () => {
-  await OneSignal.removeExternalUserId();
+export const removeOneSignalExternalUserId = () => {
+  OneSignal.removeExternalUserId();
+  OneSignal.logoutSMS();
 };

@@ -363,12 +363,11 @@ export const fetchCurrentUser = (params = null) => (dispatch, getState, sdk) => 
         dispatch(fetchCurrentUserHasOrders());
       }
 
-      setOneSignalExternalUserId(currentUser.id.uuid);
+      setOneSignalExternalUserId(currentUser);
 
       // Make sure auth info is up to date
       dispatch(authInfo());
     })
-    .then(resOneSignal => true)
     .catch(e => {
       // Make sure auth info is up to date
       dispatch(authInfo());
