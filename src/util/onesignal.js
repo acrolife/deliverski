@@ -11,7 +11,8 @@ export const initOneSignal = async () => {
     },
     subdomainName: config.onesignal.subdomainName,
     allowLocalhostAsSecureOrigin: config.dev,
-    serviceWorkerPath: '/static/scripts/onesignal/OneSignalSDKWorker.js',
+    serviceWorkerParam: { scope: '/static/scripts/onesignal/' },
+    serviceWorkerPath: 'static/scripts/onesignal/OneSignalSDKWorker.js',
   });
   OneSignal.showSlidedownPrompt();
 };
