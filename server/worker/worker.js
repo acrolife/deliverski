@@ -22,7 +22,7 @@ const LISTEN_EVENT_TYPES = [
   'message/created',
 ];
 
-const redisClient = redis.createClient(redisUrl);
+const redisClient = redis.createClient({ url: redisUrl });
 
 const connectRedis = async () => {
   await redisClient.connect();
