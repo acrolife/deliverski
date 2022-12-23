@@ -72,3 +72,24 @@ ONE_SIGNAL_API_KEY=
 # This phone number is provided by twilio
 ONE_SIGNAL_SMS_FROM=
 ```
+
+# Dokku sandbox
+
+Please make sure your workstation's SSH key is added to the dokku when running
+the command:
+
+```
+ssh dokku@82.165.97.27 apps:list
+```
+
+Please add git repo on localhost
+
+```
+git remote add sandbox dokku@82.165.97.27:marmott-sandbox
+```
+
+Deliver code from dev branch to the sandbox
+
+```
+git push sandbox dev
+```
