@@ -280,6 +280,9 @@ const handleTransactionTransitioned = shEvent => {
     case 'transition/decline':
       return handleTransitionDecline(resource);
 
+    case 'transition/expire-accept':
+      return handleTransitionDecline(resource);
+
     case 'transition/mark-prepared':
       return handleTransitionMarkPrepared(resource);
 
