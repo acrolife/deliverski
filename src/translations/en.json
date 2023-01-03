@@ -409,6 +409,7 @@
   "InboxPage.statePaymentExpired": "Payment expired",
   "InboxPage.statePending": "Pending",
   "InboxPage.statePendingPayment": "Pending payment",
+  "InboxPage.statePrepared": "Order prepared",
   "InboxPage.statePurchased": "Waiting for delivery",
   "InboxPage.stateReceived": "Order received",
   "InboxPage.stateRequested": "Requested",
