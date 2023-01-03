@@ -129,6 +129,16 @@ const resolveTransitionMessage = (
   const displayName = otherUsersName;
   const isSystemTransition = transition.by === 'system';
   const systemName = intl.formatMessage({ id: 'ActivityFeed.system' });
+  const protectedData = transaction.attributes.protectedData;
+  const deliveryMethod = protectedData?.deliveryMethod;
+  const isShipping = deliveryMethod === 'shipping';
+  console.log('isShipping =', isShipping);
+
+  const providerPublicData = transaction.provider.attributes.profile.publicData || {};
+  const preparationTime = providerPublicData.preparationTime;
+  const mealIsReadyTime = providerPublicData.mealIsReadyTime;
+  const deliveryTime = providerPublicData.deliveryTime;
+  const deliveryFromAddress = providerPublicData.deliveryFromAddress;
 
   switch (currentTransition) {
     case TRANSITION_CONFIRM_PAYMENT:
@@ -143,8 +153,16 @@ const resolveTransitionMessage = (
     case TRANSITION_ACCEPT:
       return isOwnTransition ? (
         <FormattedMessage id="ActivityFeed.ownTransitionAccept" />
+      ) : isShipping ? (
+        <FormattedMessage
+          id="ActivityFeed.transitionAcceptShipping"
+          values={{ preparationTime, deliveryTime }}
+        />
       ) : (
-        <FormattedMessage id="ActivityFeed.transitionAccept" values={{ displayName }} />
+        <FormattedMessage
+          id="ActivityFeed.transitionAcceptPickup"
+          values={{ preparationTime, mealIsReadyTime, deliveryFromAddress }}
+        />
       );
     case TRANSITION_DECLINE:
       return isOwnTransition ? (

@@ -15,6 +15,8 @@
   "ActivityFeed.system": "System",
   "ActivityFeed.today": "Today",
   "ActivityFeed.transitionAccept": "{ displayName } confirmed your order.",
+  "ActivityFeed.transitionAcceptPickup": "The preparation will take approx. { preparationTime } minutes. You’ll receive an update { mealIsReadyTime } minutes before your meal will be ready to pickup at { deliveryFromAddress }!",
+  "ActivityFeed.transitionAcceptShipping": "The preparation will take approx. { preparationTime } minutes. You’ll receive an update { deliveryTime } minutes before the courier knocks your door, please remain available on your phone!",
   "ActivityFeed.transitionDecline": "{ displayName } declined your order request.",
   "ActivityFeed.transitionCancel": "The order was canceled.",
   "ActivityFeed.transitionDelivered": "the order has been picked-up.",
