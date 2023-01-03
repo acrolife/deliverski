@@ -132,7 +132,6 @@ const resolveTransitionMessage = (
   const protectedData = transaction.attributes.protectedData;
   const deliveryMethod = protectedData?.deliveryMethod;
   const isShipping = deliveryMethod === 'shipping';
-  console.log('isShipping =', isShipping);
 
   const providerPublicData = transaction.provider.attributes.profile.publicData || {};
   const preparationTime = providerPublicData.preparationTime;
@@ -199,8 +198,10 @@ const resolveTransitionMessage = (
     case TRANSITION_MARK_PREPARED:
       return isOwnTransition ? (
         <FormattedMessage id="ActivityFeed.ownTransitionPrepared" />
+      ) : isShipping ? (
+        <FormattedMessage id="ActivityFeed.transitionPreparedShipping" values={{ deliveryTime }} />
       ) : (
-        <FormattedMessage id="ActivityFeed.transitionPrepared" />
+        <FormattedMessage id="ActivityFeed.transitionPreparedPickup" values={{ mealIsReadyTime }} />
       );
     case TRANSITION_MARK_DELIVERED_FROM_PURCHASED:
     case TRANSITION_MARK_DELIVERED: {
