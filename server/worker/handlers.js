@@ -81,7 +81,9 @@ const isPickup = transaction => {
 };
 
 const getTransactionPhoneNumber = transaction => {
-  return isShipping(transaction) ? transaction?.attributes?.protectedData?.shippingDetails?.phoneNumber : null;
+  return isShipping(transaction)
+    ? transaction?.attributes?.protectedData?.shippingDetails?.phoneNumber
+    : null;
 };
 
 const handleTransactionInitiated = async shEvent => {
@@ -128,7 +130,7 @@ const handleTransitionAccept = async transaction => {
   const mealIsReadyTime = providerPublicData.mealIsReadyTime;
   const deliveryTime = providerPublicData.deliveryTime;
   const deliveryFromAddress = providerPublicData.deliveryFromAddress;
-  const customerPhoneNumber = getTransactionPhoneNumber(transaction) ;
+  const customerPhoneNumber = getTransactionPhoneNumber(transaction);
   const notification = {
     app_id: oneSignalClientAppId,
     channel_for_external_user_ids: 'push',
@@ -176,7 +178,7 @@ const handleTransitionDecline = async transaction => {
   console.log(`Transaction tx ID=${transaction.id.uuid} transition/decline`);
   // const providerId = getProviderId(transaction);
   const customerId = getCustomerId(transaction);
-  const customerPhoneNumber = getTransactionPhoneNumber(transaction) ;
+  const customerPhoneNumber = getTransactionPhoneNumber(transaction);
   const { transitions } = transaction.attributes;
   const transition = transitions.at(-1);
   const isSystemTransition = transition.by === 'system';
@@ -222,7 +224,7 @@ const handleTransitionMarkPrepared = async transaction => {
   const mealIsReadyTime = providerPublicData.mealIsReadyTime;
   const deliveryTime = providerPublicData.deliveryTime;
   const transactionId = transaction.id.uuid;
-  const customerPhoneNumber = getTransactionPhoneNumber(transaction) ;
+  const customerPhoneNumber = getTransactionPhoneNumber(transaction);
   const notification = {
     app_id: oneSignalClientAppId,
     channel_for_external_user_ids: 'push',

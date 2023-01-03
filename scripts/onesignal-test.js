@@ -29,18 +29,17 @@ const notification = {
 };
 */
 
-
 const notification = {
   app_id: oneSignalClientAppId,
-  name: "Marmott new order",
+  name: 'Marmott new order',
   sms_from: oneSignalSmsFrom, // This phone number is provided by twilio
   contents: {
-    en: "New order!",
-    fr: "Nouvel ordre!",
+    en: 'New order!',
+    fr: 'Nouvel ordre!',
   },
-  sms_media_urls: ["https://icatcare.org/app/uploads/2018/07/Thinking-of-getting-a-cat.png"],
+  sms_media_urls: ['https://icatcare.org/app/uploads/2018/07/Thinking-of-getting-a-cat.png'],
   // include_external_user_ids: [providerId],
-  include_phone_numbers: ["+37129428406"],
+  include_phone_numbers: ['+37129428406'],
 };
 
 const run = async () => {
@@ -51,7 +50,7 @@ const run = async () => {
       notification,
       errors: oneSignalRes.body.errors,
     };
-    console.error('error=', JSON.stringify(err.data,null,2));
+    console.error('error=', JSON.stringify(err.data, null, 2));
     throw err;
   }
 };
