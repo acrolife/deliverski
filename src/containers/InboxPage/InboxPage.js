@@ -12,6 +12,7 @@ import {
   txIsRequested,
   txIsEnquired,
   txIsPurchased,
+  txIsPrepared,
   txIsDelivered,
   txIsDisputed,
   txIsPaymentExpired,
@@ -119,6 +120,13 @@ export const txState = (intl, tx, type) => {
       stateClassName: isOrder ? css.stateNoActionNeeded : css.stateActionNeeded,
       state: intl.formatMessage({
         id: 'InboxPage.statePurchased',
+      }),
+    };
+  } else if (txIsPrepared(tx)) {
+    return {
+      stateClassName: isOrder ? css.stateNoActionNeeded : css.stateActionNeeded,
+      state: intl.formatMessage({
+        id: 'InboxPage.statePrepared',
       }),
     };
   } else if (txIsDelivered(tx)) {
