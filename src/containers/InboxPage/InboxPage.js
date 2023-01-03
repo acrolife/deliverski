@@ -199,7 +199,7 @@ export const InboxItem = props => {
   // const otherUserDisplayName = <UserDisplayName user={otherUser} intl={intl} />;
   const isOtherUserBanned = otherUser.attributes.banned;
 
-  const isSaleNotification = !isOrder && txIsPurchased(tx);
+  const isSaleNotification = !isOrder && txIsRequested(tx);
   const rowNotificationDot = isSaleNotification ? <div className={css.notificationDot} /> : null;
   const lastTransitionedAt = formatDateIntoPartials(tx.attributes.lastTransitionedAt, intl);
 
