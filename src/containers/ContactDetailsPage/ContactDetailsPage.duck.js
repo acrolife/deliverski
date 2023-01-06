@@ -2,6 +2,7 @@ import merge from 'lodash/merge';
 import { denormalisedResponseEntities } from '../../util/data';
 import { storableError } from '../../util/errors';
 import { fetchCurrentUser, currentUserShowSuccess } from '../../ducks/user.duck';
+import { setOneSignalExternalUserId } from '../../util/onesignal';
 
 // ================ Action types ================ //
 
@@ -99,12 +100,18 @@ export const resetPasswordError = e => ({
 /**
  * Make a phone number update request to the API and return the current user.
  */
-const requestSavePhoneNumber = params => (dispatch, getState, sdk) => {
-  const phoneNumber = params.phoneNumber;
+const requestSavePublicData = params => (dispatch, getState, sdk) => {
+  const publicData = {};
+  if (params.phoneNumber) {
+    publicData.phoneNumber = params.phoneNumber;
+  }
+  if (params.smsNotficationIsEnabled) {
+    publicData.smsNotficationIsEnabled = params.smsNotficationIsEnabled;
+  }
 
   return sdk.currentUser
     .updateProfile(
-      { publicData: { phoneNumber } },
+      { publicData },
       {
         expand: true,
         include: ['profileImage'],
@@ -118,6 +125,9 @@ const requestSavePhoneNumber = params => (dispatch, getState, sdk) => {
       }
 
       const currentUser = entities[0];
+
+      setOneSignalExternalUserId(currentUser);
+
       return currentUser;
     })
     .catch(e => {
@@ -180,12 +190,12 @@ const saveEmail = params => (dispatch, getState, sdk) => {
  */
 const savePhoneNumber = params => (dispatch, getState, sdk) => {
   return (
-    dispatch(requestSavePhoneNumber(params))
+    dispatch(requestSavePublicData(params))
       .then(user => {
         dispatch(currentUserShowSuccess(user));
         dispatch(saveContactDetailsSuccess());
       })
-      // error action dispatched in requestSavePhoneNumber
+      // error action dispatched in requestSavePublicData
       .catch(e => null)
   );
 };
@@ -194,12 +204,12 @@ const savePhoneNumber = params => (dispatch, getState, sdk) => {
  * Save email and phone number and update the current user.
  */
 const saveEmailAndPhoneNumber = params => (dispatch, getState, sdk) => {
-  const { email, phoneNumber, currentPassword } = params;
+  const { email, phoneNumber, currentPassword, smsNotficationIsEnabled } = params;
 
   // order of promises: 1. email, 2. phone number
   const promises = [
     dispatch(requestSaveEmail({ email, currentPassword })),
-    dispatch(requestSavePhoneNumber({ phoneNumber })),
+    dispatch(requestSavePublicData({ phoneNumber, smsNotficationIsEnabled })),
   ];
 
   return Promise.all(promises)
@@ -231,16 +241,25 @@ const saveEmailAndPhoneNumber = params => (dispatch, getState, sdk) => {
 export const saveContactDetails = params => (dispatch, getState, sdk) => {
   dispatch(saveContactDetailsRequest());
 
-  const { email, currentEmail, phoneNumber, currentPhoneNumber, currentPassword } = params;
+  const {
+    email,
+    currentEmail,
+    phoneNumber,
+    currentPhoneNumber,
+    currentPassword,
+    smsNotficationIsEnabled,
+  } = params;
   const emailChanged = email !== currentEmail;
   const phoneNumberChanged = phoneNumber !== currentPhoneNumber;
 
   if (emailChanged && phoneNumberChanged) {
-    return dispatch(saveEmailAndPhoneNumber({ email, currentPassword, phoneNumber }));
+    return dispatch(
+      saveEmailAndPhoneNumber({ email, currentPassword, phoneNumber, smsNotficationIsEnabled })
+    );
   } else if (emailChanged) {
     return dispatch(saveEmail({ email, currentPassword }));
-  } else if (phoneNumberChanged) {
-    return dispatch(savePhoneNumber({ phoneNumber }));
+  } else {
+    return dispatch(savePhoneNumber({ phoneNumber, smsNotficationIsEnabled }));
   }
 };
 
