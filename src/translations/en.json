@@ -872,6 +872,7 @@
   "ShippingDetails.recipientPhoneNumberLabel": "Phone number",
   "ShippingDetails.recipientPhoneNumberPlaceholder": "+3306073700",
   "ShippingDetails.recipientPhoneNumberRequired": "Phone number is required",
+  "ShippingDetails.recipientPhoneNumberInvalid": "Phone number is not valid",
   "ShippingDetails.stateLabel": "State",
   "ShippingDetails.statePlaceholder": "Savoie",
   "ShippingDetails.title": "Shipping address",

@@ -59,8 +59,13 @@ const ShippingDetails = props => {
         placeholder={intl.formatMessage({
           id: 'ShippingDetails.recipientPhoneNumberPlaceholder',
         })}
-        validate={validators.required(
-          intl.formatMessage({ id: 'ShippingDetails.recipientPhoneNumberRequired' })
+        validate={validators.composeValidators(
+          validators.required(
+            intl.formatMessage({ id: 'ShippingDetails.recipientPhoneNumberRequired' })
+          ),
+          validators.validPhoneNumber(
+            intl.formatMessage({ id: 'ShippingDetails.recipientPhoneNumberInvalid' })
+          )
         )}
         onUnmount={() => form.change('recipientPhoneNumber', undefined)}
       />
