@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+// eslint-disable-next-line no-unused-vars
 import { bool, func, instanceOf, object, oneOfType, shape, string } from 'prop-types';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -42,6 +43,7 @@ import {
   txHasPassedPaymentPending,
 } from '../../util/transaction';
 import { isRestaurantOpen } from '../../util/data';
+import { setOneSignalSMSNumber } from '../../util/onesignal';
 
 // Import global thunk functions
 import { isScrollingDisabled } from '../../ducks/UI.duck';
@@ -51,13 +53,13 @@ import { savePaymentMethod } from '../../ducks/paymentMethods.duck';
 // Import shared components
 import {
   AvatarMedium,
-  AspectRatioWrapper,
+  AspectRatioWrapper, // eslint-disable-line no-unused-vars
   OrderBreakdown,
   Logo,
   NamedLink,
   NamedRedirect,
   Page,
-  ResponsiveImage,
+  ResponsiveImage, // eslint-disable-line no-unused-vars
 } from '../../components';
 
 // Import modules from this directory
@@ -465,15 +467,21 @@ export class CheckoutPageComponent extends Component {
     };
 
     // Step 6: - remove items from basket if the case
+    // store customer's phone number to the profile
 
     const emptyBasktet = fnParams => {
       const isTxWithBasket = pageData.orderData.restOfShoppingCartItems;
       if (isTxWithBasket) {
+        const phoneNumber = shippingDetails?.phoneNumber;
+        const publicData = {
+          shoppingCart: [],
+        };
+        if (phoneNumber) {
+          publicData.phoneNumber = phoneNumber;
+        }
         return sdk.currentUser
           .updateProfile({
-            publicData: {
-              shoppingCart: [],
-            },
+            publicData,
           })
           .then(() => {
             return fnParams;
@@ -519,7 +527,7 @@ export class CheckoutPageComponent extends Component {
     // Create order aka transaction
     // NOTE: if unit type is line-item/units, quantity needs to be added.
     // The way to pass it to checkout page is through pageData.orderData
-    const tx = speculatedTransaction ? speculatedTransaction : storedTx;
+    const tx = speculatedTransaction ? speculatedTransaction : storedTx; // eslint-disable-line no-unused-vars
 
     const deliveryMethod = pageData.orderData?.deliveryMethod;
     const quantity = pageData.orderData?.quantity;
@@ -661,6 +669,11 @@ export class CheckoutPageComponent extends Component {
           initialMessageFailedToTransaction,
           savePaymentMethodFailed: !paymentMethodSaved,
         };
+
+        const phoneNumber = requestPaymentParams.shippingDetails?.phoneNumber;
+        if (phoneNumber) {
+          setOneSignalSMSNumber(phoneNumber);
+        }
 
         initializeOrderPage(initialValues, routes, dispatch);
         clearData(STORAGE_KEY);
@@ -849,7 +862,9 @@ export class CheckoutPageComponent extends Component {
     const firstImage =
       currentListing.images && currentListing.images.length > 0 ? currentListing.images[0] : null;
 
+    // eslint-disable-next-line no-unused-vars
     const { aspectWidth = 1, aspectHeight = 1, variantPrefix = 'listing-card' } = config.listing;
+    // eslint-disable-next-line no-unused-vars
     const variants = firstImage
       ? Object.keys(firstImage?.attributes?.variants).filter(k => k.startsWith(variantPrefix))
       : [];
@@ -875,6 +890,7 @@ export class CheckoutPageComponent extends Component {
 
     const price = currentListing.attributes.price;
     const formattedPrice = formatMoney(intl, price);
+    // eslint-disable-next-line no-unused-vars
     const detailsSubTitle = `${formattedPrice} ${intl.formatMessage({ id: unitTranslationKey })}`;
 
     const showInitialMessageInput = !(
@@ -892,10 +908,17 @@ export class CheckoutPageComponent extends Component {
     const hasPaymentIntentUserActionsDone =
       paymentIntent && STRIPE_PI_USER_ACTIONS_DONE_STATUSES.includes(paymentIntent.status);
 
+    const userPublicData = currentUser?.attributes?.profile?.publicData || {};
+    const recipientPhoneNumber = userPublicData.phoneNumber;
+
     // If your marketplace works mostly in one country you can use initial values to select country automatically
     // e.g. {country: 'FI'}
 
-    const initalValuesForStripePayment = { name: userName, recipientName: userName };
+    const initalValuesForStripePayment = {
+      name: userName,
+      recipientName: userName,
+      recipientPhoneNumber,
+    };
 
     const isAnyItemWithShipping =
       this.state.pageData.orderData?.restOfShoppingCartItems.find(item => {

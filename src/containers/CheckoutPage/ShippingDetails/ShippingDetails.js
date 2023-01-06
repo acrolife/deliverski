@@ -2,7 +2,7 @@ import React from 'react';
 import { bool, object, string } from 'prop-types';
 import classNames from 'classnames';
 // import mapValues from 'lodash/mapValues';
-import config from '../../../config';
+// import config from '../../../config';
 import { FormattedMessage, intlShape } from '../../../util/reactIntl';
 import * as validators from '../../../util/validators';
 // import getCountryCodes from '../../../translations/countryCodes';
@@ -64,6 +64,9 @@ const ShippingDetails = props => {
         )}
         onUnmount={() => form.change('recipientPhoneNumber', undefined)}
       />
+      <p className={css.recipientPhoneNumberInfo}>
+        <FormattedMessage id="ShippingDetails.recipientPhoneNumberInfo" />
+      </p>
       {/* <div className={css.formRow}>
         <FieldTextInput
           id={`${fieldId}.recipientAddressLine1`}

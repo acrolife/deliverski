@@ -29,6 +29,11 @@ export const setOneSignalExternalUserId = user => {
   console.log('OneSignal set userId=', userId, 'phoneNumber=', phoneNumber);
 };
 
+export const setOneSignalSMSNumber = phoneNumber => {
+  OneSignal.setSMSNumber(phoneNumber);
+  console.log('OneSignal after transaction set SMS phoneNumber=', phoneNumber);
+};
+
 export const removeOneSignalExternalUserId = () => {
   OneSignal.removeExternalUserId();
   OneSignal.logoutSMS();

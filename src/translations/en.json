@@ -868,6 +868,7 @@
   "ShippingDetails.recipientNameLabel": "Name",
   "ShippingDetails.recipientNamePlaceholder": "Marcel Dupond",
   "ShippingDetails.recipientNameRequired": "Recipient name is required.",
+  "ShippingDetails.recipientPhoneNumberInfo": "Marmott needs your phone number to confirm you the order and send status updates",
   "ShippingDetails.recipientPhoneNumberLabel": "Phone number",
   "ShippingDetails.recipientPhoneNumberPlaceholder": "+3306073700",
   "ShippingDetails.recipientPhoneNumberRequired": "Phone number is required",
