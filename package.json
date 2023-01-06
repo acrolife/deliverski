@@ -41,6 +41,7 @@
     "intl-pluralrules": "^1.3.0",
     "jose": "3.11.4",
     "js-yaml": "^4.1.0",
+    "libphonenumber-js": "^1.10.16",
     "lodash": "^4.17.21",
     "mapbox-gl-multitouch": "^1.0.3",
     "moment": "^2.22.2",

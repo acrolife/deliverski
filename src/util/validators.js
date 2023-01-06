@@ -1,4 +1,5 @@
 import toPairs from 'lodash/toPairs';
+import { isValidPhoneNumber } from 'libphonenumber-js/min';
 import { types as sdkTypes } from './sdkLoader';
 import { diffInTime } from './dates';
 
@@ -235,4 +236,8 @@ export const isFromLesArcs = location => {
   return location === 'Arc 1800, Les Arcs, Bourg-Saint-Maurice, Savoie 73700, France'
     ? VALID
     : "Vous n'êtes pas de Les Arcs";
+};
+
+export const validPhoneNumber = message => value => {
+  return isValidPhoneNumber(value) ? VALID : message;
 };
