@@ -33,6 +33,7 @@ export const TRANSITION_EXPIRE_PAYMENT = 'transition/expire-payment';
 // SalePage, it is transitioned with the accept or decline transition.
 export const TRANSITION_ACCEPT = 'transition/accept';
 export const TRANSITION_DECLINE = 'transition/decline';
+export const TRANSITION_EXPIRE_ACCEPT = 'transition/expire-accept';
 
 // Provider can mark the meal prepared
 export const TRANSITION_MARK_PREPARED = 'transition/mark-prepared';
@@ -185,6 +186,7 @@ const stateDescription = {
         [TRANSITION_DECLINE]: STATE_DECLINED,
         [TRANSITION_EXPIRE_PAYMENT]: STATE_PAYMENT_EXPIRED,
         [TRANSITION_ACCEPT]: STATE_PURCHASED,
+        [TRANSITION_EXPIRE_ACCEPT]: STATE_DECLINED,
       },
     },
 
