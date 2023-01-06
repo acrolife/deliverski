@@ -19,9 +19,11 @@ export const initOneSignal = async () => {
 
 export const setOneSignalExternalUserId = user => {
   const userId = user.id.uuid;
-  const phoneNumber = user.attributes.profile.privateData?.phoneNumber;
+  const publicData = user.attributes.profile.publicData;
+  const phoneNumber = publicData.phoneNumber;
+  const smsNotficationIsEnabled = publicData.smsNotficationIsEnabled;
   OneSignal.setExternalUserId(userId);
-  if (phoneNumber) {
+  if (smsNotficationIsEnabled && phoneNumber) {
     OneSignal.setSMSNumber(phoneNumber);
   }
   console.log('OneSignal set userId=', userId, 'phoneNumber=', phoneNumber);
