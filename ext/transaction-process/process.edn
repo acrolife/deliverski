@@ -216,6 +216,14 @@
    :on :transition/confirm-payment,
    :to :actor.role/provider,
    :template :new-order}
+  {:name :notification/expired-accept-provider,
+   :on :transition/expire-accept,
+   :to :actor.role/provider,
+   :template :expired-accept-provider}
+  {:name :notification/expired-accept-customer,
+   :on :transition/expire-accept,
+   :to :actor.role/customer,
+   :template :expired-accept-customer}
   {:name :notification/order-marked-as-delivered,
    :on :transition/mark-delivered,
    :to :actor.role/customer,

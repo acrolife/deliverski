@@ -1,0 +1,23 @@
+<html>
+  <body>
+    {{#with transaction}}
+    <h3>The order has been canceled, check your Marmott' inbox please !</h3>
+
+    <p>
+      The service provider has 15 minutes to confirm or
+      cancel, but took no action. Therefore, the system automatically
+      canceled this order.
+    </p>
+
+    <p>
+      <a href="{{marketplace.url}}/en/order/{{url-encode id}}/details">
+        Order details
+      </a>
+    </p>
+    {{/with}}
+
+    <p>Best regards,<br />The {{marketplace.name}} team</p>
+
+    <p><small>You have received this email notification because you are a member of {{marketplace.name}}. If you no longer wish to receive these emails, please contact {{marketplace.name}} team, in the section "contact” on our website https://playground.marmott.co</small></p>
+  </body>
+</html>
