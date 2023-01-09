@@ -93,3 +93,18 @@ Deliver code from dev branch to the sandbox
 ```
 git push sandbox dev
 ```
+
+# Email notifications
+
+##expired-accept-provider
+
+```
+flex-cli notifications preview  -m deliverski-test --context sample-template-context.json --template ext/transaction-process/templates/expired-accept-provider
+```
+
+##expired-accept-customer
+
+```
+flex-cli notifications preview  -m deliverski-test --context sample-template-context.json --template ext/transaction-process/templates/expired-accept-customer
+```
+
