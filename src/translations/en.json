@@ -1,6 +1,7 @@
 {
   "ActivityFeed.deletedListing": "deleted product",
   "ActivityFeed.deletedReviewContent": "This review is deleted.",
+  "ActivityFeed.expiredAccept": "Sorry! The order has been canceled because it hasn’t been accepted within the delay of 15 minutes. You can try to save the situation by sending a message here",
   "ActivityFeed.leaveAReview": "Leave a review for { displayName }.",
   "ActivityFeed.leaveAReviewSecond": "Leave a review for { displayName } to see their review.",
   "ActivityFeed.ownTransitionAccept": "You validated the order.",

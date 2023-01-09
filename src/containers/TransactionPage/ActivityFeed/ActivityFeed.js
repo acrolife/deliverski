@@ -9,6 +9,7 @@ import { ensureTransaction, ensureUser, ensureListing } from '../../../util/data
 import {
   TRANSITION_ACCEPT,
   TRANSITION_DECLINE,
+  TRANSITION_EXPIRE_ACCEPT,
   TRANSITION_CONFIRM_PAYMENT,
   TRANSITION_AUTO_CANCEL,
   TRANSITION_CANCEL,
@@ -172,6 +173,8 @@ const resolveTransitionMessage = (
           values={{ displayName: isSystemTransition ? systemName : displayName }}
         />
       );
+    case TRANSITION_EXPIRE_ACCEPT:
+      return <FormattedMessage id="ActivityFeed.expiredAccept" />;
     case TRANSITION_AUTO_CANCEL:
     case TRANSITION_CANCEL:
     case TRANSITION_AUTO_CANCEL_FROM_DISPUTED:

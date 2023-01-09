@@ -398,6 +398,7 @@ export const isRelevantPastTransition = transition => {
   return [
     TRANSITION_ACCEPT,
     TRANSITION_DECLINE,
+    TRANSITION_EXPIRE_ACCEPT,
     TRANSITION_CONFIRM_PAYMENT,
     TRANSITION_AUTO_CANCEL,
     TRANSITION_CANCEL,
