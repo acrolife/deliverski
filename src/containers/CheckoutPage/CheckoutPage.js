@@ -578,7 +578,7 @@ export class CheckoutPageComponent extends Component {
       country,
       saveAfterOnetimePayment,
       recipientName,
-      recipientPhoneNumber,
+      recipientPhoneNumber: recipientPhoneNumberRaw,
       recipientAddressLine1,
       recipientAddressLine2,
       // recipientPostal,
@@ -586,6 +586,7 @@ export class CheckoutPageComponent extends Component {
       // recipientState,
       // recipientCountry,
     } = formValues;
+    const recipientPhoneNumber = recipientPhoneNumberRaw.replace(/\s+/g, '');
 
     // Billing address is recommended.
     // However, let's not assume that <StripePaymentAddress> data is among formValues.
