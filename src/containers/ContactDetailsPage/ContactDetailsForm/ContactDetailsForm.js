@@ -16,7 +16,7 @@ import {
   isTooManyEmailVerificationRequestsError,
 } from '../../../util/errors';
 
-import { FieldPhoneNumberInput, Form, PrimaryButton, FieldTextInput } from '../../../components';
+import { Form, PrimaryButton, FieldTextInput } from '../../../components';
 
 import css from './ContactDetailsForm.module.css';
 
@@ -341,13 +341,25 @@ class ContactDetailsFormComponent extends Component {
                   customErrorText={emailTouched ? null : emailTakenErrorText}
                 />
                 {emailVerifiedInfo}
-                <FieldPhoneNumberInput
+                <FieldTextInput
                   className={css.phone}
+                  type="text"
                   name="phoneNumber"
                   id={formId ? `${formId}.phoneNumber` : 'phoneNumber'}
                   label={phoneLabel}
                   placeholder={phonePlaceholder}
+                  validate={validators.composeValidators(
+                    validators.validPhoneNumber(
+                      intl.formatMessage({ id: 'ContactDetailsForm.phoneNumberInvalid' }),
+                      intl.formatMessage({
+                        id: 'ContactDetailsForm.phoneNumberInternationalInvalid',
+                      })
+                    )
+                  )}
                 />
+                <p className={css.recipientPhoneNumberInfo}>
+                  <FormattedMessage id="ContactDetailsForm.phoneNumberInfo" />
+                </p>
                 {isProvider && (
                   <>
                     <p className={css.bioInfo}>

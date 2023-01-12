@@ -643,7 +643,11 @@ export class CheckoutPageComponent extends Component {
               },
             },
           }
-        : {};
+        : {
+            shippingDetails: {
+              phoneNumber: recipientPhoneNumber,
+            },
+          };
     const requestPaymentParams = {
       pageData: this.state.pageData,
       speculatedTransaction,

@@ -9,6 +9,7 @@ import * as validators from '../../../util/validators';
 import residencesData from '../../../assets/data/residences';
 import { FieldSelect, FieldTextInput } from '../../../components';
 
+import RecipientPhoneNumber from './RecipientPhoneNumber';
 import css from './ShippingDetails.module.css';
 
 const ShippingDetails = props => {
@@ -48,30 +49,13 @@ const ShippingDetails = props => {
         )}
         onUnmount={() => form.change('recipientName', undefined)}
       />
-      <FieldTextInput
-        id={`${fieldId}.recipientPhoneNumber`}
-        name="recipientPhoneNumber"
+      <RecipientPhoneNumber
+        form={form}
+        intl={intl}
+        fieldId={fieldId}
         disabled={disabled}
-        className={css.fieldFullWidth}
-        type="text"
-        autoComplete="shipping phoneNumber"
-        label={intl.formatMessage({ id: 'ShippingDetails.recipientPhoneNumberLabel' })}
-        placeholder={intl.formatMessage({
-          id: 'ShippingDetails.recipientPhoneNumberPlaceholder',
-        })}
-        validate={validators.composeValidators(
-          validators.required(
-            intl.formatMessage({ id: 'ShippingDetails.recipientPhoneNumberRequired' })
-          ),
-          validators.validPhoneNumber(
-            intl.formatMessage({ id: 'ShippingDetails.recipientPhoneNumberInvalid' })
-          )
-        )}
-        onUnmount={() => form.change('recipientPhoneNumber', undefined)}
+        css={css}
       />
-      <p className={css.recipientPhoneNumberInfo}>
-        <FormattedMessage id="ShippingDetails.recipientPhoneNumberInfo" />
-      </p>
       {/* <div className={css.formRow}>
         <FieldTextInput
           id={`${fieldId}.recipientAddressLine1`}

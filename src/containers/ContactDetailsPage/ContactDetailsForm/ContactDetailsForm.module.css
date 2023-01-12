@@ -145,3 +145,8 @@
     margin: 24px 0;
   }
 }
+
+.recipientPhoneNumberInfo {
+  @apply --marketplaceSmallFontStyles;
+  color: var(--attentionColor);
+}
