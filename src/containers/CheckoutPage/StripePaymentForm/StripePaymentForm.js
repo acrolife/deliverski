@@ -24,6 +24,7 @@ import {
 } from '../../../components';
 
 import ShippingDetails from '../ShippingDetails/ShippingDetails';
+import RecipientPhoneNumber from '../ShippingDetails/RecipientPhoneNumber';
 
 import css from './StripePaymentForm.module.css';
 
@@ -393,7 +394,7 @@ class StripePaymentForm extends Component {
       pickupLocation,
       askShippingDetails,
       totalPrice,
-      values,
+      // values,
     } = formRenderProps;
 
     this.finalFormAPI = form;
@@ -471,6 +472,7 @@ class StripePaymentForm extends Component {
           <FormattedMessage id="StripePaymentForm.pickupDetailsTitle" />
         </h3>
         <p className={css.pickupDetails}>{pickupDetails}</p>
+        <RecipientPhoneNumber form={form} intl={intl} css={css} />
       </div>
     );
 

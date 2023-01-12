@@ -231,3 +231,13 @@
 .missingStripeKey {
   color: var(--failColor);
 }
+
+.recipientPhoneNumber {
+  width: 100%;
+  margin-top: 24px;
+}
+
+.recipientPhoneNumberInfo {
+  @apply --marketplaceSmallFontStyles;
+  color: var(--attentionColor);
+}

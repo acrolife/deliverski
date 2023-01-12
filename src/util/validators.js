@@ -1,5 +1,5 @@
 import toPairs from 'lodash/toPairs';
-import { isValidPhoneNumber } from 'libphonenumber-js/min';
+import { parsePhoneNumberFromString } from 'libphonenumber-js/min';
 import { types as sdkTypes } from './sdkLoader';
 import { diffInTime } from './dates';
 
@@ -238,6 +238,23 @@ export const isFromLesArcs = location => {
     : "Vous n'êtes pas de Les Arcs";
 };
 
-export const validPhoneNumber = message => value => {
-  return isValidPhoneNumber(value) ? VALID : message;
+export const validPhoneNumber = (
+  message,
+  messageNoCountry = 'missing country calling code'
+) => value => {
+  if (!value || value === '') {
+    return VALID;
+  }
+
+  const options = {
+    extract: false,
+  };
+
+  const phoneNumber = parsePhoneNumberFromString(value, options);
+
+  if (!phoneNumber?.countryCallingCode) {
+    return messageNoCountry;
+  }
+
+  return phoneNumber && phoneNumber.isValid() ? VALID : message;
 };
