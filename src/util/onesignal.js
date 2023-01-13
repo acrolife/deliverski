@@ -47,5 +47,6 @@ export const setOneSignalSMSNumber = phoneNumber => {
 
 export const removeOneSignalExternalUserId = () => {
   OneSignal.removeExternalUserId();
-  OneSignal.logoutSMS();
+  // The user will receive SMS messages even after logging out.
+  // OneSignal.logoutSMS();
 };
