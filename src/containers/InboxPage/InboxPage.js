@@ -9,6 +9,7 @@ import { FormattedMessage, injectIntl, intlShape } from '../../util/reactIntl';
 import {
   txIsCanceled,
   txIsDeclined,
+  txIsExpiredAccept,
   txIsRequested,
   txIsEnquired,
   txIsPurchased,
@@ -96,6 +97,13 @@ export const txState = (intl, tx, type) => {
       stateClassName: css.stateNoActionNeeded,
       state: intl.formatMessage({
         id: 'InboxPage.statePaymentExpired',
+      }),
+    };
+  } else if (txIsExpiredAccept(tx)) {
+    return {
+      stateClassName: css.stateNoActionNeeded,
+      state: intl.formatMessage({
+        id: 'InboxPage.stateExpiredAccept',
       }),
     };
   } else if (txIsDeclined(tx)) {
