@@ -66,8 +66,14 @@ const getCustomerId = transaction => {
   return transaction.relationships.customer.data.id.uuid;
 };
 
-const getPhoneNumber = user => {
-  return user && user.attributes.profile.privateData?.phoneNumber;
+const getProviderPhoneNumber = user => {
+  if (!user) {
+    return null;
+  }
+  const publicData = user.attributes.profile.publicData;
+  const phoneNumber = publicData.phoneNumber;
+  const smsNotficationIsEnabled = publicData.smsNotficationIsEnabled;
+  return smsNotficationIsEnabled && phoneNumber;
 };
 
 // eslint-disable-next-line no-unused-vars
@@ -94,7 +100,7 @@ const handleTransactionInitiated = async shEvent => {
 
   const providerId = getProviderId(transaction);
   const provider = await showUser(providerId);
-  const providerPhoneNumber = getPhoneNumber(provider);
+  const providerPhoneNumber = getProviderPhoneNumber(provider);
 
   const notification = {
     app_id: oneSignalClientAppId,
