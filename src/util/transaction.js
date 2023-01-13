@@ -316,6 +316,8 @@ export const txIsPurchased = tx =>
 export const txIsRequested = tx =>
   getTransitionsToState(STATE_PREAUTHORIZED).includes(txLastTransition(tx));
 
+export const txIsExpiredAccept = tx => txLastTransition(tx) === TRANSITION_EXPIRE_ACCEPT;
+
 export const txIsDeclined = tx =>
   getTransitionsToState(STATE_DECLINED).includes(txLastTransition(tx));
 
