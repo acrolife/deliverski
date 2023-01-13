@@ -19,14 +19,25 @@ export const initOneSignal = async () => {
 
 export const setOneSignalExternalUserId = user => {
   const userId = user.id.uuid;
-  const publicData = user.attributes.profile.publicData;
+  const { email, profile } = user.attributes;
+  const publicData = profile.publicData;
   const phoneNumber = publicData.phoneNumber;
   const smsNotficationIsEnabled = publicData.smsNotficationIsEnabled;
   OneSignal.setExternalUserId(userId);
+  OneSignal.sendTags({
+    email,
+    name: `${profile.firstName} ${profile.lastName}`,
+    restaurantName: publicData.restaurantName,
+  });
   if (smsNotficationIsEnabled && phoneNumber) {
     OneSignal.setSMSNumber(phoneNumber);
   }
-  console.log('OneSignal set userId=', userId, 'phoneNumber=', phoneNumber);
+  console.log(
+    'OneSignal set userId=',
+    userId,
+    'phoneNumber=',
+    smsNotficationIsEnabled && phoneNumber
+  );
 };
 
 export const setOneSignalSMSNumber = phoneNumber => {
