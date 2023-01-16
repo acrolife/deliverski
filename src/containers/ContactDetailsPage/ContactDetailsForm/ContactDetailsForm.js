@@ -362,8 +362,8 @@ class ContactDetailsFormComponent extends Component {
                 </p>
                 {isProvider && (
                   <>
-                    <p className={css.bioInfo}>
-                      <FormattedMessage id="ContactDetailsForm.smsSwitchInfo" />
+                    <p className={css.smsNotificationLabel}>
+                      <FormattedMessage id="ContactDetailsForm.smsNotificationLabel" />
                     </p>
                     <div className={css.switchWrapper}>
                       <FormattedMessage id="ContactDetailsForm.receiveSMS" />
@@ -372,6 +372,9 @@ class ContactDetailsFormComponent extends Component {
                         onChange={handleReceiveSMS(form)}
                       />
                     </div>
+                    <p className={css.smsNotificationInfo}>
+                      <FormattedMessage id="ContactDetailsForm.smsSwitchInfo" />
+                    </p>
                   </>
                 )}
               </div>
