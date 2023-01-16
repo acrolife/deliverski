@@ -73,6 +73,8 @@ export const filters = [
         { key: 'arcosushis', label: 'ArcOsushis' },
         { key: 'team-marmott', label: "Team Marmott'" },
         { key: 'pizza-el-hierro', label: 'Pizza El Hierro' },
+        { key: 'evijarestaurant', label: 'EvijaRestaurant' },
+        { key: 'pie-gara-galda', label: 'Pie garā galda' },
       ],
     },
   },
