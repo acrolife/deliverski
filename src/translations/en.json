@@ -147,6 +147,7 @@
   "ContactDetailsForm.saveChanges": "Save changes",
   "ContactDetailsForm.tooManyVerificationRequests": "Too many email verification requests sent.",
   "ContactDetailsForm.smsSwitchInfo": "By using this switch, you can receive a SMS from Marmott' when a customer passes an order. You already receive web-push notifications and emails.",
+  "ContactDetailsForm.smsNotificationLabel": "SMS Notifications",
   "ContactDetailsForm.receiveSMS": "Receive SMS for notifications",
   "ContactDetailsPage.heading": "Contact details",
   "ContactDetailsPage.title": "Contact details",
