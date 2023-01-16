@@ -74,7 +74,7 @@ export const filters = [
         { key: 'team-marmott', label: "Team Marmott'" },
         { key: 'pizza-el-hierro', label: 'Pizza El Hierro' },
         { key: 'evijarestaurant', label: 'EvijaRestaurant' },
-        { key: 'pie-gara-galda', label: 'Pie garā galda' },
+        { key: 'pie-garā-galda', label: 'Pie garā galda' },
       ],
     },
   },
