@@ -111,7 +111,7 @@ const renderForm = formRenderProps => {
     }
   };
 
-  // In case quantity and deliveryMethod are missing focus on that select-input.
+  // In case quantity and deliveryMethod are missing, focus on that select-input.
   // Otherwise continue with the default handleSubmit function.
   const handleFormSubmit = e => {
     const restaurant = listing ? listing.attributes?.publicData?.restaurant : false;
