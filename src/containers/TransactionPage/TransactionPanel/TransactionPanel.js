@@ -8,6 +8,7 @@ import {
   txHasBeenReceived,
   txIsRequested,
   txIsCanceled,
+  txIsExpiredAccept,
   txIsDeclined,
   txIsPrepared,
   txIsDelivered,
@@ -51,6 +52,7 @@ import PanelHeading, {
   HEADING_PAYMENT_EXPIRED,
   HEADING_REQUESTED,
   HEADING_CANCELED,
+  HEADING_EXPIRED_ACCEPT,
   HEADING_DECLINED,
   HEADING_PURCHASED,
   HEADING_PREPARED,
@@ -274,6 +276,11 @@ export class TransactionPanelComponent extends Component {
           showActionButtons: true,
           primaryButtonProps: isCustomer ? markReceivedFromPurchasedProps : markPreparedProps,
           secondaryButtonProps: isProvider ? markDeliveredFromPurchasedProps : null,
+        };
+      } else if (txIsExpiredAccept(tx)) {
+        return {
+          headingState: HEADING_EXPIRED_ACCEPT,
+          showDetailCardHeadings: isCustomer,
         };
       } else if (txIsDeclined(tx)) {
         return {

@@ -244,11 +244,12 @@ export const saveContactDetails = params => (dispatch, getState, sdk) => {
   const {
     email,
     currentEmail,
-    phoneNumber,
+    phoneNumber: phoneNumberRaw,
     currentPhoneNumber,
     currentPassword,
     smsNotficationIsEnabled,
   } = params;
+  const phoneNumber = phoneNumberRaw.replace(/\s+/g, '');
   const emailChanged = email !== currentEmail;
   const phoneNumberChanged = phoneNumber !== currentPhoneNumber;
 

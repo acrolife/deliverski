@@ -20,6 +20,7 @@ const DeliveryInfoMaybe = props => {
 
   if (isPickup) {
     const pickupLocation = listing?.attributes?.publicData?.location || {};
+    const { phoneNumber } = protectedData?.shippingDetails || {};
     return (
       <div className={classes}>
         <h3 className={css.sectionHeading}>
@@ -32,6 +33,7 @@ const DeliveryInfoMaybe = props => {
             geolocation={listing?.attributes?.geolocation}
             showAddress={true}
           />
+          <FormattedMessage id="TransactionPanel.pickupInfoPhone" values={{ phoneNumber }} />
         </div>
       </div>
     );
