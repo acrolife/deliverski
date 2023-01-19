@@ -43,7 +43,6 @@ import {
   txHasPassedPaymentPending,
 } from '../../util/transaction';
 import { isRestaurantOpen } from '../../util/data';
-import { setOneSignalSMSNumber } from '../../util/onesignal';
 
 // Import global thunk functions
 import { isScrollingDisabled } from '../../ducks/UI.duck';
@@ -681,11 +680,6 @@ export class CheckoutPageComponent extends Component {
           initialMessageFailedToTransaction,
           savePaymentMethodFailed: !paymentMethodSaved,
         };
-
-        const phoneNumber = requestPaymentParams.shippingDetails?.phoneNumber;
-        if (phoneNumber) {
-          setOneSignalSMSNumber(phoneNumber);
-        }
 
         initializeOrderPage(initialValues, routes, dispatch);
         clearData(STORAGE_KEY);

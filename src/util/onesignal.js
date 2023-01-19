@@ -21,32 +21,15 @@ export const setOneSignalExternalUserId = user => {
   const userId = user.id.uuid;
   const { email, profile } = user.attributes;
   const publicData = profile.publicData;
-  const phoneNumber = publicData.phoneNumber;
-  const smsNotficationIsEnabled = publicData.smsNotficationIsEnabled;
   OneSignal.setExternalUserId(userId);
   OneSignal.sendTags({
     email,
     name: `${profile.firstName} ${profile.lastName}`,
     restaurantName: publicData.restaurantName,
   });
-  if (smsNotficationIsEnabled && phoneNumber) {
-    OneSignal.setSMSNumber(phoneNumber);
-  }
-  console.log(
-    'OneSignal set userId=',
-    userId,
-    'phoneNumber=',
-    smsNotficationIsEnabled && phoneNumber
-  );
-};
-
-export const setOneSignalSMSNumber = phoneNumber => {
-  OneSignal.setSMSNumber(phoneNumber);
-  console.log('OneSignal after transaction set SMS phoneNumber=', phoneNumber);
+  console.log('OneSignal set userId=', userId);
 };
 
 export const removeOneSignalExternalUserId = () => {
   OneSignal.removeExternalUserId();
-  // The user will receive SMS messages even after logging out.
-  // OneSignal.logoutSMS();
 };
