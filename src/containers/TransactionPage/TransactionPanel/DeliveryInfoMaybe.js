@@ -11,7 +11,7 @@ import css from './TransactionPanel.module.css';
 
 // Functional component as a helper to build ActivityFeed section
 const DeliveryInfoMaybe = props => {
-  const { className, rootClassName, transaction, listing } = props;
+  const { className, rootClassName, transaction, /*listing*/ } = props;
   const classes = classNames(rootClassName || css.deliveryInfoContainer, className);
   const protectedData = transaction?.attributes?.protectedData;
   const deliveryMethod = protectedData?.deliveryMethod;
@@ -19,7 +19,17 @@ const DeliveryInfoMaybe = props => {
   const isPickup = deliveryMethod === 'pickup';
 
   if (isPickup) {
-    const pickupLocation = listing?.attributes?.publicData?.location || {};
+    let pickupLocation = null;
+    let geolocation = null;
+    const restaurantAddress = transaction?.attributes?.protectedData?.restaurantAddress;
+    if (restaurantAddress) {
+      pickupLocation = {
+        address: restaurantAddress.selectedPlace?.address,
+        building: null,
+      };
+      geolocation = restaurantAddress.selectedPlace?.origin;
+    }
+
     const { phoneNumber } = protectedData?.shippingDetails || {};
     return (
       <div className={classes}>
@@ -30,7 +40,7 @@ const DeliveryInfoMaybe = props => {
           <AddressLinkMaybe
             linkRootClassName={css.pickupAddress}
             location={pickupLocation}
-            geolocation={listing?.attributes?.geolocation}
+            geolocation={geolocation}
             showAddress={true}
           />
           <FormattedMessage id="TransactionPanel.pickupInfoPhone" values={{ phoneNumber }} />

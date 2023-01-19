@@ -7,6 +7,7 @@ import { FormattedMessage, injectIntl, intlShape } from '../../util/reactIntl';
 import { propTypes } from '../../util/types';
 import { ensureCurrentUser } from '../../util/data';
 import { isScrollingDisabled } from '../../ducks/UI.duck';
+import { types as sdkTypes } from '../../util/sdkLoader';
 
 import {
   Page,
@@ -25,6 +26,8 @@ import ProfileSettingsForm from './ProfileSettingsForm/ProfileSettingsForm';
 import { updateProfile, uploadImage } from './ProfileSettingsPage.duck';
 import css from './ProfileSettingsPage.module.css';
 // import { last } from 'lodash';
+
+const { LatLng } = sdkTypes;
 
 const onImageUploadHandler = (values, fn) => {
   const { id, imageId, file } = values;
@@ -54,6 +57,7 @@ export class ProfileSettingsPageComponent extends Component {
         lastName,
         bio: rawBio,
         restaurantName,
+        restaurantAddress,
         schedule,
         preparationTime,
         mealIsReadyTime,
@@ -74,6 +78,7 @@ export class ProfileSettingsPageComponent extends Component {
       // Add our restaurant name to the user public data
       const publicData = {
         restaurantName,
+        restaurantAddress,
         schedule,
         preparationTime,
         mealIsReadyTime,
@@ -168,6 +173,11 @@ export class ProfileSettingsPageComponent extends Component {
     const mealIsReadyTime = publicData?.mealIsReadyTime;
     const deliveryTime = publicData?.deliveryTime;
     const deliveryFromAddress = publicData?.deliveryFromAddress;
+    const restaurantAddress = publicData?.restaurantAddress ? publicData.restaurantAddress : {};
+    if (restaurantAddress?.selectedPlace?.origin) {
+      const { origin } = restaurantAddress.selectedPlace;
+      restaurantAddress.selectedPlace.origin = new LatLng(origin.lat, origin.lng);
+    }
 
     const profileSettingsForm = user.id ? (
       <ProfileSettingsForm
@@ -178,6 +188,7 @@ export class ProfileSettingsPageComponent extends Component {
           lastName,
           bio,
           restaurantName,
+          restaurantAddress,
           profileImage: user.profileImage,
           schedule: scheduleValue,
           preparationTime,
