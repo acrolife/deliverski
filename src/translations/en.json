@@ -1059,7 +1059,7 @@
   "StripePaymentForm.messagePlaceholder": "Hi! I would choose ketchup sauce with my burger. The appartement is at the first floor, at the end of the corridor.",
   "StripePaymentForm.missingStripeKey": "Stripe publishable key has not been configured to this marketplace. Unfortunately, order the product is not possible.",
   "StripePaymentForm.payWithHeading": "Payment",
-  "StripePaymentForm.pickupLocationUnknown": "This location is unknown",
+  "StripePaymentForm.pickupLocationUnknown": "Location unknown, the restaurant needs to provide you the pickup address by message",
   "StripePaymentForm.paymentCardDetails": "Payment card details",
   "StripePaymentForm.paymentHeading": "Payment",
   "StripePaymentForm.pickupDetailsTitle": "Pickup location",

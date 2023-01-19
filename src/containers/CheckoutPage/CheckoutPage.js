@@ -352,6 +352,9 @@ export class CheckoutPageComponent extends Component {
     const ensuredDefaultPaymentMethod = ensurePaymentMethodCard(
       ensuredStripeCustomer.defaultPaymentMethod
     );
+    const listing = this.state.pageData?.listing;
+    const author = listing?.author;
+    const restaurantAddress = author?.attributes?.profile?.publicData?.restaurantAddress;
 
     let createdPaymentIntent = null;
 
@@ -532,12 +535,16 @@ export class CheckoutPageComponent extends Component {
     const deliveryMethod = pageData.orderData?.deliveryMethod;
     const quantity = pageData.orderData?.quantity;
     const quantityMaybe = quantity ? { quantity } : {};
-    const protectedDataMaybe =
-      deliveryMethod && shippingDetails
-        ? { protectedData: { deliveryMethod, shippingDetails } }
-        : deliveryMethod
-        ? { protectedData: { deliveryMethod } }
-        : {};
+    const protectedData = {};
+    if (deliveryMethod) {
+      protectedData.deliveryMethod = deliveryMethod;
+    }
+    if (shippingDetails) {
+      protectedData.shippingDetails = shippingDetails;
+    }
+    if (deliveryMethod === 'pickup' && restaurantAddress){
+      protectedData.restaurantAddress = restaurantAddress;
+    }
     // Note: optionalPaymentParams contains Stripe paymentMethod,
     // but that can also be passed on Step 2
     // stripe.confirmCardPayment(stripe, { payment_method: stripePaymentMethodId })
@@ -553,7 +560,7 @@ export class CheckoutPageComponent extends Component {
       deliveryMethod,
       ...quantityMaybe,
       ...bookingDatesMaybe(pageData.orderData.bookingDates),
-      ...protectedDataMaybe,
+      protectedData,
       ...optionalPaymentParams,
     };
 
@@ -762,6 +769,11 @@ export class CheckoutPageComponent extends Component {
     const restaurantName = currentAuthor.attributes.profile.publicData
       ? currentAuthor.attributes.profile.publicData.restaurantName
       : null;
+    const pickupLocation = {};
+    const restaurantAddress = currentAuthor.attributes.profile.publicData?.restaurantAddress;
+    if (restaurantAddress) {
+      pickupLocation.address = restaurantAddress.selectedPlace?.address;
+    }
 
     const listingTitle = currentListing.attributes.title;
     const title = intl.formatMessage({ id: 'CheckoutPage.title' }, { restaurantName });
@@ -1017,7 +1029,7 @@ export class CheckoutPageComponent extends Component {
                   paymentIntent={paymentIntent}
                   onStripeInitialized={this.onStripeInitialized}
                   askShippingDetails={orderData?.deliveryMethod === 'shipping'}
-                  pickupLocation={currentListing?.attributes?.publicData?.location}
+                  pickupLocation={pickupLocation}
                   totalPrice={tx.id ? getFormattedTotalPrice(tx, intl) : null}
                   isRestaurantClosed={restaurantState?.status === 'closed'}
                 />
