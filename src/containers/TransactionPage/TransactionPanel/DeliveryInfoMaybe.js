@@ -11,7 +11,7 @@ import css from './TransactionPanel.module.css';
 
 // Functional component as a helper to build ActivityFeed section
 const DeliveryInfoMaybe = props => {
-  const { className, rootClassName, transaction, /*listing*/ } = props;
+  const { className, rootClassName, transaction /*listing*/ } = props;
   const classes = classNames(rootClassName || css.deliveryInfoContainer, className);
   const protectedData = transaction?.attributes?.protectedData;
   const deliveryMethod = protectedData?.deliveryMethod;

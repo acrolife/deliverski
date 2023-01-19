@@ -542,7 +542,7 @@ export class CheckoutPageComponent extends Component {
     if (shippingDetails) {
       protectedData.shippingDetails = shippingDetails;
     }
-    if (deliveryMethod === 'pickup' && restaurantAddress){
+    if (deliveryMethod === 'pickup' && restaurantAddress) {
       protectedData.restaurantAddress = restaurantAddress;
     }
     // Note: optionalPaymentParams contains Stripe paymentMethod,
