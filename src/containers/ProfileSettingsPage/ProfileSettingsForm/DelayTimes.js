@@ -55,13 +55,6 @@ const DelayTimes = props => {
           </option>
         ))}
       </FieldSelect>
-
-      <FieldTextInput
-        className={css.selectField}
-        id="deliveryFromAddress"
-        name="deliveryFromAddress"
-        label={t({ id: 'ProfileSettingsForm.deliveryFromAddress' })}
-      />
     </div>
   );
 };
