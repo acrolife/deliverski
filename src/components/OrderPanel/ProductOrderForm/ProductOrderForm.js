@@ -657,6 +657,11 @@ const renderForm = formRenderProps => {
 const ProductOrderForm = props => {
   const [sameVendorModalOpen, setSameVendorModalOpen] = useState(false);
   const [emptyCart, setEmptyCart] = useState(false);
+  const [quantity, setQuantity] = useState(null);
+
+  useEffect(() => {
+    setQuantity(1);
+  }, []);
 
   const intl = useIntl();
   const {
@@ -691,7 +696,7 @@ const ProductOrderForm = props => {
     );
   }
   const hasOneItemLeft = currentStock && currentStock === 1;
-  const quantityMaybe = { quantity: '1' };
+  const quantityMaybe = { quantity };
   const singleDeliveryMethodAvailableMaybe =
     // shippingEnabled ?
     // { deliveryMethod: 'shipping' }
