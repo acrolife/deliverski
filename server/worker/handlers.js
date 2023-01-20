@@ -120,9 +120,7 @@ const isPickup = transaction => {
 };
 
 const getTransactionPhoneNumber = transaction => {
-  return isShipping(transaction)
-    ? transaction?.attributes?.protectedData?.shippingDetails?.phoneNumber
-    : null;
+  return transaction?.attributes?.protectedData?.shippingDetails?.phoneNumber;
 };
 
 const handleTransactionInitiated = async shEvent => {
@@ -162,7 +160,11 @@ const handleTransitionAccept = async transaction => {
   const preparationTime = providerPublicData.preparationTime;
   const mealIsReadyTime = providerPublicData.mealIsReadyTime;
   const deliveryTime = providerPublicData.deliveryTime;
-  const deliveryFromAddress = providerPublicData.deliveryFromAddress;
+  let deliveryFromAddress = null;
+  const restaurantAddress = transaction?.attributes?.protectedData?.restaurantAddress;
+  if (restaurantAddress) {
+    deliveryFromAddress = restaurantAddress.selectedPlace?.address;
+  }
   const customerPhoneNumber = getTransactionPhoneNumber(transaction);
   const notification = {
     app_id: oneSignalClientAppId,
