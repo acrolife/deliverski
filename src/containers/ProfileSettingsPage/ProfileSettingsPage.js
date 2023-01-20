@@ -62,7 +62,6 @@ export class ProfileSettingsPageComponent extends Component {
         preparationTime,
         mealIsReadyTime,
         deliveryTime,
-        deliveryFromAddress,
       } = values;
 
       // Ensure that the optional bio is a string
@@ -83,7 +82,6 @@ export class ProfileSettingsPageComponent extends Component {
         preparationTime,
         mealIsReadyTime,
         deliveryTime,
-        deliveryFromAddress,
       };
 
       const profile = {
@@ -172,7 +170,6 @@ export class ProfileSettingsPageComponent extends Component {
     const preparationTime = publicData?.preparationTime;
     const mealIsReadyTime = publicData?.mealIsReadyTime;
     const deliveryTime = publicData?.deliveryTime;
-    const deliveryFromAddress = publicData?.deliveryFromAddress;
     const restaurantAddress = publicData?.restaurantAddress ? publicData.restaurantAddress : {};
     if (restaurantAddress?.selectedPlace?.origin) {
       const { origin } = restaurantAddress.selectedPlace;
@@ -194,7 +191,6 @@ export class ProfileSettingsPageComponent extends Component {
           preparationTime,
           mealIsReadyTime,
           deliveryTime,
-          deliveryFromAddress,
         }}
         profileImage={profileImage}
         onImageUpload={e => onImageUploadHandler(e, onImageUpload)}
