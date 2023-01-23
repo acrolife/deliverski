@@ -23,7 +23,7 @@ import {
   FieldTextInput,
   SecondaryButton,
   Modal,
-  LocationAutocompleteInputField,
+  // LocationAutocompleteInputField,
 } from '../../../components';
 
 import css from './ProfileSettingsForm.module.css';
@@ -407,6 +407,15 @@ class ProfileSettingsFormComponent extends Component {
                   <p className={css.bioInfo}>
                     <FormattedMessage id="ProfileSettingsForm.restaurantInfo" />
                   </p>
+                  <FieldTextInput
+                    className={css.restaurantAddressPlainText}
+                    type="text"
+                    id="restaurantAddressPlainText"
+                    name="restaurantAddressPlainText"
+                    label={t({ id: 'ProfileSettingsForm.restaurantAddressLabel' })}
+                    placeholder={t({ id: 'ProfileSettingsForm.restaurantAddressPlaceholder' })}
+                  />
+                  {/*
                   <LocationAutocompleteInputField
                     className={css.restaurantAddress}
                     inputClassName={css.locationAutocompleteInput}
@@ -422,6 +431,7 @@ class ProfileSettingsFormComponent extends Component {
                       t({ id: 'ProfileSettingsForm.addressNotRecognized' })
                     )}
                   />
+                  */}
                   <p className={css.bioInfo}>
                     <FormattedMessage id="ProfileSettingsForm.restaurantAddressInfo" />
                   </p>

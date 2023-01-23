@@ -21,13 +21,21 @@ const DeliveryInfoMaybe = props => {
   if (isPickup) {
     let pickupLocation = null;
     let geolocation = null;
-    const restaurantAddress = transaction?.attributes?.protectedData?.restaurantAddress;
+    const restaurantAddress = null; // transaction?.attributes?.protectedData?.restaurantAddress;
     if (restaurantAddress) {
       pickupLocation = {
         address: restaurantAddress.selectedPlace?.address,
         building: null,
       };
       geolocation = restaurantAddress.selectedPlace?.origin;
+    }
+    const restaurantAddressPlainText =
+      transaction?.attributes?.protectedData?.restaurantAddressPlainText;
+    if (restaurantAddressPlainText) {
+      pickupLocation = {
+        address: restaurantAddressPlainText,
+        building: null,
+      };
     }
 
     const { phoneNumber } = protectedData?.shippingDetails || {};
