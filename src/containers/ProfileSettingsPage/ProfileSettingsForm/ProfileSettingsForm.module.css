@@ -426,3 +426,11 @@
 .restaurantAddress {
   flex-shrink: 0;
 }
+
+.restaurantAddressPlainText {
+  margin-top: 11px;
+
+  @media (--viewportMedium) {
+    margin-top: 16px;
+  }
+}

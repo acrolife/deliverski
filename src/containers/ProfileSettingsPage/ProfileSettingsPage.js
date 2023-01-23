@@ -27,7 +27,7 @@ import { updateProfile, uploadImage } from './ProfileSettingsPage.duck';
 import css from './ProfileSettingsPage.module.css';
 // import { last } from 'lodash';
 
-const { LatLng } = sdkTypes;
+const { LatLng } = sdkTypes; // eslint-disable-line no-unused-vars
 
 const onImageUploadHandler = (values, fn) => {
   const { id, imageId, file } = values;
@@ -57,7 +57,8 @@ export class ProfileSettingsPageComponent extends Component {
         lastName,
         bio: rawBio,
         restaurantName,
-        restaurantAddress,
+        // restaurantAddress,
+        restaurantAddressPlainText,
         schedule,
         preparationTime,
         mealIsReadyTime,
@@ -77,7 +78,8 @@ export class ProfileSettingsPageComponent extends Component {
       // Add our restaurant name to the user public data
       const publicData = {
         restaurantName,
-        restaurantAddress,
+        // restaurantAddress,
+        restaurantAddressPlainText,
         schedule,
         preparationTime,
         mealIsReadyTime,
@@ -170,11 +172,14 @@ export class ProfileSettingsPageComponent extends Component {
     const preparationTime = publicData?.preparationTime;
     const mealIsReadyTime = publicData?.mealIsReadyTime;
     const deliveryTime = publicData?.deliveryTime;
+    /*
     const restaurantAddress = publicData?.restaurantAddress ? publicData.restaurantAddress : {};
     if (restaurantAddress?.selectedPlace?.origin) {
       const { origin } = restaurantAddress.selectedPlace;
       restaurantAddress.selectedPlace.origin = new LatLng(origin.lat, origin.lng);
     }
+    */
+    const restaurantAddressPlainText = publicData?.restaurantAddressPlainText;
 
     const profileSettingsForm = user.id ? (
       <ProfileSettingsForm
@@ -185,7 +190,8 @@ export class ProfileSettingsPageComponent extends Component {
           lastName,
           bio,
           restaurantName,
-          restaurantAddress,
+          // restaurantAddress,
+          restaurantAddressPlainText,
           profileImage: user.profileImage,
           schedule: scheduleValue,
           preparationTime,

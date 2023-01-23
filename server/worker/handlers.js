@@ -161,9 +161,14 @@ const handleTransitionAccept = async transaction => {
   const mealIsReadyTime = providerPublicData.mealIsReadyTime;
   const deliveryTime = providerPublicData.deliveryTime;
   let deliveryFromAddress = null;
-  const restaurantAddress = transaction?.attributes?.protectedData?.restaurantAddress;
+  const restaurantAddress = null; // transaction?.attributes?.protectedData?.restaurantAddress;
   if (restaurantAddress) {
     deliveryFromAddress = restaurantAddress.selectedPlace?.address;
+  }
+  const restaurantAddressPlainText =
+    transaction?.attributes?.protectedData?.restaurantAddressPlainText;
+  if (restaurantAddressPlainText) {
+    deliveryFromAddress = restaurantAddressPlainText;
   }
   const customerPhoneNumber = getTransactionPhoneNumber(transaction);
   const notification = {
