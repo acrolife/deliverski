@@ -29,6 +29,7 @@ const router = express.Router();
 router.use(
   bodyParser.text({
     type: 'application/transit+json',
+    limit: '1mb',
   })
 );
 
