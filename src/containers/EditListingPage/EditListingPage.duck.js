@@ -597,6 +597,17 @@ const updateStockOfListingMaybe = (listingId, stockTotals, dispatch) => {
   return Promise.resolve();
 };
 
+// Using provider's publicData to add restaurantName and restaurantFilterName (used for the SelectSingleFilter) to the listing's publicData
+const getRestaurant = getState => {
+  const currentUser = getState().user.currentUser;
+  const restaurantName = currentUser
+    ? currentUser.attributes.profile.publicData.restaurantName
+    : null;
+  const restaurant = restaurantName ? restaurantNameToFilterName(restaurantName) : null;
+
+  return { restaurantName, restaurant };
+}
+
 // Create listing in draft state
 // NOTE: we want to keep it possible to include stock management field to the first wizard form.
 // this means that there needs to be a sequence of calls:
@@ -611,16 +622,9 @@ export function requestCreateListingDraft(data) {
     const imageProperty = typeof images !== 'undefined' ? { images: imageIds(images) } : {};
     let ownListingValues = { ...imageProperty, ...rest };
 
-    // Using provider's publicData to add restaurantName and restaurantFilterName (used for the SelectSingleFilter) to the listing's publicData
-    const currentUser = getState().user.currentUser;
-    const restaurantName = currentUser
-      ? currentUser.attributes.profile.publicData.restaurantName
-      : null;
-    const restaurantFilterName = restaurantName ? restaurantNameToFilterName(restaurantName) : null;
-
-    // Updating the newly created listing with the values
+    const { restaurantName, restaurant } = getRestaurant(getState);
     ownListingValues.publicData.restaurantName = restaurantName;
-    ownListingValues.publicData.restaurant = restaurantFilterName;
+    ownListingValues.publicData.restaurant = restaurant;
 
     const imageVariantInfo = getImageVariantInfo();
     const queryParams = {
@@ -674,28 +678,15 @@ export function requestUpdateListing(tab, data) {
     };
 
     /*
-     Implemented in case the restaurant would change its name : a stock update  
+     Implemented in case the restaurant would change its name : a ordinary update
      will update restaurantName and restaurantFilterName in the listing publicData
-     XXX This means that a change of the retaurant name could be "solved" by a gloabl update,
-     // if this stock updates has been implemented as a global trigger of individual stocks, 
-     // using this function.
      FIXME CAUTION ! The filter name would remain to be changed though
     */
     // Using provider's publicData to build restaurantName and restaurantFilterName
-    if (stockUpdate) {
-      const currentUser = getState().user.currentUser;
-      const restaurantName = currentUser
-        ? currentUser.attributes.profile.publicData.restaurantName
-        : null;
-      const restaurantFilterName = restaurantName
-        ? restaurantNameToFilterName(restaurantName)
-        : null;
-
-      // Updating the listing publicData with restaurantName and restaurantFilterName
-      ownListingUpdateValues.publicData = {};
-      ownListingUpdateValues.publicData.restaurantName = restaurantName;
-      ownListingUpdateValues.publicData.restaurant = restaurantFilterName;
-    }
+    const { restaurantName, restaurant } = getRestaurant(getState);
+    ownListingUpdateValues.publicData = ownListingUpdateValues.publicData || {};
+    ownListingUpdateValues.publicData.restaurantName = restaurantName;
+    ownListingUpdateValues.publicData.restaurant = restaurant;
 
     // Note: if update values include stockUpdate, we'll do that first
     // That way we get updated currentStock info among ownListings.update
