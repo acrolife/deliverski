@@ -25,24 +25,6 @@ const getAdditionalListings = ({ sdk, cartAdditionalListingIds }) => {
   return Promise.resolve([]);
 };
 
-const getCartForAdditionalListings = ({ orderData, additionalListings }) => {
-  const { restOfShoppingCartItems } = orderData;
-  const cartAdditionalListings = {};
-  restOfShoppingCartItems.forEach((item, index) => {
-    const listing = additionalListings.find(listing => listing.id.uuid === item.listingId);
-    if (listing) {
-      cartAdditionalListings[`additional-listing-${index}`] = {
-        id: listing.id.uuid,
-        title: listing.attributes.title,
-        image: listing.image,
-        unit: listing.attributes.publicData.unit,
-      };
-    }
-  });
-
-  return cartAdditionalListings;
-};
-
 const formatListing = ({ listing, quantity }) => {
   const amount = listing.attributes.price.amount / 100; // email compatible
   const currency = listing.attributes.price.currency;
@@ -80,6 +62,5 @@ const getCartListingLineItems = ({ orderData, listing, additionalListings }) => 
 
 module.exports = {
   getAdditionalListings,
-  getCartForAdditionalListings,
   getCartListingLineItems,
 };
