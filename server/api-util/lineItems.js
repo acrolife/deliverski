@@ -126,8 +126,6 @@ exports.transactionLineItems = (listing, orderData, cartListingLineItems) => {
     });
   }
 
-  console.log('shoppingCartItems=', JSON.stringify(shoppingCartItems, null, 2));
-
   const isAnyItemWithShipping = restOfShoppingCartItems
     ? restOfShoppingCartItems.find(item => {
         return item.deliveryMethod === 'shipping';

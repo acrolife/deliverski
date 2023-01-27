@@ -268,7 +268,7 @@ const ShoppingCartComponent = props => {
         const { checkoutValues, listing: itemListing } = item;
         const { quantity, deliveryMethod } = checkoutValues;
         const newItem = {
-          quantity,
+          quantity: Number(quantity),
           deliveryMethod,
           listingId: itemListing.id.uuid,
         };

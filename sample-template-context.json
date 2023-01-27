@@ -112,9 +112,52 @@
     },
     "payout-total" : {
       "amount" : 810,
-      "currency" : "USD"
+      "currency" : "EUR"
     },
-    "protected-data" : { },
+    "protected-data" : {
+      "cartListingLineItems": [
+        {
+          "id": "62a81a7f-9126-4459-b392-36906c84e49a",
+          "title": "zzz2",
+          "unitPrice": {
+            "amount": 333,
+            "currency": "EUR"
+          },
+          "quantity": 2,
+          "total": {
+            "amount": 666,
+            "currency": "EUR"
+          }
+        },
+        {
+          "id": "6299dfd1-dd89-4583-9268-4c5f390d2078",
+          "title": "zzz",
+          "unitPrice": {
+            "amount": 100,
+            "currency": "EUR"
+          },
+          "quantity": 3,
+          "total": {
+            "amount": 300,
+            "currency": "EUR"
+          }
+        },
+        {
+          "id": "6299e21e-c4f4-48e0-9ab3-78f0142794b6",
+          "title": "test zero",
+          "unitPrice": {
+            "amount": 0,
+            "currency": "EUR"
+          },
+          "quantity": 2,
+          "total": {
+            "amount": 0,
+            "currency": "EUR"
+          }
+        }
+      ],
+      "cartListingLineItemNames": "zzz2, zzz, test zero"
+    },
     "customer" : {
       "id" : "ef7f40d5-da66-489a-957b-641313b68204",
       "first-name" : "Jane",
@@ -135,7 +178,7 @@
     },
     "payin-total" : {
       "amount" : 900,
-      "currency" : "USD"
+      "currency" : "EUR"
     },
     "id" : "d8893061-c860-4e44-8d4d-61587a497e6e",
     "reviews" : [ {
@@ -183,11 +226,11 @@
       "code" : "line-item/night",
       "unit-price" : {
         "amount" : 300,
-        "currency" : "USD"
+        "currency" : "EUR"
       },
       "line-total" : {
         "amount" : 900,
-        "currency" : "USD"
+        "currency" : "EUR"
       },
       "include-for" : [ "customer", "provider" ],
       "quantity" : 3
@@ -195,11 +238,11 @@
       "code" : "line-item/provider-commission",
       "unit-price" : {
         "amount" : 900,
-        "currency" : "USD"
+        "currency" : "EUR"
       },
       "line-total" : {
         "amount" : -90,
-        "currency" : "USD"
+        "currency" : "EUR"
       },
       "include-for" : [ "provider" ],
       "percentage" : -10
@@ -221,9 +264,6 @@
       "metadata" : {
         "membership" : "premium"
       }
-    },
-    "protected-data": {
-      "customerPhoneNumber": "123456"
     },
     "metadata": {
       "discountCode": "abc-123"

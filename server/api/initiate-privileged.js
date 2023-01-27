@@ -1,10 +1,6 @@
 const { transactionLineItems } = require('../api-util/lineItems');
 const { getSdk, getTrustedSdk, handleError, serialize } = require('../api-util/sdk');
-const {
-  getAdditionalListings,
-  getCartForAdditionalListings,
-  getCartListingLineItems,
-} = require('../api-util/cart');
+const { getAdditionalListings, getCartListingLineItems } = require('../api-util/cart');
 
 module.exports = (req, res) => {
   const { isSpeculative, orderData, bodyParams, queryParams } = req.body;
@@ -12,10 +8,6 @@ module.exports = (req, res) => {
   const listingId = bodyParams && bodyParams.params ? bodyParams.params.listingId : null;
   const restOfShoppingCartItems = orderData.restOfShoppingCartItems || [];
   const cartAdditionalListingIds = restOfShoppingCartItems.map(item => item.listingId);
-
-  console.log('orderData=', JSON.stringify(orderData, null, 2));
-  console.log('bodyParams=', JSON.stringify(bodyParams, null, 2));
-  console.log('queryParams=', JSON.stringify(queryParams, null, 2));
 
   const sdk = getSdk(req, res);
   let listing = null;
@@ -35,11 +27,6 @@ module.exports = (req, res) => {
       const { params } = bodyParams;
       let protectedData = params.protectedData || {};
 
-      // order panel compatible
-      const cartAdditionalListings = getCartForAdditionalListings({
-        orderData: { ...orderData, ...bodyParams.params },
-        additionalListings,
-      });
       // email compatible
       const cartListingLineItems = getCartListingLineItems({
         orderData: { ...orderData, ...bodyParams.params },
@@ -51,7 +38,6 @@ module.exports = (req, res) => {
       protectedData = {
         ...protectedData,
         restOfShoppingCartItems,
-        cartAdditionalListings,
         cartListingLineItems,
         cartListingLineItemNames,
       };
