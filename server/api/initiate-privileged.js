@@ -56,7 +56,7 @@ module.exports = (req, res) => {
         cartListingLineItemNames,
       };
 
-      console.log('protectedData=', JSON.stringify(protectedData, null, 2));
+      // console.log('protectedData=', JSON.stringify(protectedData, null, 2));
 
       const lineItems = transactionLineItems(
         listing,
