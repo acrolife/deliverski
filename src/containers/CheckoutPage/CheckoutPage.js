@@ -943,7 +943,7 @@ export class CheckoutPageComponent extends Component {
 
     const isAnyItemWithShipping =
       this.state.pageData.orderData?.restOfShoppingCartItems.find(item => {
-        return item.checkoutValues.deliveryMethod === 'pickup';
+        return item.deliveryMethod === 'pickup';
       }) || this.state.pageData.orderData?.deliveryMethod === 'pickup';
 
     return (

@@ -264,7 +264,16 @@ const ShoppingCartComponent = props => {
 
       const restOfShoppingCartItems = [...shoppingCartItems];
       restOfShoppingCartItems.shift();
-      orderData.restOfShoppingCartItems = restOfShoppingCartItems;
+      orderData.restOfShoppingCartItems = restOfShoppingCartItems.map(item => {
+        const { checkoutValues, listing: itemListing } = item;
+        const { quantity, deliveryMethod } = checkoutValues;
+        const newItem = {
+          quantity,
+          deliveryMethod,
+          listingId: itemListing.id.uuid,
+        };
+        return newItem;
+      });
 
       const initialValues = {
         listing,
