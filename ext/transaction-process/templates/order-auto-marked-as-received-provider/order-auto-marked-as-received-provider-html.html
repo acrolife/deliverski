@@ -26,6 +26,26 @@
         </tr>
       </thead>
       <tbody>
+        {{#if protected-data.cartListingLineItems}}
+        {{#each protected-data.cartListingLineItems}}
+        <tr class="bottom-row">
+          <td>Produit</td>
+          <td class="right">{{title}}</td>
+        </tr>
+        <tr class="top-row">
+          <td>Prix à l'unité</td>
+          <td class="right">{{> format-money money=unitPrice}}</td>
+        </tr>
+        <tr class="bottom-row">
+          <td>Quantité</td>
+          <td class="right">&times; {{number quantity}}</td>
+        </tr>
+        <tr class="bottom-row top-row">
+          <th class="left">Total</th>
+          <th class="right">{{> format-money money=total}}</th>
+        </tr>
+        {{/each}}
+        {{/if}}
         {{#each tx-line-items}} {{#contains include-for "provider"}} {{#eq
         "line-item/units" code}}
         <tr>
@@ -111,6 +131,26 @@
         </tr>
       </thead>
       <tbody>
+        {{#if protected-data.cartListingLineItems}}
+        {{#each protected-data.cartListingLineItems}}
+        <tr class="bottom-row">
+          <td>Product</td>
+          <td class="right">{{title}}</td>
+        </tr>
+        <tr class="top-row">
+          <td>Product price</td>
+          <td class="right">{{> format-money money=unitPrice}}</td>
+        </tr>
+        <tr class="bottom-row">
+          <td>Quantity</td>
+          <td class="right">&times; {{number quantity}}</td>
+        </tr>
+        <tr class="bottom-row top-row">
+          <th class="left">Subtotal</th>
+          <th class="right">{{> format-money money=total}}</th>
+        </tr>
+        {{/each}}
+        {{/if}}
         {{#each tx-line-items}} {{#contains include-for "provider"}} {{#eq
         "line-item/units" code}}
         <tr>
