@@ -606,7 +606,7 @@ const getRestaurant = getState => {
   const restaurant = restaurantName ? restaurantNameToFilterName(restaurantName) : null;
 
   return { restaurantName, restaurant };
-}
+};
 
 // Create listing in draft state
 // NOTE: we want to keep it possible to include stock management field to the first wizard form.

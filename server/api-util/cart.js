@@ -1,0 +1,85 @@
+const getAdditionalListings = ({ sdk, cartAdditionalListingIds }) => {
+  if (cartAdditionalListingIds) {
+    const queryParams = {
+      ids: cartAdditionalListingIds,
+      page: 1,
+      perPage: 100,
+      include: ['currentStock', 'images'],
+      'fields.image': ['variants.square-small'],
+      'limit.images': 1,
+    };
+    return sdk.listings.query(queryParams).then(res => {
+      const listings = res.data.data;
+      const included = res.data.included;
+      listings.forEach(listing => {
+        const stockId = listing.relationships.currentStock.data.id.uuid;
+        listing.currentStock = included.find(i => i.type === 'stock' && i.id.uuid === stockId);
+        const imageId = listing.relationships.images.data[0].id.uuid;
+        const image = included.find(i => i.type === 'image' && i.id.uuid === imageId);
+        listing.image = image.attributes.variants['square-small'].url;
+      });
+
+      return listings;
+    });
+  }
+  return Promise.resolve([]);
+};
+
+const getCartForAdditionalListings = ({ orderData, additionalListings }) => {
+  const { restOfShoppingCartItems } = orderData;
+  const cartAdditionalListings = {};
+  restOfShoppingCartItems.forEach((item, index) => {
+    const listing = additionalListings.find(listing => listing.id.uuid === item.listingId);
+    if (listing) {
+      cartAdditionalListings[`additional-listing-${index}`] = {
+        id: listing.id.uuid,
+        title: listing.attributes.title,
+        image: listing.image,
+        unit: listing.attributes.publicData.unit,
+      };
+    }
+  });
+
+  return cartAdditionalListings;
+};
+
+const formatListing = ({ listing, quantity }) => {
+  const amount = listing.attributes.price.amount / 100; // email compatible
+  const currency = listing.attributes.price.currency;
+  return {
+    id: listing.id.uuid,
+    image: listing.image,
+    title: listing.attributes.title,
+    unitPrice: {
+      amount,
+      currency,
+    },
+    unit: listing.attributes.publicData.unit,
+    quantity: quantity,
+    total: {
+      amount: amount * quantity,
+      currency,
+    },
+  };
+};
+
+const getCartListingLineItems = ({ orderData, listing, additionalListings }) => {
+  const { restOfShoppingCartItems } = orderData;
+  const quantity = orderData.stockReservationQuantity || orderData.quantity || 1;
+  const lineItems = [];
+  lineItems.push(formatListing({ listing, quantity }));
+  restOfShoppingCartItems.forEach(cartItem => {
+    const l = additionalListings.find(listing => listing.id.uuid === cartItem.listingId);
+    if (l) {
+      lineItems.push(formatListing({ listing: l, quantity: cartItem.quantity }));
+    }
+  });
+
+  return lineItems;
+};
+
+module.exports = {
+  getAdditionalListings,
+  getCartForAdditionalListings,
+  getCartListingLineItems,
+};

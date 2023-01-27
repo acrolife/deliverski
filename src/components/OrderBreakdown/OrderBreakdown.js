@@ -38,7 +38,6 @@ export const OrderBreakdownComponent = props => {
     intl,
     dateType,
     listing,
-    restOfShoppingCartItems,
   } = props;
 
   const isCustomer = userRole === 'customer';
@@ -112,7 +111,6 @@ export const OrderBreakdownComponent = props => {
         isProvider={isProvider}
         intl={intl}
         transaction={transaction}
-        restOfShoppingCartItems={restOfShoppingCartItems}
         listing={listing}
       />
 
