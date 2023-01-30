@@ -47,23 +47,11 @@
         {{/each}}
         {{/if}}
         {{#each tx-line-items}} {{#contains include-for "provider"}} {{#eq
-        "line-item/units" code}}
-        <tr>
-          <td>Prix unitaire</td>
-          <td style="text-align: right; padding-left: 20px">
-            {{> format-money money=unit-price}}
-          </td>
-        </tr>
-        <tr>
-          <td>Quantité</td>
-          <td style="text-align: right; padding-left: 20px">
-            &times; {{number quantity}}
-          </td>
-        </tr>
+        "line-item/provider-commission" code}}
         <tr>
           <th style="text-align: left">Sous-total</th>
           <th style="text-align: right; padding-left: 20px">
-            {{> format-money money=line-total}}
+            {{> format-money money=unit-price}}
           </th>
         </tr>
         {{/eq}} {{#eq "line-item/shipping-fee" code}}
@@ -150,23 +138,11 @@
         {{/each}}
         {{/if}}
         {{#each tx-line-items}} {{#contains include-for "provider"}} {{#eq
-        "line-item/units" code}}
-        <tr>
-          <td>Unit price</td>
-          <td style="text-align: right; padding-left: 20px">
-            {{> format-money money=unit-price}}
-          </td>
-        </tr>
-        <tr>
-          <td>Quantity</td>
-          <td style="text-align: right; padding-left: 20px">
-            &times; {{number quantity}}
-          </td>
-        </tr>
+        "line-item/provider-commission" code}}
         <tr>
           <th style="text-align: left">Subtotal</th>
           <th style="text-align: right; padding-left: 20px">
-            {{> format-money money=line-total}}
+            {{> format-money money=unit-price}}
           </th>
         </tr>
         {{/eq}} {{#eq "line-item/shipping-fee" code}}
