@@ -14,6 +14,9 @@ export const initOneSignal = async () => {
     serviceWorkerParam: { scope: '/static/scripts/onesignal/' },
     serviceWorkerPath: 'static/scripts/onesignal/OneSignalSDKWorker.js',
   });
+  if (config.onesignal.debug && window) {
+    window.OneSignal.log.setLevel('trace');
+  }
   OneSignal.showSlidedownPrompt();
 };
 
