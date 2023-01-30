@@ -111,7 +111,7 @@
       }
     },
     "payout-total" : {
-      "amount" : 810,
+      "amount" : 170.85,
       "currency" : "EUR"
     },
     "protected-data" : {
@@ -120,12 +120,12 @@
           "id": "62a81a7f-9126-4459-b392-36906c84e49a",
           "title": "zzz2",
           "unitPrice": {
-            "amount": 333,
+            "amount": 24,
             "currency": "EUR"
           },
-          "quantity": 2,
+          "quantity": 3,
           "total": {
-            "amount": 666,
+            "amount": 72,
             "currency": "EUR"
           }
         },
@@ -133,30 +133,30 @@
           "id": "6299dfd1-dd89-4583-9268-4c5f390d2078",
           "title": "zzz",
           "unitPrice": {
-            "amount": 100,
+            "amount": 15,
             "currency": "EUR"
           },
-          "quantity": 3,
+          "quantity": 4,
           "total": {
-            "amount": 300,
+            "amount": 60,
             "currency": "EUR"
           }
         },
         {
           "id": "6299e21e-c4f4-48e0-9ab3-78f0142794b6",
-          "title": "test zero",
+          "title": "test ",
           "unitPrice": {
-            "amount": 0,
+            "amount": 22,
             "currency": "EUR"
           },
-          "quantity": 2,
+          "quantity": 5,
           "total": {
-            "amount": 0,
+            "amount": 110,
             "currency": "EUR"
           }
         }
       ],
-      "cartListingLineItemNames": "zzz2, zzz, test zero"
+      "cartListingLineItemNames": "zzz2, zzz, test"
     },
     "customer" : {
       "id" : "ef7f40d5-da66-489a-957b-641313b68204",
@@ -177,7 +177,7 @@
       }
     },
     "payin-total" : {
-      "amount" : 900,
+      "amount" : 242,
       "currency" : "EUR"
     },
     "id" : "d8893061-c860-4e44-8d4d-61587a497e6e",
@@ -237,15 +237,15 @@
     }, {
       "code" : "line-item/provider-commission",
       "unit-price" : {
-        "amount" : 900,
+        "amount" : 242,
         "currency" : "EUR"
       },
       "line-total" : {
-        "amount" : -90,
+        "amount" : -71.15,
         "currency" : "EUR"
       },
       "include-for" : [ "provider" ],
-      "percentage" : -10
+      "percentage" : -29.4
     } ],
     "provider" : {
       "id" : "fd180cc2-a99c-4e43-b960-9b94daec5265",
