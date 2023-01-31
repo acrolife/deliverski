@@ -159,7 +159,7 @@ const RouteComponentContainer = compose(connect(mapStateToProps))(RouteComponent
 const Routes = (props, context) => {
   const { isAuthenticated, logoutInProgress, routes } = props;
 
-  const toRouteComponent = route => {
+  const toRouteComponent = lang => route => {
     const renderProps = {
       isAuthenticated,
       logoutInProgress,
@@ -169,10 +169,11 @@ const Routes = (props, context) => {
     // By default, our routes are exact.
     // https://reacttraining.com/react-router/web/api/Route/exact-bool
     const isExact = route.exact != null ? route.exact : true;
+    const path = `/${lang}${route.path}`;
     return (
       <Route
         key={route.name}
-        path={route.path}
+        path={path}
         exact={isExact}
         render={matchProps => (
           <RouteComponentContainer
@@ -191,7 +192,8 @@ const Routes = (props, context) => {
   // That's why we pass-in props.routes instead of calling routeConfiguration here.
   return (
     <Switch>
-      {routes.map(toRouteComponent)}
+      {routes.map(toRouteComponent('en'))}
+      {routes.map(toRouteComponent('fr'))}
       <Route component={NotFoundPage} />
     </Switch>
   );

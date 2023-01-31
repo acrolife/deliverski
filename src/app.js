@@ -12,11 +12,12 @@ import { Provider } from 'react-redux';
 import difference from 'lodash/difference';
 import mapValues from 'lodash/mapValues';
 import moment from 'moment';
-import { IntlProvider } from './util/reactIntl';
+// import { IntlProvider } from './util/reactIntl';
 import { IncludeMapLibraryScripts } from './util/includeScripts';
 import configureStore from './store';
 import routeConfiguration from './routing/routeConfiguration';
 import Routes from './routing/Routes';
+import LocalizedRouter from './routing/LocalizedRouter';
 import config from './config';
 import { initOneSignal } from './util/onesignal';
 
@@ -76,7 +77,7 @@ const isTestEnv = process.env.NODE_ENV === 'test';
 // Locale should not affect the tests. We ensure this by providing
 // messages with the key as the value of each message.
 const testMessages = mapValues(messages, (val, key) => key);
-const localeMessages = isTestEnv ? testMessages : messages;
+const localeMessages = isTestEnv ? testMessages : messages; // eslint-disable-line no-unused-vars
 
 const setupLocale = () => {
   if (isTestEnv) {
@@ -98,16 +99,14 @@ export const ClientApp = props => {
     initOneSignal();
   });
   return (
-    <IntlProvider locale={config.locale} messages={localeMessages} textComponent="span">
-      <Provider store={store}>
-        <HelmetProvider>
-          <IncludeMapLibraryScripts />
-          <BrowserRouter>
-            <Routes routes={routeConfiguration()} />
-          </BrowserRouter>
-        </HelmetProvider>
-      </Provider>
-    </IntlProvider>
+    <Provider store={store}>
+      <HelmetProvider>
+        <IncludeMapLibraryScripts />
+        <LocalizedRouter RouterComponent={BrowserRouter}>
+          <Routes routes={routeConfiguration()} />
+        </LocalizedRouter>
+      </HelmetProvider>
+    </Provider>
   );
 };
 
@@ -120,16 +119,14 @@ export const ServerApp = props => {
   setupLocale();
   HelmetProvider.canUseDOM = false;
   return (
-    <IntlProvider locale={config.locale} messages={localeMessages} textComponent="span">
-      <Provider store={store}>
-        <HelmetProvider context={helmetContext}>
-          <IncludeMapLibraryScripts />
-          <StaticRouter location={url} context={context}>
-            <Routes routes={routeConfiguration()} />
-          </StaticRouter>
-        </HelmetProvider>
-      </Provider>
-    </IntlProvider>
+    <Provider store={store}>
+      <HelmetProvider context={helmetContext}>
+        <IncludeMapLibraryScripts />
+        <LocalizedRouter RouterComponent={<StaticRouter location={url} context={context} />}>
+          <Routes routes={routeConfiguration()} />
+        </LocalizedRouter>
+      </HelmetProvider>
+    </Provider>
   );
 };
 
