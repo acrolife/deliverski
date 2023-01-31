@@ -22,9 +22,9 @@ const EXAMINE_TX_ID = '63d39d61-77f7-44bd-add2-f037772b4b0c'; // accept
 
 const run = async () => {
   const txRes = await integrationSdk.transactions.show({
-    id: new UUID(EXAMINE_TX_ID)
-  })
-  console.log(JSON.stringify(txRes.data.data,null,2));
+    id: new UUID(EXAMINE_TX_ID),
+  });
+  console.log(JSON.stringify(txRes.data.data, null, 2));
 };
 
 run();

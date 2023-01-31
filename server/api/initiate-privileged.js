@@ -1,6 +1,10 @@
 const { transactionLineItems } = require('../api-util/lineItems');
 const { getSdk, getTrustedSdk, handleError, serialize } = require('../api-util/sdk');
-const { getAdditionalListings, getCartListingLineItems } = require('../api-util/cart');
+const {
+  getAdditionalListings,
+  getCartListingLineItems,
+  adjustCartStock,
+} = require('../api-util/cart');
 
 module.exports = (req, res) => {
   const { isSpeculative, orderData, bodyParams, queryParams } = req.body;
@@ -12,6 +16,7 @@ module.exports = (req, res) => {
   const sdk = getSdk(req, res);
   let listing = null;
   let additionalListings = null;
+  let transactionInitiateResponse = null;
 
   sdk.listings
     .show({ id: listingId })
@@ -66,7 +71,15 @@ module.exports = (req, res) => {
       return trustedSdk.transactions.initiate(body, queryParams);
     })
     .then(apiResponse => {
-      const { status, statusText, data } = apiResponse;
+      transactionInitiateResponse = apiResponse;
+
+      if (isSpeculative) {
+        return Promise.resolve(true);
+      }
+      return adjustCartStock({ restOfShoppingCartItems, additionalListings });
+    })
+    .then(adjustCartStockResponse => {
+      const { status, statusText, data } = transactionInitiateResponse;
       res
         .status(status)
         .set('Content-Type', 'application/transit+json')

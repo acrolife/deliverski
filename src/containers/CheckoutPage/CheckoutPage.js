@@ -23,7 +23,6 @@ import {
 } from '../../util/data';
 import { timeOfDayFromLocalToTimeZone, minutesBetween } from '../../util/dates';
 import { createSlug } from '../../util/urlHelpers';
-import { post } from '../../util/api';
 import {
   isTransactionInitiateAmountTooLowError,
   isTransactionInitiateListingNotFoundError,
@@ -498,19 +497,6 @@ export class CheckoutPageComponent extends Component {
       }
     };
 
-    // Step 7: - change quantity for the rest of shopping cart items
-
-    const changeRestOfShoppingCartItemsQuantity = fnParams => {
-      const restOfShoppingCartItems = pageData.orderData.restOfShoppingCartItems;
-      return post('/api/change-all-items-quantity', { restOfShoppingCartItems })
-        .then(resp => {
-          return fnParams;
-        })
-        .catch(e => {
-          return fnParams;
-        });
-    };
-
     // Here we create promise calls in sequence
     // This is pretty much the same as:
     // fnRequestPayment({...initialParams})
@@ -524,8 +510,7 @@ export class CheckoutPageComponent extends Component {
       fnConfirmPayment,
       fnSendMessage,
       fnSavePaymentMethod,
-      emptyBasktet,
-      changeRestOfShoppingCartItemsQuantity
+      emptyBasktet
     );
 
     // Create order aka transaction

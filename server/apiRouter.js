@@ -74,7 +74,6 @@ router.get('/auth/facebook/callback', authenticateFacebookCallback);
 
 // This endpoint is called when user wants to initiate authenticaiton with Google
 router.get('/auth/google', authenticateGoogle);
-router.post('/change-all-items-quantity', changeAllItemsQuantity);
 // This is the route for callback URL the user is redirected after authenticating
 // with Google. In this route a Passport.js custom callback is used for calling
 // loginWithIdp endpoint in Flex API to authenticate user to Flex
