@@ -10,15 +10,6 @@ const dev = process.env.REACT_APP_ENV === 'development';
 // locale data and the messages in the app.js file.
 // const locale = 'fr';
 const locale = process.env.REACT_APP_LOCALE ? process.env.REACT_APP_LOCALE.toLowerCase() : 'en';
-const localeSwitch = process.env.REACT_APP_LOCALE_SWITCH
-  ? process.env.REACT_APP_LOCALE_SWITCH.toLowerCase()
-  : null;
-const urlSwitchLang = localeSwitch ? process.env.REACT_APP_URL_SWITCH : null;
-
-// DEV
-// console.log("locale", locale)
-// console.log("localeSwitch", localeSwitch)
-// console.log("urlSwitchLang", urlSwitchLang)
 
 const i18n = {
   /*
@@ -261,8 +252,6 @@ const config = {
   env,
   dev,
   locale,
-  urlSwitchLang,
-  localeSwitch,
   transactionProcessAlias,
   lineItemUnitType,
   listingManagementType,
