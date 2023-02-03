@@ -24,14 +24,14 @@ const LocalizedRouter = ({ children }) => (
       /**
        * If language is not in route path, redirect to language root
        */
-      const { pathname } = location;
+      const { pathname, search } = location;
 
       if (pathname.match(/^\/en|fr\/?$/)) {
         setLocale(lang);
       }
 
       if (pathname !== '/en' && pathname !== '/fr' && !pathname.includes(`/${lang}/`)) {
-        const to = `/${lang}${pathname}`;
+        const to = `/${lang}${pathname}${search}`;
         return <Redirect to={to} />;
       }
 
