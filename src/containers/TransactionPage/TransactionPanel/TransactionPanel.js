@@ -568,7 +568,10 @@ export class TransactionPanelComponent extends Component {
 
                 {isAnyItemWithShipping ? (
                   <p className={css.shippingWarning}>
-                    Caution! Some items need to be picked up at the restaurant
+                    <FormattedMessage
+                      id="TransactionPanel.warningPickupItems"
+                      values={{ restaurantName }}
+                    />
                   </p>
                 ) : null}
 

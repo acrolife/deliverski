@@ -827,12 +827,20 @@ export class CheckoutPageComponent extends Component {
       return <NamedRedirect name="ListingPage" params={params} />;
     }
 
+    // Getting deliveryMethod (requires a check on publiData first otherwise throws error)
+    const deliveryMethod = currentUser.attributes.profile.publicData
+      ? JSON.parse(currentUser.attributes.profile.publicData.shoppingCart[0].checkoutValues)
+          .deliveryMethod
+      : null;
+
     // Show breakdown only when (speculated?) transaction is loaded
     // (i.e. have an id and lineItems)
     const tx = existingTransaction.booking ? existingTransaction : speculatedTransaction;
+    tx.deliveryMethod = deliveryMethod;
     const txBookingMaybe = tx.booking?.id
       ? { booking: ensureBooking(tx.booking), dateType: DATE_TYPE_DATE }
       : {};
+
     const breakdown =
       tx.id && tx.attributes.lineItems?.length > 0 ? (
         <OrderBreakdown
