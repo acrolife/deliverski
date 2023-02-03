@@ -346,21 +346,25 @@ const renderForm = formRenderProps => {
     }
   };
 
-  const breakdownData = {};
-  const showBreakdown =
-    breakdownData && lineItems && !fetchLineItemsInProgress && !fetchLineItemsError;
-  const breakdown = showBreakdown ? (
-    <div className={css.breakdownWrapper}>
-      <h3>
-        <FormattedMessage id="ProductOrderForm.breakdownTitle" />
-      </h3>
-      <EstimatedCustomerBreakdownMaybe
-        unitType={config.lineItemUnitType}
-        breakdownData={breakdownData}
-        lineItems={lineItems}
-      />
-    </div>
-  ) : null;
+  // Commented out bec we don't need to show the delivery cost in a detailed breakdo at this stage
+  // Add prop deliveryMethod to component EstimatedCustomerBreakdownMaybe before to use it here
+
+  // const breakdownData = {};
+  // const showBreakdown =
+  //   breakdownData && lineItems && !fetchLineItemsInProgress && !fetchLineItemsError;
+  // const breakdown = showBreakdown ? (
+  //   <div className={css.breakdownWrapper}>
+  //     <h3>
+  //       <FormattedMessage id="ProductOrderForm.breakdownTitle" />
+  //     </h3>
+  //     <EstimatedCustomerBreakdownMaybe
+  //       unitType={config.lineItemUnitType}
+  //       breakdownData={breakdownData}
+  //       lineItems={lineItems}
+  //       deliveryMethod={"pickup"}
+  //     />
+  //   </div>
+  // ) : null;
 
   const showContactUser = typeof onContactUser === 'function';
 
@@ -534,7 +538,7 @@ const renderForm = formRenderProps => {
       // )
       }
 
-      {breakdown}
+      {/* {breakdown} */}
       <div className={css.submitButton}>
         <PrimaryButton
           type="submit"
