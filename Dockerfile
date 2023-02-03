@@ -2,6 +2,19 @@ FROM node:16.19.0-slim as intermediate
 
 MAINTAINER ITHouse <aivils@ithouse.io>
 
+WORKDIR /app
+
+COPY package.json /app
+COPY yarn.lock /app
+
+RUN apt-get update
+RUN apt-get install -y git
+RUN yarn install --network-concurrency 1
+
+FROM node:16.19.0-slim
+WORKDIR /app
+COPY --from=intermediate /app /app
+
 ARG REACT_APP_SHARETRIBE_SDK_CLIENT_ID
 ARG REACT_APP_GOOGLE_MAPS_API_KEY
 ARG REACT_APP_STRIPE_PUBLISHABLE_KEY
@@ -39,18 +52,5 @@ ENV REACT_APP_ONESIGNAL_APP_ID=$REACT_APP_ONESIGNAL_APP_ID
 ENV REACT_APP_ONESIGNAL_SAFARI_WEB_ID=$REACT_APP_ONESIGNAL_SAFARI_WEB_ID
 ENV REACT_APP_ONESIGNAL_DEBUG=$REACT_APP_ONESIGNAL_DEBUG
 
-WORKDIR /app
-
-COPY package.json /app
-COPY yarn.lock /app
-
-RUN apt-get update
-RUN apt-get install -y git
-RUN yarn install --network-concurrency 1
-
 COPY . /app
 RUN yarn run build
-
-FROM node:16.19.0-slim
-WORKDIR /app
-COPY --from=intermediate /app /app
