@@ -206,10 +206,6 @@
  :notifications
  [{:name :notification/order-receipt,
    :on :transition/confirm-payment,
-   :at
-   {:fn/plus
-    [{:fn/timepoint [:time/first-entered-state :state/purchased]}
-     {:fn/period ["PT15M"]}]},
    :to :actor.role/customer,
    :template :order-receipt}
   {:name :notification/new-order,
