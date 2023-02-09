@@ -13,7 +13,6 @@ import { ensureCurrentUser } from '../../../util/data';
 
 import { AvatarLarge, InlineTextButton, NamedLink, NotificationBadge } from '../../../components';
 
-
 import css from './TopbarMobileMenu.module.css';
 
 const TopbarMobileMenu = props => {
@@ -24,18 +23,18 @@ const TopbarMobileMenu = props => {
     currentUser,
     notificationCount,
     onLogout,
-    history
+    history,
   } = props;
 
   const user = ensureCurrentUser(currentUser);
   // Conditional rendering of the provider/customer UI elements
-  const isProvider = currentUser ? !!currentUser.attributes.profile.metadata.isProvider : false
+  const isProvider = currentUser ? !!currentUser.attributes.profile.metadata.isProvider : false;
 
-  const restaurant = 'veggielesarcs'
+  const restaurant = 'veggielesarcs';
 
   const searchParamMyRestaurant = {
-    search: `?pub_restaurant=${restaurant}`
-  }
+    search: `?pub_restaurant=${restaurant}`,
+  };
 
   if (!isAuthenticated) {
     const signup = (
@@ -52,7 +51,10 @@ const TopbarMobileMenu = props => {
 
     const signupOrLogin = (
       <span className={css.authenticationLinks}>
-        <FormattedMessage id="TopbarMobileMenu.signupOrLogin" values={{ lineBreak: <br />, signup, login }} />
+        <FormattedMessage
+          id="TopbarMobileMenu.signupOrLogin"
+          values={{ lineBreak: <br />, signup, login }}
+        />
       </span>
     );
     return (
@@ -92,7 +94,6 @@ const TopbarMobileMenu = props => {
           <FormattedMessage id="TopbarMobileMenu.logoutLink" />
         </InlineTextButton>
 
-
         <div className={css.spacerMenu} />
         <NamedLink
           className={classNames(css.inbox, currentPageClass('InboxPage'))}
@@ -103,19 +104,23 @@ const TopbarMobileMenu = props => {
           {notificationCountBadge}
         </NamedLink>
 
-        {isProvider && <NamedLink
-          className={classNames(css.navigationLink, currentPageClass('ManageListingsPage'))}
-          name="ManageListingsPage"
-        >
-          <FormattedMessage id="TopbarMobileMenu.yourListingsLink" />
-        </NamedLink>}
+        {isProvider && (
+          <NamedLink
+            className={classNames(css.navigationLink, currentPageClass('ManageListingsPage'))}
+            name="ManageListingsPage"
+          >
+            <FormattedMessage id="TopbarMobileMenu.yourListingsLink" />
+          </NamedLink>
+        )}
 
-        {isProvider && <NamedLink
-          className={classNames(css.navigationLink, currentPageClass('NewListingPage'))}
-          name="NewListingPage"
-        >
-          <FormattedMessage id="TopbarMobileMenu.newListingLink" />
-        </NamedLink>}
+        {isProvider && (
+          <NamedLink
+            className={classNames(css.navigationLink, currentPageClass('NewListingPage'))}
+            name="NewListingPage"
+          >
+            <FormattedMessage id="TopbarMobileMenu.newListingLink" />
+          </NamedLink>
+        )}
 
         {/* 
         {isProvider && <NamedLink
@@ -132,7 +137,7 @@ const TopbarMobileMenu = props => {
         >
           <FormattedMessage id="TopbarMobileMenu.profileSettingsLink" />
         </NamedLink>
-        
+
         <NamedLink
           className={classNames(css.navigationLink, currentPageClass('AccountSettingsPage'))}
           name="AccountSettingsPage"
@@ -143,15 +148,13 @@ const TopbarMobileMenu = props => {
         <div className={css.spacer} />
       </div>
 
-      {
-        (isProvider && isAuthenticated) && <div className={css.footer}>
+      {isProvider && isAuthenticated && (
+        <div className={css.footer}>
           <NamedLink className={css.manageListingLink} name="ManageListingsPage">
             <FormattedMessage id="TopbarMobileMenu.yourListingsLink" />
           </NamedLink>
         </div>
-      }
-
-
+      )}
     </div>
   );
 };

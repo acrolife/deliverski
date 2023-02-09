@@ -35,7 +35,10 @@ const customConfig = {
       group: 'secondary',
       queryParamName: 'pub_category',
       config: {
-        options: [{ key: 'cat1', label: 'Cat 1' }, { key: 'cat2', label: 'Cat 2' }],
+        options: [
+          { key: 'cat1', label: 'Cat 1' },
+          { key: 'cat2', label: 'Cat 2' },
+        ],
       },
     },
     {

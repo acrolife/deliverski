@@ -9,14 +9,7 @@ const dev = process.env.REACT_APP_ENV === 'development';
 // If you want to change the language, remember to also change the
 // locale data and the messages in the app.js file.
 // const locale = 'fr';
-const locale = process.env.REACT_APP_LOCALE ? process.env.REACT_APP_LOCALE.toLowerCase() : 'en'
-const localeSwitch = process.env.REACT_APP_LOCALE_SWITCH ? process.env.REACT_APP_LOCALE_SWITCH.toLowerCase() : null
-const urlSwitchLang = localeSwitch ? process.env.REACT_APP_URL_SWITCH : null
-
-// DEV
-// console.log("locale", locale)
-// console.log("localeSwitch", localeSwitch)
-// console.log("urlSwitchLang", urlSwitchLang)
+const locale = process.env.REACT_APP_LOCALE ? process.env.REACT_APP_LOCALE.toLowerCase() : 'en';
 
 const i18n = {
   /*
@@ -56,14 +49,15 @@ const sortSearchByDistance = false;
 // In a way, 'processAlias' defines which transaction process (or processes)
 // this particular web application is able to handle.
 
-
 // Original
 // const transactionProcessAlias = 'flex-product-default-process/release-1';
 // New versions
-const transactionProcessAlias = 'flex-product-default-process/accept-decline-v1';
+// const transactionProcessAlias = 'flex-product-default-process/accept-decline-v1';
 // DEV
 // const transactionProcessAlias = 'flex-product-default-process/auto-delivered-120--auto-received-90-test';
 // const transactionProcessAlias = 'flex-product-default-process/dev-periods-chge-90-v10';
+// DEV ITH
+const transactionProcessAlias = 'flex-product-default-process/accept-decline-v1';
 
 // The transaction line item code for the main unit type for listings.
 //
@@ -141,7 +135,7 @@ const postalCode = '73700';
 const streetAddress = 'Rue de la Chaudanne';
 
 // Canonical root url is needed in social media sharing and SEO optimization purposes.
-const canonicalRootURL = process.env.REACT_APP_CANONICAL_ROOT_URL 
+const canonicalRootURL = process.env.REACT_APP_CANONICAL_ROOT_URL;
 
 // Site title is needed in meta tags (bots and social media sharing reads those)
 const siteTitle = 'Marmott';
@@ -245,14 +239,19 @@ const maps = {
   },
 };
 
+const onesignal = {
+  appId: process.env.REACT_APP_ONESIGNAL_APP_ID,
+  safari_web_id: process.env.REACT_APP_ONESIGNAL_SAFARI_WEB_ID,
+  subdomainName: process.env.REACT_APP_ONESIGNAL_SUBDOMAIN_NAME,
+  debug: process.env.REACT_APP_ONESIGNAL_DEBUG,
+};
+
 // NOTE: only expose configuration that should be visible in the
 // client side, don't add any server secrets in this file.
 const config = {
   env,
   dev,
   locale,
-  urlSwitchLang,
-  localeSwitch,
   transactionProcessAlias,
   lineItemUnitType,
   listingManagementType,
@@ -293,6 +292,7 @@ const config = {
   listing,
   maps,
   custom,
+  onesignal,
 };
 
 export default config;

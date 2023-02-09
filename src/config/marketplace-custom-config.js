@@ -34,7 +34,6 @@
  */
 
 export const filters = [
-
   // # ------------------------------------------------------------------------- #
   //
   //    CAUTION the data structure should be the right one enum => '', multi-enum => []
@@ -71,9 +70,11 @@ export const filters = [
         { key: 'soups-smoothies', label: 'Soups & Smoothies' },
         // { key: 'le-regal-de-veggie', label: 'Le Régal de Veggie' },
         { key: 'veggielesarcs', label: 'VeggieLesArcs' },
-        { key: 'arcosushis', label: 'ArcOsushis' },     
-        { key: 'team-marmott', label: "Team Marmott'" },  
-        { key: 'pizza-el-hierro', label: "Pizza El Hierro" },        
+        { key: 'arcosushis', label: 'ArcOsushis' },
+        { key: 'team-marmott', label: "Team Marmott'" },
+        { key: 'pizza-el-hierro', label: 'Pizza El Hierro' },
+        { key: 'evijarestaurant', label: 'EvijaRestaurant' },
+        { key: 'pie-garā-galda', label: 'Pie garā galda' },
       ],
     },
   },
@@ -109,7 +110,7 @@ export const filters = [
     label: 'Salé, sucré, menu',
     // TODO put back SelectSingleFilter if sections in all meals / restaurant's page
     // And if UX not Ok
-    // type: 'SelectSingleFilter',    
+    // type: 'SelectSingleFilter',
     type: 'SelectMultipleFilter',
     group: 'secondary',
     queryParamNames: ['pub_productType'],
@@ -117,9 +118,9 @@ export const filters = [
       schemaType: 'enum',
       options: [
         { key: 'eatable_salty', label: 'Salé' },
-        { key: 'eatable_sweet', label: 'Sucré' },        
+        { key: 'eatable_sweet', label: 'Sucré' },
         { key: 'drinkable', label: 'Boisson' },
-        { key: 'composable', label: 'Menu' }
+        { key: 'composable', label: 'Menu' },
       ],
     },
   },
@@ -161,7 +162,7 @@ export const filters = [
         { key: 'halal', label: 'Halal' },
         // Added allergens
         { key: 'gluten_free', label: 'Sans gluten' },
-        { key: 'lactose_free', label: 'Sans lactose' }
+        { key: 'lactose_free', label: 'Sans lactose' },
       ],
     },
   },
@@ -177,7 +178,7 @@ export const filters = [
   //     searchMode: 'has_any',
   //     options: [
   //       { key: 'gluten_free', label: 'Sans gluten' },
-  //       { key: 'lactose_free', label: 'Sans lactose' }        
+  //       { key: 'lactose_free', label: 'Sans lactose' }
   //     ],
   //   },
   // },
@@ -195,7 +196,7 @@ export const filters = [
         { key: 'soda', label: 'Soda' },
         { key: 'water', label: 'Eau' },
         { key: 'juice', label: 'Jus de fruits' },
-        { key: 'smoothie', label: 'Smoothie' },        
+        { key: 'smoothie', label: 'Smoothie' },
         { key: 'tea', label: 'Thé' },
         { key: 'coffee', label: 'Café' },
         { key: 'milk_based', label: 'A base de lait' },
@@ -216,12 +217,12 @@ export const filters = [
   //       { key: 'breakfast', label: 'Petit-déjeûner' },
   //       { key: 'apetizer', label: 'Apéritif' },
   //       { key: 'starter', label: 'Entrée' },
-  //       { key: 'main_dish', label: 'Plat principal' },    
+  //       { key: 'main_dish', label: 'Plat principal' },
   //       { key: 'snack', label: 'En-cas' },
   //       { key: 'dessert', label: 'Dessert' },
   //     ],
   //   },
-  // },  
+  // },
   // # Size filter ------------------------------------------------------------- #
   {
     id: 'size',
@@ -343,11 +344,11 @@ export const sortConfig = {
   ],
 };
 
-// This will determine the data output on he LISTING PAGE 
+// This will determine the data output on he LISTING PAGE
 export const listing = {
   // These should be listing details from public data with schema type: enum
   // SectionDetailsMaybe component shows these on LISTING page.
-  // enumFieldDetails: ['foodType', 'cuisine', 'diet', 'size' ],  
+  // enumFieldDetails: ['foodType', 'cuisine', 'diet', 'size' ],
   enumFieldDetails: ['cuisine', 'mealType', 'foodType', 'drinkType', 'diet', 'allergen', 'size'],
   // enumFieldDetails: ['productType', 'cuisine', 'mealType', 'foodType', 'drinkType', 'diet', 'allergen', 'size'],
 };

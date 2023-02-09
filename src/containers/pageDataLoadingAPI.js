@@ -49,7 +49,7 @@ const getPageDataLoadingAPI = () => {
     },
     LandingPage: {
       loadData: LandingPageLoader,
-    },    
+    },
     SearchPage: {
       loadData: SearchPageLoader,
     },

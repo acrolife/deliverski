@@ -145,3 +145,24 @@
     margin: 24px 0;
   }
 }
+
+.recipientPhoneNumberInfo {
+  @apply --marketplaceSmallFontStyles;
+  color: var(--attentionColor);
+}
+
+.smsNotificationInfo {
+  @apply --marketplaceSmallFontStyles;
+  color: var(--matterColorAnti);
+  margin-top: 11px;
+
+  @media (--viewportMedium) {
+    margin-top: 16px;
+  }
+}
+
+.smsNotificationLabel {
+  @apply --marketplaceSmallFontStyles;
+  font-weight: var(--fontWeightSemiBold);
+  margin: 32px 0 10px 0;
+}

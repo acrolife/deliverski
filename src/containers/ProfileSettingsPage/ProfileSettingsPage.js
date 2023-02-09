@@ -7,6 +7,7 @@ import { FormattedMessage, injectIntl, intlShape } from '../../util/reactIntl';
 import { propTypes } from '../../util/types';
 import { ensureCurrentUser } from '../../util/data';
 import { isScrollingDisabled } from '../../ducks/UI.duck';
+import { types as sdkTypes } from '../../util/sdkLoader';
 
 import {
   Page,
@@ -25,6 +26,8 @@ import ProfileSettingsForm from './ProfileSettingsForm/ProfileSettingsForm';
 import { updateProfile, uploadImage } from './ProfileSettingsPage.duck';
 import css from './ProfileSettingsPage.module.css';
 import { last } from 'lodash';
+
+const { LatLng } = sdkTypes; // eslint-disable-line no-unused-vars
 
 const onImageUploadHandler = (values, fn) => {
   const { id, imageId, file } = values;
@@ -49,7 +52,18 @@ export class ProfileSettingsPageComponent extends Component {
     } = this.props;
 
     const handleSubmit = values => {
-      const { firstName, lastName, bio: rawBio, restaurantName, schedule } = values;
+      const {
+        firstName,
+        lastName,
+        bio: rawBio,
+        restaurantName,
+        // restaurantAddress,
+        restaurantAddressPlainText,
+        schedule,
+        preparationTime,
+        mealIsReadyTime,
+        deliveryTime,
+      } = values;
 
       // Ensure that the optional bio is a string
       const bio = rawBio || '';
@@ -62,8 +76,15 @@ export class ProfileSettingsPageComponent extends Component {
       }
 
       // Add our restaurant name to the user public data
-      publicData.restaurantName = restaurantName;
-      publicData.schedule = schedule;
+      const publicData = {
+        restaurantName,
+        // restaurantAddress,
+        restaurantAddressPlainText,
+        schedule,
+        preparationTime,
+        mealIsReadyTime,
+        deliveryTime,
+      };
 
       const profile = {
         firstName: firstName.trim(),
@@ -148,12 +169,35 @@ export class ProfileSettingsPageComponent extends Component {
     ]
     const scheduleValue = savedSchedule ?? basicSchedule
     const isOffline = !!user?.attributes?.profile.publicData?.onHoldByOwner;
+    const preparationTime = publicData?.preparationTime;
+    const mealIsReadyTime = publicData?.mealIsReadyTime;
+    const deliveryTime = publicData?.deliveryTime;
+    /*
+    const restaurantAddress = publicData?.restaurantAddress ? publicData.restaurantAddress : {};
+    if (restaurantAddress?.selectedPlace?.origin) {
+      const { origin } = restaurantAddress.selectedPlace;
+      restaurantAddress.selectedPlace.origin = new LatLng(origin.lat, origin.lng);
+    }
+    */
+    const restaurantAddressPlainText = publicData?.restaurantAddressPlainText;
 
     const profileSettingsForm = user.id ? (
       <ProfileSettingsForm
         className={css.form}
         currentUser={currentUser}
-        initialValues={{ firstName, lastName, bio, restaurantName, profileImage: user.profileImage, schedule: scheduleValue }}
+        initialValues={{
+          firstName,
+          lastName,
+          bio,
+          restaurantName,
+          // restaurantAddress,
+          restaurantAddressPlainText,
+          profileImage: user.profileImage,
+          schedule: scheduleValue,
+          preparationTime,
+          mealIsReadyTime,
+          deliveryTime,
+        }}
         profileImage={profileImage}
         onImageUpload={e => onImageUploadHandler(e, onImageUpload)}
         uploadInProgress={uploadInProgress}

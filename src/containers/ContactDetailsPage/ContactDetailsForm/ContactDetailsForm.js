@@ -4,6 +4,7 @@ import { compose } from 'redux';
 import isEqual from 'lodash/isEqual';
 import classNames from 'classnames';
 import { Form as FinalForm } from 'react-final-form';
+import Switch from '@mui/material/Switch';
 
 import { FormattedMessage, injectIntl, intlShape } from '../../../util/reactIntl';
 import { propTypes } from '../../../util/types';
@@ -15,11 +16,18 @@ import {
   isTooManyEmailVerificationRequestsError,
 } from '../../../util/errors';
 
-import { FieldPhoneNumberInput, Form, PrimaryButton, FieldTextInput } from '../../../components';
+import { Form, PrimaryButton, FieldTextInput } from '../../../components';
 
 import css from './ContactDetailsForm.module.css';
 
 const SHOW_EMAIL_SENT_TIMEOUT = 2000;
+
+const handleReceiveSMS = form => e => {
+  const { checked } = e.target;
+  form.batch(() => {
+    form.change('smsNotficationIsEnabled', checked);
+  });
+};
 
 class ContactDetailsFormComponent extends Component {
   constructor(props) {
@@ -72,6 +80,7 @@ class ContactDetailsFormComponent extends Component {
             sendVerificationEmailInProgress,
             resetPasswordInProgress,
             values,
+            form,
           } = fieldRenderProps;
           const { email, phoneNumber } = values;
 
@@ -80,6 +89,9 @@ class ContactDetailsFormComponent extends Component {
           if (!user.id) {
             return null;
           }
+
+          const isProvider = user.attributes.profile.metadata?.isProvider;
+          const dirtyValues = form.getState().values;
 
           const { email: currentEmail, emailVerified, pendingEmail, profile } = user.attributes;
 
@@ -195,6 +207,16 @@ class ContactDetailsFormComponent extends Component {
             id: 'ContactDetailsForm.phonePlaceholder',
           });
           const phoneLabel = intl.formatMessage({ id: 'ContactDetailsForm.phoneLabel' });
+          // phoneRequired does not work proper
+          // eslint-disable-next-line no-unused-vars
+          const phoneRequired =
+            isProvider && dirtyValues.smsNotficationIsEnabled
+              ? validators.required(
+                  intl.formatMessage({
+                    id: 'ContactDetailsForm.phoneRequired',
+                  })
+                )
+              : null;
 
           // password
           const passwordLabel = intl.formatMessage({
@@ -319,13 +341,42 @@ class ContactDetailsFormComponent extends Component {
                   customErrorText={emailTouched ? null : emailTakenErrorText}
                 />
                 {emailVerifiedInfo}
-                <FieldPhoneNumberInput
+                <FieldTextInput
                   className={css.phone}
+                  type="text"
                   name="phoneNumber"
                   id={formId ? `${formId}.phoneNumber` : 'phoneNumber'}
                   label={phoneLabel}
                   placeholder={phonePlaceholder}
+                  validate={validators.composeValidators(
+                    validators.validPhoneNumber(
+                      intl.formatMessage({ id: 'ContactDetailsForm.phoneNumberInvalid' }),
+                      intl.formatMessage({
+                        id: 'ContactDetailsForm.phoneNumberInternationalInvalid',
+                      })
+                    )
+                  )}
                 />
+                <p className={css.recipientPhoneNumberInfo}>
+                  <FormattedMessage id="ContactDetailsForm.phoneNumberInfo" />
+                </p>
+                {isProvider && (
+                  <>
+                    <p className={css.smsNotificationLabel}>
+                      <FormattedMessage id="ContactDetailsForm.smsNotificationLabel" />
+                    </p>
+                    <div className={css.switchWrapper}>
+                      <FormattedMessage id="ContactDetailsForm.receiveSMS" />
+                      <Switch
+                        checked={values.smsNotficationIsEnabled}
+                        onChange={handleReceiveSMS(form)}
+                      />
+                    </div>
+                    <p className={css.smsNotificationInfo}>
+                      <FormattedMessage id="ContactDetailsForm.smsSwitchInfo" />
+                    </p>
+                  </>
+                )}
               </div>
 
               <div className={confirmClasses}>

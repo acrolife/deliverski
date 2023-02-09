@@ -100,11 +100,10 @@
   margin-top: 3vh;
 }
 
-
 /* A bar on top of light sections */
 .section:nth-of-type(2n) .sectionContent::before {
   /* custom  */
-  margin-top: 10rem;  
+  margin-top: 10rem;
   background: var(--marketplaceColor);
   content: '';
   display: block;

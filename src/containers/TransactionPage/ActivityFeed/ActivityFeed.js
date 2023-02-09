@@ -9,6 +9,7 @@ import { ensureTransaction, ensureUser, ensureListing } from '../../../util/data
 import {
   TRANSITION_ACCEPT,
   TRANSITION_DECLINE,
+  TRANSITION_EXPIRE_ACCEPT,
   TRANSITION_CONFIRM_PAYMENT,
   TRANSITION_AUTO_CANCEL,
   TRANSITION_CANCEL,
@@ -18,6 +19,8 @@ import {
   TRANSITION_MARK_RECEIVED,
   TRANSITION_AUTO_MARK_RECEIVED,
   TRANSITION_MARK_RECEIVED_FROM_DISPUTED,
+  TRANSITION_MARK_PREPARED,
+  TRANSITION_MARK_DELIVERED_FROM_PURCHASED,
   TRANSITION_MARK_DELIVERED,
   TRANSITION_DISPUTE,
   // TRANSITION_REVIEW_1_BY_CUSTOMER,
@@ -127,6 +130,15 @@ const resolveTransitionMessage = (
   const displayName = otherUsersName;
   const isSystemTransition = transition.by === 'system';
   const systemName = intl.formatMessage({ id: 'ActivityFeed.system' });
+  const protectedData = transaction.attributes.protectedData;
+  const deliveryMethod = protectedData?.deliveryMethod;
+  const isShipping = deliveryMethod === 'shipping';
+
+  const providerPublicData = transaction.provider.attributes.profile.publicData || {};
+  const preparationTime = providerPublicData.preparationTime;
+  const mealIsReadyTime = providerPublicData.mealIsReadyTime;
+  const deliveryTime = providerPublicData.deliveryTime;
+  const deliveryFromAddress = providerPublicData.deliveryFromAddress;
 
   switch (currentTransition) {
     case TRANSITION_CONFIRM_PAYMENT:
@@ -141,15 +153,28 @@ const resolveTransitionMessage = (
     case TRANSITION_ACCEPT:
       return isOwnTransition ? (
         <FormattedMessage id="ActivityFeed.ownTransitionAccept" />
+      ) : isShipping ? (
+        <FormattedMessage
+          id="ActivityFeed.transitionAcceptShipping"
+          values={{ preparationTime, deliveryTime }}
+        />
       ) : (
-        <FormattedMessage id="ActivityFeed.transitionAccept" values={{ displayName }} />
+        <FormattedMessage
+          id="ActivityFeed.transitionAcceptPickup"
+          values={{ preparationTime, mealIsReadyTime, deliveryFromAddress }}
+        />
       );
     case TRANSITION_DECLINE:
       return isOwnTransition ? (
         <FormattedMessage id="ActivityFeed.ownTransitionDecline" />
       ) : (
-        <FormattedMessage id="ActivityFeed.transitionDecline" values={{ displayName: isSystemTransition ? systemName : displayName }} />
+        <FormattedMessage
+          id="ActivityFeed.transitionDecline"
+          values={{ displayName: isSystemTransition ? systemName : displayName }}
+        />
       );
+    case TRANSITION_EXPIRE_ACCEPT:
+      return <FormattedMessage id="ActivityFeed.expiredAccept" />;
     case TRANSITION_AUTO_CANCEL:
     case TRANSITION_CANCEL:
     case TRANSITION_AUTO_CANCEL_FROM_DISPUTED:
@@ -172,7 +197,16 @@ const resolveTransitionMessage = (
 
       return reviewAsFirstLink || <FormattedMessage id="ActivityFeed.transitionMarkReceived" />;
       */
-    // eslint-disable-next-line no-fallthrough
+      return <FormattedMessage id="ActivityFeed.transitionMarkReceived" />;
+    case TRANSITION_MARK_PREPARED:
+      return isOwnTransition ? (
+        <FormattedMessage id="ActivityFeed.ownTransitionPrepared" />
+      ) : isShipping ? (
+        <FormattedMessage id="ActivityFeed.transitionPreparedShipping" values={{ deliveryTime }} />
+      ) : (
+        <FormattedMessage id="ActivityFeed.transitionPreparedPickup" values={{ mealIsReadyTime }} />
+      );
+    case TRANSITION_MARK_DELIVERED_FROM_PURCHASED:
     case TRANSITION_MARK_DELIVERED: {
       const isShipped = transaction.attributes?.protectedData?.deliveryMethod === 'shipping';
       return isOwnTransition && isShipped ? (

@@ -33,9 +33,16 @@ export const TRANSITION_EXPIRE_PAYMENT = 'transition/expire-payment';
 // SalePage, it is transitioned with the accept or decline transition.
 export const TRANSITION_ACCEPT = 'transition/accept';
 export const TRANSITION_DECLINE = 'transition/decline';
+export const TRANSITION_EXPIRE_ACCEPT = 'transition/expire-accept';
+
+// Provider can mark the meal prepared
+export const TRANSITION_MARK_PREPARED = 'transition/mark-prepared';
 
 // Provider can mark the product shipped/delivered
 export const TRANSITION_MARK_DELIVERED = 'transition/mark-delivered';
+
+// Provider can mark the product shipped/delivered bypassing prepared
+export const TRANSITION_MARK_DELIVERED_FROM_PURCHASED = 'transition/mark-delivered-from-purchased';
 
 // Customer can mark the product received (e.g. picked up from provider)
 export const TRANSITION_MARK_RECEIVED_FROM_PURCHASED = 'transition/mark-received-from-purchased';
@@ -115,6 +122,7 @@ const STATE_PAYMENT_EXPIRED = 'payment-expired';
 const STATE_PREAUTHORIZED = 'preauthorized';
 const STATE_DECLINED = 'declined';
 const STATE_PURCHASED = 'purchased';
+const STATE_PREPARED = 'prepared';
 const STATE_DELIVERED = 'delivered';
 const STATE_RECEIVED = 'received';
 const STATE_DISPUTED = 'disputed';
@@ -137,14 +145,16 @@ const stateDescription = {
   // id is defined only to support Xstate format.
   // However if you have multiple transaction processes defined,
   // it is best to keep them in sync with transaction process aliases.
-  
+
   // Original
   // id: 'flex-product-default-process/release-1',
   // New version
-  id: 'flex-product-default-process/auto-delivered-120--auto-received-90-prod-v3',
+  // id: 'flex-product-default-process/auto-delivered-120--auto-received-90-prod-v3',
   // DEV
   // id: 'flex-product-default-process/auto-delivered-120--auto-received-90-test',
   // id: 'flex-product-default-process/dev-periods-chge-90-v10',
+  // DEV ITH
+  id: 'flex-product-default-process/accept-decline-v1',
 
   // This 'initial' state is a starting point for new transaction
   initial: STATE_INITIAL,
@@ -176,16 +186,23 @@ const stateDescription = {
         [TRANSITION_DECLINE]: STATE_DECLINED,
         [TRANSITION_EXPIRE_PAYMENT]: STATE_PAYMENT_EXPIRED,
         [TRANSITION_ACCEPT]: STATE_PURCHASED,
+        [TRANSITION_EXPIRE_ACCEPT]: STATE_DECLINED,
       },
     },
 
     [STATE_DECLINED]: {},
     [STATE_PURCHASED]: {
       on: {
-        [TRANSITION_MARK_DELIVERED]: STATE_DELIVERED,
+        [TRANSITION_MARK_PREPARED]: STATE_PREPARED,
+        [TRANSITION_MARK_DELIVERED_FROM_PURCHASED]: STATE_DELIVERED,
         [TRANSITION_MARK_RECEIVED_FROM_PURCHASED]: STATE_RECEIVED,
         [TRANSITION_AUTO_CANCEL]: STATE_CANCELED,
         [TRANSITION_CANCEL]: STATE_CANCELED,
+      },
+    },
+    [STATE_PREPARED]: {
+      on: {
+        [TRANSITION_MARK_DELIVERED]: STATE_DELIVERED,
       },
     },
 
@@ -272,7 +289,8 @@ const getTransitionsToState = getTransitionsToStateFn(stateDescription);
 
 // This is needed to fetch transactions that need response from provider.
 // I.e. transactions which provider needs to accept or decline
-export const transitionsToRequested = getTransitionsToState(STATE_PURCHASED);
+// export const transitionsToRequested = getTransitionsToState(STATE_PURCHASED);
+export const transitionsToRequested = [TRANSITION_CONFIRM_PAYMENT];
 
 /**
  * Helper functions to figure out if transaction is in a specific state.
@@ -298,11 +316,16 @@ export const txIsPurchased = tx =>
 export const txIsRequested = tx =>
   getTransitionsToState(STATE_PREAUTHORIZED).includes(txLastTransition(tx));
 
+export const txIsExpiredAccept = tx => txLastTransition(tx) === TRANSITION_EXPIRE_ACCEPT;
+
 export const txIsDeclined = tx =>
   getTransitionsToState(STATE_DECLINED).includes(txLastTransition(tx));
 
 export const txIsCanceled = tx =>
   getTransitionsToState(STATE_CANCELED).includes(txLastTransition(tx));
+
+export const txIsPrepared = tx =>
+  getTransitionsToState(STATE_PREPARED).includes(txLastTransition(tx));
 
 export const txIsDelivered = tx =>
   getTransitionsToState(STATE_DELIVERED).includes(txLastTransition(tx));
@@ -377,10 +400,13 @@ export const isRelevantPastTransition = transition => {
   return [
     TRANSITION_ACCEPT,
     TRANSITION_DECLINE,
+    TRANSITION_EXPIRE_ACCEPT,
     TRANSITION_CONFIRM_PAYMENT,
     TRANSITION_AUTO_CANCEL,
     TRANSITION_CANCEL,
     TRANSITION_MARK_RECEIVED_FROM_PURCHASED,
+    TRANSITION_MARK_PREPARED,
+    TRANSITION_MARK_DELIVERED_FROM_PURCHASED,
     TRANSITION_MARK_DELIVERED,
     TRANSITION_DISPUTE,
     TRANSITION_MARK_RECEIVED,

@@ -60,7 +60,7 @@ const Footer = props => {
   // const socialMediaLinks = renderSocialMediaLinks(intl);
   const classes = classNames(rootClassName || css.root, className);
   // Conditional rendering of the provider/customer UI elements
-  const isProvider = currentUser ? !!currentUser.attributes.profile.metadata.isProvider : false
+  const isProvider = currentUser ? !!currentUser.attributes.profile.metadata.isProvider : false;
 
   return (
     <div className={classes}>
@@ -85,12 +85,13 @@ const Footer = props => {
             </div>
             <div className={css.infoLinks}>
               <ul className={css.list}>
-                {isProvider &&
+                {isProvider && (
                   <li className={css.listItem}>
                     <NamedLink name="NewListingPage" className={css.link}>
                       <FormattedMessage id="Footer.toNewListingPage" />
                     </NamedLink>
-                  </li>}
+                  </li>
+                )}
                 {/* <li className={css.listItem}>
                   <NamedLink name="LandingPage" to={{ hash: '#how-it-works' }} className={css.link}>
                     <FormattedMessage id="Footer.toAboutPage" />
@@ -257,7 +258,6 @@ const Footer = props => {
               </div>
             </div> */}
 
-
           {/* // Footer Mobile TermsOfServicePage PrivacyPolicyPage */}
           <div className={css.copyrightAndTermsMobile}>
             <NamedLink name="LandingPage" className={css.organizationCopyrightMobile}>
@@ -272,8 +272,6 @@ const Footer = props => {
               </NamedLink> */}
             </div>
           </div>
-
-
         </div>
       </div>
     </div>

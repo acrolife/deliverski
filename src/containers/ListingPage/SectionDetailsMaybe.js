@@ -32,7 +32,6 @@ const SectionDetailsMaybe = props => {
   // Solution : les implementer dans en/fr.son !
   // console.log(existingExtendedData)
 
-
   return existingExtendedData ? (
     <div className={css.sectionDetails}>
       <h2 className={css.detailsTitle}>
@@ -42,25 +41,21 @@ const SectionDetailsMaybe = props => {
         {existingExtendedData.map(detail => (
           <li key={detail.key} className={css.detailsRow}>
             <span className={css.detailLabel}>{detail.label}</span>
-            {
-              Array.isArray(detail.value) ? 
-                (
-                  <ul className={css.details}>
-                    {detail.value.map((e, i) =>
-                    (< li key={i} className={css.detailsSub}>
-                      <span className={css.detailLabelSub}>{e}</span>
-                    </li>
-                    ))}
-                  </ul>
-                ) : <span>{detail.value}</span>
-            }
-
-
+            {Array.isArray(detail.value) ? (
+              <ul className={css.details}>
+                {detail.value.map((e, i) => (
+                  <li key={i} className={css.detailsSub}>
+                    <span className={css.detailLabelSub}>{e}</span>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <span>{detail.value}</span>
+            )}
           </li>
-        ))
-        }
-      </ul >
-    </div >
+        ))}
+      </ul>
+    </div>
   ) : null;
 };
 

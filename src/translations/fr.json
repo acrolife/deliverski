@@ -1,4 +1,5 @@
 {
+  "language": "fr",
   "ActivityFeed.deletedListing": "Produit supprimé",
   "ActivityFeed.deletedReviewContent": "Cette évaluation est supprimée.",
   "ActivityFeed.leaveAReview": "Leave a review for { displayName }.",

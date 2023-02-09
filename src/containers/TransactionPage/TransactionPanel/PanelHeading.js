@@ -13,8 +13,10 @@ export const HEADING_PAYMENT_PENDING = 'pending-payment';
 export const HEADING_PAYMENT_EXPIRED = 'payment-expired';
 export const HEADING_REQUESTED = 'requested';
 export const HEADING_CANCELED = 'canceled';
+export const HEADING_EXPIRED_ACCEPT = 'expired-accept';
 export const HEADING_DECLINED = 'declined';
 export const HEADING_PURCHASED = 'purchased';
+export const HEADING_PREPARED = 'prepared';
 export const HEADING_DELIVERED = 'delivered';
 export const HEADING_DISPUTED = 'disputed';
 export const HEADING_RECEIVED = 'received';
@@ -218,6 +220,21 @@ const PanelHeading = props => {
           isCustomerBanned={isCustomerBanned}
         />
       );
+    case HEADING_EXPIRED_ACCEPT:
+      return isCustomer ? (
+        <HeadingCustomer
+          className={titleClasses}
+          id="TransactionPanel.orderExpiredAccept"
+          values={{ customerName, listingLink }}
+        />
+      ) : (
+        <HeadingProvider
+          className={titleClasses}
+          id="TransactionPanel.saleExpiredAccept"
+          values={{ customerName, listingLink }}
+          isCustomerBanned={isCustomerBanned}
+        />
+      );
     case HEADING_DECLINED:
       return isCustomer ? (
         <HeadingCustomer
@@ -245,6 +262,22 @@ const PanelHeading = props => {
           className={titleClasses}
           id="TransactionPanel.saleCanceledTitle"
           values={{ customerName, listingLink }}
+        />
+      );
+    case HEADING_PREPARED:
+      return isCustomer ? (
+        <HeadingCustomer
+          className={titleClasses}
+          id="TransactionPanel.orderPreparedTitle"
+          values={{ customerName, listingLink }}
+          isCustomerBanned={isCustomerBanned}
+        />
+      ) : (
+        <HeadingProvider
+          className={titleClasses}
+          id="TransactionPanel.salePreparedTitle"
+          values={{ customerName, listingLink }}
+          isCustomerBanned={isCustomerBanned}
         />
       );
     case HEADING_DELIVERED:

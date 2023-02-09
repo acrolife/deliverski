@@ -6,7 +6,6 @@ import { types as sdkTypes, transit } from './sdkLoader';
 import config from '../config';
 import Decimal from 'decimal.js';
 
-
 export const apiBaseUrl = () => {
   const port = process.env.REACT_APP_DEV_API_SERVER_PORT;
   const useDevApiServer = process.env.NODE_ENV === 'development' && !!port;
@@ -22,7 +21,6 @@ export const apiBaseUrl = () => {
   // Otherwise, use the same domain and port as the frontend
   return `${window.location.origin}`;
 };
-
 
 /*
 // DEV
@@ -63,7 +61,6 @@ if (window) {
 }
 return apiBaseUrl
 */
-
 
 // Application type handlers for JS SDK.
 //

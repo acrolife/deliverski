@@ -1,42 +1,42 @@
-.fieldWrapper{
-    display: flex;
+.fieldWrapper {
+  display: flex;
 
-    @media (max-width: 768px){
-        flex-direction: column;
-    }
-}
-
-.selectField{
-    max-width: 3pc;
-    display: flex;
+  @media (max-width: 768px) {
     flex-direction: column;
-    justify-content: center;
+  }
 }
 
-.inputsWrapper{
-    display: flex;
+.selectField {
+  max-width: 3pc;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.selectField select{
-    /* border-bottom: none; */
+.inputsWrapper {
+  display: flex;
 }
 
-.dayLabel{
-    margin-right: 1pc;
-    min-width: 7pc;
+.selectField select {
+  /* border-bottom: none; */
 }
 
-.separator1{
-    margin: auto 7px;
+.dayLabel {
+  margin-right: 1pc;
+  min-width: 7pc;
 }
 
-.separator2{
-    margin: auto 5px;
+.separator1 {
+  margin: auto 7px;
 }
 
-.wrapper{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+.separator2 {
+  margin: auto 5px;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }

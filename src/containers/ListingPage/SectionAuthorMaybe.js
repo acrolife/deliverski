@@ -29,7 +29,7 @@ const SectionAuthorMaybe = props => {
       <h2 className={css.aboutProviderTitle}>
         <FormattedMessage id="ListingPage.aboutProviderTitle" />
       </h2>
-      <UserCard user={listing.author} currentUser={currentUser} onContactUser={onContactUser} />      
+      <UserCard user={listing.author} currentUser={currentUser} onContactUser={onContactUser} />
       <Modal
         id="ListingPage.enquiry"
         contentClassName={css.enquiryModalContent}

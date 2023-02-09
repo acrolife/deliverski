@@ -107,22 +107,22 @@ export class AuthenticationPageComponent extends Component {
     // test with this in the console :
     // let from = "undefined/en/verify-email?t=5366920166083824"
 
-    // This has been implemented in the case of the multilangage feature implemented on the site, 
+    // This has been implemented in the case of the multilangage feature implemented on the site,
     // when a the path "en/verify-email?t=5366920166083824" is targetted, the router send it to "undefined/en/verify-email?t=5366920166083824"
     // So the quick hack was to implement this here after for the routes generating this behavior.
-    let fromNew
+    let fromNew;
     try {
-      if (from.includes("undefined")) {
-        const fromArray = from.split('/')
+      if (from.includes('undefined')) {
+        const fromArray = from.split('/');
         // If the path includes "undefined", we have to remove "undefined/en" or "undefined/fr", say the two first elements of the path
-        fromArray.splice(0,2)
-        fromNew = fromArray.join('/')        
+        fromArray.splice(0, 2);
+        fromNew = fromArray.join('/');
       }
     } catch (e) {
-      console.log(`Error @ Login: ${e}`)
-    } 
+      console.log(`Error @ Login: ${e}`);
+    }
 
-    from = fromNew ? fromNew : from
+    from = fromNew ? fromNew : from;
 
     // DEV
     // console.log("from after", from)
@@ -533,10 +533,7 @@ const mapDispatchToProps = dispatch => ({
 // See: https://github.com/ReactTraining/react-router/issues/4671
 const AuthenticationPage = compose(
   withRouter,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   injectIntl
 )(AuthenticationPageComponent);
 

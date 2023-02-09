@@ -112,8 +112,7 @@
   }
 }
 
-
-.deliveryOptions{
+.deliveryOptions {
   display: none;
   @apply --marketplaceH5FontStyles;
 
@@ -237,8 +236,7 @@
   flex-shrink: 0;
 }
 
-
-.pickupChip{
+.pickupChip {
   margin-top: 10px;
   color: var(--marketplaceColor) !important;
 }
@@ -248,7 +246,7 @@
   color: var(--marketplaceColor) !important;
 }
 
-.openDot{
+.openDot {
   width: auto;
   margin: 0;
   font-size: 80px;
@@ -257,7 +255,7 @@
   margin-top: -2px;
 }
 
-.closedDot{
+.closedDot {
   width: auto;
   margin: 0;
   font-size: 80px;
@@ -266,12 +264,12 @@
   margin-top: -2px;
 }
 
-.scheduleInfoTextOpen{
+.scheduleInfoTextOpen {
   color: var(--successColor);
   line-height: 20px;
 }
 
-.scheduleInfoTextClosed{
+.scheduleInfoTextClosed {
   color: red;
   line-height: 20px;
 }

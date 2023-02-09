@@ -26,25 +26,22 @@ const LineItemBasePriceMaybe = props => {
   const baseListing = transaction?.listing ? transaction?.listing : listing;
 
   return quantity && total ? (
-
     <>
-    <div className={css.lineItem}>
-                <span className={css.itemLabel}>
-                    <a href={`/l/${baseListing?.attributes.title.replace(' ','-')}/${baseListing?.id.uuid}`}>{baseListing?.attributes.title}</a>
-                </span>
-    </div>
+      <div className={css.lineItem}>
+        <span className={css.itemLabel}>
+          <a href={`/l/${baseListing?.attributes.title.replace(' ', '-')}/${baseListing?.id.uuid}`}>
+            {baseListing?.attributes.title}
+          </a>
+        </span>
+      </div>
 
-
-   <div className={css.lineItem}>
-      <span className={css.itemLabel}>
-        <FormattedMessage id={translationKey} values={{ unitPrice, quantity }} />
-      </span>
-      <span className={css.itemValue}>{total}</span>
-    </div>
-
-    
+      <div className={css.lineItem}>
+        <span className={css.itemLabel}>
+          <FormattedMessage id={translationKey} values={{ unitPrice, quantity }} />
+        </span>
+        <span className={css.itemValue}>{total}</span>
+      </div>
     </>
-
   ) : null;
 };
 

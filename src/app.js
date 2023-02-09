@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ReactDOMServer from 'react-dom/server';
 
@@ -12,12 +12,14 @@ import { Provider } from 'react-redux';
 import difference from 'lodash/difference';
 import mapValues from 'lodash/mapValues';
 import moment from 'moment';
-import { IntlProvider } from './util/reactIntl';
+// import { IntlProvider } from './util/reactIntl';
 import { IncludeMapLibraryScripts } from './util/includeScripts';
 import configureStore from './store';
 import routeConfiguration from './routing/routeConfiguration';
 import Routes from './routing/Routes';
+import LocalizedRouter from './routing/LocalizedRouter';
 import config from './config';
+import { initOneSignal } from './util/onesignal';
 
 // Flex template application uses English translations as default.
 // import defaultMessages from './translations/en.json';
@@ -25,7 +27,7 @@ import defaultMessagesEn from './translations/en.json';
 import defaultMessagesFr from './translations/fr.json';
 
 // Custom implementation
-const defaultMessages = config.locale === 'en' ? defaultMessagesEn : defaultMessagesFr
+const defaultMessages = config.locale === 'en' ? defaultMessagesEn : defaultMessagesFr;
 
 // If you want to change the language, change the imports to match the wanted locale:
 //   1) Change the language in the config.js file!
@@ -75,7 +77,7 @@ const isTestEnv = process.env.NODE_ENV === 'test';
 // Locale should not affect the tests. We ensure this by providing
 // messages with the key as the value of each message.
 const testMessages = mapValues(messages, (val, key) => key);
-const localeMessages = isTestEnv ? testMessages : messages;
+const localeMessages = isTestEnv ? testMessages : messages; // eslint-disable-line no-unused-vars
 
 const setupLocale = () => {
   if (isTestEnv) {
@@ -93,17 +95,20 @@ const setupLocale = () => {
 export const ClientApp = props => {
   const { store } = props;
   setupLocale();
+  useEffect(() => {
+    initOneSignal();
+  });
   return (
-    <IntlProvider locale={config.locale} messages={localeMessages} textComponent="span">
-      <Provider store={store}>
-        <HelmetProvider>
-          <IncludeMapLibraryScripts />
-          <BrowserRouter>
+    <Provider store={store}>
+      <HelmetProvider>
+        <IncludeMapLibraryScripts />
+        <BrowserRouter>
+          <LocalizedRouter>
             <Routes routes={routeConfiguration()} />
-          </BrowserRouter>
-        </HelmetProvider>
-      </Provider>
-    </IntlProvider>
+          </LocalizedRouter>
+        </BrowserRouter>
+      </HelmetProvider>
+    </Provider>
   );
 };
 
@@ -116,16 +121,16 @@ export const ServerApp = props => {
   setupLocale();
   HelmetProvider.canUseDOM = false;
   return (
-    <IntlProvider locale={config.locale} messages={localeMessages} textComponent="span">
-      <Provider store={store}>
-        <HelmetProvider context={helmetContext}>
-          <IncludeMapLibraryScripts />
-          <StaticRouter location={url} context={context}>
+    <Provider store={store}>
+      <HelmetProvider context={helmetContext}>
+        <IncludeMapLibraryScripts />
+        <StaticRouter location={url} context={context}>
+          <LocalizedRouter>
             <Routes routes={routeConfiguration()} />
-          </StaticRouter>
-        </HelmetProvider>
-      </Provider>
-    </IntlProvider>
+          </LocalizedRouter>
+        </StaticRouter>
+      </HelmetProvider>
+    </Provider>
   );
 };
 

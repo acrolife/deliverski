@@ -65,7 +65,7 @@
    :actions
    [{:name :action/calculate-full-refund}
     {:name :action/stripe-refund-payment}
-    {:name :action/decline-stock-reservation}],
+    {:name :action/cancel-stock-reservation}],
    :from :state/preauthorized,
    :to :state/declined}
   {:name :transition/mark-received-from-purchased,
@@ -73,10 +73,20 @@
    :actions [{:name :action/stripe-create-payout}],
    :from :state/purchased,
    :to :state/received}
-  {:name :transition/mark-delivered,
+  {:name :transition/mark-prepared,
    :actor :actor.role/provider,
    :actions [],
    :from :state/purchased,
+   :to :state/prepared}
+  {:name :transition/mark-delivered-from-purchased,
+   :actor :actor.role/provider,
+   :actions [],
+   :from :state/purchased,
+   :to :state/delivered}
+  {:name :transition/mark-delivered,
+   :actor :actor.role/provider,
+   :actions [],
+   :from :state/prepared,
    :to :state/delivered}
   {:name :transition/mark-received,
    :actor :actor.role/customer,
@@ -196,16 +206,20 @@
  :notifications
  [{:name :notification/order-receipt,
    :on :transition/confirm-payment,
-   :at
-   {:fn/plus
-    [{:fn/timepoint [:time/first-entered-state :state/purchased]}
-     {:fn/period ["PT15M"]}]},
    :to :actor.role/customer,
    :template :order-receipt}
   {:name :notification/new-order,
    :on :transition/confirm-payment,
    :to :actor.role/provider,
    :template :new-order}
+  {:name :notification/expired-accept-provider,
+   :on :transition/expire-accept,
+   :to :actor.role/provider,
+   :template :expired-accept-provider}
+  {:name :notification/expired-accept-customer,
+   :on :transition/expire-accept,
+   :to :actor.role/customer,
+   :template :expired-accept-customer}
   {:name :notification/order-marked-as-delivered,
    :on :transition/mark-delivered,
    :to :actor.role/customer,

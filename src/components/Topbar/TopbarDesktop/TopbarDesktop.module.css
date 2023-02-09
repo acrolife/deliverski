@@ -24,32 +24,32 @@
   }
 }
 
-.quantityButton{
+.quantityButton {
   cursor: pointer;
-  &:hover{
+  &:hover {
     transform: scale(1.3);
     color: var(--marketplaceColor);
   }
 }
 
-.cartItemLeft{
+.cartItemLeft {
   display: flex;
 }
 
-.buttonsWrapper{
+.buttonsWrapper {
   margin-left: 10px;
 }
 
-.infoText{
+.infoText {
   font-size: 14px;
   color: var(--marketplaceColor);
 }
 
-.infoTextTotal{
+.infoTextTotal {
   margin: 0;
   text-align: end;
   color: var(--marketplaceColor);
-  font-size: 14px
+  font-size: 14px;
 }
 
 /* logo */
@@ -57,7 +57,7 @@
   @apply --TopbarDesktop_linkHover;
   flex-shrink: 0;
   /* padding: 21px 24px 21px 24px; */
-  padding: 10px 0px 10px 0px;  
+  padding: 10px 0px 10px 0px;
   height: 100%;
 
   @media (--viewportLarge) {
@@ -68,7 +68,7 @@
 .logo {
   /* If height is increased, change link paddings accordingly */
   /* height: 27px; */
-  height: 50px;  
+  height: 50px;
 
   /* Good aspect ratio should be less than 160/27 (width/height) */
   /* NOTE: extremely wide logos, need special handling. */
@@ -133,7 +133,6 @@
   @apply --TopbarDesktop_label;
 }
 
-
 /* Inbox */
 .inboxLinkDesktop {
   @apply --TopbarDesktop_linkHover;
@@ -153,10 +152,9 @@
     margin-bottom: 0;
   }
 
-  @media only screen and (max-width: 768px){
+  @media only screen and (max-width: 768px) {
     width: 8rem;
   }
-
 }
 
 .inboxDesktop {
@@ -230,25 +228,24 @@
   padding-top: 20px;
 }
 
-
 /* Lang menu */
 .langageMenuLabelDesktop {
-    @apply --TopbarDesktop_linkHover;
-    @apply --marketplaceH5FontStyles;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    height: 100%;
-    margin: 0;
-    padding: 6 12px 6 12px;
-  
-    &:active {
-      border-bottom: 0;
-    }
+  @apply --TopbarDesktop_linkHover;
+  @apply --marketplaceH5FontStyles;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  margin: 0;
+  padding: 6 12px 6 12px;
 
-    @media only screen and (max-width: 768px){
-      margin-right: -10px;
-    }
+  &:active {
+    border-bottom: 0;
+  }
+
+  @media only screen and (max-width: 768px) {
+    margin-right: -10px;
+  }
 }
 
 .langageMenuContentDesktop {
@@ -286,11 +283,10 @@
 }
 
 .langIconDesktop {
-  width: 28px;  
+  width: 28px;
   margin-top: 4px;
   /* margin-left: 10px; */
 }
-
 
 /* Authentication */
 .signupLink {
@@ -422,8 +418,7 @@
   }
 }
 
-
-.shoppingCartWrapper{
+.shoppingCartWrapper {
   @apply --TopbarDesktop_linkHover;
   display: flex;
   justify-content: center;
@@ -432,23 +427,21 @@
   cursor: pointer;
   padding-top: 5px;
 
-  @media only screen and (max-width: 768px){
+  @media only screen and (max-width: 768px) {
     width: 1pc;
     justify-content: flex-start;
     height: var(--topbarHeight);
     margin-right: 22px;
     padding-top: 10px;
   }
-
 }
 
-.cartIcon{
+.cartIcon {
   align-self: center;
-  color: var(--marketplaceColor)
+  color: var(--marketplaceColor);
 }
 
-
-.mobileLabel{
+.mobileLabel {
   color: var(--marketplaceColor);
   font-weight: var(--fontWeightSemiBold);
   font-size: 21px;
@@ -460,55 +453,53 @@
   width: 8pc;
 }
 
-.cartItem{
+.cartItem {
   display: flex;
   justify-content: space-between;
 }
 
-.deleteIcon{
+.deleteIcon {
   cursor: pointer;
   margin-right: 1pc;
   margin-bottom: 3px;
-  &:hover{
+  &:hover {
     transform: scale(1.02);
     color: red;
   }
 }
 
-.cartItemsWrapper{
+.cartItemsWrapper {
   margin-top: 2pc;
 }
 
-.cartItem{
+.cartItem {
   padding-bottom: 1pc;
 }
 
-.total{
+.total {
   display: flex;
   border-top: 1px solid rgb(211, 211, 211);
   justify-content: space-between;
 }
 
-.dotInfo{
+.dotInfo {
   font-size: 12px;
   margin-top: 4px;
   color: var(--marketplaceColor);
 
-  @media only screen and (max-width: 768px){
+  @media only screen and (max-width: 768px) {
     font-size: 12px;
     margin-top: 5px;
     margin-left: 4px;
   }
 }
 
-
-.notLoggedInText1{
-margin-bottom: 0;
-text-align: center;
+.notLoggedInText1 {
+  margin-bottom: 0;
+  text-align: center;
 }
 
-
-.notLoggedInText2{
+.notLoggedInText2 {
   margin-top: 0;
   text-align: center;
   font-size: 13px;

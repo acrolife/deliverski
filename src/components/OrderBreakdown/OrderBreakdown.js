@@ -38,12 +38,25 @@ export const OrderBreakdownComponent = props => {
     intl,
     dateType,
     listing,
-    restOfShoppingCartItems
   } = props;
 
   const isCustomer = userRole === 'customer';
   const isProvider = userRole === 'provider';
-  const lineItems = transaction.attributes.lineItems;
+  const deliveryMethod = transaction.deliveryMethod ?? 'shipping';
+
+  const lineItemsWithoutShippingMethod = transaction.attributes.lineItems.filter(
+    el => el.code != 'line-item/shipping-participation'
+  );
+  const lineItemsShippingMethodOnly = transaction.attributes.lineItems.filter(
+    el => el.code == 'line-item/shipping-participation'
+  );
+  const lineItemsFinal = lineItemsWithoutShippingMethod;
+  if (deliveryMethod == 'shipping') {
+    lineItemsFinal.push(...lineItemsShippingMethodOnly);
+  }
+
+  // const lineItems = transaction.attributes.lineItems
+  const lineItems = lineItemsFinal;
 
   const hasCommissionLineItem = lineItems.find(item => {
     const hasCustomerCommission = isCustomer && item.code === LINE_ITEM_CUSTOMER_COMMISSION;
@@ -99,18 +112,23 @@ export const OrderBreakdownComponent = props => {
     <div className={classes}>
       <LineItemBookingPeriod booking={booking} unitType={unitType} dateType={dateType} />
 
-      <LineItemBasePriceMaybe lineItems={lineItems} unitType={unitType} intl={intl}  transaction={transaction} listing={listing}/>
-
-      <LineItemUnknownItemsMaybe 
-      lineItems={lineItems} 
-      isProvider={isProvider}
-      intl={intl} 
-      transaction={transaction}
-      restOfShoppingCartItems={restOfShoppingCartItems}
-      listing={listing}
+      <LineItemBasePriceMaybe
+        lineItems={lineItems}
+        unitType={unitType}
+        intl={intl}
+        transaction={transaction}
+        listing={listing}
       />
 
-      <LineItemShippingFeeMaybe lineItems={lineItems} intl={intl}  userRole={userRole}/>
+      <LineItemUnknownItemsMaybe
+        lineItems={lineItems}
+        isProvider={isProvider}
+        intl={intl}
+        transaction={transaction}
+        listing={listing}
+      />
+
+      <LineItemShippingFeeMaybe lineItems={lineItems} intl={intl} userRole={userRole} />
       <LineItemPickupFeeMaybe lineItems={lineItems} intl={intl} />
 
       <LineItemSubTotalMaybe

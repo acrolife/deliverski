@@ -117,7 +117,7 @@ export const EditListingPageComponent = props => {
   } = props;
 
   // Conditional rendering of the provider/customer UI elements
-  const isProvider = currentUser ? !!currentUser.attributes.profile.metadata.isProvider : false
+  const isProvider = currentUser ? !!currentUser.attributes.profile.metadata.isProvider : false;
   const { id, type, returnURLType } = params;
   const isNewURI = type === LISTING_PAGE_PARAM_TYPE_NEW;
   const isDraftURI = type === LISTING_PAGE_PARAM_TYPE_DRAFT;
@@ -143,20 +143,20 @@ export const EditListingPageComponent = props => {
 
     const redirectProps = isPendingApproval
       ? {
-        name: 'ListingPageVariant',
-        params: {
-          id: listingId.uuid,
-          slug: listingSlug,
-          variant: LISTING_PAGE_PENDING_APPROVAL_VARIANT,
-        },
-      }
+          name: 'ListingPageVariant',
+          params: {
+            id: listingId.uuid,
+            slug: listingSlug,
+            variant: LISTING_PAGE_PENDING_APPROVAL_VARIANT,
+          },
+        }
       : {
-        name: 'ListingPage',
-        params: {
-          id: listingId.uuid,
-          slug: listingSlug,
-        },
-      };
+          name: 'ListingPage',
+          params: {
+            id: listingId.uuid,
+            slug: listingSlug,
+          },
+        };
 
     return <NamedRedirect {...redirectProps} />;
   } else if (showForm) {
@@ -205,48 +205,50 @@ export const EditListingPageComponent = props => {
           desktopClassName={css.desktopTopbar}
           mobileClassName={css.mobileTopbar}
         />
-        {isProvider && <EditListingWizard
-          id="EditListingWizard"
-          className={css.wizard}
-          params={params}
-          disabled={disableForm}
-          errors={errors}
-          fetchInProgress={fetchInProgress}
-          newListingPublished={newListingPublished}
-          history={history}
-          images={images}
-          listing={currentListing}
-          availability={{
-            calendar: page.availabilityCalendar,
-            onFetchAvailabilityExceptions,
-            onCreateAvailabilityException,
-            onDeleteAvailabilityException,
-            onFetchBookings,
-          }}
-          onUpdateListing={onUpdateListing}
-          onCreateListingDraft={onCreateListingDraft}
-          onPublishListingDraft={onPublishListingDraft}
-          onPayoutDetailsChange={onPayoutDetailsChange}
-          onPayoutDetailsSubmit={onPayoutDetailsSubmit}
-          onGetStripeConnectAccountLink={onGetStripeConnectAccountLink}
-          getAccountLinkInProgress={getAccountLinkInProgress}
-          onImageUpload={onImageUpload}
-          onRemoveImage={onRemoveListingImage}
-          onChange={onChange}
-          currentUser={currentUser}
-          onManageDisableScrolling={onManageDisableScrolling}
-          stripeOnboardingReturnURL={params.returnURLType}
-          updatedTab={page.updatedTab}
-          updateInProgress={page.updateInProgress || page.createListingDraftInProgress}
-          payoutDetailsSaveInProgress={page.payoutDetailsSaveInProgress}
-          payoutDetailsSaved={page.payoutDetailsSaved}
-          stripeAccountFetched={stripeAccountFetched}
-          stripeAccount={stripeAccount}
-          stripeAccountError={
-            createStripeAccountError || updateStripeAccountError || fetchStripeAccountError
-          }
-          stripeAccountLinkError={getAccountLinkError}
-        />}
+        {isProvider && (
+          <EditListingWizard
+            id="EditListingWizard"
+            className={css.wizard}
+            params={params}
+            disabled={disableForm}
+            errors={errors}
+            fetchInProgress={fetchInProgress}
+            newListingPublished={newListingPublished}
+            history={history}
+            images={images}
+            listing={currentListing}
+            availability={{
+              calendar: page.availabilityCalendar,
+              onFetchAvailabilityExceptions,
+              onCreateAvailabilityException,
+              onDeleteAvailabilityException,
+              onFetchBookings,
+            }}
+            onUpdateListing={onUpdateListing}
+            onCreateListingDraft={onCreateListingDraft}
+            onPublishListingDraft={onPublishListingDraft}
+            onPayoutDetailsChange={onPayoutDetailsChange}
+            onPayoutDetailsSubmit={onPayoutDetailsSubmit}
+            onGetStripeConnectAccountLink={onGetStripeConnectAccountLink}
+            getAccountLinkInProgress={getAccountLinkInProgress}
+            onImageUpload={onImageUpload}
+            onRemoveImage={onRemoveListingImage}
+            onChange={onChange}
+            currentUser={currentUser}
+            onManageDisableScrolling={onManageDisableScrolling}
+            stripeOnboardingReturnURL={params.returnURLType}
+            updatedTab={page.updatedTab}
+            updateInProgress={page.updateInProgress || page.createListingDraftInProgress}
+            payoutDetailsSaveInProgress={page.payoutDetailsSaveInProgress}
+            payoutDetailsSaved={page.payoutDetailsSaved}
+            stripeAccountFetched={stripeAccountFetched}
+            stripeAccount={stripeAccount}
+            stripeAccountError={
+              createStripeAccountError || updateStripeAccountError || fetchStripeAccountError
+            }
+            stripeAccountLinkError={getAccountLinkError}
+          />
+        )}
         {!isProvider && <NotFoundComponent />}
       </Page>
     );
@@ -359,13 +361,13 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   onUpdateListing: (tab, values) => dispatch(requestUpdateListing(tab, values)),
   onFetchBookings: params => dispatch(requestFetchBookings(params)),
   onFetchAvailabilityExceptions: params => dispatch(requestFetchAvailabilityExceptions(params)),
   onCreateAvailabilityException: params => dispatch(requestCreateAvailabilityException(params)),
   onDeleteAvailabilityException: params => dispatch(requestDeleteAvailabilityException(params)),
-  onCreateListingDraft: (values) => dispatch(requestCreateListingDraft(values)),
+  onCreateListingDraft: values => dispatch(requestCreateListingDraft(values)),
   onPublishListingDraft: listingId => dispatch(requestPublishListingDraft(listingId)),
   onImageUpload: data => dispatch(requestImageUpload(data)),
   onManageDisableScrolling: (componentId, disableScrolling) =>
@@ -386,10 +388,7 @@ const mapDispatchToProps = (dispatch) => ({
 // See: https://github.com/ReactTraining/react-router/issues/4671
 const EditListingPage = compose(
   withRouter,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )
+  connect(mapStateToProps, mapDispatchToProps)
 )(injectIntl(EditListingPageComponent));
 
 export default EditListingPage;

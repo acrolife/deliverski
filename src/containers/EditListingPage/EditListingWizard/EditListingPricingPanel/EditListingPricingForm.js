@@ -68,7 +68,7 @@ export const EditListingPricingFormComponent = props => (
         ? validators.composeValidators(priceRequired, minPriceRequired)
         : priceRequired;
 
-      // Current stock        
+      // Current stock
       const stockValidator = validators.numberAtLeast(
         intl.formatMessage({ id: 'EditListingPricingForm.stockIsRequired' }),
         0
@@ -78,7 +78,7 @@ export const EditListingPricingFormComponent = props => (
         ? intl.formatMessage({ id: 'EditListingPricingForm.oldStockTotalWasOutOfSync' })
         : intl.formatMessage({ id: 'EditListingPricingForm.stockUpdateFailed' });
 
-      // Daily stock        
+      // Daily stock
       // const dailyStockValidator = validators.numberAtLeast(
       //   intl.formatMessage({ id: 'EditListingPricingForm.dailyStockIsRequired' }),
       //   0

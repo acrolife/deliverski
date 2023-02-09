@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+// eslint-disable-next-line no-unused-vars
 import { bool, func, instanceOf, object, oneOfType, shape, string } from 'prop-types';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -22,7 +23,6 @@ import {
 } from '../../util/data';
 import { timeOfDayFromLocalToTimeZone, minutesBetween } from '../../util/dates';
 import { createSlug } from '../../util/urlHelpers';
-import { post } from '../../util/api';
 import {
   isTransactionInitiateAmountTooLowError,
   isTransactionInitiateListingNotFoundError,
@@ -51,13 +51,13 @@ import { savePaymentMethod } from '../../ducks/paymentMethods.duck';
 // Import shared components
 import {
   AvatarMedium,
-  AspectRatioWrapper,
+  AspectRatioWrapper, // eslint-disable-line no-unused-vars
   OrderBreakdown,
   Logo,
   NamedLink,
   NamedRedirect,
   Page,
-  ResponsiveImage,
+  ResponsiveImage, // eslint-disable-line no-unused-vars
 } from '../../components';
 
 // Import modules from this directory
@@ -73,10 +73,9 @@ import StripePaymentForm from './StripePaymentForm/StripePaymentForm';
 import { storeData, storedData, clearData } from './CheckoutPageSessionHelpers';
 import css from './CheckoutPage.module.css';
 
-
 const sharetribeSdk = require('sharetribe-flex-sdk');
 const sdk = sharetribeSdk.createInstance({
-  clientId: process.env.REACT_APP_SHARETRIBE_SDK_CLIENT_ID
+  clientId: process.env.REACT_APP_SHARETRIBE_SDK_CLIENT_ID,
 });
 
 const STORAGE_KEY = 'CheckoutPage';
@@ -96,8 +95,8 @@ const paymentFlow = (selectedPaymentMethod, saveAfterOnetimePayment) => {
   return selectedPaymentMethod === 'defaultCard'
     ? USE_SAVED_CARD
     : saveAfterOnetimePayment
-      ? PAY_AND_SAVE_FOR_LATER_USE
-      : ONETIME_PAYMENT;
+    ? PAY_AND_SAVE_FOR_LATER_USE
+    : ONETIME_PAYMENT;
 };
 
 const initializeOrderPage = (initialValues, routes, dispatch) => {
@@ -112,8 +111,8 @@ const checkIsPaymentExpired = existingTransaction => {
   return txIsPaymentExpired(existingTransaction)
     ? true
     : txIsPaymentPending(existingTransaction)
-      ? minutesBetween(existingTransaction.attributes.lastTransitionedAt, new Date()) >= 15
-      : false;
+    ? minutesBetween(existingTransaction.attributes.lastTransitionedAt, new Date()) >= 15
+    : false;
 };
 
 const getFormattedTotalPrice = (transaction, intl) => {
@@ -126,11 +125,11 @@ const bookingDatesMaybe = bookingDates => {
   const apiTimeZone = 'Etc/UTC';
   return bookingDates
     ? {
-      bookingDates: {
-        bookingStart: timeOfDayFromLocalToTimeZone(bookingDates.bookingStart, apiTimeZone),
-        bookingEnd: timeOfDayFromLocalToTimeZone(bookingDates.bookingEnd, apiTimeZone),
-      },
-    }
+        bookingDates: {
+          bookingStart: timeOfDayFromLocalToTimeZone(bookingDates.bookingStart, apiTimeZone),
+          bookingEnd: timeOfDayFromLocalToTimeZone(bookingDates.bookingEnd, apiTimeZone),
+        },
+      }
     : {};
 };
 
@@ -351,6 +350,11 @@ export class CheckoutPageComponent extends Component {
     const ensuredDefaultPaymentMethod = ensurePaymentMethodCard(
       ensuredStripeCustomer.defaultPaymentMethod
     );
+    const listing = this.state.pageData?.listing;
+    const author = listing?.author;
+    const restaurantAddress = null; // author?.attributes?.profile?.publicData?.restaurantAddress;
+    const restaurantAddressPlainText =
+      author?.attributes?.profile?.publicData?.restaurantAddressPlainText;
 
     let createdPaymentIntent = null;
 
@@ -408,11 +412,11 @@ export class CheckoutPageComponent extends Component {
       const paymentParams =
         selectedPaymentFlow !== USE_SAVED_CARD
           ? {
-            payment_method: {
-              billing_details: billingDetails,
-              card: card,
-            },
-          }
+              payment_method: {
+                billing_details: billingDetails,
+                card: card,
+              },
+            }
           : { payment_method: stripePaymentMethodId };
 
       const params = {
@@ -465,38 +469,33 @@ export class CheckoutPageComponent extends Component {
       }
     };
 
-
     // Step 6: - remove items from basket if the case
+    // store customer's phone number to the profile
 
     const emptyBasktet = fnParams => {
       const isTxWithBasket = pageData.orderData.restOfShoppingCartItems;
       if (isTxWithBasket) {
-        return sdk.currentUser.updateProfile({
-          publicData: {
-            shoppingCart: []
-          },
-        }).then(() => {
-          return fnParams;
-        }).catch(e => {
-          console.log(e)
-        })
+        const phoneNumber = shippingDetails?.phoneNumber;
+        const publicData = {
+          shoppingCart: [],
+        };
+        if (phoneNumber) {
+          publicData.phoneNumber = phoneNumber;
+        }
+        return sdk.currentUser
+          .updateProfile({
+            publicData,
+          })
+          .then(() => {
+            return fnParams;
+          })
+          .catch(e => {
+            console.log(e);
+          });
       } else {
         return fnParams;
       }
-    }
-
-
-    // Step 7: - change quantity for the rest of shopping cart items
-
-    const changeRestOfShoppingCartItemsQuantity = fnParams => {
-      const restOfShoppingCartItems = pageData.orderData.restOfShoppingCartItems;
-      return post('/api/change-all-items-quantity', { restOfShoppingCartItems }).then(resp => {
-        return fnParams;
-      }).catch(e => {
-        return fnParams;
-      })
-
-    }
+    };
 
     // Here we create promise calls in sequence
     // This is pretty much the same as:
@@ -511,24 +510,30 @@ export class CheckoutPageComponent extends Component {
       fnConfirmPayment,
       fnSendMessage,
       fnSavePaymentMethod,
-      emptyBasktet,
-      changeRestOfShoppingCartItemsQuantity
+      emptyBasktet
     );
 
     // Create order aka transaction
     // NOTE: if unit type is line-item/units, quantity needs to be added.
     // The way to pass it to checkout page is through pageData.orderData
-    const tx = speculatedTransaction ? speculatedTransaction : storedTx;
+    const tx = speculatedTransaction ? speculatedTransaction : storedTx; // eslint-disable-line no-unused-vars
 
     const deliveryMethod = pageData.orderData?.deliveryMethod;
     const quantity = pageData.orderData?.quantity;
     const quantityMaybe = quantity ? { quantity } : {};
-    const protectedDataMaybe =
-      deliveryMethod && shippingDetails
-        ? { protectedData: { deliveryMethod, shippingDetails } }
-        : deliveryMethod
-          ? { protectedData: { deliveryMethod } }
-          : {};
+    const protectedData = {};
+    if (deliveryMethod) {
+      protectedData.deliveryMethod = deliveryMethod;
+    }
+    if (shippingDetails) {
+      protectedData.shippingDetails = shippingDetails;
+    }
+    if (deliveryMethod === 'pickup' && restaurantAddress) {
+      protectedData.restaurantAddress = restaurantAddress;
+    }
+    if (deliveryMethod === 'pickup' && restaurantAddressPlainText) {
+      protectedData.restaurantAddressPlainText = restaurantAddressPlainText;
+    }
     // Note: optionalPaymentParams contains Stripe paymentMethod,
     // but that can also be passed on Step 2
     // stripe.confirmCardPayment(stripe, { payment_method: stripePaymentMethodId })
@@ -536,15 +541,15 @@ export class CheckoutPageComponent extends Component {
       selectedPaymentFlow === USE_SAVED_CARD && hasDefaultPaymentMethod
         ? { paymentMethod: stripePaymentMethodId }
         : selectedPaymentFlow === PAY_AND_SAVE_FOR_LATER_USE
-          ? { setupPaymentMethodForSaving: true }
-          : {};
+        ? { setupPaymentMethodForSaving: true }
+        : {};
 
     const orderParams = {
       listingId: pageData.listing.id,
       deliveryMethod,
       ...quantityMaybe,
       ...bookingDatesMaybe(pageData.orderData.bookingDates),
-      ...protectedDataMaybe,
+      protectedData,
       ...optionalPaymentParams,
     };
 
@@ -569,7 +574,7 @@ export class CheckoutPageComponent extends Component {
       country,
       saveAfterOnetimePayment,
       recipientName,
-      recipientPhoneNumber,
+      recipientPhoneNumber: recipientPhoneNumberRaw,
       recipientAddressLine1,
       recipientAddressLine2,
       // recipientPostal,
@@ -577,6 +582,7 @@ export class CheckoutPageComponent extends Component {
       // recipientState,
       // recipientCountry,
     } = formValues;
+    const recipientPhoneNumber = recipientPhoneNumberRaw.replace(/\s+/g, '');
 
     // Billing address is recommended.
     // However, let's not assume that <StripePaymentAddress> data is among formValues.
@@ -585,15 +591,15 @@ export class CheckoutPageComponent extends Component {
     const addressMaybe =
       addressLine1 && postal
         ? {
-          address: {
-            city: city,
-            country: country,
-            line1: addressLine1,
-            line2: addressLine2,
-            postal_code: postal,
-            state: state,
-          },
-        }
+            address: {
+              city: city,
+              country: country,
+              line1: addressLine1,
+              line2: addressLine2,
+              postal_code: postal,
+              state: state,
+            },
+          }
         : {};
     const billingDetails = {
       name,
@@ -621,20 +627,24 @@ export class CheckoutPageComponent extends Component {
     const shippingDetailsMaybe =
       recipientName && recipientAddressLine1
         ? {
-          shippingDetails: {
-            name: recipientName,
-            phoneNumber: recipientPhoneNumber,
-            address: {
-              city: "Arc 1800",
-              country: "France",
-              line1: recipientAddressLine1,
-              line2: recipientAddressLine2,
-              postalCode: "73700",
-              state: "Savoie",
+            shippingDetails: {
+              name: recipientName,
+              phoneNumber: recipientPhoneNumber,
+              address: {
+                city: 'Arc 1800',
+                country: 'France',
+                line1: recipientAddressLine1,
+                line2: recipientAddressLine2,
+                postalCode: '73700',
+                state: 'Savoie',
+              },
             },
-          },
-        }
-        : {};
+          }
+        : {
+            shippingDetails: {
+              phoneNumber: recipientPhoneNumber,
+            },
+          };
     const requestPaymentParams = {
       pageData: this.state.pageData,
       speculatedTransaction,
@@ -739,22 +749,36 @@ export class CheckoutPageComponent extends Component {
     const currentListing = ensureListing(listing);
     const currentAuthor = ensureUser(currentListing.author);
 
-    // Getting restaurantName requires a check on publiData first otherwise throws error 
-    const restaurantName = currentAuthor.attributes.profile.publicData ? currentAuthor.attributes.profile.publicData.restaurantName : null
+    // Getting restaurantName requires a check on publiData first otherwise throws error
+    const restaurantName = currentAuthor.attributes.profile.publicData
+      ? currentAuthor.attributes.profile.publicData.restaurantName
+      : null;
+    const pickupLocation = {};
+    const restaurantAddress = null; // currentAuthor.attributes.profile.publicData?.restaurantAddress;
+    if (restaurantAddress) {
+      pickupLocation.address = restaurantAddress.selectedPlace?.address;
+    }
+    const restaurantAddressPlainText =
+      currentAuthor.attributes.profile.publicData?.restaurantAddressPlainText;
+    if (restaurantAddressPlainText) {
+      pickupLocation.address = restaurantAddressPlainText;
+    }
 
     const listingTitle = currentListing.attributes.title;
     const title = intl.formatMessage({ id: 'CheckoutPage.title' }, { restaurantName });
 
-
     const restaurantState = isRestaurantOpen(currentListing?.author?.attributes.profile.publicData);
-    const warningMessageKey = restaurantState?.checkoutMessage?.key
-    let warningMessageValues = warningMessageKey && restaurantState?.checkoutMessage?.values ? restaurantState.checkoutMessage.values : null
+    const warningMessageKey = restaurantState?.checkoutMessage?.key;
+    let warningMessageValues =
+      warningMessageKey && restaurantState?.checkoutMessage?.values
+        ? restaurantState.checkoutMessage.values
+        : null;
     if (warningMessageValues) {
       for (const k of Object.keys(warningMessageValues)) {
         if (warningMessageValues[k] === null) {
-          delete warningMessageValues[k]
+          delete warningMessageValues[k];
         } else if (JSON.stringify(warningMessageValues[k]).length === 1) {
-          warningMessageValues[k] = '0' + JSON.stringify(warningMessageValues[k])
+          warningMessageValues[k] = '0' + JSON.stringify(warningMessageValues[k]);
         }
       }
     }
@@ -803,12 +827,20 @@ export class CheckoutPageComponent extends Component {
       return <NamedRedirect name="ListingPage" params={params} />;
     }
 
+    // Getting deliveryMethod (requires a check on publiData first otherwise throws error)
+    const deliveryMethod = currentUser.attributes.profile.publicData
+      ? JSON.parse(currentUser.attributes.profile.publicData.shoppingCart[0].checkoutValues)
+          .deliveryMethod
+      : null;
+
     // Show breakdown only when (speculated?) transaction is loaded
     // (i.e. have an id and lineItems)
     const tx = existingTransaction.booking ? existingTransaction : speculatedTransaction;
+    tx.deliveryMethod = deliveryMethod;
     const txBookingMaybe = tx.booking?.id
       ? { booking: ensureBooking(tx.booking), dateType: DATE_TYPE_DATE }
       : {};
+
     const breakdown =
       tx.id && tx.attributes.lineItems?.length > 0 ? (
         <OrderBreakdown
@@ -844,7 +876,9 @@ export class CheckoutPageComponent extends Component {
     const firstImage =
       currentListing.images && currentListing.images.length > 0 ? currentListing.images[0] : null;
 
+    // eslint-disable-next-line no-unused-vars
     const { aspectWidth = 1, aspectHeight = 1, variantPrefix = 'listing-card' } = config.listing;
+    // eslint-disable-next-line no-unused-vars
     const variants = firstImage
       ? Object.keys(firstImage?.attributes?.variants).filter(k => k.startsWith(variantPrefix))
       : [];
@@ -865,11 +899,12 @@ export class CheckoutPageComponent extends Component {
     const unitTranslationKey = isNightly
       ? 'CheckoutPage.perNight'
       : isDaily
-        ? 'CheckoutPage.perDay'
-        : 'CheckoutPage.perUnit';
+      ? 'CheckoutPage.perDay'
+      : 'CheckoutPage.perUnit';
 
     const price = currentListing.attributes.price;
     const formattedPrice = formatMoney(intl, price);
+    // eslint-disable-next-line no-unused-vars
     const detailsSubTitle = `${formattedPrice} ${intl.formatMessage({ id: unitTranslationKey })}`;
 
     const showInitialMessageInput = !(
@@ -887,42 +922,37 @@ export class CheckoutPageComponent extends Component {
     const hasPaymentIntentUserActionsDone =
       paymentIntent && STRIPE_PI_USER_ACTIONS_DONE_STATUSES.includes(paymentIntent.status);
 
+    const userPublicData = currentUser?.attributes?.profile?.publicData || {};
+    const recipientPhoneNumber = userPublicData.phoneNumber;
+
     // If your marketplace works mostly in one country you can use initial values to select country automatically
     // e.g. {country: 'FI'}
 
-    const initalValuesForStripePayment = { name: userName, recipientName: userName };
-
+    const initalValuesForStripePayment = {
+      name: userName,
+      recipientName: userName,
+      recipientPhoneNumber,
+    };
 
     const isAnyItemWithShipping =
       this.state.pageData.orderData?.restOfShoppingCartItems.find(item => {
-        return item.checkoutValues.deliveryMethod === "pickup"
-      })
-      ||
-      this.state.pageData.orderData?.deliveryMethod === "pickup";
-
-
+        return item.deliveryMethod === 'pickup';
+      }) || this.state.pageData.orderData?.deliveryMethod === 'pickup';
 
     return (
       <Page {...pageProps}>
         {topbar}
-        {
-          warningMessageKey &&
+        {warningMessageKey && (
           <center>
             <h2 className={css.warningMessage}>
-              {
-                warningMessageValues ? <FormattedMessage
-                  id={warningMessageKey}
-                  values={warningMessageValues}
-                /> :
-                  <FormattedMessage
-                    id={warningMessageKey}
-
-                  />
-              }
-
+              {warningMessageValues ? (
+                <FormattedMessage id={warningMessageKey} values={warningMessageValues} />
+              ) : (
+                <FormattedMessage id={warningMessageKey} />
+              )}
             </h2>
           </center>
-        }
+        )}
 
         <div className={css.contentContainer}>
           {/* <AspectRatioWrapper
@@ -954,18 +984,14 @@ export class CheckoutPageComponent extends Component {
             <div className={css.priceBreakdownContainer}>
               {speculateTransactionErrorMessage}
               {breakdown}
-              {
-                isAnyItemWithShipping ?
-
-                  <p className={css.shippingWarning}>
-                    <FormattedMessage
-                      id="CheckoutPage.warningPickupItems"
-                      values={{ restaurantName }}
-                    />
-                  </p>
-                  :
-                  null
-              }
+              {isAnyItemWithShipping ? (
+                <p className={css.shippingWarning}>
+                  <FormattedMessage
+                    id="CheckoutPage.warningPickupItems"
+                    values={{ restaurantName }}
+                  />
+                </p>
+              ) : null}
             </div>
 
             <section className={css.paymentContainer}>
@@ -1000,7 +1026,7 @@ export class CheckoutPageComponent extends Component {
                   paymentIntent={paymentIntent}
                   onStripeInitialized={this.onStripeInitialized}
                   askShippingDetails={orderData?.deliveryMethod === 'shipping'}
-                  pickupLocation={currentListing?.attributes?.publicData?.location}
+                  pickupLocation={pickupLocation}
                   totalPrice={tx.id ? getFormattedTotalPrice(tx, intl) : null}
                   isRestaurantClosed={restaurantState?.status === 'closed'}
                 />
@@ -1041,17 +1067,14 @@ export class CheckoutPageComponent extends Component {
               <FormattedMessage id="CheckoutPage.orderBreakdown" />
             </h2>
             {breakdown}
-            {
-              isAnyItemWithShipping ?
-                <p className={css.orderError}>
-                  <FormattedMessage
-                    id="CheckoutPage.warningPickupItems"
-                    values={{ restaurantName }}
-                  />
-                </p>
-                :
-                null
-            }
+            {isAnyItemWithShipping ? (
+              <p className={css.orderError}>
+                <FormattedMessage
+                  id="CheckoutPage.warningPickupItems"
+                  values={{ restaurantName }}
+                />
+              </p>
+            ) : null}
           </div>
         </div>
       </Page>
@@ -1159,10 +1182,7 @@ const mapDispatchToProps = dispatch => ({
 
 const CheckoutPage = compose(
   withRouter,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   injectIntl
 )(CheckoutPageComponent);
 

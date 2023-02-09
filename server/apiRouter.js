@@ -15,7 +15,6 @@ const loginAs = require('./api/login-as');
 const transactionLineItems = require('./api/transaction-line-items');
 const initiatePrivileged = require('./api/initiate-privileged');
 const transitionPrivileged = require('./api/transition-privileged');
-const changeAllItemsQuantity = require('./api/changeAllItemsQuantity');
 const createUserWithIdp = require('./api/auth/createUserWithIdp');
 
 const { authenticateFacebook, authenticateFacebookCallback } = require('./api/auth/facebook');
@@ -74,7 +73,6 @@ router.get('/auth/facebook/callback', authenticateFacebookCallback);
 
 // This endpoint is called when user wants to initiate authenticaiton with Google
 router.get('/auth/google', authenticateGoogle);
-router.post('/change-all-items-quantity', changeAllItemsQuantity);
 // This is the route for callback URL the user is redirected after authenticating
 // with Google. In this route a Passport.js custom callback is used for calling
 // loginWithIdp endpoint in Flex API to authenticate user to Flex

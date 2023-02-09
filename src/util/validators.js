@@ -1,4 +1,5 @@
 import toPairs from 'lodash/toPairs';
+import { parsePhoneNumberFromString } from 'libphonenumber-js/min';
 import { types as sdkTypes } from './sdkLoader';
 import { diffInTime } from './dates';
 
@@ -76,6 +77,9 @@ export const autocompleteSearchRequired = message => value => {
 };
 
 export const autocompletePlaceSelected = message => value => {
+  if (typeof value === 'undefined' || value.search === '') {
+    return VALID;
+  }
   const selectedPlaceIsValid =
     value &&
     value.selectedPlace &&
@@ -231,6 +235,29 @@ export const validSGID = message => value => {
 export const composeValidators = (...validators) => value =>
   validators.reduce((error, validator) => error || validator(value), VALID);
 
-export const isFromLesArcs = (location) => {
-  return location === "Arc 1800, Les Arcs, Bourg-Saint-Maurice, Savoie 73700, France" ? VALID : "Vous n'êtes pas de Les Arcs";
-}
+export const isFromLesArcs = location => {
+  return location === 'Arc 1800, Les Arcs, Bourg-Saint-Maurice, Savoie 73700, France'
+    ? VALID
+    : "Vous n'êtes pas de Les Arcs";
+};
+
+export const validPhoneNumber = (
+  message,
+  messageNoCountry = 'missing country calling code'
+) => value => {
+  if (!value || value === '') {
+    return VALID;
+  }
+
+  const options = {
+    extract: false,
+  };
+
+  const phoneNumber = parsePhoneNumberFromString(value, options);
+
+  if (!phoneNumber?.countryCallingCode) {
+    return messageNoCountry;
+  }
+
+  return phoneNumber && phoneNumber.isValid() ? VALID : message;
+};

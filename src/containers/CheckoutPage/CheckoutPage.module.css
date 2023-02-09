@@ -1,7 +1,6 @@
 @import '../../styles/customMediaQueries.css';
 @import '../../styles/propertySets.css';
 
-
 /* Dummy Topbar */
 
 .topbar {
@@ -116,7 +115,7 @@
   }
 }
 
-.warningMessage{
+.warningMessage {
   @apply --marketplaceH4FontStyles;
   margin-bottom: 4rem;
   padding: 0 20vw;
@@ -353,8 +352,7 @@
   }
 }
 
-
-.shippingWarning{
+.shippingWarning {
   font-family: var(--fontFamily);
   font-weight: 800;
   font-size: 14px;
@@ -367,4 +365,3 @@
   margin-top: 1pc;
   color: var(--marketplaceColor);
 }
-

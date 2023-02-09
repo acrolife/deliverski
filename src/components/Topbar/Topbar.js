@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { compose } from 'redux';
 import pickBy from 'lodash/pickBy';
@@ -23,11 +24,10 @@ import {
   MenuLabel,
   MenuContent,
   MenuItem,
-  ExternalLink,
 } from '../../components';
 import ShoppingCart from './TopbarDesktop/ShoppingCart';
 
-import LangIconPng from '../../assets/icons/lang-icon-en-fr.png'
+import LangIconPng from '../../assets/icons/lang-icon-en-fr.png';
 import MenuIcon from './MenuIcon';
 import SearchIcon from './SearchIcon';
 import TopbarSearchForm from './TopbarSearchForm/TopbarSearchForm';
@@ -35,10 +35,6 @@ import TopbarMobileMenu from './TopbarMobileMenu/TopbarMobileMenu';
 import TopbarDesktop from './TopbarDesktop/TopbarDesktop';
 
 import css from './Topbar.module.css';
-
-// Custom implementation of the langage switcher
-const urlSwitchLang = config.urlSwitchLang
-const langageSwitch = config.locale === 'en' ? 'Français' : 'English'
 
 const MAX_MOBILE_SCREEN_WIDTH = 768;
 
@@ -177,6 +173,11 @@ class TopbarComponent extends Component {
       showGenericError,
     } = this.props;
 
+    const currentLanguage = intl.formatMessage({ id: 'language' });
+    const isEnglish = currentLanguage === 'en';
+    const langageSwitch = isEnglish ? 'Français' : 'English';
+    const urlSwitchLang = isEnglish ? '/fr' : '/en';
+
     const { mobilemenu, mobilesearch, keywords, address, origin, bounds } = parse(location.search, {
       latlng: ['origin'],
       latlngBounds: ['bounds'],
@@ -201,22 +202,22 @@ class TopbarComponent extends Component {
     );
 
     // Change profileMenuIsOpen
-    const langLink = (<Menu>
+    const langLink = (
+      <Menu>
+        <MenuLabel className={css.langageMenuLabel} isOpenClassName={css.langageMenuIsOpen}>
+          <img className={css.langIcon} src={LangIconPng} alt="language" />
+        </MenuLabel>
 
-      <MenuLabel className={css.langageMenuLabel} isOpenClassName={css.langageMenuIsOpen}>
-        <img className={css.langIcon} src={LangIconPng} />
-      </MenuLabel>
-
-      <MenuContent className={css.langageMenuContent} style={{ right: true }} >
-        {/* CAUTION menuItemLang is an empty class */}
-        <MenuItem key="ChangeLangage" className={css.menuItemLang}>
-          <ExternalLink href={urlSwitchLang} className={css.langLink}>
-            {langageSwitch}
-          </ExternalLink >
-        </MenuItem>
-      </MenuContent>
-    </Menu>);
-
+        <MenuContent className={css.langageMenuContent} style={{ right: true }}>
+          {/* CAUTION menuItemLang is an empty class */}
+          <MenuItem key="ChangeLangage" className={css.menuItemLang}>
+            <Link to={urlSwitchLang} className={css.langLink}>
+              {langageSwitch}
+            </Link>
+          </MenuItem>
+        </MenuContent>
+      </Menu>
+    );
 
     const topbarSearcInitialValues = () => {
       if (isMainSearchTypeKeywords(config)) {
@@ -230,9 +231,9 @@ class TopbarComponent extends Component {
       return {
         location: locationFieldsPresent
           ? {
-            search: address,
-            selectedPlace: { address, origin, bounds },
-          }
+              search: address,
+              selectedPlace: { address, origin, bounds },
+            }
           : null,
       };
     };
@@ -250,7 +251,6 @@ class TopbarComponent extends Component {
           currentPage={currentPage}
         />
         <div className={classNames(mobileRootClassName || css.container, mobileClassName)}>
-
           <Button
             rootClassName={css.searchMenu}
             onClick={this.handleMobileSearchOpen}
@@ -260,11 +260,7 @@ class TopbarComponent extends Component {
           </Button>
 
           <div className={css.topbarMobileShoppingCartWrapper}>
-            <ShoppingCart
-              mobile={true}
-              history={this.props.history}
-              currentUser={currentUser}
-            />
+            <ShoppingCart mobile={true} history={this.props.history} currentUser={currentUser} />
           </div>
 
           <NamedLink
@@ -272,7 +268,6 @@ class TopbarComponent extends Component {
             name="LandingPage"
             title={intl.formatMessage({ id: 'Topbar.logoIcon' })}
           >
-
             <Logo className={css.logo} format="mobile" />
           </NamedLink>
 
@@ -287,10 +282,7 @@ class TopbarComponent extends Component {
               <MenuIcon className={css.menuIcon} />
               {notificationDot}
             </div>
-
           </Button>
-
-
         </div>
 
         <div className={css.desktop}>
@@ -412,10 +404,7 @@ TopbarComponent.propTypes = {
   intl: intlShape.isRequired,
 };
 
-const Topbar = compose(
-  withViewport,
-  injectIntl
-)(TopbarComponent);
+const Topbar = compose(withViewport, injectIntl)(TopbarComponent);
 
 Topbar.displayName = 'Topbar';
 

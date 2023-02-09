@@ -52,8 +52,6 @@
   }
 }
 
-
-
 .quantityField {
   padding: 0 24px;
 
@@ -114,8 +112,7 @@
   }
 }
 
-
-.outOfStockWrapper{
+.outOfStockWrapper {
   width: 100%;
   text-align: center;
 }
@@ -124,12 +121,9 @@
   font-size: 25px;
   color: red;
   margin-top: 5pc;
-  
 }
 
-
-
-.modalButtonsWrapper{
+.modalButtonsWrapper {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -143,8 +137,7 @@
   }
 }
 
-.modalButton{
-
+.modalButton {
   width: 65%;
   padding: 10px 15px;
   align-self: center;
@@ -159,7 +152,7 @@
   }
 }
 
-.infoText{
+.infoText {
   padding: 0 20px 0 20px;
   font-weight: var(--fontWeightMedium);
   font-size: 15px;
@@ -171,13 +164,13 @@
   }
 }
 
-.helpIcon{
+.helpIcon {
   cursor: pointer;
   color: var(--marketplaceColorDark);
   animation: breathing 1s ease-out infinite normal;
   margin-right: 5px;
 }
 
-.deliveryMethodErrorInfo{
+.deliveryMethodErrorInfo {
   margin: 0 0 2rem 0;
-} 
+}

@@ -96,7 +96,7 @@ export const loadData = (params, search) => (dispatch, getState, sdk) => {
     include: [
       'listing',
       'provider',
-      'provider.profileImage',    
+      'provider.profileImage',
       'customer',
       'customer.profileImage',
       'booking',
@@ -110,7 +110,7 @@ export const loadData = (params, search) => (dispatch, getState, sdk) => {
       'lineItems',
     ],
     'fields.listing': ['title'],
-    'fields.user': ['profile.displayName', 'profile.abbreviatedName', 'profile.publicData',  ],
+    'fields.user': ['profile.displayName', 'profile.abbreviatedName', 'profile.publicData'],
     'fields.image': ['variants.square-small', 'variants.square-small2x'],
     page,
     per_page: INBOX_PAGE_SIZE,

@@ -17,7 +17,7 @@ import {
   LayoutWrapperFooter,
   Footer,
   NotFoundComponent,
-  Button
+  Button,
 } from '../../components';
 import TopbarContainer from '../../containers/TopbarContainer/TopbarContainer';
 
@@ -28,7 +28,7 @@ import { closeListing, openListing, getOwnListingsById } from './ManageListingsP
 import css from './ManageListingsPage.module.css';
 const sharetribeSdk = require('sharetribe-flex-sdk');
 const sdk = sharetribeSdk.createInstance({
-  clientId: process.env.REACT_APP_SHARETRIBE_SDK_CLIENT_ID
+  clientId: process.env.REACT_APP_SHARETRIBE_SDK_CLIENT_ID,
 });
 
 const { UUID } = sdkTypes;
@@ -66,10 +66,10 @@ export class ManageListingsPageComponent extends Component {
     const hasPaginationInfo = !!pagination && pagination.totalItems != null;
     const listingsAreLoaded = !queryInProgress && hasPaginationInfo;
     // Conditional rendering of the provider/customer UI elements
-    const isProvider = currentUser ? !!currentUser.attributes.profile.metadata.isProvider : false
+    const isProvider = currentUser ? !!currentUser.attributes.profile.metadata.isProvider : false;
 
     const resetAllStock = () => {
-      console.log(listings)
+      console.log(listings);
 
       const promises = listings.map(l => {
         const currentStock = l.currentStock?.attributes?.quantity;
@@ -79,21 +79,20 @@ export class ManageListingsPageComponent extends Component {
           return sdk.stock.compareAndSet({
             listingId: new UUID(l.id.uuid),
             oldTotal: currentStock,
-            newTotal: dailyStock
-          })
+            newTotal: dailyStock,
+          });
         } else {
-          return 'no stock yet'
+          return 'no stock yet';
         }
-      })
+      });
 
       return Promise.all(promises).then(resp => {
-        console.log(resp)
+        console.log(resp);
         if (typeof window !== 'undefined') {
-          window.location.reload()
+          window.location.reload();
         }
-      })
-
-    }
+      });
+    };
 
     const loadingResults = (
       <div className={css.messagePanel}>
@@ -131,7 +130,6 @@ export class ManageListingsPageComponent extends Component {
           {isProvider && noResults}
           {!isProvider && <NotFoundComponent />}
         </div>
-
       );
 
     const page = queryParams ? queryParams.page : 1;
@@ -280,10 +278,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const ManageListingsPage = compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   injectIntl
 )(ManageListingsPageComponent);
 

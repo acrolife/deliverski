@@ -84,7 +84,7 @@ const OrderPanel = props => {
   } = props;
 
   // FIXME Solving issue on contact colleague button on OrderPanel => becomes undefined when clickin send message
-  const restaurantStatusLocal = restaurantStatus ? restaurantStatus : false
+  const restaurantStatusLocal = restaurantStatus ? restaurantStatus : false;
 
   const isNightly = unitType === LINE_ITEM_NIGHT;
   const isDaily = unitType === LINE_ITEM_DAY;
@@ -118,27 +118,35 @@ const OrderPanel = props => {
   const unitTranslationKey = isNightly
     ? 'OrderPanel.perNight'
     : isDaily
-      ? 'OrderPanel.perDay'
-      : 'OrderPanel.perUnit';
+    ? 'OrderPanel.perDay'
+    : 'OrderPanel.perUnit';
 
   // const authorDisplayName = userDisplayNameAsString(author, '');
-  const restaurantName = author.attributes.profile.publicData.restaurantName ? author.attributes.profile.publicData.restaurantName : null;
+  const restaurantName = author.attributes.profile.publicData.restaurantName
+    ? author.attributes.profile.publicData.restaurantName
+    : null;
 
   const classes = classNames(rootClassName || css.root, className);
   const titleClasses = classNames(titleClassName || css.orderTitle);
-  const restaurantDot = <p className={restaurantStatusLocal?.status === 'open' ? css.openDot : css.closedDot}>•</p>;
-  const restaurantScheduleMessageKey = restaurantStatusLocal?.message ? restaurantStatusLocal.message.key : null
-  let restaurantScheduleMessageValues = restaurantStatusLocal?.message ? restaurantStatusLocal.message.values : null
+  const restaurantDot = (
+    <p className={restaurantStatusLocal?.status === 'open' ? css.openDot : css.closedDot}>•</p>
+  );
+  const restaurantScheduleMessageKey = restaurantStatusLocal?.message
+    ? restaurantStatusLocal.message.key
+    : null;
+  let restaurantScheduleMessageValues = restaurantStatusLocal?.message
+    ? restaurantStatusLocal.message.values
+    : null;
   if (restaurantScheduleMessageValues !== null) {
     for (const k of Object.keys(restaurantScheduleMessageValues)) {
       if (restaurantScheduleMessageValues[k] === null) {
-        delete restaurantScheduleMessageValues[k]
+        delete restaurantScheduleMessageValues[k];
       } else if (JSON.stringify(restaurantScheduleMessageValues[k]).length === 1) {
-        restaurantScheduleMessageValues[k] = '0' + JSON.stringify(restaurantScheduleMessageValues[k])
+        restaurantScheduleMessageValues[k] =
+          '0' + JSON.stringify(restaurantScheduleMessageValues[k]);
       }
     }
   }
-
 
   return (
     <div className={classes}>
@@ -155,33 +163,37 @@ const OrderPanel = props => {
         </div>
 
         <div className={css.orderHeading}>
-          <h2 className={titleClasses}>{title} {restaurantDot}</h2>
-          <p className={restaurantStatusLocal.status === 'open' ? css.scheduleInfoTextOpen : css.scheduleInfoTextClosed}>
-            {
-              restaurantStatusLocal && (restaurantScheduleMessageValues ?
-                <FormattedMessage id={restaurantScheduleMessageKey} values={restaurantScheduleMessageValues} /> :
-                <FormattedMessage id={restaurantScheduleMessageKey} />)
+          <h2 className={titleClasses}>
+            {title} {restaurantDot}
+          </h2>
+          <p
+            className={
+              restaurantStatusLocal.status === 'open'
+                ? css.scheduleInfoTextOpen
+                : css.scheduleInfoTextClosed
             }
-
+          >
+            {restaurantStatusLocal &&
+              (restaurantScheduleMessageValues ? (
+                <FormattedMessage
+                  id={restaurantScheduleMessageKey}
+                  values={restaurantScheduleMessageValues}
+                />
+              ) : (
+                <FormattedMessage id={restaurantScheduleMessageKey} />
+              ))}
           </p>
           {subTitleText ? <div className={css.orderHelp}>{subTitleText}</div> : null}
 
           <div className={css.deliveryOptions}>
-            {
-              !shippingEnabled ?
-                <Chip className={css.shipChip} label="No shipping" variant="outlined" />
-                :
-                null
-            }
+            {!shippingEnabled ? (
+              <Chip className={css.shipChip} label="No shipping" variant="outlined" />
+            ) : null}
 
-            {
-              !pickupEnabled ?
-                <Chip className={css.pickupChip} label="No pickup" variant="outlined" />
-                :
-                null
-            }
+            {!pickupEnabled ? (
+              <Chip className={css.pickupChip} label="No pickup" variant="outlined" />
+            ) : null}
           </div>
-
         </div>
         <p className={css.price}>{formatMoney(intl, price)}</p>
         <div className={css.author}>
@@ -304,7 +316,4 @@ OrderPanel.propTypes = {
   intl: intlShape.isRequired,
 };
 
-export default compose(
-  withRouter,
-  injectIntl
-)(OrderPanel);
+export default compose(withRouter, injectIntl)(OrderPanel);

@@ -16,7 +16,7 @@ import css from './EditListingDetailsPanel.module.css';
 
 const sharetribeSdk = require('sharetribe-flex-sdk');
 const sdk = sharetribeSdk.createInstance({
-  clientId: process.env.REACT_APP_SHARETRIBE_SDK_CLIENT_ID
+  clientId: process.env.REACT_APP_SHARETRIBE_SDK_CLIENT_ID,
 });
 
 const EditListingDetailsPanel = props => {
@@ -37,14 +37,17 @@ const EditListingDetailsPanel = props => {
   const [host, setHost] = useState(false);
 
   useEffect(() => {
-    sdk.currentUser.show().then(res => {
-      if (res.data.data) {
-        setHost(res.data.data)
-      }
-    }).catch(e => {
-      console.log(e)
-    })
-  }, [])
+    sdk.currentUser
+      .show()
+      .then(res => {
+        if (res.data.data) {
+          setHost(res.data.data);
+        }
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  }, []);
 
   const currentListing = ensureOwnListing(listing);
   const classes = classNames(rootClassName || css.root, className);
@@ -65,7 +68,7 @@ const EditListingDetailsPanel = props => {
     title,
     productType,
     description,
-  }
+  };
 
   return (
     <div className={classes}>
@@ -75,35 +78,33 @@ const EditListingDetailsPanel = props => {
         initialValues={initialValues}
         saveActionMsg={submitButtonText}
         onSubmit={values => {
-          const { 
-            title, 
-            description, 
-            productType,
-          } = values; 
-          const hostIdObj = host ? {
-            hostId: host.id.uuid
-          } : {};
+          const { title, description, productType } = values;
+          const hostIdObj = host
+            ? {
+                hostId: host.id.uuid,
+              }
+            : {};
 
           // CAUTION the data structure should be the right one enum => '', multi-enum => []
           // CHECK src/config/marketplace-custom-config.js
           // Will reinitialize the attributes of featuresData if the productType is modified
           // Avvoid inconsistant data
-          let featuresData
+          let featuresData;
           if (initialValues.productType !== productType) {
             featuresData = {
               foodType: '',
               cuisine: '',
               diet: [],
-              size: []
-            }
+              size: [],
+            };
           }
           const updateValues = {
             title: title.trim(),
-            description, 
+            description,
             publicData: {
               productType,
               ...featuresData,
-              ...hostIdObj
+              ...hostIdObj,
             },
           };
 

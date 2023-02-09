@@ -25,8 +25,28 @@
       </tr>
     </thead>
     <tbody>
+      {{#if protected-data.cartListingLineItems}}
+      {{#each protected-data.cartListingLineItems}}
+      <tr class="bottom-row">
+        <td>Produit</td>
+        <td class="right">{{title}}</td>
+      </tr>
+      <tr class="top-row">
+        <td>Prix à l'unité</td>
+        <td class="right">{{> format-money money=unitPrice}}</td>
+      </tr>
+      <tr class="bottom-row">
+        <td>Quantité</td>
+        <td class="right">&times; {{number quantity}}</td>
+      </tr>
+      <tr class="bottom-row top-row">
+        <th class="left">Total</th>
+        <th class="right">{{> format-money money=total}}</th>
+      </tr>
+      {{/each}}
+      {{/if}}
       {{#each tx-line-items}} {{#contains include-for "provider"}} {{#eq
-      "line-item/units" code}}
+      "line-item/provider-commission" code}}
       <!-- <tr>
           <td>Prix unitaire</td>
           <td style="text-align: right; padding-left: 20px">
@@ -48,7 +68,7 @@
       </tr>
       <th style="text-align: left">Montant de base - sous-total</th>
       <th style="text-align: right; padding-left: 20px">
-        {{> format-money money=line-total}}
+        {{> format-money money=unit-price}}
       </th>
       </tr>
       {{/eq}} {{#eq "line-item/shipping-fee" code}}
@@ -116,8 +136,28 @@
       </tr>
     </thead>
     <tbody>
+      {{#if protected-data.cartListingLineItems}}
+      {{#each protected-data.cartListingLineItems}}
+      <tr class="bottom-row">
+        <td>Product</td>
+        <td class="right">{{title}}</td>
+      </tr>
+      <tr class="top-row">
+        <td>Product price</td>
+        <td class="right">{{> format-money money=unitPrice}}</td>
+      </tr>
+      <tr class="bottom-row">
+        <td>Quantity</td>
+        <td class="right">&times; {{number quantity}}</td>
+      </tr>
+      <tr class="bottom-row top-row">
+        <th class="left">Subtotal</th>
+        <th class="right">{{> format-money money=total}}</th>
+      </tr>
+      {{/each}}
+      {{/if}}
       {{#each tx-line-items}} {{#contains include-for "provider"}} {{#eq
-      "line-item/units" code}}
+      "line-item/provider-commission" code}}
       <!-- <tr>
           <td>Unit price</td>
           <td style="text-align: right; padding-left: 20px">
@@ -139,7 +179,7 @@
       <tr>
         <th style="text-align: left">Base amount - subtotal</th>
         <th style="text-align: right; padding-left: 20px">
-          {{> format-money money=line-total}}
+          {{> format-money money=unit-price}}
         </th>
       </tr>
       {{/eq}} {{#eq "line-item/shipping-fee" code}}

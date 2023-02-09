@@ -530,7 +530,7 @@
 }
 
 .detailLabelSub {
-  font-weight: var( --fontWeightRegular);
+  font-weight: var(--fontWeightRegular);
   letter-spacing: -0.09px;
 }
 
@@ -731,7 +731,7 @@
   }
 }
 
-.outOfStockWrapper{
+.outOfStockWrapper {
   width: 100%;
   text-align: center;
 }
@@ -740,22 +740,19 @@
   font-size: 25px;
   color: red;
   margin-top: 5pc;
-  
 }
 
-
-
-.modalButtonsWrapper{
+.modalButtonsWrapper {
   display: flex;
   justify-content: space-between;
   margin-top: 2pc;
 }
 
-.modalButton{
+.modalButton {
   width: 40%;
 }
 
-.openDot{
+.openDot {
   width: auto;
   margin: 0;
   font-size: 80px;
@@ -764,7 +761,7 @@
   margin-top: -2px;
 }
 
-.closedDot{
+.closedDot {
   width: auto;
   margin: 0;
   font-size: 80px;
@@ -773,12 +770,12 @@
   margin-top: -2px;
 }
 
-.scheduleInfoTextOpen{
+.scheduleInfoTextOpen {
   color: var(--successColor);
   line-height: 20px;
 }
 
-.scheduleInfoTextClosed{
+.scheduleInfoTextClosed {
   color: red;
   line-height: 20px;
 }

@@ -27,10 +27,9 @@
   @media (--viewportMedium) {
     display: none;
   }
-
 }
 
-.topbarMobileShoppingCartWrapper{
+.topbarMobileShoppingCartWrapper {
   display: flex;
   margin-left: -18px;
   margin-bottom: 5px;
@@ -39,7 +38,7 @@
 .home {
   display: flex;
   height: var(--topbarHeight);
-  
+
   /* Calculate vertical padding. Something like: (60px - 25px)/2 */
   /* padding: calc((var(--topbarHeight) - var(--Topbar_logoHeight)) / 2) 24px; */
 
@@ -104,8 +103,7 @@
   padding: 12px 24px;
 }
 
-.menuIcon 
-.searchMenuIcon {
+.menuIcon .searchMenuIcon {
   margin: 9px 0;
 }
 
@@ -305,20 +303,19 @@
   /* margin-left: calc((var(--) - var(--Topbar_logoHeight)) / 2) xxpx; */
 }
 
-
 .langLink {
-@apply --TopbarDesktop_linkHoverVert !important;
-@apply --marketplaceH5FontStyles !important;
-height: 100%;
-padding: 0 12px 0 12px;
+  @apply --TopbarDesktop_linkHoverVert !important;
+  @apply --marketplaceH5FontStyles !important;
+  height: 100%;
+  padding: 0 12px 0 12px;
 }
 
 .langageMenuIsOpen {
-border-bottom: 0 !important;
+  border-bottom: 0 !important;
 }
 
 .langIcon {
-  width: 25px;  
+  width: 25px;
   margin-top: 4px;
   /* margin-left: 10px; */
   margin-right: -20px;

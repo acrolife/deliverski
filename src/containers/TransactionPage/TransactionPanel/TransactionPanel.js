@@ -8,16 +8,18 @@ import {
   txHasBeenReceived,
   txIsRequested,
   txIsCanceled,
+  txIsExpiredAccept,
   txIsDeclined,
+  txIsPrepared,
   txIsDelivered,
   txIsDisputed,
   txIsEnquired,
   txIsPaymentExpired,
   txIsPaymentPending,
   txIsPurchased,
-  txIsReceived,
-  txIsCompleted,
-  txIsInFirstReviewBy,
+  // txIsReceived,
+  // txIsCompleted,
+  // txIsInFirstReviewBy,
 } from '../../../util/transaction';
 import { FormattedMessage, injectIntl, intlShape } from '../../../util/reactIntl';
 import { LINE_ITEM_NIGHT, LINE_ITEM_DAY, propTypes } from '../../../util/types';
@@ -50,8 +52,10 @@ import PanelHeading, {
   HEADING_PAYMENT_EXPIRED,
   HEADING_REQUESTED,
   HEADING_CANCELED,
+  HEADING_EXPIRED_ACCEPT,
   HEADING_DECLINED,
   HEADING_PURCHASED,
+  HEADING_PREPARED,
   HEADING_DELIVERED,
   HEADING_DISPUTED,
   HEADING_RECEIVED,
@@ -79,15 +83,17 @@ const displayNames = (currentUser, currentProvider, currentCustomer, intl) => {
     otherUserDisplayNameString = userDisplayNameAsString(currentCustomer, '');
   }
 
-  // Getting restaurantName requires a check on publiData first otherwise throws error 
-  const restaurantName = currentProvider.attributes.profile.publicData ? currentProvider.attributes.profile.publicData.restaurantName : null
+  // Getting restaurantName requires a check on publiData first otherwise throws error
+  const restaurantName = currentProvider.attributes.profile.publicData
+    ? currentProvider.attributes.profile.publicData.restaurantName
+    : null;
 
   return {
     authorDisplayName,
     customerDisplayName,
     otherUserDisplayName,
     otherUserDisplayNameString,
-    restaurantName
+    restaurantName,
   };
 };
 
@@ -180,8 +186,10 @@ export class TransactionPanelComponent extends Component {
       declineSaleError,
       markReceivedProps,
       markReceivedFromPurchasedProps,
+      markPreparedProps,
+      markDeliveredFromPurchasedProps,
       markDeliveredProps,
-      leaveReviewProps,
+      // leaveReviewProps,
       onSubmitOrderRequest,
       timeSlots,
       fetchTimeSlotsError,
@@ -192,10 +200,10 @@ export class TransactionPanelComponent extends Component {
       fetchLineItemsError,
     } = this.props;
 
-    // TODO 
+    // TODO
     // DEV steps to disable the Send Message feature after transition/mark-received
-    // 1. Copy in pastTransitions all transitions from 
-    // process/process.edn, 
+    // 1. Copy in pastTransitions all transitions from
+    // process/process.edn,
     // before transition/mark-received,
     // 2. disableSendMessage = true if transaction.attributes.lastTransition is not included in the array
     //
@@ -227,14 +235,17 @@ export class TransactionPanelComponent extends Component {
     const isProviderBanned = isProviderLoaded && currentProvider.attributes.banned;
     const isProviderDeleted = isProviderLoaded && currentProvider.attributes.deleted;
 
-    const restaurantStatus = isRestaurantOpen(currentListing?.author?.attributes.profile.publicData);
+    // eslint-disable-next-line no-unused-vars
+    const restaurantStatus = isRestaurantOpen(
+      currentListing?.author?.attributes.profile.publicData
+    );
 
     const stateDataFn = tx => {
       if (txIsEnquired(tx)) {
         const transitions = Array.isArray(nextTransitions)
           ? nextTransitions.map(transition => {
-            return transition.attributes.name;
-          })
+              return transition.attributes.name;
+            })
           : [];
         const hasCorrectNextTransition =
           transitions.length > 0 && transitions.includes(TRANSITION_REQUEST_PAYMENT_AFTER_ENQUIRY);
@@ -263,7 +274,13 @@ export class TransactionPanelComponent extends Component {
           headingState: HEADING_PURCHASED,
           showDetailCardHeadings: isCustomer,
           showActionButtons: true,
-          primaryButtonProps: isCustomer ? markReceivedFromPurchasedProps : markDeliveredProps,
+          primaryButtonProps: isCustomer ? markReceivedFromPurchasedProps : markPreparedProps,
+          secondaryButtonProps: isProvider ? markDeliveredFromPurchasedProps : null,
+        };
+      } else if (txIsExpiredAccept(tx)) {
+        return {
+          headingState: HEADING_EXPIRED_ACCEPT,
+          showDetailCardHeadings: isCustomer,
         };
       } else if (txIsDeclined(tx)) {
         return {
@@ -274,6 +291,14 @@ export class TransactionPanelComponent extends Component {
         return {
           headingState: HEADING_CANCELED,
           showDetailCardHeadings: isCustomer,
+        };
+      } else if (txIsPrepared(tx)) {
+        const primaryButtonProps = isProvider ? { primaryButtonProps: markDeliveredProps } : {};
+        return {
+          headingState: HEADING_PREPARED,
+          showDetailCardHeadings: isCustomer,
+          showActionButtons: isProvider,
+          ...primaryButtonProps,
         };
       } else if (txIsDelivered(tx)) {
         const primaryButtonPropsMaybe = isCustomer ? { primaryButtonProps: markReceivedProps } : {};
@@ -297,7 +322,7 @@ export class TransactionPanelComponent extends Component {
       //     showActionButtons: true,
       //     primaryButtonProps: leaveReviewProps,
       //   };
-      // } 
+      // }
       else if (txHasBeenReceived(tx)) {
         return {
           headingState: HEADING_RECEIVED,
@@ -333,8 +358,8 @@ export class TransactionPanelComponent extends Component {
     const unitTranslationKey = isNightly
       ? 'TransactionPanel.perNight'
       : isDaily
-        ? 'TransactionPanel.perDay'
-        : 'TransactionPanel.perUnit';
+      ? 'TransactionPanel.perDay'
+      : 'TransactionPanel.perUnit';
 
     const price = currentListing.attributes.price;
     const bookingSubTitle = price
@@ -384,20 +409,14 @@ export class TransactionPanelComponent extends Component {
 
     const classes = classNames(rootClassName || css.root, className);
 
+    const restOfShoppingCartItems =
+      currentTransaction?.attributes.protectedData.restOfShoppingCartItems;
 
-    const restOfShoppingCartItems = currentTransaction?.attributes.metadata.restOfShoppingCartItems ?
-      currentTransaction?.attributes.metadata.restOfShoppingCartItems.map(item => {
-        return JSON.parse(item)
-      })
-      :
-      false;
-
-    const isAnyItemWithShipping =
-      restOfShoppingCartItems ? restOfShoppingCartItems.find(item => {
-        return item.checkoutValues.deliveryMethod === "pickup"
-      }) : false
-      ||
-      currentTransaction.attributes.protectedData.deliveryMethod === "pickup";
+    const isAnyItemWithShipping = restOfShoppingCartItems
+      ? restOfShoppingCartItems.find(item => {
+          return item.deliveryMethod === 'pickup';
+        })
+      : false || currentTransaction.attributes.protectedData.deliveryMethod === 'pickup';
 
     return (
       <div className={classes}>
@@ -433,19 +452,15 @@ export class TransactionPanelComponent extends Component {
                 <BreakdownMaybe
                   transaction={currentTransaction}
                   transactionRole={transactionRole}
-                  restOfShoppingCartItems={restOfShoppingCartItems}
                 />
-                {
-                  isAnyItemWithShipping ?
-                    <p className={css.shippingWarningMobile}>
-                      <FormattedMessage
-                        id="TransactionPanel.warningPickupItems"
-                        values={{ restaurantName }}
-                      />
-                    </p>
-                    :
-                    null
-                }
+                {isAnyItemWithShipping ? (
+                  <p className={css.shippingWarningMobile}>
+                    <FormattedMessage
+                      id="TransactionPanel.warningPickupItems"
+                      values={{ restaurantName }}
+                    />
+                  </p>
+                ) : null}
                 <DiminishedActionButtonMaybe
                   showDispute={stateData.showDispute}
                   onOpenDisputeModal={onOpenDisputeModal}
@@ -507,8 +522,7 @@ export class TransactionPanelComponent extends Component {
           <div className={css.asideDesktop}>
             <div className={css.stickySection}>
               <div className={css.detailCard}>
-                {restOfShoppingCartItems ?
-                  null :
+                {restOfShoppingCartItems ? null : (
                   <DetailCardImage
                     avatarWrapperClassName={css.avatarWrapperDesktop}
                     listingTitle={listingTitle}
@@ -516,9 +530,8 @@ export class TransactionPanelComponent extends Component {
                     provider={currentProvider}
                     isCustomer={isCustomer}
                   />
-                }
-                {restOfShoppingCartItems ?
-                  null :
+                )}
+                {restOfShoppingCartItems ? null : (
                   <DetailCardHeadingsMaybe
                     showDetailCardHeadings={stateData.showDetailCardHeadings}
                     listingTitle={listingTitle}
@@ -527,7 +540,7 @@ export class TransactionPanelComponent extends Component {
                     geolocation={geolocation}
                     showAddress={stateData.showAddress}
                   />
-                }
+                )}
                 {stateData.showOrderPanel ? (
                   <OrderPanel
                     className={css.orderPanel}
@@ -551,15 +564,16 @@ export class TransactionPanelComponent extends Component {
                   className={css.breakdownContainer}
                   transaction={currentTransaction}
                   transactionRole={transactionRole}
-                  restOfShoppingCartItems={restOfShoppingCartItems}
                 />
 
-                {
-                  isAnyItemWithShipping ?
-                    <p className={css.shippingWarning}>Caution! Some items need to be picked up at the restaurant</p>
-                    :
-                    null
-                }
+                {isAnyItemWithShipping ? (
+                  <p className={css.shippingWarning}>
+                    <FormattedMessage
+                      id="TransactionPanel.warningPickupItems"
+                      values={{ restaurantName }}
+                    />
+                  </p>
+                ) : null}
 
                 {stateData.showSaleButtons ? (
                   <div className={css.desktopActionButtons}>{saleButtons}</div>
@@ -633,6 +647,8 @@ TransactionPanelComponent.propTypes = {
   // Tx process transition related props
   markReceivedProps: actionButtonShape.isRequired,
   markReceivedFromPurchasedProps: actionButtonShape.isRequired,
+  markPreparedProps: actionButtonShape.isRequired,
+  markDeliveredFromPurchasedProps: actionButtonShape.isRequired,
   markDeliveredProps: actionButtonShape.isRequired,
   leaveReviewProps: actionButtonShape.isRequired,
 
