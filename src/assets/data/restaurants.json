@@ -1,36 +1,60 @@
-{ 
-    "restaurantsArc1600": [
-        [1,
+[
+    {
+        "resort": "arc1600",
+        "restaurants": [
             {
-                "restaurantName": "Mamie Crêpe",
-                "restaurantImageName": "restaurant_1800_mamiecrepe"
-            }, 
-        1]
-    ],    
-    "restaurantsArc1800": [
-        [1,
-            {
+                "index": 1,
                 "restaurantName": "La Bûche",
-                "restaurantImageName": "restaurant_1600_labuche"
+                "restaurantImageName": "restaurant_1600_labuche",
+                "enabled": 1
             }, 
-        1],
-        [1,
             {
+                "index": 2,
                 "restaurantName": "The French Touch",
-                "restaurantImageName": "restaurant_1600_thefrenchtouch"
+                "restaurantImageName": "restaurant_1600_thefrenchtouch",
+                "enabled": 1
             }, 
-        1],
-        [1,
             {
+                "index": 3,
                 "restaurantName": "Le Bistro de Dodo",
-                "restaurantImageName": "restaurant_1600_lebistrotdedodo"
-            }, 
-        1]                
-    ],
-    "restaurantsArc1950": [
-        [1, "Test", 1]
-    ],    
-    "restaurantsArc2000": [
-        [1, "Test", 1]
-    ]
-}
+                "restaurantImageName": "restaurant_1600_lebistrotdedodo",
+                "enabled": 1
+            }
+        ]
+    },
+    {
+        "resort": "arc1800",
+        "restaurants": [
+            {
+                "index": 1,
+                "restaurantName": "Mamie Crêpe",
+                "restaurantImageName": "restaurant_1800_mamiecrepe",
+                "enabled": 1
+            }
+        ]
+    },
+    {
+        "resort": "arc1950",
+        "restaurants": [
+            {
+                "index": 1,
+                "restaurantName": "test",
+                "restaurantImageName": "restaurant_1800_test",
+                "enabled": 1
+            }
+        ]
+    },
+    {
+        "resort": "arc2000",
+        "restaurants": [
+            {
+                "index": 1,
+                "restaurantName": "test",
+                "restaurantImageName": "restaurant_1800_test",
+                "enabled": 1
+            }
+        ]
+    }
+]
+  
+               

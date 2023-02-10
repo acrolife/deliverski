@@ -102,24 +102,48 @@ const SectionFilteredSearches = props => {
   // TODO Implement: randomize order of appearance, sorting array button,
   const RestaurantTilesVitrine = () => {
     const canonicalRootUrlProd = canonicalRootUrl.replace('marmott.co', 'playgroud.marmott.co');
+
+    console.log("restaurantsData", restaurantsData)
+
     const restaurantsArc1600 = restaurantsData
-      ? restaurantsData.restaurantsArc1600.filter(e => e[2]).map(e => e[1])
+      ? restaurantsData
+      .filter( e => e.resort == "arc1600")[0]
+      .restaurants
+      .filter( e => e.enabled)
       : {};
     const restaurantsArc1800 = restaurantsData
-      ? restaurantsData.restaurantsArc1800.filter(e => e[2]).map(e => e[1])
+      ? restaurantsData
+      .filter( e => e.resort == "arc1800")[0]
+      .restaurants
+      .filter( e => e.enabled)
       : {};
-    const restaurantsArc1950 = restaurantsData
-      ? restaurantsData.restaurantsArc1950.filter(e => e[2]).map(e => e[1])
-      : {};
-    const restaurantsArc2000 = restaurantsData
-      ? restaurantsData.restaurantsArc2000.filter(e => e[2]).map(e => e[1])
-      : {};
+    // const restaurantsArc1950 = restaurantsData
+    //   ? restaurantsData
+    //   .filter( e => e.resort == "arc1950")[0]
+    //   .restaurants
+    //   .filter( e => e.enabled)
+    //   : {};
+    // const restaurantsArc2000 = restaurantsData
+    //   ? restaurantsData
+    //   .filter( e => e.resort == "arc2000")[0]
+    //   .restaurants
+    //   .filter( e => e.enabled)
+    //   : {};
     const restaurantsFiltered = [
       ...restaurantsArc1600,
       ...restaurantsArc1800,
-      ...restaurantsArc2000,
-      ...restaurantsArc1950,
+      // ...restaurantsArc1950,
+      // ...restaurantsArc2000,      
     ];
+
+    // const restaurantsFiltered = [
+    //   {
+    //     restaurantName: "La Bûche",
+    //     restaurantImageName: "restaurant_1600_labuche"
+    //   }
+    // ]
+
+    console.log("restaurantsFiltered", restaurantsFiltered)
 
     return [...restaurantsFiltered]
       .filter(e => !!e.restaurantImageName)

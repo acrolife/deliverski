@@ -25,7 +25,7 @@ const ShippingDetails = props => {
 
   // const testMessages = mapValues(residencesData, (val, key) => key);
   const residencesFiltered = residencesData
-    ? residencesData.residencesArc1800.filter(e => e[2])
+    ? residencesData.arc1800.filter(e => e[2])
     : {};
 
   return (
