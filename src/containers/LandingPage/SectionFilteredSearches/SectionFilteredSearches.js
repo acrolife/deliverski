@@ -4,6 +4,7 @@ import classNames from 'classnames';
 
 import { FormattedMessage } from '../../../util/reactIntl';
 import { lazyLoadWithDimensions } from '../../../util/contextHelpers';
+import { shuffleArray } from '../../../util/customFunctions';
 
 // import { NamedLink } from '../../../components';
 import { NamedLink, Avatar } from '../../../components';
@@ -23,6 +24,12 @@ import config from '../../../config';
 import placeHolderProfileBg from './images/placeHolderProfileBg_648x448.jpg';
 
 // Production vitrine setup
+import { 
+  // restaurantPaths, 
+  restaurantNameToPath,
+  restaurantsFiltered 
+} from './importImages.js'
+/*
 import { restaurantNameToFilterName } from '../../../util/data';
 import restaurantsData from '../../../assets/data/restaurants';
 import restaurant_1600_labuche from '../../../assets/restaurantsImages/restaurant_1600_labuche.jpg';
@@ -48,6 +55,12 @@ const restaurantUrls = [
     name: 'restaurant_1800_mamiecrepe',
   },
 ];
+*/
+
+// DEV DEBUG
+console.log("restaurantNameToPath", restaurantNameToPath)
+const restaurantPaths = restaurantNameToPath
+// import { restaurantNameToFilterName } from '../../../util/data'; // transforms restaurant name in an inteligible key
 
 const canonicalRootUrl = config.canonicalRootURL;
 
@@ -101,50 +114,10 @@ const SectionFilteredSearches = props => {
   // TODO Tiles with link to the restaurant's area on the playground instance
   // TODO Implement: randomize order of appearance, sorting array button,
   const RestaurantTilesVitrine = () => {
+
+    /*
     const canonicalRootUrlProd = canonicalRootUrl.replace('marmott.co', 'playgroud.marmott.co');
-
-    console.log("restaurantsData", restaurantsData)
-
-    const restaurantsArc1600 = restaurantsData
-      ? restaurantsData
-      .filter( e => e.resort == "arc1600")[0]
-      .restaurants
-      .filter( e => e.enabled)
-      : {};
-    const restaurantsArc1800 = restaurantsData
-      ? restaurantsData
-      .filter( e => e.resort == "arc1800")[0]
-      .restaurants
-      .filter( e => e.enabled)
-      : {};
-    // const restaurantsArc1950 = restaurantsData
-    //   ? restaurantsData
-    //   .filter( e => e.resort == "arc1950")[0]
-    //   .restaurants
-    //   .filter( e => e.enabled)
-    //   : {};
-    // const restaurantsArc2000 = restaurantsData
-    //   ? restaurantsData
-    //   .filter( e => e.resort == "arc2000")[0]
-    //   .restaurants
-    //   .filter( e => e.enabled)
-    //   : {};
-    const restaurantsFiltered = [
-      ...restaurantsArc1600,
-      ...restaurantsArc1800,
-      // ...restaurantsArc1950,
-      // ...restaurantsArc2000,      
-    ];
-
-    // const restaurantsFiltered = [
-    //   {
-    //     restaurantName: "La Bûche",
-    //     restaurantImageName: "restaurant_1600_labuche"
-    //   }
-    // ]
-
-    console.log("restaurantsFiltered", restaurantsFiltered)
-
+    
     return [...restaurantsFiltered]
       .filter(e => !!e.restaurantImageName)
       .map(e =>
@@ -161,9 +134,31 @@ const SectionFilteredSearches = props => {
           />
         ) : null
       );
+    */
+      return (
+        [...restaurantsFilteredShuffled]
+          .filter(e => (!!e.restaurantImageName))
+          .map(e =>
+          (
+            (e.restaurantName && e.restaurantImageName) ?
+              // console.log(restaurantPaths.filter(el => el.name === e.restaurantImageName)[0].path)
+              <FilterLinkVitrine
+                className={css.listingCard}
+                key={e.restaurantImageName}
+                name={e.restaurantName}          
+                image={restaurantPaths.find(el => el.name === e.restaurantImageName) ? 
+                  restaurantPaths.find(el => el.name === e.restaurantImageName).path : 
+                  placeHolderProfileBg}
+                // image={""}
+              />
+              : null)
+          )
+      )
   };
 
-  // image={e.restaurantImageName}
+ // image={e.restaurantImageName} 
+  // image={restaurantPaths.filter(el => el.name === e.restaurantImageName)[0].path}
+  // image={`/static/media/${e.restaurantImageName}`}
 
   const RestaurantTiles = () => {
     // DEV
