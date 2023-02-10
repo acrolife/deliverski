@@ -97,6 +97,27 @@ const FilterLink = props => {
   );
 };
 
+// Create a "card" similar to FilterLink on SearchPage, but without link prop
+const FilterLinkVitrine = props => {
+  const { name, image } = props;
+  const nameText = <span className={css.searchName}>{name}</span>;
+  return (
+    <div className={css.searchLink}>
+      <div className={css.imageWrapper}>
+        <div className={css.aspectWrapper}>
+          <LazyImage src={image} alt={name} className={css.searchImage} />
+        </div>
+      </div>
+      <div className={css.linkText}>
+        <FormattedMessage
+          id="SectionFilteredSearches.filteredSearch"
+          values={{ filter: nameText }}
+        />
+      </div>
+    </div>
+  );
+};
+
 // Component that shows full-width section on LandingPage.
 // Inside it shows 3 "cards" that link to SearchPage with specific filters applied.
 const SectionFilteredSearches = props => {
@@ -135,6 +156,10 @@ const SectionFilteredSearches = props => {
         ) : null
       );
     */
+
+      // Calls a custom function randomizing the elements order inside the array
+      const restaurantsFilteredShuffled = shuffleArray(restaurantsFiltered)
+
       return (
         [...restaurantsFilteredShuffled]
           .filter(e => (!!e.restaurantImageName))
