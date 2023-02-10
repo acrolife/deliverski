@@ -51,7 +51,7 @@ const LandingPageComponent = props => {
     ? !(canonicalRootURL.includes('playground') || canonicalRootURL.includes('sandbox'))
     : true;
 
-  isProduction = true
+  isProduction = false
   // DEV
   // const isProduction = false
   // console.log("canonicalRootURL", canonicalRootURL)

@@ -58,7 +58,7 @@ const restaurantUrls = [
 */
 
 // DEV DEBUG
-console.log("restaurantNameToPath", restaurantNameToPath)
+// console.log("restaurantNameToPath", restaurantNameToPath)
 const restaurantPaths = restaurantNameToPath
 // import { restaurantNameToFilterName } from '../../../util/data'; // transforms restaurant name in an inteligible key
 
