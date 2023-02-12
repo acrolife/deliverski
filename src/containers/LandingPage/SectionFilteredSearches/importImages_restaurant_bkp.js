@@ -3,11 +3,10 @@
  */
 
 import restaurantsData from '../../../assets/data/restaurants'
-import resortsData from '../../../assets/data/resorts.json'
 
-// for (const [index, restaurantImageName] of restaurantsFiltered.map(e => e.restaurantImageName).entries()) {
+// for (const [index, imageName] of restaurantsFiltered.map(e => e.imageName).entries()) {
 //   let path
-//   import path from `../../../assets/restaurantsImages/${restaurantImageName}.jpg`
+//   import path from `../../../assets/restaurantsImages/${imageName}.jpg`
 //   restaurantsFiltered[index].imagePath = path
 // }
 
@@ -15,12 +14,10 @@ import resortsData from '../../../assets/data/resorts.json'
 const importAll = (r) => r.keys().map(r)
 
 let restaurantImagePaths = importAll(require.context('../../../assets/restaurantsImages/', false, /\.(jpg)$/));
-let resortImagePaths = importAll(require.context('../../../assets/resortsImages/', false, /\.(png)$/));
 // false, /\.(png|jpe?g|svg)$/));
 
 const pathStringKey = "static/media/"
 restaurantImagePaths = restaurantImagePaths.map(e => e.default).filter(e => e.includes(pathStringKey))
-resortImagePaths = resortImagePaths.map(e => e.default).filter(e => e.includes(pathStringKey))
 
 const restaurantNameToPath = restaurantImagePaths.map(e => 
     Object.fromEntries(
@@ -29,14 +26,7 @@ const restaurantNameToPath = restaurantImagePaths.map(e =>
             [ "path", e]
         ]
     ))
-const resortNameToPath = resortImagePaths.map(e => 
-    Object.fromEntries(
-        [
-            [ "name", e.split(pathStringKey)[1].split('.')[0]], 
-            [ "path", e]
-        ]
-    ))
-
+    
 // DEV DEBUG
 // console.log(restaurantNameToPath)
 
@@ -303,18 +293,18 @@ const restaurantsArc1800 = restaurantsData
     .restaurants
     .filter( e => e.enabled)
     : {};
-const restaurantsArc1950 = restaurantsData
-  ? restaurantsData
-  .filter( e => e.resort == "arc1950")[0]
-  .restaurants
-  .filter( e => e.enabled)
-  : {};
-const restaurantsArc2000 = restaurantsData
-  ? restaurantsData
-  .filter( e => e.resort == "arc2000")[0]
-  .restaurants
-  .filter( e => e.enabled)
-  : {};
+// const restaurantsArc1950 = restaurantsData
+//   ? restaurantsData
+//   .filter( e => e.resort == "arc1950")[0]
+//   .restaurants
+//   .filter( e => e.enabled)
+//   : {};
+// const restaurantsArc2000 = restaurantsData
+//   ? restaurantsData
+//   .filter( e => e.resort == "arc2000")[0]
+//   .restaurants
+//   .filter( e => e.enabled)
+//   : {};
 
 const restaurantsFiltered = [
     ...restaurantsArc1600,
@@ -323,17 +313,12 @@ const restaurantsFiltered = [
     // ...restaurantsArc2000,      
   ];
 
-  const resorts = resortsData
-      ? resortsData
-      .filter( e => e.enabled)
-      : {};
-
 // console.log(restaurantPaths.filter(el => el.name === "restaurant_1800_mamiecrepe")[0].path)
 
 // const restaurantsFiltered = [
 //   {
-//     restaurantName: "La Bûche",
-//     restaurantImageName: "restaurant_1600_labuche"
+//     name: "La Bûche",
+//     imageName: "restaurant_1600_labuche"
 //   }
 // ]
 
@@ -347,7 +332,5 @@ const restaurantsFiltered = [
 export {
     // restaurantPaths,
     restaurantNameToPath,
-    restaurantsFiltered,
-    resortNameToPath,
-    resorts,
+    restaurantsFiltered
 }

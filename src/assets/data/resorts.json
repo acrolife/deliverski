@@ -1,14 +1,31 @@
 [
     {
+       
+        "key": ["arc1600"],        
+        "enabled": true,
         "name": "Arc 1600",
-        "keys": ["arc1600"]
+        "imageName": "resort_1600",
+        "deliverToResortsKeys": ["arc1600"]
     },
-    {
+    {       
+        "key": ["arc1800"],
+        "enabled": true,
         "name": "Arc 1800",
-        "keys": ["arc1800"]
+        "imageName": "resort_1800",
+        "deliverToResortsKeys": ["arc1800"]
     },
     {
-        "name": "Arc 1950 & 2000",
-        "keys": ["arc1950", "arc2000"]
-    }  
+        "key": ["arc1950"],
+        "enabled": true,
+        "name": "Arc 1950",
+        "imageName": "resort_1950",
+        "deliverToResortsKeys": ["arc1950", "arc2000"]        
+    },
+    {
+        "key": ["arc2000"],
+        "enabled": true,
+        "name": "Arc 2000",
+        "imageName": "resort_2000",
+        "deliverToResortsKeys": ["arc1950", "arc2000"]
+    } 
 ]

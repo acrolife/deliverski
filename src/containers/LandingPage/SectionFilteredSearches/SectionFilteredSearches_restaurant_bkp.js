@@ -4,7 +4,7 @@ import classNames from 'classnames';
 
 import { FormattedMessage } from '../../../util/reactIntl';
 import { lazyLoadWithDimensions } from '../../../util/contextHelpers';
-// import { shuffleArray } from '../../../util/customFunctions';
+import { shuffleArray } from '../../../util/customFunctions';
 
 // import { NamedLink } from '../../../components';
 import { NamedLink, Avatar } from '../../../components';
@@ -13,20 +13,54 @@ import css from './SectionFilteredSearches.module.css';
 
 import config from '../../../config';
 
+// Update images by saving images to src/LandingPage/SeactionFilteredSearches/images directory.
+// If those images have been saved with the same name, no need to make changes to these imports.
+
+// import imageForFilter1 from './images/imageForFilter1_648x448.jpg';
+// import imageForFilter2 from './images/imageForFilter2_648x448.jpg';
+// import imageForFilter3 from './images/imageForFilter3_648x448.jpg';
+
 // Purple background for the restaurant who don't have a picture
 import placeHolderProfileBg from './images/placeHolderProfileBg_648x448.jpg';
 
-// Update images by saving images to src/LandingPage/SeactionFilteredSearches/images directory.
+// Production vitrine setup
 import { 
-  // restaurantNameToPath,
-  // restaurantsFiltered,
-  resortNameToPath,
-  resorts,
+  // restaurantPaths, 
+  restaurantNameToPath,
+  restaurantsFiltered 
 } from './importImages.js'
+/*
+import { restaurantNameToFilterName } from '../../../util/data';
+import restaurantsData from '../../../assets/data/restaurants';
+import restaurant_1600_labuche from '../../../assets/restaurantsImages/restaurant_1600_labuche.jpg';
+import restaurant_1600_lebistrotdedodo from '../../../assets/restaurantsImages/restaurant_1600_lebistrotdedodo.jpg';
+import restaurant_1600_thefrenchtouch from '../../../assets/restaurantsImages/restaurant_1600_thefrenchtouch.jpg';
+import restaurant_1800_mamiecrepe from '../../../assets/restaurantsImages/restaurant_1800_mamiecrepe.jpg';
+
+const restaurantUrls = [
+  {
+    url: restaurant_1600_labuche,
+    name: 'restaurant_1600_labuche',
+  },
+  {
+    url: restaurant_1600_lebistrotdedodo,
+    name: 'restaurant_1600_lebistrotdedodo',
+  },
+  {
+    url: restaurant_1600_thefrenchtouch,
+    name: 'restaurant_1600_thefrenchtouch',
+  },
+  {
+    url: restaurant_1800_mamiecrepe,
+    name: 'restaurant_1800_mamiecrepe',
+  },
+];
+*/
 
 // DEV DEBUG
-// console.log("resortNameToPath", resortNameToPath)
-const resortPaths = resortNameToPath
+// console.log("restaurantNameToPath", restaurantNameToPath)
+const restaurantPaths = restaurantNameToPath
+// import { restaurantNameToFilterName } from '../../../util/data'; // transforms restaurant name in an inteligible key
 
 const canonicalRootUrl = config.canonicalRootURL;
 
@@ -64,7 +98,7 @@ const FilterLink = props => {
 };
 
 // Create a "card" similar to FilterLink on SearchPage, but without link prop
-const FilterLinkVitrineResort = props => {
+const FilterLinkVitrine = props => {
   const { name, image } = props;
   const nameText = <span className={css.searchName}>{name}</span>;
   return (
@@ -90,22 +124,54 @@ const SectionFilteredSearches = props => {
   const { rootClassName, className, userProviders, isProduction } = props;
   const classes = classNames(rootClassName || css.root, className);
 
-  // Production vitrine resort will show the resort tiles with a link to the full list of meals from the resort restaurants
-  const ResortTilesVitrine = () => {
+  // const Test = () => {
+  //   return (
+  //     userProviders.length > 0 ? userProviders.map(e => <div key={e.id.uuid}>{e.attributes.profile.displayName.toLowerCase().replace(' ', '_')}</div>)
+  //       : <div>'Pulling data...'</div>
+  //   )
+  // }
+
+  // Production vitrine will show the restaurants tiles with a link to the restaurant's area on the playground instance
+  // TODO Tiles with link to the restaurant's area on the playground instance
+  const RestaurantTilesVitrine = () => {
+
+    /*
+    const canonicalRootUrlProd = canonicalRootUrl.replace('marmott.co', 'playgroud.marmott.co');
+    
+    return [...restaurantsFiltered]
+      .filter(e => !!e.imageName)
+      .map(e =>
+        e.name ? (
+          // console.log(restaurantUrls.filter(el => el.name === e.imageName)[0].url)
+          <FilterLink
+            className={css.listingCard}
+            key={restaurantNameToFilterName(e.name)}
+            name={e.name}
+            image={restaurantUrls.filter(el => el.name === e.imageName)[0].url}
+            link={`${canonicalRootUrlProd}/s?pub_restaurant=${restaurantNameToFilterName(
+              e.name
+            )}`}
+          />
+        ) : null
+      );
+    */
+
+      // Calls a custom function randomizing the elements order inside the array
+      const restaurantsFilteredShuffled = shuffleArray(restaurantsFiltered)
 
       return (
-        resorts
+        [...restaurantsFilteredShuffled]
           .filter(e => (!!e.imageName))
           .map(e =>
           (
             (e.name && e.imageName) ?
-              // console.log(resortPaths.filter(el => el.name === e.imageName)[0].path)
-              <FilterLinkVitrineResort
+              // console.log(restaurantPaths.filter(el => el.name === e.imageName)[0].path)
+              <FilterLinkVitrine
                 className={css.listingCard}
                 key={e.imageName}
                 name={e.name}          
-                image={resortPaths.find(el => el.name === e.imageName) ? 
-                  resortPaths.find(el => el.name === e.imageName).path : 
+                image={restaurantPaths.find(el => el.name === e.imageName) ? 
+                  restaurantPaths.find(el => el.name === e.imageName).path : 
                   placeHolderProfileBg}
                 // image={""}
               />
@@ -113,6 +179,10 @@ const SectionFilteredSearches = props => {
           )
       )
   };
+
+ // image={e.imageName} 
+  // image={restaurantPaths.filter(el => el.name === e.imageName)[0].path}
+  // image={`/static/media/${e.imageName}`}
 
   const RestaurantTiles = () => {
     // DEV
@@ -155,6 +225,15 @@ const SectionFilteredSearches = props => {
     );
   };
 
+  {
+    /*original image={imageForFilter1} */
+  }
+
+  {
+    /* Not needed here, works with initials. We want it to work with the image. This strucutre works with useProvider2.
+          <Avatar className={css.avatar} user={useProvider2} disableProfileLink />  */
+  }
+
   // FilterLink props:
   // - "name" is a string that defines what kind of search the link is going to make
   // - "image" is imported from images directory and you can update it by changing the file
@@ -163,17 +242,15 @@ const SectionFilteredSearches = props => {
   return (
     <div className={classes}>
       <div className={css.title}>
-        {/* {isProduction ? (
+        {isProduction ? (
           <FormattedMessage id="SectionFilteredSearches.titleRestaurants" />
         ) : (
           <FormattedMessage id="SectionFilteredSearches.title" />
-        )} */}
-        <FormattedMessage id="SectionFilteredSearches.titleResorts" />
+        )}
       </div>
       {/* <div className={css.filteredSearches} > */}
       <div className={css.listingCards}>
-        <ResortTilesVitrine />
-        {/* {isProduction ? <RestaurantTilesVitrine /> : <RestaurantTiles />} */}
+        {isProduction ? <RestaurantTilesVitrine /> : <RestaurantTiles />}
 
         {/* className={css.box} */}
         {/* <FilterLink
@@ -193,6 +270,28 @@ const SectionFilteredSearches = props => {
         /> */}
       </div>
     </div>
+    //   <div className={classes}>
+    //   <div className={css.title}>
+    //     <FormattedMessage id="SectionFilteredSearches.title" />
+    //   </div>
+    //   <div className={css.filteredSearches}>
+    //     <FilterLink
+    //       name="Asiatic"
+    //       image={imageForFilter1}
+    //       link="http://localhost:3000/s?pub_brand=asiatic"
+    //     />
+    //     <FilterLink
+    //       name="Burger"
+    //       image={imageForFilter2}
+    //       link="http://localhost:3000/s?pub_brand=yeezy"
+    //     />
+    //     <FilterLink
+    //       name="Sweets"
+    //       image={imageForFilter3}
+    //       link="http://localhost:3000/s?pub_brand=converse"
+    //     />
+    //   </div>
+    // </div>
   );
 };
 
