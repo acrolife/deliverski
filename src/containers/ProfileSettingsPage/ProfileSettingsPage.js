@@ -25,7 +25,7 @@ import ProfileSettingsForm from './ProfileSettingsForm/ProfileSettingsForm';
 
 import { updateProfile, uploadImage } from './ProfileSettingsPage.duck';
 import css from './ProfileSettingsPage.module.css';
-// import { last } from 'lodash';
+import { last } from 'lodash';
 
 const { LatLng } = sdkTypes; // eslint-disable-line no-unused-vars
 
@@ -113,7 +113,17 @@ export class ProfileSettingsPageComponent extends Component {
     const restaurantName = publicData ? publicData.restaurantName : null;
     const profileImageId = user.profileImage ? user.profileImage.id : null;
     const profileImage = image || { imageId: profileImageId };
-    // const weekdays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'].map(d => {return ({day: d})});
+    const weekdays = [
+      'monday',
+      'tuesday',
+      'wednesday',
+      'thursday',
+      'friday',
+      'saturday',
+      'sunday',
+    ].map(d => {
+      return { day: d };
+    });
 
     const savedSchedule = currentUser?.attributes.profile.publicData.schedule;
     const basicSchedule = [

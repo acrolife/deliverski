@@ -12,7 +12,6 @@ import * as validators from '../../../util/validators';
 import arrayMutators from 'final-form-arrays';
 import Switch from '@mui/material/Switch';
 import { isUploadImageOverLimitError } from '../../../util/errors';
-import DelayTimes from './DelayTimes';
 
 import {
   Form,
@@ -25,6 +24,7 @@ import {
   Modal,
   // LocationAutocompleteInputField,
 } from '../../../components';
+import DelayTimes from './DelayTimes';
 
 import css from './ProfileSettingsForm.module.css';
 
