@@ -36,6 +36,9 @@ import SearchResultsPanel from './SearchResultsPanel/SearchResultsPanel';
 
 import css from './SearchPage.module.css';
 
+// Import static data
+import resortsData from '../../assets/data/resorts.json';
+
 const MODAL_BREAKPOINT = 768; // Search is in modal on mobile layout
 const SEARCH_WITH_MAP_DEBOUNCE = 300; // Little bit of debounce before search is initiated.
 
@@ -351,7 +354,7 @@ export class SearchPageComponent extends Component {
     const hasNoResult = listingsAreLoaded && totalItems === 0;
     const hasSearchParams = location.search?.length > 0;
 
-    // Build conditional UI for search listing as Restaurant's page
+    // Build conditional UI to display a listings search list, looking like a restaurant's page
     let restaurantName = '';
     // TODO Write a more striaghtforwadr way to get those data
     // Check src/containers/LandingPage/LandingPage.duck.js
@@ -369,6 +372,15 @@ export class SearchPageComponent extends Component {
         // DEV
         // console.log("restaurantName", restaurantName)
       }
+    }
+
+    // Build conditional UI to display a search list of listings from the same resort
+    let resortName = '';
+    const resortSearchParam = 'pub_resort=';
+    const hasResortSearchParam = hasSearchParams && location.search.includes(resortSearchParam);
+    if (hasResortSearchParam) {
+      const resortKey = location.search.split(resortSearchParam)[1].split('&')[0];
+      resortName = resortsData.find(e => e.key == resortKey).name;
     }
 
     const noResultsInfo = hasNoResult ? (
@@ -434,8 +446,19 @@ export class SearchPageComponent extends Component {
                 <div>
                   <h1 className={css.mobileHeadingSearchPage}>
                     <FormattedMessage
-                      id="ProfilePage.mobileHeading"
+                      id="ProfilePage.mobileHeadingRestaurant"
                       values={{ name: restaurantName, linebreak: <br /> }}
+                    />
+                  </h1>
+                </div>
+              )}
+
+              {resortName && (
+                <div>
+                  <h1 className={css.mobileHeadingSearchPage}>
+                    <FormattedMessage
+                      id="ProfilePage.mobileHeadingResort"
+                      values={{ name: resortName, linebreak: <br /> }}
                     />
                   </h1>
                 </div>
@@ -480,7 +503,18 @@ export class SearchPageComponent extends Component {
                   <h1 className={css.desktopHeadingSearchPage}>
                     <FormattedMessage
                       id="ProfilePage.desktopHeadingRestaurant"
-                      values={{ name: restaurantName }}
+                      values={{ name: restaurantName, linebreak: <br /> }}
+                    />
+                  </h1>
+                </div>
+              )}
+
+              {resortName && (
+                <div>
+                  <h1 className={css.desktopHeadingSearchPage}>
+                    <FormattedMessage
+                      id="ProfilePage.desktopHeadingResort"
+                      values={{ name: resortName, linebreak: <br /> }}
                     />
                   </h1>
                 </div>

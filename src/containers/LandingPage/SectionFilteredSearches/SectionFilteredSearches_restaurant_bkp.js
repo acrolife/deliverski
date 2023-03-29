@@ -24,11 +24,11 @@ import config from '../../../config';
 import placeHolderProfileBg from './images/placeHolderProfileBg_648x448.jpg';
 
 // Production vitrine setup
-import { 
-  // restaurantPaths, 
+import {
+  // restaurantPaths,
   restaurantNameToPath,
-  restaurantsFiltered 
-} from './importImages.js'
+  restaurantsFiltered,
+} from '../../../util/importStaticAssets.js';
 /*
 import { restaurantNameToFilterName } from '../../../util/data';
 import restaurantsData from '../../../assets/data/restaurants';
@@ -59,7 +59,7 @@ const restaurantUrls = [
 
 // DEV DEBUG
 // console.log("restaurantNameToPath", restaurantNameToPath)
-const restaurantPaths = restaurantNameToPath
+const restaurantPaths = restaurantNameToPath;
 // import { restaurantNameToFilterName } from '../../../util/data'; // transforms restaurant name in an inteligible key
 
 const canonicalRootUrl = config.canonicalRootURL;
@@ -134,7 +134,6 @@ const SectionFilteredSearches = props => {
   // Production vitrine will show the restaurants tiles with a link to the restaurant's area on the playground instance
   // TODO Tiles with link to the restaurant's area on the playground instance
   const RestaurantTilesVitrine = () => {
-
     /*
     const canonicalRootUrlProd = canonicalRootUrl.replace('marmott.co', 'playgroud.marmott.co');
     
@@ -156,31 +155,30 @@ const SectionFilteredSearches = props => {
       );
     */
 
-      // Calls a custom function randomizing the elements order inside the array
-      const restaurantsFilteredShuffled = shuffleArray(restaurantsFiltered)
+    // Calls a custom function randomizing the elements order inside the array
+    const restaurantsFilteredShuffled = shuffleArray(restaurantsFiltered);
 
-      return (
-        [...restaurantsFilteredShuffled]
-          .filter(e => (!!e.imageName))
-          .map(e =>
-          (
-            (e.name && e.imageName) ?
-              // console.log(restaurantPaths.filter(el => el.name === e.imageName)[0].path)
-              <FilterLinkVitrine
-                className={css.listingCard}
-                key={e.imageName}
-                name={e.name}          
-                image={restaurantPaths.find(el => el.name === e.imageName) ? 
-                  restaurantPaths.find(el => el.name === e.imageName).path : 
-                  placeHolderProfileBg}
-                // image={""}
-              />
-              : null)
-          )
-      )
+    return [...restaurantsFilteredShuffled]
+      .filter(e => !!e.imageName)
+      .map(e =>
+        e.name && e.imageName ? (
+          // console.log(restaurantPaths.filter(el => el.name === e.imageName)[0].path)
+          <FilterLinkVitrine
+            className={css.listingCard}
+            key={e.imageName}
+            name={e.name}
+            image={
+              restaurantPaths.find(el => el.name === e.imageName)
+                ? restaurantPaths.find(el => el.name === e.imageName).path
+                : placeHolderProfileBg
+            }
+            // image={""}
+          />
+        ) : null
+      );
   };
 
- // image={e.imageName} 
+  // image={e.imageName}
   // image={restaurantPaths.filter(el => el.name === e.imageName)[0].path}
   // image={`/static/media/${e.imageName}`}
 

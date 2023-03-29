@@ -1,18 +1,18 @@
 import React from 'react';
 import classNames from 'classnames';
 import { FormattedMessage } from '../../../util/reactIntl';
-import { FieldSelect, FieldTextInput } from '../../../components';
+import { FieldSelect } from '../../../components';
 
-const preparationTimeOptions = [null, 10, 20, 30, 45];
-const mealIsReadyTimeOptions = [null, 10, 15, 20];
-const deliveryTimeOptions = [null, 10, 20, 30, 40, 50, 60];
+const preparationTimeOptions = [10, 20, 30, 45];
+const mealIsReadyTimeOptions = [5, 10, 15, 20];
+const deliveryTimeOptions = [10, 20, 30];
 
 const DelayTimes = props => {
   const { intl, css } = props;
   const t = intl.formatMessage;
 
   return (
-    <div className={classNames(css.sectionContainer, css.lastSection)}>
+    <div className={css.sectionContainer}>
       <h3 className={css.sectionTitle}>
         <FormattedMessage id="ProfileSettingsForm.timesTitle" />
       </h3>
@@ -55,13 +55,6 @@ const DelayTimes = props => {
           </option>
         ))}
       </FieldSelect>
-
-      <FieldTextInput
-        className={css.selectField}
-        id="deliveryFromAddress"
-        name="deliveryFromAddress"
-        label={t({ id: 'ProfileSettingsForm.deliveryFromAddress' })}
-      />
     </div>
   );
 };

@@ -381,6 +381,7 @@ class StripePaymentForm extends Component {
       formId,
       paymentInfo,
       restaurantName,
+      resortKey,
       showInitialMessageInput,
       intl,
       initiateOrderError,
@@ -458,14 +459,19 @@ class StripePaymentForm extends Component {
       { restaurantName, messageOptionalText }
     );
 
-    const pickupDetails = pickupLocation?.building
-      ? `${pickupLocation.building}, ${pickupLocation.address}`
-      : pickupLocation?.address
-      ? pickupLocation.address
+    // console.log("pickupLocation", pickupLocation)
+
+    // const pickupDetails = pickupLocation?.building
+    //   ? `${pickupLocation.building}, ${pickupLocation.address}`
+    //   : pickupLocation?.address
+    //   ? pickupLocation.address
+    //   : intl.formatMessage({ id: 'StripePaymentForm.pickupLocationUnknown' });
+    const pickupDetails = pickupLocation
+      ? pickupLocation
       : intl.formatMessage({ id: 'StripePaymentForm.pickupLocationUnknown' });
 
     const shippingOrPickupDetails = askShippingDetails ? (
-      <ShippingDetails intl={intl} form={form} />
+      <ShippingDetails intl={intl} form={form} resortKey={resortKey} />
     ) : (
       <div className={css.pickupWrapper}>
         <h3 className={css.pickupHeading}>
@@ -650,14 +656,16 @@ StripePaymentForm.propTypes = {
   onSubmit: func.isRequired,
   paymentInfo: string,
   restaurantName: string.isRequired,
+  resortKey: string,
   showInitialMessageInput: bool,
   hasHandledCardPayment: bool,
   defaultPaymentMethod: propTypes.defaultPaymentMethod,
   askShippingDetails: bool,
-  pickupLocation: shape({
-    address: string.isRequired,
-    building: string,
-  }),
+  pickupLocation: string,
+  // pickupLocation: shape({
+  //   address: string.isRequired,
+  //   building: string,
+  // }),
   totalPrice: string,
 };
 
