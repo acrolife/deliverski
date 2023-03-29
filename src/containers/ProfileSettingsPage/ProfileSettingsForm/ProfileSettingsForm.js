@@ -19,6 +19,7 @@ import {
   Button,
   ImageFromFile,
   IconSpinner,
+  FieldSelect,
   FieldTextInput,
   SecondaryButton,
   Modal,
@@ -26,6 +27,7 @@ import {
 } from '../../../components';
 import DelayTimes from './DelayTimes';
 
+import { resorts } from '../../../util/importStaticAssets';
 import css from './ProfileSettingsForm.module.css';
 
 const ACCEPT_IMAGES = 'image/*';
@@ -149,6 +151,35 @@ class ProfileSettingsFormComponent extends Component {
           });
           const restaurantRequired = validators.required(restaurantRequiredMessage);
 
+          // Restaurant's resort
+          const resortLabel = intl.formatMessage({
+            id: 'ProfileSettingsForm.resortLabel',
+          });
+          const resortPlaceholder = intl.formatMessage({
+            id: 'ProfileSettingsForm.resortPlaceholder',
+          });
+          const resortRequiredMessage = intl.formatMessage({
+            id: 'ProfileSettingsForm.resortRequired',
+          });
+          const resortRequired = validators.required(resortRequiredMessage);
+          const listOfEnabledResortNames = resorts.length
+            ? resorts.map(o => o.name)
+            : ['Resort name list error.'];
+          const listOfEnabledresorts = resorts.length ? resorts.map(o => o.key) : [null];
+          const resortNameOptions = listOfEnabledResortNames;
+
+          // Pickup address
+          const pickupAddressLabel = intl.formatMessage({
+            id: 'ProfileSettingsForm.pickupAddressLabel',
+          });
+          const pickupAddressPlaceholder = intl.formatMessage({
+            id: 'ProfileSettingsForm.pickupAddressPlaceholder',
+          });
+          const pickupAddressRequiredMessage = intl.formatMessage({
+            id: 'ProfileSettingsForm.pickupAddressRequired',
+          });
+          const pickupAddressRequired = validators.required(pickupAddressRequiredMessage);
+
           // Bio
           const bioLabel = intl.formatMessage({
             id: 'ProfileSettingsForm.bioLabel',
@@ -232,6 +263,7 @@ class ProfileSettingsFormComponent extends Component {
           const submitInProgress = updateInProgress;
           const submittedOnce = Object.keys(this.submittedValues).length > 0;
           const pristineSinceLastSubmit = submittedOnce && isEqual(values, this.submittedValues);
+
           // eslint-disable-next-line no-unused-vars
           const submitDisabled =
             invalid || pristine || pristineSinceLastSubmit || uploadInProgress || submitInProgress;
@@ -407,14 +439,14 @@ class ProfileSettingsFormComponent extends Component {
                   <p className={css.bioInfo}>
                     <FormattedMessage id="ProfileSettingsForm.restaurantInfo" />
                   </p>
-                  <FieldTextInput
+                  {/* <FieldTextInput
                     className={css.restaurantAddressPlainText}
                     type="text"
                     id="restaurantAddressPlainText"
                     name="restaurantAddressPlainText"
                     label={t({ id: 'ProfileSettingsForm.restaurantAddressLabel' })}
                     placeholder={t({ id: 'ProfileSettingsForm.restaurantAddressPlaceholder' })}
-                  />
+                  /> */}
                   {/*
                   <LocationAutocompleteInputField
                     className={css.restaurantAddress}
@@ -432,8 +464,36 @@ class ProfileSettingsFormComponent extends Component {
                     )}
                   />
                   */}
-                  <p className={css.bioInfo}>
+                  {/* <p className={css.bioInfo}>
                     <FormattedMessage id="ProfileSettingsForm.restaurantAddressInfo" />
+                  </p> */}
+                </div>
+              )}
+
+              {isProvider && (
+                <div className={classNames(css.sectionContainer)}>
+                  <h3 className={css.sectionTitle}>
+                    <FormattedMessage id="ProfileSettingsForm.resortHeading" />
+                  </h3>
+                  <FieldSelect
+                    className={css.selectField}
+                    id="resort"
+                    name="resort"
+                    label={resortLabel}
+                    validate={resortRequired}
+                    // defaultValue={resortPlaceholder}
+                  >
+                    <option value="" key={resortPlaceholder} disabled>
+                      {resortPlaceholder}
+                    </option>
+                    {resortNameOptions.map((o, i) => (
+                      <option value={listOfEnabledresorts[i]} key={o}>
+                        {o}
+                      </option>
+                    ))}
+                  </FieldSelect>
+                  <p className={css.bioInfo}>
+                    <FormattedMessage id="ProfileSettingsForm.resortInfo" />
                   </p>
                 </div>
               )}
@@ -557,12 +617,33 @@ class ProfileSettingsFormComponent extends Component {
 
               {isProvider && <DelayTimes intl={intl} css={css} />}
 
+              {isProvider && (
+                <div className={classNames(css.sectionContainer, css.lastSection)}>
+                  <h3 className={css.sectionTitle}>
+                    <FormattedMessage id="ProfileSettingsForm.pickupAddressHeading" />
+                  </h3>
+                  <div className={css.sectionContainer}>
+                    <FieldTextInput
+                      type="text"
+                      id="pickupAddress"
+                      name="pickupAddress"
+                      label={pickupAddressLabel}
+                      placeholder={pickupAddressPlaceholder}
+                      validate={pickupAddressRequired}
+                    />
+                  </div>
+                  <p className={css.bioInfo}>
+                    <FormattedMessage id="ProfileSettingsForm.pickupAddressInfo" />
+                  </p>
+                </div>
+              )}
+
               {submitError}
               <Button
                 className={css.submitButton}
                 type="submit"
                 inProgress={submitInProgress}
-                disabled={false}
+                disabled={submitDisabled}
                 ready={pristineSinceLastSubmit}
               >
                 <FormattedMessage id="ProfileSettingsForm.saveChanges" />

@@ -78,6 +78,32 @@ export const filters = [
       ],
     },
   },
+  // # Resort filter ------------------------------------------------------- #
+  {
+    id: 'resort',
+    label: 'Resort',
+    type: 'SelectSingleFilter',
+    group: 'primary',
+    queryParamNames: ['pub_resort'],
+    config: {
+      // Schema type options: 'enum', 'multi-enum'
+      // Both types can work so that user selects multiple values when filtering search results.
+      // With "enum" the functionality will be OR-semantics (Nike OR Adidas OR Salomon)
+      // With "multi-enum" it's possible to use both AND and OR semantics with searchMode config.
+      schemaType: 'enum',
+
+      // "key" is the option you see in Flex Console.
+      // "label" is set here for the UI only.
+      // Note: label is not added through the translation files
+      // to make filter customizations a bit easier.
+      options: [
+        { key: 'arc1600', label: 'Arc 1600' },
+        { key: 'arc1800', label: 'Arc 1800' },
+        { key: 'arc1950', label: 'Arc 1950' },
+        { key: 'arc2000', label: 'Arc 2000' },
+      ],
+    },
+  },
   // # Food type filter -------------------------------------------------------- #
   {
     id: 'foodType',

@@ -6,26 +6,34 @@ import classNames from 'classnames';
 import { FormattedMessage, intlShape } from '../../../util/reactIntl';
 import * as validators from '../../../util/validators';
 // import getCountryCodes from '../../../translations/countryCodes';
-import residencesData from '../../../assets/data/residences';
 import { FieldSelect, FieldTextInput } from '../../../components';
 
 import RecipientPhoneNumber from './RecipientPhoneNumber';
 import css from './ShippingDetails.module.css';
 
+// Import static data
+import resortsData from '../../../assets/data/resorts';
+import residencesData from '../../../assets/data/residences';
+
 const ShippingDetails = props => {
-  const { rootClassName, className, intl, disabled, form, fieldId } = props;
+  const { rootClassName, className, intl, disabled, form, fieldId, resortKey } = props;
+
   const classes = classNames(rootClassName || css.root, className);
 
   const optionalText = intl.formatMessage({
     id: 'ShippingDetails.optionalText',
   });
 
-  // Use tha language set in config.locale to get the correct translations of the country names
+  // Use the language set in config.locale to get the correct translations of the country names
   // const countryCodes = getCountryCodes(config.locale);
 
-  // const testMessages = mapValues(residencesData, (val, key) => key);
+  // Filter the resort list to display only the one from the resort
+  // resortKey froms from the props
+  const resortName = resortsData.find(e => e.key == resortKey).name;
+  form.change('recipientCity', resortName);
+
   const residencesFiltered = residencesData
-    ? residencesData.residencesArc1800.filter(e => e[2])
+    ? residencesData.find(e => e.resort == resortKey).residences.filter(e => e[2])
     : {};
 
   return (
@@ -108,8 +116,8 @@ const ShippingDetails = props => {
         </option>
         {residencesFiltered.map((e, i) => {
           return (
-            <option key={i} value={`${e[1]} - Ref #${e[0]} Arc 1800`}>
-              {`${e[1]} - Ref #${e[0]} Arc 1800`}
+            <option key={i} value={`${e[1]} - Ref #${e[0]} ${resortName}`}>
+              {`${e[1]} - Ref #${e[0]} ${resortName}`}
             </option>
           );
         })}
@@ -219,6 +227,7 @@ ShippingDetails.defaultProps = {
   className: null,
   disabled: false,
   fieldId: null,
+  resortKey: null,
 };
 
 ShippingDetails.propTypes = {
@@ -227,6 +236,7 @@ ShippingDetails.propTypes = {
   disabled: bool,
   form: object.isRequired,
   fieldId: string,
+  resortKey: string,
 
   // from injectIntl
   intl: intlShape.isRequired,

@@ -28,6 +28,39 @@ const imageIds = images => {
   return images ? images.map(img => img.imageId || img.id) : null;
 };
 
+/*
+  Implemented in case the restaurant would change its name : a stock update  
+  will update restaurantName and restaurantFilterName in the listing publicData
+  XXX This means that a change of the retaurant name could be "solved" by a global update,
+  // if this stock updates has been implemented as a global trigger of individual stocks, 
+  // using this function.
+  FIXME CAUTION ! The filter name would remain to be changed though
+*/
+const addOrUpdateListingRestaurantAndResort = (dispatch, getState, sdk, ownListingValues) => {
+  // After creation of a draft or update of one listing's properties, we want to ensure the resort
+  // and restaurantName are rightly set/updated.
+  // FIXME maybe too resource consumming to use it each stock change, the idea was to make
+  // TODO Get resort and restaurantName values at any point in the app, from a cumulative call to the listing owner
+  // Using provider's publicData to add/update restaurantName and restaurantFilterName (used for the SelectSingleFilter) to the listing's publicData
+  const currentUser = getState().user.currentUser;
+  const restaurantName = currentUser
+    ? currentUser.attributes.profile.publicData.restaurantName
+    : null;
+  const restaurantFilterName = restaurantName ? restaurantNameToFilterName(restaurantName) : null;
+
+  // Using provider's publicData to add/update resort to the listing's publicData
+  const resort = currentUser ? currentUser.attributes.profile.publicData.resort : null;
+  const pickupAddress = currentUser
+    ? currentUser.attributes.profile.publicData.pickupAddress
+    : null;
+
+  // Updating the newly created listing with the values
+  ownListingValues.publicData.restaurantName = restaurantName;
+  ownListingValues.publicData.restaurant = restaurantFilterName;
+  ownListingValues.publicData.resort = resort;
+  ownListingValues.publicData.pickupAddress = pickupAddress;
+};
+
 // After listing creation & update, we want to make sure that uploadedImages state is cleaned
 const updateUloadedImagesState = (state, payload) => {
   const { uploadedImages, uploadedImagesOrder } = state;
@@ -567,6 +600,14 @@ export function requestShowListing(actionPayload) {
 
 // Set stock if requested among listing update info
 export function compareAndSetStock(listingId, oldTotal, newTotal) {
+  // Updating the listing public data with restaurantName and resort
+  // FIXME
+  /*
+  if (oldTotal != newTotal) {
+    addOrUpdateListingRestaurantAndResort(dispatch, getState, sdk, ownListingValues)
+  }
+  */
+
   return (dispatch, getState, sdk) => {
     dispatch(setStockRequest());
 
@@ -622,6 +663,10 @@ export function requestCreateListingDraft(data) {
     const imageProperty = typeof images !== 'undefined' ? { images: imageIds(images) } : {};
     let ownListingValues = { ...imageProperty, ...rest };
 
+    // Updating the listing public data with restaurantName and resort
+    if (stockUpdate) {
+      addOrUpdateListingRestaurantAndResort(dispatch, getState, sdk, ownListingValues);
+    }
     const { restaurantName, restaurant } = getRestaurant(getState);
     ownListingValues.publicData.restaurantName = restaurantName;
     ownListingValues.publicData.restaurant = restaurant;
@@ -677,6 +722,10 @@ export function requestUpdateListing(tab, data) {
       ...imageVariantInfo.imageVariants,
     };
 
+    // Updating the listing public data with restaurantName and resort
+    if (stockUpdate) {
+      addOrUpdateListingRestaurantAndResort(dispatch, getState, sdk, ownListingUpdateValues);
+    }
     /*
      Implemented in case the restaurant would change its name : a ordinary update
      will update restaurantName and restaurantFilterName in the listing publicData

@@ -57,12 +57,12 @@ export class ProfileSettingsPageComponent extends Component {
         lastName,
         bio: rawBio,
         restaurantName,
-        // restaurantAddress,
-        restaurantAddressPlainText,
+        resort,
         schedule,
         preparationTime,
         mealIsReadyTime,
         deliveryTime,
+        pickupAddress,
       } = values;
 
       // Ensure that the optional bio is a string
@@ -78,12 +78,12 @@ export class ProfileSettingsPageComponent extends Component {
       // Add our restaurant name to the user public data
       const publicData = {
         restaurantName,
-        // restaurantAddress,
-        restaurantAddressPlainText,
+        resort,
         schedule,
         preparationTime,
         mealIsReadyTime,
         deliveryTime,
+        pickupAddress,
       };
 
       const profile = {
@@ -111,6 +111,7 @@ export class ProfileSettingsPageComponent extends Component {
     const { firstName, lastName, bio } = user.attributes.profile;
     const publicData = user.attributes.profile.publicData;
     const restaurantName = publicData ? publicData.restaurantName : null;
+    const resort = publicData ? publicData.resort : null;
     const profileImageId = user.profileImage ? user.profileImage.id : null;
     const profileImage = image || { imageId: profileImageId };
     const weekdays = [
@@ -182,6 +183,7 @@ export class ProfileSettingsPageComponent extends Component {
     const preparationTime = publicData?.preparationTime;
     const mealIsReadyTime = publicData?.mealIsReadyTime;
     const deliveryTime = publicData?.deliveryTime;
+    const pickupAddress = publicData?.pickupAddress;
     /*
     const restaurantAddress = publicData?.restaurantAddress ? publicData.restaurantAddress : {};
     if (restaurantAddress?.selectedPlace?.origin) {
@@ -189,7 +191,7 @@ export class ProfileSettingsPageComponent extends Component {
       restaurantAddress.selectedPlace.origin = new LatLng(origin.lat, origin.lng);
     }
     */
-    const restaurantAddressPlainText = publicData?.restaurantAddressPlainText;
+    // const restaurantAddressPlainText = publicData?.restaurantAddressPlainText;
 
     const profileSettingsForm = user.id ? (
       <ProfileSettingsForm
@@ -200,13 +202,15 @@ export class ProfileSettingsPageComponent extends Component {
           lastName,
           bio,
           restaurantName,
+          resort,
           // restaurantAddress,
-          restaurantAddressPlainText,
+          // restaurantAddressPlainText,
           profileImage: user.profileImage,
           schedule: scheduleValue,
           preparationTime,
           mealIsReadyTime,
           deliveryTime,
+          pickupAddress,
         }}
         profileImage={profileImage}
         onImageUpload={e => onImageUploadHandler(e, onImageUpload)}

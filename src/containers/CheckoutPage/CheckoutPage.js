@@ -73,6 +73,9 @@ import StripePaymentForm from './StripePaymentForm/StripePaymentForm';
 import { storeData, storedData, clearData } from './CheckoutPageSessionHelpers';
 import css from './CheckoutPage.module.css';
 
+// Import static data
+import resortsData from '../../assets/data/resorts';
+
 const sharetribeSdk = require('sharetribe-flex-sdk');
 const sdk = sharetribeSdk.createInstance({
   clientId: process.env.REACT_APP_SHARETRIBE_SDK_CLIENT_ID,
@@ -353,9 +356,11 @@ export class CheckoutPageComponent extends Component {
     const listing = this.state.pageData?.listing;
     const author = listing?.author;
     const restaurantAddress = null; // author?.attributes?.profile?.publicData?.restaurantAddress;
+    const pickupAddress = author?.attributes?.profile?.publicData?.pickupAddress;
+    /*
     const restaurantAddressPlainText =
       author?.attributes?.profile?.publicData?.restaurantAddressPlainText;
-
+    */
     let createdPaymentIntent = null;
 
     const hasDefaultPaymentMethod = !!(
@@ -528,12 +533,20 @@ export class CheckoutPageComponent extends Component {
     if (shippingDetails) {
       protectedData.shippingDetails = shippingDetails;
     }
-    if (deliveryMethod === 'pickup' && restaurantAddress) {
+   
+    if (deliveryMethod === 'pickup' && pickupAddress) {
+      protectedData.restaurantAddressPlainText = pickupAddress;
+    }
+
+    /*
+     if (deliveryMethod === 'pickup' && restaurantAddress) {
       protectedData.restaurantAddress = restaurantAddress;
     }
     if (deliveryMethod === 'pickup' && restaurantAddressPlainText) {
       protectedData.restaurantAddressPlainText = restaurantAddressPlainText;
     }
+    */
+
     // Note: optionalPaymentParams contains Stripe paymentMethod,
     // but that can also be passed on Step 2
     // stripe.confirmCardPayment(stripe, { payment_method: stripePaymentMethodId })
@@ -563,6 +576,12 @@ export class CheckoutPageComponent extends Component {
     this.setState({ submitting: true });
 
     const { history, speculatedTransaction, currentUser, paymentIntent, dispatch } = this.props;
+
+    const userPublicData = currentUser?.attributes?.profile?.publicData || {};
+    const userPublicDataShopJson = JSON.parse(userPublicData.shoppingCart[0].listing);
+    const resortKey = userPublicDataShopJson.attributes.publicData.resort;
+    const resortName = resortsData.find(e => e.key == resortKey).name;
+
     const { card, message, paymentMethod, formValues } = values;
     const {
       name,
@@ -582,6 +601,7 @@ export class CheckoutPageComponent extends Component {
       // recipientState,
       // recipientCountry,
     } = formValues;
+
     const recipientPhoneNumber = recipientPhoneNumberRaw.replace(/\s+/g, '');
 
     // Billing address is recommended.
@@ -592,12 +612,12 @@ export class CheckoutPageComponent extends Component {
       addressLine1 && postal
         ? {
             address: {
-              city: city,
-              country: country,
+              city,
+              country,
               line1: addressLine1,
               line2: addressLine2,
               postal_code: postal,
-              state: state,
+              state,
             },
           }
         : {};
@@ -624,6 +644,7 @@ export class CheckoutPageComponent extends Component {
     //         },
     //       }
     //     : {};
+
     const shippingDetailsMaybe =
       recipientName && recipientAddressLine1
         ? {
@@ -631,7 +652,7 @@ export class CheckoutPageComponent extends Component {
               name: recipientName,
               phoneNumber: recipientPhoneNumber,
               address: {
-                city: 'Arc 1800',
+                city: resortName,
                 country: 'France',
                 line1: recipientAddressLine1,
                 line2: recipientAddressLine2,
@@ -753,16 +774,19 @@ export class CheckoutPageComponent extends Component {
     const restaurantName = currentAuthor.attributes.profile.publicData
       ? currentAuthor.attributes.profile.publicData.restaurantName
       : null;
-    const pickupLocation = {};
+    
+    /*
     const restaurantAddress = null; // currentAuthor.attributes.profile.publicData?.restaurantAddress;
     if (restaurantAddress) {
       pickupLocation.address = restaurantAddress.selectedPlace?.address;
     }
+    const pickupLocation = {};
     const restaurantAddressPlainText =
       currentAuthor.attributes.profile.publicData?.restaurantAddressPlainText;
     if (restaurantAddressPlainText) {
       pickupLocation.address = restaurantAddressPlainText;
     }
+    */
 
     const listingTitle = currentListing.attributes.title;
     const title = intl.formatMessage({ id: 'CheckoutPage.title' }, { restaurantName });
@@ -925,6 +949,10 @@ export class CheckoutPageComponent extends Component {
     const userPublicData = currentUser?.attributes?.profile?.publicData || {};
     const recipientPhoneNumber = userPublicData.phoneNumber;
 
+    const userPublicDataShopJson = JSON.parse(userPublicData.shoppingCart[0].listing);
+    const resortKey = userPublicDataShopJson.attributes.publicData.resort;
+    const pickupAddress = userPublicDataShopJson.attributes.publicData.pickupAddress;
+
     // If your marketplace works mostly in one country you can use initial values to select country automatically
     // e.g. {country: 'FI'}
 
@@ -1013,6 +1041,7 @@ export class CheckoutPageComponent extends Component {
                   inProgress={this.state.submitting}
                   formId="CheckoutPagePaymentForm"
                   restaurantName={restaurantName}
+                  resortKey={resortKey}
                   showInitialMessageInput={showInitialMessageInput}
                   initialValues={initalValuesForStripePayment}
                   initiateOrderError={initiateOrderError}
@@ -1026,7 +1055,8 @@ export class CheckoutPageComponent extends Component {
                   paymentIntent={paymentIntent}
                   onStripeInitialized={this.onStripeInitialized}
                   askShippingDetails={orderData?.deliveryMethod === 'shipping'}
-                  pickupLocation={pickupLocation}
+                  pickupLocation={pickupAddress}
+                  // pickupLocation={pickupLocation}
                   totalPrice={tx.id ? getFormattedTotalPrice(tx, intl) : null}
                   isRestaurantClosed={restaurantState?.status === 'closed'}
                 />

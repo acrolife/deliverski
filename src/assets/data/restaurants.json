@@ -1,36 +1,295 @@
-{ 
-    "restaurantsArc1600": [
-        [1,
+[
+    {
+        "resort": "arc1600",
+        "restaurants": [
             {
-                "restaurantName": "Mamie Crêpe",
-                "restaurantImageName": "restaurant_1800_mamiecrepe"
-            }, 
-        1]
-    ],    
-    "restaurantsArc1800": [
-        [1,
+                "index": 1,
+                "enabled": true,
+                "name": "Le Bistro de Dodo",
+                "imageName": "restaurant_1600_lebistrotdedodo"
+            },     
             {
-                "restaurantName": "La Bûche",
-                "restaurantImageName": "restaurant_1600_labuche"
+                "index": 2,
+                "enabled": true,
+                "name": "La Bûche",
+                "imageName": "restaurant_1600_labuche"
             }, 
-        1],
-        [1,
             {
-                "restaurantName": "The French Touch",
-                "restaurantImageName": "restaurant_1600_thefrenchtouch"
+                "index": 3,
+                "enabled": true,
+                "name": "The French Touch",
+                "imageName": "restaurant_1600_thefrenchtouch"
             }, 
-        1],
-        [1,
             {
-                "restaurantName": "Le Bistro de Dodo",
-                "restaurantImageName": "restaurant_1600_lebistrotdedodo"
+                "index": 4,
+                "enabled": true,
+                "name": "Le Snowdwich",
+                "imageName": "restaurant_1600_lesnowdwich"
             }, 
-        1]                
-    ],
-    "restaurantsArc1950": [
-        [1, "Test", 1]
-    ],    
-    "restaurantsArc2000": [
-        [1, "Test", 1]
-    ]
-}
+            {
+                "index": 5,
+                "enabled": false,
+                "name": "Le Panoramic",
+                "imageName": "restaurant_1600_lepanoramic"
+            }, 
+            {
+                "index": 6,
+                "enabled": false,
+                "name": "Le Geneux",
+                "imageName": "restaurant_1600_legeneux"
+            }, 
+            {
+                "index": 7,
+                "enabled": false,
+                "name": "Sherpa",
+                "imageName": "restaurant_1600_sherpa"
+            }  
+        ]
+    },
+    {
+        "resort": "arc1800",
+        "restaurants": [
+            {
+                "index": 1,
+                "enabled": true,
+                "name": "Moutain Café",
+                "imageName": "restaurant_1800_mountaincafe"
+            },
+            {
+                "index": 2,
+                "enabled": true,
+                "name": "La Frite en Nord",
+                "imageName": "restaurant_1800_lafriteennord"
+            },
+            {
+                "index": 3,
+                "enabled": true,
+                "name": "Mamie Crêpe",
+                "imageName": "restaurant_1800_mamiecrepe"
+            },
+            {
+                "index": 4,
+                "enabled": true,
+                "name": "La Pâte à Pizz'",
+                "imageName": "restaurant_1800_lapateapizz"
+            },
+            {
+                "index": 5,
+                "enabled": true,
+                "name": "Superette Sherpa",
+                "imageName": "restaurant_1800_sherpa"
+            },
+            {
+                "index": 6,
+                "enabled": true,
+                "name": "Superette Spar",
+                "imageName": "restaurant_1800_spar"
+            },
+            {
+                "index": 7,
+                "enabled": true,
+                "name": "Le Refuge du Jambon",
+                "imageName": "restaurant_1800_lerefugedujambon"
+            },
+            {
+                "index": 8,
+                "enabled": true,
+                "name": "Chez Clarisse",
+                "imageName": "restaurant_1800_chezclarisse"
+            },                  
+            {
+                "index": 9,
+                "enabled": true,
+                "name": "Au Palais Fin",
+                "imageName": "restaurant_1800_aupalaisfin"    
+                
+            },{
+                "index": 10,
+                "enabled": true,
+                "name": "La Grange Berger",
+                "imageName": "restaurant_1800_lagrangeberger"    
+                
+            },
+            {
+                "index": 11,
+                "enabled": false,
+                "name": "Le Trapoun",
+                "imageName": "restaurant_1800_letrapoun"
+            },
+            {
+                "index": 12,
+                "enabled": false,
+                "name": "Les Convives",
+                "imageName": "restaurant_1800_lesconvives"
+            },
+            {
+                "index": 13,
+                "enabled": false,
+                "name": "Casa Mia",
+                "imageName": "restaurant_1800_casamia"
+            },
+            {
+                "index": 14,
+                "enabled": false,
+                "name": "Le Pti' Panier",
+                "imageName": "restaurant_1800_leptipanier"
+            },
+            {
+                "index": 15,
+                "enabled": false,
+                "name": "Alpines Saveur",
+                "imageName": "restaurant_1800_alpinesaveur"
+            },
+            {
+                "index": 16,
+                "enabled": false,
+                "name": "Le Petit Zinc, Belambra",
+                "imageName": "restaurant_1800_lepetitzinc_belambra"
+            },
+            {
+                "index": 17,
+                "enabled": false,
+                "name": "Le Laurus",
+                "imageName": "restaurant_1800_lelaurus"
+            },
+            {
+                "index": 18,
+                "enabled": false,
+                "name": "Ramène ta Braise",
+                "imageName": "restaurant_1800_ramenetabraise"
+            },                                        
+            {
+                "index": 19,
+                "enabled": false,
+                "name": "Quality Pizza",
+                "imageName": "restaurant_1800_qualitypizza"
+            },
+            {
+                "index": 20,
+                "enabled": false,
+                "name": "Pizz'Attitude",
+                "imageName": "restaurant_1800_pizzattitude"
+            },
+            {
+                "index": 21,
+                "enabled": false,
+                "name": "Iceberg",
+                "imageName": "restaurant_1800_iceberg"
+            },
+            {
+                "index": 22,
+                "enabled": false,
+                "name": "Dream Spot",
+                "imageName": "restaurant_1800_dreamspot"
+            },
+            {
+                "index": 23,
+                "enabled": false,
+                "name": "Le Petit Marché",
+                "imageName": "restaurant_1800_chantel_lepetitmarche"
+            },
+            {
+                "index": 24,
+                "enabled": false,
+                "name": "Voga Yoga",
+                "imageName": "restaurant_1800_chantel_vogayoga"
+            }   
+        ]
+    },
+    {
+        "resort": "arc1950",
+        "restaurants": [
+            {
+                "index": 1,
+                "enabled": true,
+                "name": "La Vache Rouge",
+                "imageName": "restaurant_1950_lavacherouge"
+            },
+            {
+                "index": 2,
+                "enabled": true,
+                "name": "Le Mazot",
+                "imageName": "restaurant_1950_lemazot"
+            },
+            {
+                "index": 3,
+                "enabled": false,
+                "name": "Le Perce Neige",
+                "imageName": "restaurant_1950_leperceneige"
+            },
+            {
+                "index": 4,
+                "enabled": false,
+                "name": "Les Belles Pintes",
+                "imageName": "restaurant_1950_lesbellespintes"
+            }, 
+            {
+                "index": 5,
+                "enabled": false,
+                "name": "Meli's Snack",
+                "imageName": "restaurant_1950_melissnack"
+            },
+            {
+                "index": 6,
+                "enabled": false,
+                "name": "Nonna Lisa",
+                "imageName": "restaurant_1950_nonnalisa"
+            },
+            {
+                "index": 7,
+                "enabled": false,
+                "name": "Brasserie 1950",
+                "imageName": "restaurant_1950_brasserie1950"
+            },
+            {
+                "index": 8,
+                "enabled": false,
+                "name": "Hemingways'",
+                "imageName": "restaurant_1950_hemingways"
+            },
+            {
+                "index": 9,
+                "enabled": false,
+                "name": "La Table des Lys",
+                "imageName": "restaurant_1950_latabledeslys"        
+            }        
+        ]
+    },
+    {
+        "resort": "arc2000",
+        "restaurants": [
+            {
+                "index": 1,
+                "enabled": true,
+                "name": "Le Kilimandjaro",
+                "imageName": "restaurant_2000_lekilimandjaro"
+            },
+            {
+                "index": 2,
+                "enabled": true,
+                "name": "Au Schuss",
+                "imageName": "restaurant_2000_auschuss"
+            },
+            {
+                "index": 3,
+                "enabled": false,
+                "name": "xxxxx",
+                "imageName": "restaurant_2000_papapizza"
+            },
+            {
+                "index": 4,
+                "enabled": false,
+                "name": "xxxxx",
+                "imageName": "restaurant_2000_lesavoy"
+            },
+            {
+                "index": 5,
+                "enabled": false,
+                "name": "xxxxx",
+                "imageName": "restaurant_2000_leredrock"
+            } 
+        ]
+    }
+]
+  
+               
