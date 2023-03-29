@@ -73,7 +73,9 @@ ONE_SIGNAL_API_KEY=
 ONE_SIGNAL_SMS_FROM=
 ```
 
-# Dokku sandbox
+# Dokku
+
+## dokku sandbox
 
 Please make sure your workstation's SSH key is added to the dokku when running
 the command:
@@ -92,6 +94,26 @@ Deliver code from dev branch to the sandbox
 
 ```
 git push sandbox dev
+```
+
+## dokku production
+
+For easier work with docker, assign an appropriate group to your user
+
+```
+# sudo usermod -aG docker aivils
+# sudo usermod -aG dokku aivils
+```
+Please add git repo on localhost
+
+```
+git remote add production dokku@82.165.179.225:marmott-production
+```
+
+Deliver code from dev branch to the production
+
+```
+git push production master
 ```
 
 # Email notifications

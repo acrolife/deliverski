@@ -24,6 +24,7 @@ import {
   FieldTextInput,
   SecondaryButton,
   Modal,
+  // LocationAutocompleteInputField,
 } from '../../../components';
 
 import { resorts } from '../../../util/importStaticAssets';
@@ -105,6 +106,8 @@ class ProfileSettingsFormComponent extends Component {
             form,
             values,
           } = fieldRenderProps;
+
+          const t = intl.formatMessage;
 
           const user = ensureCurrentUser(currentUser);
           // Conditional rendering of the provider/customer UI elements
@@ -435,6 +438,34 @@ class ProfileSettingsFormComponent extends Component {
                   />
                   <p className={css.bioInfo}>
                     <FormattedMessage id="ProfileSettingsForm.restaurantInfo" />
+                  </p>
+                  <FieldTextInput
+                    className={css.restaurantAddressPlainText}
+                    type="text"
+                    id="restaurantAddressPlainText"
+                    name="restaurantAddressPlainText"
+                    label={t({ id: 'ProfileSettingsForm.restaurantAddressLabel' })}
+                    placeholder={t({ id: 'ProfileSettingsForm.restaurantAddressPlaceholder' })}
+                  />
+                  {/*
+                  <LocationAutocompleteInputField
+                    className={css.restaurantAddress}
+                    inputClassName={css.locationAutocompleteInput}
+                    iconClassName={css.locationAutocompleteInputIcon}
+                    predictionsClassName={css.predictionsRoot}
+                    validClassName={css.validLocation}
+                    name="restaurantAddress"
+                    label={t({ id: 'ProfileSettingsForm.restaurantAddressLabel' })}
+                    placeholder={t({ id: 'ProfileSettingsForm.restaurantAddressPlaceholder' })}
+                    useDefaultPredictions={false}
+                    valueFromForm={values.restaurantAddress}
+                    validate={validators.autocompletePlaceSelected(
+                      t({ id: 'ProfileSettingsForm.addressNotRecognized' })
+                    )}
+                  />
+                  */}
+                  <p className={css.bioInfo}>
+                    <FormattedMessage id="ProfileSettingsForm.restaurantAddressInfo" />
                   </p>
                 </div>
               )}

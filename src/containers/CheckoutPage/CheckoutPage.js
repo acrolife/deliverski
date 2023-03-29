@@ -23,7 +23,6 @@ import {
 } from '../../util/data';
 import { timeOfDayFromLocalToTimeZone, minutesBetween } from '../../util/dates';
 import { createSlug } from '../../util/urlHelpers';
-import { post } from '../../util/api';
 import {
   isTransactionInitiateAmountTooLowError,
   isTransactionInitiateListingNotFoundError,
@@ -43,7 +42,6 @@ import {
   txHasPassedPaymentPending,
 } from '../../util/transaction';
 import { isRestaurantOpen } from '../../util/data';
-import { setOneSignalSMSNumber } from '../../util/onesignal';
 
 // Import global thunk functions
 import { isScrollingDisabled } from '../../ducks/UI.duck';
@@ -355,6 +353,11 @@ export class CheckoutPageComponent extends Component {
     const ensuredDefaultPaymentMethod = ensurePaymentMethodCard(
       ensuredStripeCustomer.defaultPaymentMethod
     );
+    const listing = this.state.pageData?.listing;
+    const author = listing?.author;
+    const restaurantAddress = null; // author?.attributes?.profile?.publicData?.restaurantAddress;
+    const restaurantAddressPlainText =
+      author?.attributes?.profile?.publicData?.restaurantAddressPlainText;
 
     let createdPaymentIntent = null;
 
@@ -497,19 +500,6 @@ export class CheckoutPageComponent extends Component {
       }
     };
 
-    // Step 7: - change quantity for the rest of shopping cart items
-
-    const changeRestOfShoppingCartItemsQuantity = fnParams => {
-      const restOfShoppingCartItems = pageData.orderData.restOfShoppingCartItems;
-      return post('/api/change-all-items-quantity', { restOfShoppingCartItems })
-        .then(resp => {
-          return fnParams;
-        })
-        .catch(e => {
-          return fnParams;
-        });
-    };
-
     // Here we create promise calls in sequence
     // This is pretty much the same as:
     // fnRequestPayment({...initialParams})
@@ -523,8 +513,7 @@ export class CheckoutPageComponent extends Component {
       fnConfirmPayment,
       fnSendMessage,
       fnSavePaymentMethod,
-      emptyBasktet,
-      changeRestOfShoppingCartItemsQuantity
+      emptyBasktet
     );
 
     // Create order aka transaction
@@ -535,12 +524,19 @@ export class CheckoutPageComponent extends Component {
     const deliveryMethod = pageData.orderData?.deliveryMethod;
     const quantity = pageData.orderData?.quantity;
     const quantityMaybe = quantity ? { quantity } : {};
-    const protectedDataMaybe =
-      deliveryMethod && shippingDetails
-        ? { protectedData: { deliveryMethod, shippingDetails } }
-        : deliveryMethod
-        ? { protectedData: { deliveryMethod } }
-        : {};
+    const protectedData = {};
+    if (deliveryMethod) {
+      protectedData.deliveryMethod = deliveryMethod;
+    }
+    if (shippingDetails) {
+      protectedData.shippingDetails = shippingDetails;
+    }
+    if (deliveryMethod === 'pickup' && restaurantAddress) {
+      protectedData.restaurantAddress = restaurantAddress;
+    }
+    if (deliveryMethod === 'pickup' && restaurantAddressPlainText) {
+      protectedData.restaurantAddressPlainText = restaurantAddressPlainText;
+    }
     // Note: optionalPaymentParams contains Stripe paymentMethod,
     // but that can also be passed on Step 2
     // stripe.confirmCardPayment(stripe, { payment_method: stripePaymentMethodId })
@@ -556,7 +552,7 @@ export class CheckoutPageComponent extends Component {
       deliveryMethod,
       ...quantityMaybe,
       ...bookingDatesMaybe(pageData.orderData.bookingDates),
-      ...protectedDataMaybe,
+      protectedData,
       ...optionalPaymentParams,
     };
 
@@ -686,11 +682,6 @@ export class CheckoutPageComponent extends Component {
           savePaymentMethodFailed: !paymentMethodSaved,
         };
 
-        const phoneNumber = requestPaymentParams.shippingDetails?.phoneNumber;
-        if (phoneNumber) {
-          setOneSignalSMSNumber(phoneNumber);
-        }
-
         initializeOrderPage(initialValues, routes, dispatch);
         clearData(STORAGE_KEY);
         history.push(orderDetailsPath);
@@ -773,6 +764,19 @@ export class CheckoutPageComponent extends Component {
     const restaurantName = currentAuthor.attributes.profile.publicData
       ? currentAuthor.attributes.profile.publicData.restaurantName
       : null;
+    
+    /*
+    const restaurantAddress = null; // currentAuthor.attributes.profile.publicData?.restaurantAddress;
+    if (restaurantAddress) {
+      pickupLocation.address = restaurantAddress.selectedPlace?.address;
+    }
+    const pickupLocation = {};
+    const restaurantAddressPlainText =
+      currentAuthor.attributes.profile.publicData?.restaurantAddressPlainText;
+    if (restaurantAddressPlainText) {
+      pickupLocation.address = restaurantAddressPlainText;
+    }
+    */
 
     const listingTitle = currentListing.attributes.title;
     const title = intl.formatMessage({ id: 'CheckoutPage.title' }, { restaurantName });
@@ -837,12 +841,20 @@ export class CheckoutPageComponent extends Component {
       return <NamedRedirect name="ListingPage" params={params} />;
     }
 
+    // Getting deliveryMethod (requires a check on publiData first otherwise throws error)
+    const deliveryMethod = currentUser.attributes.profile.publicData
+      ? JSON.parse(currentUser.attributes.profile.publicData.shoppingCart[0].checkoutValues)
+          .deliveryMethod
+      : null;
+
     // Show breakdown only when (speculated?) transaction is loaded
     // (i.e. have an id and lineItems)
     const tx = existingTransaction.booking ? existingTransaction : speculatedTransaction;
+    tx.deliveryMethod = deliveryMethod;
     const txBookingMaybe = tx.booking?.id
       ? { booking: ensureBooking(tx.booking), dateType: DATE_TYPE_DATE }
       : {};
+
     const breakdown =
       tx.id && tx.attributes.lineItems?.length > 0 ? (
         <OrderBreakdown
@@ -942,7 +954,7 @@ export class CheckoutPageComponent extends Component {
 
     const isAnyItemWithShipping =
       this.state.pageData.orderData?.restOfShoppingCartItems.find(item => {
-        return item.checkoutValues.deliveryMethod === 'pickup';
+        return item.deliveryMethod === 'pickup';
       }) || this.state.pageData.orderData?.deliveryMethod === 'pickup';
 
     return (
@@ -1034,6 +1046,7 @@ export class CheckoutPageComponent extends Component {
                   onStripeInitialized={this.onStripeInitialized}
                   askShippingDetails={orderData?.deliveryMethod === 'shipping'}
                   pickupLocation={pickupAddress}
+                  // pickupLocation={pickupLocation}
                   totalPrice={tx.id ? getFormattedTotalPrice(tx, intl) : null}
                   isRestaurantClosed={restaurantState?.status === 'closed'}
                 />

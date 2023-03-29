@@ -409,15 +409,12 @@ export class TransactionPanelComponent extends Component {
 
     const classes = classNames(rootClassName || css.root, className);
 
-    const restOfShoppingCartItems = currentTransaction?.attributes.metadata.restOfShoppingCartItems
-      ? currentTransaction?.attributes.metadata.restOfShoppingCartItems.map(item => {
-          return JSON.parse(item);
-        })
-      : false;
+    const restOfShoppingCartItems =
+      currentTransaction?.attributes.protectedData.restOfShoppingCartItems;
 
     const isAnyItemWithShipping = restOfShoppingCartItems
       ? restOfShoppingCartItems.find(item => {
-          return item.checkoutValues.deliveryMethod === 'pickup';
+          return item.deliveryMethod === 'pickup';
         })
       : false || currentTransaction.attributes.protectedData.deliveryMethod === 'pickup';
 
@@ -455,7 +452,6 @@ export class TransactionPanelComponent extends Component {
                 <BreakdownMaybe
                   transaction={currentTransaction}
                   transactionRole={transactionRole}
-                  restOfShoppingCartItems={restOfShoppingCartItems}
                 />
                 {isAnyItemWithShipping ? (
                   <p className={css.shippingWarningMobile}>
@@ -568,12 +564,14 @@ export class TransactionPanelComponent extends Component {
                   className={css.breakdownContainer}
                   transaction={currentTransaction}
                   transactionRole={transactionRole}
-                  restOfShoppingCartItems={restOfShoppingCartItems}
                 />
 
                 {isAnyItemWithShipping ? (
                   <p className={css.shippingWarning}>
-                    Caution! Some items need to be picked up at the restaurant
+                    <FormattedMessage
+                      id="TransactionPanel.warningPickupItems"
+                      values={{ restaurantName }}
+                    />
                   </p>
                 ) : null}
 

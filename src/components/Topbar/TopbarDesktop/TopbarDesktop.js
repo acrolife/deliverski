@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { any, bool, func, object, number, string } from 'prop-types';
 import classNames from 'classnames';
-import config from '../../../config';
 
 import { FormattedMessage, intlShape } from '../../../util/reactIntl';
 import { ACCOUNT_SETTINGS_PAGES } from '../../../routing/routeConfiguration';
@@ -23,10 +23,6 @@ import LangIconPng from '../../../assets/icons/lang-icon-en-fr.png';
 import TopbarSearchForm from '../TopbarSearchForm/TopbarSearchForm';
 
 import css from './TopbarDesktop.module.css';
-
-// Custom implementation of the langage switcher
-const urlSwitchLang = config.urlSwitchLang;
-const langageSwitch = config.locale === 'en' ? 'Français' : 'English';
 
 const TopbarDesktop = props => {
   const {
@@ -62,6 +58,11 @@ const TopbarDesktop = props => {
   const searchParamMyRestaurant = {
     search: `?pub_restaurant=${restaurant}`,
   };
+
+  const currentLanguage = intl.formatMessage({ id: 'language' });
+  const isEnglish = currentLanguage === 'en';
+  const langageSwitch = isEnglish ? 'Français' : 'English';
+  const urlSwitchLang = isEnglish ? '/fr' : '/en';
 
   const search = (
     <TopbarSearchForm
@@ -101,9 +102,9 @@ const TopbarDesktop = props => {
       <MenuContent className={css.langageMenuContentDesktop}>
         {/* CAUTION menuItemLangDesktop is an empty class */}
         <MenuItem key="ChangeLangage" className={css.menuItemLangDesktop}>
-          <ExternalLink href={urlSwitchLang} className={css.langLinkDesktop}>
+          <Link to={urlSwitchLang} className={css.langLinkDesktop}>
             {langageSwitch}
-          </ExternalLink>
+          </Link>
         </MenuItem>
       </MenuContent>
     </Menu>

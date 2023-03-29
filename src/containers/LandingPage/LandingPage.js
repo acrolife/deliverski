@@ -53,7 +53,7 @@ const LandingPageComponent = props => {
 
   isProduction = true;
   // DEV
-  // const isProduction = false
+  isProduction = false;
   // console.log("canonicalRootURL", canonicalRootURL)
   // console.log("incl playground", anonicalRootURL.includes('playground'))
   // console.log("incl sandbox", anonicalRootURL.includes('sandbox'))

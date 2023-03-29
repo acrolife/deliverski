@@ -9,7 +9,7 @@ const { Money } = types;
 // This unit type needs to be one of the following:
 // line-item/night, line-item/day or line-item/units
 const lineItemUnitType = 'line-item/units';
-const sellingUnitType = 'line-item/quantity';
+// const sellingUnitType = 'line-item/quantity';
 const PROVIDER_COMMISSION_PERCENTAGE = -Number(process.env.REACT_APP_MARKETPLACECOMMISION);
 
 /** Returns collection of lineItems (max 50)
@@ -32,7 +32,7 @@ const PROVIDER_COMMISSION_PERCENTAGE = -Number(process.env.REACT_APP_MARKETPLACE
  * @param {Object} orderData
  * @returns {Array} lineItems
  */
-exports.transactionLineItems = (listing, orderData) => {
+exports.transactionLineItems = (listing, orderData, cartListingLineItems) => {
   const publicData = listing.attributes.publicData;
   const unitPrice = listing.attributes.price;
   const currency = unitPrice.currency;
@@ -44,7 +44,7 @@ exports.transactionLineItems = (listing, orderData) => {
   const deliveryMethod = orderData && orderData.deliveryMethod;
   const isShipping = deliveryMethod === 'shipping';
   const isPickup = deliveryMethod === 'pickup';
-  const shippingPriceInSubunitsOneItem = publicData && publicData.shippingPriceInSubunitsOneItem;
+  // const shippingPriceInSubunitsOneItem = publicData && publicData.shippingPriceInSubunitsOneItem;
   const shippingPriceInSubunitsAdditionalItems =
     publicData && publicData.shippingPriceInSubunitsAdditionalItems;
 
@@ -113,20 +113,22 @@ exports.transactionLineItems = (listing, orderData) => {
 
   let shoppingCartItems = [];
 
-  if (restOfShoppingCartItems) {
-    restOfShoppingCartItems.forEach(item => {
-      shoppingCartItems.push({
-        code: `line-item/${item.listing.id.uuid}`,
-        unitPrice: new Money(item.listing.attributes.price.amount, unitPrice.currency),
-        quantity: item.checkoutValues.quantity,
-        includeFor: ['customer', 'provider'],
-      });
+  if (cartListingLineItems) {
+    cartListingLineItems.forEach(item => {
+      if (item.id !== listing.id.uuid) {
+        shoppingCartItems.push({
+          code: `line-item/${item.id}`,
+          unitPrice: new Money(item.unitPrice.amount * 100, item.unitPrice.currency),
+          quantity: item.quantity,
+          includeFor: ['customer', 'provider'],
+        });
+      }
     });
   }
 
   const isAnyItemWithShipping = restOfShoppingCartItems
     ? restOfShoppingCartItems.find(item => {
-        return item.checkoutValues.deliveryMethod === 'shipping';
+        return item.deliveryMethod === 'shipping';
       })
     : [];
 

@@ -111,10 +111,53 @@
       }
     },
     "payout-total" : {
-      "amount" : 810,
-      "currency" : "USD"
+      "amount" : 170.85,
+      "currency" : "EUR"
     },
-    "protected-data" : { },
+    "protected-data" : {
+      "cartListingLineItems": [
+        {
+          "id": "62a81a7f-9126-4459-b392-36906c84e49a",
+          "title": "zzz2",
+          "unitPrice": {
+            "amount": 24,
+            "currency": "EUR"
+          },
+          "quantity": 3,
+          "total": {
+            "amount": 72,
+            "currency": "EUR"
+          }
+        },
+        {
+          "id": "6299dfd1-dd89-4583-9268-4c5f390d2078",
+          "title": "zzz",
+          "unitPrice": {
+            "amount": 15,
+            "currency": "EUR"
+          },
+          "quantity": 4,
+          "total": {
+            "amount": 60,
+            "currency": "EUR"
+          }
+        },
+        {
+          "id": "6299e21e-c4f4-48e0-9ab3-78f0142794b6",
+          "title": "test ",
+          "unitPrice": {
+            "amount": 22,
+            "currency": "EUR"
+          },
+          "quantity": 5,
+          "total": {
+            "amount": 110,
+            "currency": "EUR"
+          }
+        }
+      ],
+      "cartListingLineItemNames": "zzz2, zzz, test"
+    },
     "customer" : {
       "id" : "ef7f40d5-da66-489a-957b-641313b68204",
       "first-name" : "Jane",
@@ -134,8 +177,8 @@
       }
     },
     "payin-total" : {
-      "amount" : 900,
-      "currency" : "USD"
+      "amount" : 242,
+      "currency" : "EUR"
     },
     "id" : "d8893061-c860-4e44-8d4d-61587a497e6e",
     "reviews" : [ {
@@ -183,26 +226,26 @@
       "code" : "line-item/night",
       "unit-price" : {
         "amount" : 300,
-        "currency" : "USD"
+        "currency" : "EUR"
       },
       "line-total" : {
         "amount" : 900,
-        "currency" : "USD"
+        "currency" : "EUR"
       },
       "include-for" : [ "customer", "provider" ],
       "quantity" : 3
     }, {
       "code" : "line-item/provider-commission",
       "unit-price" : {
-        "amount" : 900,
-        "currency" : "USD"
+        "amount" : 242,
+        "currency" : "EUR"
       },
       "line-total" : {
-        "amount" : -90,
-        "currency" : "USD"
+        "amount" : -71.15,
+        "currency" : "EUR"
       },
       "include-for" : [ "provider" ],
-      "percentage" : -10
+      "percentage" : -29.4
     } ],
     "provider" : {
       "id" : "fd180cc2-a99c-4e43-b960-9b94daec5265",
@@ -221,9 +264,6 @@
       "metadata" : {
         "membership" : "premium"
       }
-    },
-    "protected-data": {
-      "customerPhoneNumber": "123456"
     },
     "metadata": {
       "discountCode": "abc-123"

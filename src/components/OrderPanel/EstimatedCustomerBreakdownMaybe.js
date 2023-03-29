@@ -84,9 +84,24 @@ const estimatedBooking = (bookingStart, bookingEnd) => {
 // We need to use FTW backend to calculate the correct line items through thransactionLineItems
 // endpoint so that they can be passed to this estimated transaction.
 const estimatedCustomerTransaction = (lineItems, bookingStart, bookingEnd) => {
+  // const estimatedCustomerTransaction = (lineItems, bookingStart, bookingEnd, deliveryMethod) => {
   const now = new Date();
-  const customerLineItems = lineItems.filter(item => item.includeFor.includes('customer'));
-  const providerLineItems = lineItems.filter(item => item.includeFor.includes('provider'));
+
+  // console.log("From estimatedCustomerTransaction")
+  // console.log("lineItems", lineItems)
+  // console.log("deliveryMethod", deliveryMethod)
+
+  // const lineItemsWithoutShippingMethod = lineItems.filter(el => el.code != "line-item/shipping-participation")
+  // const lineItemsShippingMethodOnly = lineItems.filter(el => el.code == "line-item/shipping-participation")
+  // const lineItemsFinal = lineItemsWithoutShippingMethod
+  // if (deliveryMethod == 'shipping') {
+  //   lineItemsFinal.push(...lineItemsShippingMethodOnly)
+  // }
+
+  const lineItemsFinal = lineItems;
+
+  const customerLineItems = lineItemsFinal.filter(item => item.includeFor.includes('customer'));
+  const providerLineItems = lineItemsFinal.filter(item => item.includeFor.includes('provider'));
   const payinTotal = estimatedTotalPrice(customerLineItems);
   const payoutTotal = estimatedTotalPrice(providerLineItems);
 
@@ -116,6 +131,7 @@ const estimatedCustomerTransaction = (lineItems, bookingStart, bookingEnd) => {
 };
 
 const EstimatedCustomerBreakdownMaybe = props => {
+  // const { unitType, breakdownData = {}, lineItems, shippingMethod } = props;
   const { unitType, breakdownData = {}, lineItems } = props;
   const { startDate, endDate } = breakdownData;
 
@@ -125,7 +141,8 @@ const EstimatedCustomerBreakdownMaybe = props => {
   const tx =
     hasLineItems && hasRequiredBookingData
       ? estimatedCustomerTransaction(lineItems, startDate, endDate)
-      : null;
+      : // ? estimatedCustomerTransaction(lineItems, startDate, endDate, deliveryMethod)
+        null;
 
   return tx ? (
     <OrderBreakdown

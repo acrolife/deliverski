@@ -10,15 +10,6 @@ const dev = process.env.REACT_APP_ENV === 'development';
 // locale data and the messages in the app.js file.
 // const locale = 'fr';
 const locale = process.env.REACT_APP_LOCALE ? process.env.REACT_APP_LOCALE.toLowerCase() : 'en';
-const localeSwitch = process.env.REACT_APP_LOCALE_SWITCH
-  ? process.env.REACT_APP_LOCALE_SWITCH.toLowerCase()
-  : null;
-const urlSwitchLang = localeSwitch ? process.env.REACT_APP_URL_SWITCH : null;
-
-// DEV
-// console.log("locale", locale)
-// console.log("localeSwitch", localeSwitch)
-// console.log("urlSwitchLang", urlSwitchLang)
 
 const i18n = {
   /*
@@ -252,6 +243,7 @@ const onesignal = {
   appId: process.env.REACT_APP_ONESIGNAL_APP_ID,
   safari_web_id: process.env.REACT_APP_ONESIGNAL_SAFARI_WEB_ID,
   subdomainName: process.env.REACT_APP_ONESIGNAL_SUBDOMAIN_NAME,
+  debug: process.env.REACT_APP_ONESIGNAL_DEBUG,
 };
 
 // NOTE: only expose configuration that should be visible in the
@@ -260,8 +252,6 @@ const config = {
   env,
   dev,
   locale,
-  urlSwitchLang,
-  localeSwitch,
   transactionProcessAlias,
   lineItemUnitType,
   listingManagementType,

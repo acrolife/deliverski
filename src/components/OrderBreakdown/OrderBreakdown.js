@@ -38,12 +38,25 @@ export const OrderBreakdownComponent = props => {
     intl,
     dateType,
     listing,
-    restOfShoppingCartItems,
   } = props;
 
   const isCustomer = userRole === 'customer';
   const isProvider = userRole === 'provider';
-  const lineItems = transaction.attributes.lineItems;
+  const deliveryMethod = transaction.deliveryMethod ?? 'shipping';
+
+  const lineItemsWithoutShippingMethod = transaction.attributes.lineItems.filter(
+    el => el.code != 'line-item/shipping-participation'
+  );
+  const lineItemsShippingMethodOnly = transaction.attributes.lineItems.filter(
+    el => el.code == 'line-item/shipping-participation'
+  );
+  const lineItemsFinal = lineItemsWithoutShippingMethod;
+  if (deliveryMethod == 'shipping') {
+    lineItemsFinal.push(...lineItemsShippingMethodOnly);
+  }
+
+  // const lineItems = transaction.attributes.lineItems
+  const lineItems = lineItemsFinal;
 
   const hasCommissionLineItem = lineItems.find(item => {
     const hasCustomerCommission = isCustomer && item.code === LINE_ITEM_CUSTOMER_COMMISSION;
@@ -112,7 +125,6 @@ export const OrderBreakdownComponent = props => {
         isProvider={isProvider}
         intl={intl}
         transaction={transaction}
-        restOfShoppingCartItems={restOfShoppingCartItems}
         listing={listing}
       />
 

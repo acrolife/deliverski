@@ -111,7 +111,7 @@ const renderForm = formRenderProps => {
     }
   };
 
-  // In case quantity and deliveryMethod are missing focus on that select-input.
+  // In case quantity and deliveryMethod are missing, focus on that select-input.
   // Otherwise continue with the default handleSubmit function.
   const handleFormSubmit = e => {
     const restaurant = listing ? listing.attributes?.publicData?.restaurant : false;
@@ -346,21 +346,25 @@ const renderForm = formRenderProps => {
     }
   };
 
-  const breakdownData = {};
-  const showBreakdown =
-    breakdownData && lineItems && !fetchLineItemsInProgress && !fetchLineItemsError;
-  const breakdown = showBreakdown ? (
-    <div className={css.breakdownWrapper}>
-      <h3>
-        <FormattedMessage id="ProductOrderForm.breakdownTitle" />
-      </h3>
-      <EstimatedCustomerBreakdownMaybe
-        unitType={config.lineItemUnitType}
-        breakdownData={breakdownData}
-        lineItems={lineItems}
-      />
-    </div>
-  ) : null;
+  // Commented out bec we don't need to show the delivery cost in a detailed breakdo at this stage
+  // Add prop deliveryMethod to component EstimatedCustomerBreakdownMaybe before to use it here
+
+  // const breakdownData = {};
+  // const showBreakdown =
+  //   breakdownData && lineItems && !fetchLineItemsInProgress && !fetchLineItemsError;
+  // const breakdown = showBreakdown ? (
+  //   <div className={css.breakdownWrapper}>
+  //     <h3>
+  //       <FormattedMessage id="ProductOrderForm.breakdownTitle" />
+  //     </h3>
+  //     <EstimatedCustomerBreakdownMaybe
+  //       unitType={config.lineItemUnitType}
+  //       breakdownData={breakdownData}
+  //       lineItems={lineItems}
+  //       deliveryMethod={"pickup"}
+  //     />
+  //   </div>
+  // ) : null;
 
   const showContactUser = typeof onContactUser === 'function';
 
@@ -534,7 +538,7 @@ const renderForm = formRenderProps => {
       // )
       }
 
-      {breakdown}
+      {/* {breakdown} */}
       <div className={css.submitButton}>
         <PrimaryButton
           type="submit"
@@ -657,6 +661,11 @@ const renderForm = formRenderProps => {
 const ProductOrderForm = props => {
   const [sameVendorModalOpen, setSameVendorModalOpen] = useState(false);
   const [emptyCart, setEmptyCart] = useState(false);
+  const [quantity, setQuantity] = useState(null);
+
+  useEffect(() => {
+    setQuantity(1);
+  }, []);
 
   const intl = useIntl();
   const {
@@ -691,7 +700,7 @@ const ProductOrderForm = props => {
     );
   }
   const hasOneItemLeft = currentStock && currentStock === 1;
-  const quantityMaybe = { quantity: '1' };
+  const quantityMaybe = { quantity };
   const singleDeliveryMethodAvailableMaybe =
     // shippingEnabled ?
     // { deliveryMethod: 'shipping' }

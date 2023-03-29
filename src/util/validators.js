@@ -77,6 +77,9 @@ export const autocompleteSearchRequired = message => value => {
 };
 
 export const autocompletePlaceSelected = message => value => {
+  if (typeof value === 'undefined' || value.search === '') {
+    return VALID;
+  }
   const selectedPlaceIsValid =
     value &&
     value.selectedPlace &&

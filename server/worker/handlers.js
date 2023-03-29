@@ -1,5 +1,6 @@
 const { createInstance, types } = require('sharetribe-flex-integration-sdk');
 const OneSignal = require('onesignal-node');
+const twilio = require('twilio');
 const { intlEn, intlFr } = require('./intl');
 
 const clientId = process.env.REACT_APP_FLEX_INTEGRATION_CLIENT_ID;
@@ -8,7 +9,11 @@ const baseUrl = process.env.FLEX_INTEGRATION_BASE_URL || 'https://flex-integ-api
 
 const oneSignalClientAppId = process.env.REACT_APP_ONESIGNAL_APP_ID;
 const oneSignalClientApiKey = process.env.ONE_SIGNAL_API_KEY;
-const oneSignalSmsFrom = process.env.ONE_SIGNAL_SMS_FROM;
+// const oneSignalSmsFrom = process.env.ONE_SIGNAL_SMS_FROM;
+
+const twilioAccountSid = process.env.TWILIO_ACCOUNT_SID;
+const twilioAuthToken = process.env.TWILIO_AUTH_TOKEN;
+const twilioPhoneNumber = process.env.TWILIO_PHONE_NUMBER;
 
 const { UUID } = types;
 
@@ -19,6 +24,8 @@ const integrationSdk = createInstance({
 });
 
 const oneSignalClient = new OneSignal.Client(oneSignalClientAppId, oneSignalClientApiKey);
+
+const twilioClient = twilio(twilioAccountSid, twilioAuthToken);
 
 const oneSignalCreateNotification = async notification => {
   const oneSignalRes = await oneSignalClient.createNotification(notification);
@@ -32,6 +39,27 @@ const oneSignalCreateNotification = async notification => {
     err.data = {
       notification,
       errors: oneSignalRes.body.errors,
+    };
+    throw err;
+  }
+};
+
+const twilioSendSMS = async ({ phoneNumber, body }) => {
+  const message = {
+    from: twilioPhoneNumber,
+    to: phoneNumber,
+    body,
+  };
+  try {
+    const res = await twilioClient.messages.create(message); // eslint-disable-line no-unused-vars
+    // console.log('twilio res=', JSON.stringify(res, null, 2));
+  } catch (e) {
+    console.error(e);
+    const err = new Error('twilio: Failed send SMS');
+    err.data = {
+      body,
+      phoneNumber,
+      errors: e,
     };
     throw err;
   }
@@ -56,6 +84,11 @@ const tr = (key, options = {}) => {
     en: intlEn.formatMessage({ id: key, defaultMessage: `en: ${missing}` }, options),
     fr: intlFr.formatMessage({ id: key, defaultMessage: `fr: ${missing}` }, options),
   };
+};
+
+const t = (key, options = {}) => {
+  const missing = `Missing translation: ${key}`;
+  return intlEn.formatMessage({ id: key, defaultMessage: `en: ${missing}` }, options);
 };
 
 const getProviderId = transaction => {
@@ -87,9 +120,7 @@ const isPickup = transaction => {
 };
 
 const getTransactionPhoneNumber = transaction => {
-  return isShipping(transaction)
-    ? transaction?.attributes?.protectedData?.shippingDetails?.phoneNumber
-    : null;
+  return transaction?.attributes?.protectedData?.shippingDetails?.phoneNumber;
 };
 
 const handleTransactionInitiated = async shEvent => {
@@ -113,16 +144,10 @@ const handleTransactionInitiated = async shEvent => {
   oneSignalCreateNotification(notification);
 
   if (providerPhoneNumber) {
-    const notificationSMS = {
-      app_id: oneSignalClientAppId,
-      name: 'Transaction Initiated',
-      sms_from: oneSignalSmsFrom,
-      contents: tr('sms.TransactionInitiated.content'),
-      // can be added public available images
-      // sms_media_urls: [],
-      include_phone_numbers: [providerPhoneNumber],
-    };
-    oneSignalCreateNotification(notificationSMS);
+    await twilioSendSMS({
+      phoneNumber: providerPhoneNumber,
+      body: t('sms.TransactionInitiated.content'),
+    });
   }
 };
 
@@ -135,19 +160,23 @@ const handleTransitionAccept = async transaction => {
   const preparationTime = providerPublicData.preparationTime;
   const mealIsReadyTime = providerPublicData.mealIsReadyTime;
   const deliveryTime = providerPublicData.deliveryTime;
-  const pickupAddress = providerPublicData.pickupAddress;
+  let pickupAddress = null;
+  const restaurantAddress = null; // transaction?.attributes?.protectedData?.restaurantAddress;
+  if (restaurantAddress) {
+    pickupAddress = restaurantAddress.selectedPlace?.address;
+  }
+  const restaurantAddressPlainText =
+    transaction?.attributes?.protectedData?.restaurantAddressPlainText;
+  if (restaurantAddressPlainText) {
+    pickupAddress = restaurantAddressPlainText;
+  }
   const customerPhoneNumber = getTransactionPhoneNumber(transaction);
   const notification = {
     app_id: oneSignalClientAppId,
     channel_for_external_user_ids: 'push',
     include_external_user_ids: [customerId],
   };
-  const notificationSMS = {
-    app_id: oneSignalClientAppId,
-    name: 'Transaction Accept',
-    sms_from: oneSignalSmsFrom,
-    include_phone_numbers: [customerPhoneNumber],
-  };
+  let notificationSMS;
 
   if (isPickup(transaction)) {
     notification.headings = tr('push.TransitionAccept.pickup.heading');
@@ -156,7 +185,7 @@ const handleTransitionAccept = async transaction => {
       mealIsReadyTime,
       pickupAddress,
     });
-    notificationSMS.contents = tr('sms.TransitionAccept.pickup.content', {
+    notificationSMS = t('sms.TransitionAccept.pickup.content', {
       preparationTime,
       mealIsReadyTime,
       pickupAddress,
@@ -167,7 +196,7 @@ const handleTransitionAccept = async transaction => {
       preparationTime,
       deliveryTime,
     });
-    notificationSMS.contents = tr('sms.TransitionAccept.shipping.content', {
+    notificationSMS = t('sms.TransitionAccept.shipping.content', {
       preparationTime,
       deliveryTime,
     });
@@ -176,7 +205,7 @@ const handleTransitionAccept = async transaction => {
   oneSignalCreateNotification(notification);
 
   if (customerPhoneNumber) {
-    oneSignalCreateNotification(notificationSMS);
+    await twilioSendSMS({ phoneNumber: customerPhoneNumber, body: notificationSMS });
   }
 };
 
@@ -193,31 +222,26 @@ const handleTransitionDecline = async transaction => {
     channel_for_external_user_ids: 'push',
     include_external_user_ids: [customerId],
   };
-  const notificationSMS = {
-    app_id: oneSignalClientAppId,
-    name: 'Transaction Decline',
-    sms_from: oneSignalSmsFrom,
-    include_phone_numbers: [customerPhoneNumber],
-  };
+  let notificationSMS;
 
   if (isSystemTransition) {
     notification.headings = tr('push.TransitionDecline.system.heading');
     notification.contents = tr('push.TransitionDecline.system.content', {
       autoDeclineTime: '15',
     });
-    notificationSMS.contents = tr('sms.TransitionDecline.system.content', {
+    notificationSMS = t('sms.TransitionDecline.system.content', {
       autoDeclineTime: '15',
     });
   } else {
     notification.headings = tr('push.TransitionDecline.provider.heading');
     notification.contents = tr('push.TransitionDecline.provider.content');
-    notificationSMS.contents = tr('sms.TransitionDecline.provider.content');
+    notificationSMS = t('sms.TransitionDecline.provider.content');
   }
 
   oneSignalCreateNotification(notification);
 
   if (customerPhoneNumber) {
-    oneSignalCreateNotification(notificationSMS);
+    await twilioSendSMS({ phoneNumber: customerPhoneNumber, body: notificationSMS });
   }
 };
 
@@ -236,12 +260,7 @@ const handleTransitionMarkPrepared = async transaction => {
     channel_for_external_user_ids: 'push',
     include_external_user_ids: [customerId],
   };
-  const notificationSMS = {
-    app_id: oneSignalClientAppId,
-    name: 'Transaction Mark Prepared',
-    sms_from: oneSignalSmsFrom,
-    include_phone_numbers: [customerPhoneNumber],
-  };
+  let notificationSMS;
 
   if (isPickup(transaction)) {
     notification.headings = tr('push.TransitionMarkPrepared.pickup.heading', {
@@ -250,7 +269,7 @@ const handleTransitionMarkPrepared = async transaction => {
     notification.contents = tr('push.TransitionMarkPrepared.pickup.content', {
       mealIsReadyTime,
     });
-    notificationSMS.contents = tr('sms.TransitionMarkPrepared.pickup.content', {
+    notificationSMS = t('sms.TransitionMarkPrepared.pickup.content', {
       transactionId,
       mealIsReadyTime,
     });
@@ -261,7 +280,7 @@ const handleTransitionMarkPrepared = async transaction => {
     notification.contents = tr('push.TransitionMarkPrepared.shipping.content', {
       deliveryTime,
     });
-    notificationSMS.contents = tr('sms.TransitionMarkPrepared.shipping.content', {
+    notificationSMS = t('sms.TransitionMarkPrepared.shipping.content', {
       transactionId,
       deliveryTime,
     });
@@ -270,7 +289,7 @@ const handleTransitionMarkPrepared = async transaction => {
   oneSignalCreateNotification(notification);
 
   if (customerPhoneNumber) {
-    oneSignalCreateNotification(notificationSMS);
+    await twilioSendSMS({ phoneNumber: customerPhoneNumber, body: notificationSMS });
   }
 };
 

@@ -12,16 +12,17 @@
 import React from 'react';
 import { intlShape, FormattedMessage } from '../../util/reactIntl';
 import { formatMoney } from '../../util/currency';
-import { humanizeLineItemCode } from '../../util/data';
+// import { humanizeLineItemCode } from '../../util/data';
 import { LINE_ITEMS, propTypes } from '../../util/types';
 import css from './OrderBreakdown.module.css';
 
 const LineItemUnknownItemsMaybe = props => {
-  const { lineItems, isProvider, intl, transaction, restOfShoppingCartItems, listing } = props;
+  const { lineItems, isProvider, intl, transaction /*, listing*/ } = props;
+
+  const cartListingLineItems = transaction.attributes.protectedData?.cartListingLineItems || [];
 
   // resolve unknown non-reversal line items
   const allItems = lineItems.filter(item => LINE_ITEMS.indexOf(item.code) === -1 && !item.reversal);
-  // const baseListing = transaction?.listing ? transaction?.listing : listing;
   const items = isProvider
     ? allItems.filter(item => item.includeFor.includes('provider'))
     : allItems.filter(item => item.includeFor.includes('customer'));
@@ -31,34 +32,20 @@ const LineItemUnknownItemsMaybe = props => {
       {items.map((item, i) => {
         const quantity = item.quantity;
 
-        const label =
-          quantity && quantity > 1
-            ? `${humanizeLineItemCode(item.code)} x ${quantity}`
-            : humanizeLineItemCode(item.code);
-
         const formattedTotal = formatMoney(intl, item.lineTotal);
         const formattedUnit = formatMoney(intl, item.unitPrice);
 
-        // const isBaseItem = baseListing?.attributes.price.amount === item.unitPrice.amount;
-        const shoppingCartItem = restOfShoppingCartItems?.find(x => {
-          return x.listing.id.uuid === item.code?.replace('line-item/', '');
+        const shoppingCartItem = cartListingLineItems.find(cartItem => {
+          return cartItem.id === item.code?.replace('line-item/', '');
         });
 
         return (
           <div key={shoppingCartItem?.listing?.id?.uuid}>
             <div className={css.lineItem}>
               <span className={css.itemLabel}>
-                {/* {isBaseItem ?
-                    <a href={`/l/${baseListing?.attributes.title.replace(' ','-')}/${baseListing?.id.uuid}`}>{baseListing?.attributes.title}</a>
-                    : */}
-                <a
-                  href={`/l/${shoppingCartItem?.listing?.attributes?.title.replace(' ', '-')}/${
-                    shoppingCartItem?.listing.id?.uuid
-                  }`}
-                >
-                  {shoppingCartItem?.listing.attributes?.title}
+                <a href={`/l/${shoppingCartItem?.title.replace(' ', '-')}/${shoppingCartItem?.id}`}>
+                  {shoppingCartItem?.title}
                 </a>
-                {/* } */}
               </span>
             </div>
             <div className={css.lineItem}>
