@@ -427,10 +427,10 @@
   flex-shrink: 0;
 }
 
-.restaurantAddressPlainText {
+/* .restaurantAddressPlainText {
   margin-top: 11px;
 
   @media (--viewportMedium) {
     margin-top: 16px;
   }
-}
+} */

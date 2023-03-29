@@ -22,6 +22,7 @@ const DeliveryInfoMaybe = props => {
     let pickupLocation = null;
     let geolocation = null;
     const restaurantAddress = null; // transaction?.attributes?.protectedData?.restaurantAddress;
+    /*
     if (restaurantAddress) {
       pickupLocation = {
         address: restaurantAddress.selectedPlace?.address,
@@ -29,6 +30,7 @@ const DeliveryInfoMaybe = props => {
       };
       geolocation = restaurantAddress.selectedPlace?.origin;
     }
+    */
     const restaurantAddressPlainText =
       transaction?.attributes?.protectedData?.restaurantAddressPlainText;
     if (restaurantAddressPlainText) {

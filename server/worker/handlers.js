@@ -160,16 +160,18 @@ const handleTransitionAccept = async transaction => {
   const preparationTime = providerPublicData.preparationTime;
   const mealIsReadyTime = providerPublicData.mealIsReadyTime;
   const deliveryTime = providerPublicData.deliveryTime;
-  let deliveryFromAddress = null;
+  let pickupAddress = null;
   const restaurantAddress = null; // transaction?.attributes?.protectedData?.restaurantAddress;
   if (restaurantAddress) {
-    deliveryFromAddress = restaurantAddress.selectedPlace?.address;
+    pickupAddress = restaurantAddress.selectedPlace?.address;
   }
+  /*
   const restaurantAddressPlainText =
     transaction?.attributes?.protectedData?.restaurantAddressPlainText;
   if (restaurantAddressPlainText) {
-    deliveryFromAddress = restaurantAddressPlainText;
+    pickupAddress = restaurantAddressPlainText;
   }
+  */
   const customerPhoneNumber = getTransactionPhoneNumber(transaction);
   const notification = {
     app_id: oneSignalClientAppId,
@@ -183,12 +185,12 @@ const handleTransitionAccept = async transaction => {
     notification.contents = tr('push.TransitionAccept.pickup.content', {
       preparationTime,
       mealIsReadyTime,
-      deliveryFromAddress,
+      pickupAddress,
     });
     notificationSMS = t('sms.TransitionAccept.pickup.content', {
       preparationTime,
       mealIsReadyTime,
-      deliveryFromAddress,
+      pickupAddress,
     });
   } else {
     notification.headings = tr('push.TransitionAccept.shipping.heading');

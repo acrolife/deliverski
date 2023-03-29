@@ -238,7 +238,7 @@ export const composeValidators = (...validators) => value =>
 export const isFromLesArcs = location => {
   return location === 'Arc 1800, Les Arcs, Bourg-Saint-Maurice, Savoie 73700, France'
     ? VALID
-    : "Vous n'êtes pas de Les Arcs";
+    : "Vous n'êtes pas @ Les Arcs";
 };
 
 export const validPhoneNumber = (
@@ -261,3 +261,7 @@ export const validPhoneNumber = (
 
   return phoneNumber && phoneNumber.isValid() ? VALID : message;
 };
+
+// export const validResort = message => (selectedResort, listOfEnabledResorts) => {
+//   return value.length === 9 ? VALID : message;
+// };
