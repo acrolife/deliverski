@@ -165,11 +165,13 @@ const handleTransitionAccept = async transaction => {
   if (restaurantAddress) {
     pickupAddress = restaurantAddress.selectedPlace?.address;
   }
+  /*
   const restaurantAddressPlainText =
     transaction?.attributes?.protectedData?.restaurantAddressPlainText;
   if (restaurantAddressPlainText) {
     pickupAddress = restaurantAddressPlainText;
   }
+  */
   const customerPhoneNumber = getTransactionPhoneNumber(transaction);
   const notification = {
     app_id: oneSignalClientAppId,

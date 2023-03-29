@@ -191,7 +191,7 @@ export class ProfileSettingsPageComponent extends Component {
       restaurantAddress.selectedPlace.origin = new LatLng(origin.lat, origin.lng);
     }
     */
-    const restaurantAddressPlainText = publicData?.restaurantAddressPlainText;
+    // const restaurantAddressPlainText = publicData?.restaurantAddressPlainText;
 
     const profileSettingsForm = user.id ? (
       <ProfileSettingsForm
@@ -204,7 +204,7 @@ export class ProfileSettingsPageComponent extends Component {
           restaurantName,
           resort,
           // restaurantAddress,
-          restaurantAddressPlainText,
+          // restaurantAddressPlainText,
           profileImage: user.profileImage,
           schedule: scheduleValue,
           preparationTime,

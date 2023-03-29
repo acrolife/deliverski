@@ -356,9 +356,11 @@ export class CheckoutPageComponent extends Component {
     const listing = this.state.pageData?.listing;
     const author = listing?.author;
     const restaurantAddress = null; // author?.attributes?.profile?.publicData?.restaurantAddress;
+    const pickupAddress = author?.attributes?.profile?.publicData?.pickupAddress;
+    /*
     const restaurantAddressPlainText =
       author?.attributes?.profile?.publicData?.restaurantAddressPlainText;
-
+    */
     let createdPaymentIntent = null;
 
     const hasDefaultPaymentMethod = !!(
@@ -531,12 +533,20 @@ export class CheckoutPageComponent extends Component {
     if (shippingDetails) {
       protectedData.shippingDetails = shippingDetails;
     }
-    if (deliveryMethod === 'pickup' && restaurantAddress) {
+   
+    if (deliveryMethod === 'pickup' && pickupAddress) {
+      protectedData.restaurantAddressPlainText = pickupAddress;
+    }
+
+    /*
+     if (deliveryMethod === 'pickup' && restaurantAddress) {
       protectedData.restaurantAddress = restaurantAddress;
     }
     if (deliveryMethod === 'pickup' && restaurantAddressPlainText) {
       protectedData.restaurantAddressPlainText = restaurantAddressPlainText;
     }
+    */
+
     // Note: optionalPaymentParams contains Stripe paymentMethod,
     // but that can also be passed on Step 2
     // stripe.confirmCardPayment(stripe, { payment_method: stripePaymentMethodId })

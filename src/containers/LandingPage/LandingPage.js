@@ -41,9 +41,16 @@ const LandingPageComponent = props => {
     }
   }, [props.userProviders]);
 
-  const isLoggedIn = !!currentUser;
+  const isLoggedIn = !!currentUser;  
 
-  // Logic to hide the mesage sending to playground on production
+  // TODO this need to be properly recode in this file and 
+  // src/containers/LandingPage/SectionFilteredSearches/SectionFilteredSearches.js
+  // src/containers/LandingPage/SectionHero/SectionHero.js
+  // isProduction = true was used to set a placeholder on the prod template, now we dont need it anylonger,
+  // but the two other components use the var to conditonally render elements (need false as value)
+  const isProduction = false;
+  /*
+  // Logic to hide the message sending to playground on production
   const canonicalRootURL = config.canonicalRootURL ? config.canonicalRootURL : null;
   // This means the elements conditioned on isProduction will not be shown on playground and sandbox
   // Without value for canonicalRootURL, isProduction will be true as well
@@ -57,6 +64,8 @@ const LandingPageComponent = props => {
   // console.log("canonicalRootURL", canonicalRootURL)
   // console.log("incl playground", anonicalRootURL.includes('playground'))
   // console.log("incl sandbox", anonicalRootURL.includes('sandbox'))
+  */
+ 
 
   /* Example
   // Thumbnail image for the search "card"

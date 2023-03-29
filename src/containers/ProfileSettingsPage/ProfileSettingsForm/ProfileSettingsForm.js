@@ -439,14 +439,14 @@ class ProfileSettingsFormComponent extends Component {
                   <p className={css.bioInfo}>
                     <FormattedMessage id="ProfileSettingsForm.restaurantInfo" />
                   </p>
-                  <FieldTextInput
+                  {/* <FieldTextInput
                     className={css.restaurantAddressPlainText}
                     type="text"
                     id="restaurantAddressPlainText"
                     name="restaurantAddressPlainText"
                     label={t({ id: 'ProfileSettingsForm.restaurantAddressLabel' })}
                     placeholder={t({ id: 'ProfileSettingsForm.restaurantAddressPlaceholder' })}
-                  />
+                  /> */}
                   {/*
                   <LocationAutocompleteInputField
                     className={css.restaurantAddress}
@@ -464,9 +464,9 @@ class ProfileSettingsFormComponent extends Component {
                     )}
                   />
                   */}
-                  <p className={css.bioInfo}>
+                  {/* <p className={css.bioInfo}>
                     <FormattedMessage id="ProfileSettingsForm.restaurantAddressInfo" />
-                  </p>
+                  </p> */}
                 </div>
               )}
 
