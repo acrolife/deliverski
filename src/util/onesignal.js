@@ -31,13 +31,13 @@ export const setOneSignalExternalUserId = user => {
   });
   if (smsNotficationIsEnabled && phoneNumber) {
     OneSignal.setSMSNumber(phoneNumber);
+    console.log(
+      'OneSignal set userId=',
+      userId,
+      'phoneNumber=',
+      smsNotficationIsEnabled && phoneNumber
+    );
   }
-  console.log(
-    'OneSignal set userId=',
-    userId,
-    'phoneNumber=',
-    smsNotficationIsEnabled && phoneNumber
-  );
 };
 
 export const setOneSignalSMSNumber = phoneNumber => {

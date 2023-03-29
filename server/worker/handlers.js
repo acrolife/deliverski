@@ -135,7 +135,7 @@ const handleTransitionAccept = async transaction => {
   const preparationTime = providerPublicData.preparationTime;
   const mealIsReadyTime = providerPublicData.mealIsReadyTime;
   const deliveryTime = providerPublicData.deliveryTime;
-  const deliveryFromAddress = providerPublicData.deliveryFromAddress;
+  const pickupAddress = providerPublicData.pickupAddress;
   const customerPhoneNumber = getTransactionPhoneNumber(transaction);
   const notification = {
     app_id: oneSignalClientAppId,
@@ -154,12 +154,12 @@ const handleTransitionAccept = async transaction => {
     notification.contents = tr('push.TransitionAccept.pickup.content', {
       preparationTime,
       mealIsReadyTime,
-      deliveryFromAddress,
+      pickupAddress,
     });
     notificationSMS.contents = tr('sms.TransitionAccept.pickup.content', {
       preparationTime,
       mealIsReadyTime,
-      deliveryFromAddress,
+      pickupAddress,
     });
   } else {
     notification.headings = tr('push.TransitionAccept.shipping.heading');
