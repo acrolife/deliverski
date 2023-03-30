@@ -1,10 +1,11 @@
+
 <html>
   <body>
     {{#with transaction}}
     <h3>The order has been canceled, check your Marmott' inbox please !</h3>
 
     <p>
-      The service provider has 15 minutes to confirm or
+      The restaurant has 15 minutes to confirm or
       cancel, but took no action. Therefore, the system automatically
       canceled this order.
     </p>
@@ -18,6 +19,28 @@
 
     <p>Best regards,<br />The {{marketplace.name}} team</p>
 
-    <p><small>You have received this email notification because you are a member of {{marketplace.name}}. If you no longer wish to receive these emails, please contact {{marketplace.name}} team, in the section "contact” on our website https://playground.marmott.co</small></p>
+    <p><small>You have received this email notification because you are a member of {{marketplace.name}}. If you no longer wish to receive these emails, please contact {{marketplace.name}} team, in the section "contact” on our website https://www.marmott.co</small></p>
+
+    <!-- ///////////////////////////////////////////////////////////////////// -->
+
+    {{#with transaction}}
+    <h3>Votre commance a été annulée, svp vérifiez Marmott' mailbox !</h3>
+
+    <p>
+      Le restaurant avait 15min pour accepter la commmande mais n'a pas réagi.
+      Sans réponse le système a donc annulée la commande.
+    </p>
+
+    <p>
+      <a href="{{marketplace.url}}/en/order/{{url-encode id}}/details">
+        Détails de la commande
+      </a>
+    </p>
+    {{/with}}
+
+    <p>Meilleures salutations,<br />La Team {{marketplace.name}}'</p>
+
+    <p><small>Vous avez reçu ce mail car vous êtes membre de {{marketplace.name}}. Si vous ne souhaitez plus recevoir d&#x27;emails de notre part, merci de contacter les administrateurs de {{marketplace.name}} sous la rubrique "contact" de notre site web https://www.marmott.co</small></p>
+
   </body>
 </html>
