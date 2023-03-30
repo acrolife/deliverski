@@ -243,8 +243,10 @@ export const isFromLesArcs = location => {
 
 export const validPhoneNumber = (
   message,
-  messageNoCountry = 'missing country calling code'
+  messageNoCountry = 'Missing country calling code: please use +33, not 0033'
 ) => value => {
+
+  
   if (!value || value === '') {
     return VALID;
   }
@@ -253,13 +255,26 @@ export const validPhoneNumber = (
     extract: false,
   };
 
-  const phoneNumber = parsePhoneNumberFromString(value, options);
+  const phoneNumber = () => parsePhoneNumberFromString(value, options);
 
-  if (!phoneNumber?.countryCallingCode) {
+  if (!phoneNumber(value, options)?.countryCallingCode) {
     return messageNoCountry;
   }
 
-  return phoneNumber && phoneNumber.isValid() ? VALID : message;
+  // console.log("phoneNumber", phoneNumber(value, options))
+
+  const testOOIndic = value.slice(0,2) == "00"
+  let valueOOIndicReplaced = value
+  if (testOOIndic) {
+    // valueOOIndicReplaced = "+" + value.slice(2)
+    return messageNoCountry;
+  }
+
+  const phoneNumberResult = phoneNumber(valueOOIndicReplaced, options)
+
+  // console.log("valueOOIndicReplaced", valueOOIndicReplaced)
+
+  return phoneNumberResult && phoneNumberResult.isValid() ? VALID : message;
 };
 
 // export const validResort = message => (selectedResort, listOfEnabledResorts) => {

@@ -10,7 +10,10 @@ import css from './TransactionPanel.module.css';
 // Functional component as a helper to build AddressLinkMaybe
 const AddressLinkMaybe = props => {
   const { className, rootClassName, linkRootClassName, location, geolocation, showAddress } = props;
-  const { address, building } = location || {};
+  let { address, building } = location || {};
+  // FIXME, quick fix for les arcs
+  const city = "Bourg Saint Maurice - Les Arcs"
+  address += ", " + city
   const { lat, lng } = geolocation || {};
   const hrefToGoogleMaps = geolocation
     ? `https://maps.google.com/?q=${lat},${lng}`

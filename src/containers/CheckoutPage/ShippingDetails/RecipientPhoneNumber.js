@@ -6,6 +6,22 @@ import * as validators from '../../../util/validators';
 
 const RecipientPhoneNumber = props => {
   const { css, intl, disabled, form, fieldId } = props;
+
+  /*
+  const changePhoneState = (value) => {
+    form.change('recipientPhoneNumber', value)
+  }
+  const recipientPhoneNumberValue = form.getState().values.recipientPhoneNumber
+  if (recipientPhoneNumberValue) {
+    const testOOIndic = recipientPhoneNumberValue.slice(0, 2) == "00"
+    let valueOOIndicReplaced = recipientPhoneNumberValue
+    if (testOOIndic) {
+      valueOOIndicReplaced = "+" + recipientPhoneNumberValue.slice(2)
+      changePhoneState(valueOOIndicReplaced)
+    }
+  }
+  */
+
   return (
     <>
       <FieldTextInput
