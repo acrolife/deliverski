@@ -1,77 +1,72 @@
 push:
   TransactionInitiated:
-    heading: New Order
-    content: You have new order
+    heading: New Order!
+    content: A new order waits for your validation in the Marmott' inbox.
   TransitionAccept:
     pickup:
       heading: Your order has been confirmed!
       content: |
-        The preparation will take approx. { preparationTime } minutes.
-        You’ll receive an update { mealIsReadyTime } minutes before your meal will
-        be ready to pickup at { deliveryFromAddress }!
+        Estimated preparation time: { preparationTime } min.
+        Update to come { mealIsReadyTime } min before pickup at { deliveryFromAddress }.
     shipping:
-      heading: Your order has been confirmed!
+      heading: Order confirmed!
       content: |
-        The preparation will take approx. { preparationTime } minutes. 
-        You’ll receive an update { deliveryTime } minutes before the courier
-        knocks your door, please remain available on your phone!
+        Estimated preparation time: { preparationTime } min.
+        Update will come { deliveryTime } min before the courier
+        knocks, please remain reachable by phone!
   TransitionDecline:
     provider:
-      heading: Your order has been declined!
-      content: Your order has been rejected because the provider is overloaded.
+      heading: Order declined!
+      content: Your order has been declined by the restaurant.
     system:
-      heading: Your order has been declined!
+      heading: Order cancelled!
       content: |
-        The service provider has { autoDeclineTime } minutes to confirm or
-        cancel, but took no action. Therefore, the system automatically
-        canceled this order.
+        Order automatically canceled. 
+        The restaurant didn't accept within the { autoDeclineTime } delay.
   TransitionMarkPrepared:
     pickup:
-      heading: Update about your order { transactionId }!
+      heading: Marmott' Update!
       content: |
-        Your meal will be ready for pickup in approximately { mealIsReadyTime }
+        Your meal will be ready for pickup in { mealIsReadyTime }
         minutes.
     shipping:
-      heading: Update about your order { transactionId }!
+      heading: Marmott' Update!
       content: |
-        The courier will knock your door in approximately { deliveryTime } minutes.
-        Please remain reachable on your phone!
+        The courier will knock your door in { deliveryTime } min.
+        Please remain reachable by phone!
 sms:
   TransactionInitiated:
-    content: You have new order
+    heading: New Order!
+    content: A new order waits for your validation in the Marmott' inbox.
   TransitionAccept:
     pickup:
+      heading: Your order has been confirmed!
       content: |
-        Your order has been confirmed!
-        The preparation will take approx. { preparationTime } minutes.
-        You’ll receive an update { mealIsReadyTime } minutes before your meal will
-        be ready to pickup at { deliveryFromAddress }!
+        Estimated preparation time: { preparationTime } min.
+        Update to come { mealIsReadyTime } min before pickup at { deliveryFromAddress }.
     shipping:
+      heading: Order confirmed!
       content: |
-        Your order has been confirmed!
-        The preparation will take approx. { preparationTime } minutes. 
-        You’ll receive an update { deliveryTime } minutes before the courier
-        knocks your door, please remain available on your phone!
+        Estimated preparation time: { preparationTime } min.
+        Update will come { deliveryTime } min before the courier
+        knocks, please remain reachable by phone!
   TransitionDecline:
     provider:
-      content: |
-        Your order has been declined!
-        Your order has been rejected because the provider is overloaded.
+      heading: Order declined!
+      content: Your order has been declined by the restaurant.
     system:
+      heading: Order cancelled!
       content: |
-        Your order has been declined!
-        The service provider has { autoDeclineTime } minutes to confirm or
-        cancel, but took no action. Therefore, the system automatically
-        canceled this order.
+        Order automatically canceled. 
+        The restaurant didn't accept within the { autoDeclineTime } min delay.
   TransitionMarkPrepared:
     pickup:
+      heading: Marmott' Update!
       content: |
-        Update about your order { transactionId }!
-        Your meal will be ready for pickup in approximately { mealIsReadyTime }
-        minutes.
+        Your meal will be ready for pickup in { mealIsReadyTime } min.
     shipping:
+      heading: Marmott' Update!
       content: |
-        Update about your order { transactionId }!
-        The courier will knock your door in approximately { deliveryTime } minutes.
-        Please remain reachable on your phone!
+        The courier will knock your door in { deliveryTime } min.
+        Please remain reachable by phone!
 
