@@ -7,7 +7,7 @@
     <h3>Votre reçu concernant {{listing.title}}</h3>
 
     <p>
-      Merci d'avoir acheter {{listing.title}} auprès de
+      Merci d'avoir acheté {{listing.title}} auprès de
       {{provider.display-name}}!
     </p>
 
@@ -56,20 +56,14 @@
           <td style="text-align: right; padding-left: 20px">
             &times; {{number quantity}}
           </td>
-        </tr> -->
-        <tr>
-          <th style="text-align: left">Détail par produit</th>
-          <td style="text-align: right; padding-left: 20px;">
-            (à venir dans une prochaine version)
-          </td>
-        </tr>        
+        </tr> -->       
         <tr>
           <th style="text-align: left">Montant de base - sous-total</th>>
           <th style="text-align: right; padding-left: 20px">
             {{> format-money money=unit-price}}
           </th>
         </tr>
-        {{/eq}} {{#eq "line-item/shipping-fee" code}}
+        {{/eq}} {{#eq "line-item/shipping-participation" code}}
         <tr>
           <td>Livraison</td>
           <td style="text-align: right; padding-left: 20px">
@@ -98,7 +92,7 @@
 
     <p>Meilleures salutations,<br />La team {{marketplace.name}} </p>
 
-    <p><small>Vous avez reçu ce mail car vous êtes membre de {{marketplace.name}}. Si vous ne souhaitez plus recevoir d&#x27;emails de notre part, merci de contacter les administrateurs de {{marketplace.name}} sous la rubrique "contact" de notre site web https://playground.marmott.co</small></p>
+    <p><small>Vous avez reçu ce mail car vous êtes membre de {{marketplace.name}}. Si vous ne souhaitez plus recevoir d&#x27;emails de notre part, merci de contacter les administrateurs de {{marketplace.name}} sous la rubrique "contact" de notre site web https://www.marmott.co</small></p>
 
     <hr />
 
@@ -158,19 +152,13 @@
             &times; {{number quantity}}
           </td>
         </tr>
-        <tr> -->
-          <tr>
-            <th style="text-align: left">Detail per product</th>
-            <td style="text-align: right; padding-left: 20px;">
-              (to come in a next version)
-            </td>
-          </tr>          
+        <tr> -->         
           <th style="text-align: left">Base amount - subtotal</th>
           <th style="text-align: right; padding-left: 20px">
             {{> format-money money=unit-price}}
           </th>
         </tr>
-        {{/eq}} {{#eq "line-item/shipping-fee" code}}
+        {{/eq}} {{#eq "line-item/shipping-participation" code}}
         <tr>
           <td>Shipping</td>
           <td style="text-align: right; padding-left: 20px">
@@ -199,6 +187,6 @@
 
     <p>Best regards,<br />The {{marketplace.name}} team</p>
 
-    <p><small>You have received this email notification because you are a member of {{marketplace.name}}. If you no longer wish to receive these emails, please contact {{marketplace.name}} team, in the section "contact” on our website https://playground.marmott.co</small></p>
+    <p><small>You have received this email notification because you are a member of {{marketplace.name}}. If you no longer wish to receive these emails, please contact {{marketplace.name}} team, in the section "contact” on our website https://www.marmott.co</small></p>
   </body>
 </html>
