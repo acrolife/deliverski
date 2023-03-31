@@ -134,7 +134,9 @@ exports.transactionLineItems = (listing, orderData, cartListingLineItems) => {
 
   // Calculate shipping fee if applicable
   const shippingFeeCustomer =
-    isShipping || isAnyItemWithShipping
+    // FIXME: Check if this works : only apply shipping if all isShipping
+    // isShipping || isAnyItemWithShipping
+    isShipping
       ? calculateShippingFee(
           customerShippingParticipation,
           shippingPriceInSubunitsAdditionalItems,
@@ -144,7 +146,9 @@ exports.transactionLineItems = (listing, orderData, cartListingLineItems) => {
       : null;
 
   const shippingFeeProvider =
-    isShipping || isAnyItemWithShipping
+    // FIXME: Check if this works : only apply shipping if all isShipping
+    // isShipping || isAnyItemWithShipping
+    isShipping
       ? calculateShippingFee(
           providerShippingParticipation,
           shippingPriceInSubunitsAdditionalItems,
@@ -154,7 +158,9 @@ exports.transactionLineItems = (listing, orderData, cartListingLineItems) => {
       : null;
 
   const shippingFeeProviderForMarketplaceCommision =
-    isShipping || isAnyItemWithShipping
+    // FIXME: Check if this works : only apply shipping if all isShipping
+    // isShipping || isAnyItemWithShipping
+    isShipping
       ? calculateShippingFee(
           providerShippingParticipationForMarketplaceCommision,
           shippingPriceInSubunitsAdditionalItems,
