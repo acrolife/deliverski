@@ -125,10 +125,10 @@
     [{:fn/timepoint [:time/first-entered-state :state/purchased]}
      {:fn/period ["PT120M"]}]},
    :actions
-  ;;  [{:name :action/calculate-full-refund}
-  ;;   {:name :action/stripe-refund-payment}
-  ;;   {:name :action/cancel-stock-reservation}],
-   [{:name :action/cancel-stock-reservation}],
+   [{:name :action/calculate-full-refund}
+    {:name :action/stripe-refund-payment}
+    {:name :action/cancel-stock-reservation}],
+  ;;  [{:name :action/cancel-stock-reservation}],
    :from :state/purchased,
    :to :state/canceled}
   {:name :transition/cancel-from-disputed,
