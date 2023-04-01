@@ -38,9 +38,8 @@
         </tr>
         {{/each}}
         {{/if}}
-        {{#each tx-line-items}} {{#contains include-for "provider"}} {{#eq
-        "line-item/provider-commission" code}}
-        <tr>
+        {{#each tx-line-items}} {{#contains include-for "provider"}} {{#eq "line-item/provider-commission" code}}
+        <!-- <tr> -->
           <!-- <td>Prix à l'unité</td>
           <td style="text-align: right; padding-left: 20px">
             {{> format-money money=unit-price}}
