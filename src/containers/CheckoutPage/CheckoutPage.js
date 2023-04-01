@@ -745,8 +745,6 @@ export class CheckoutPageComponent extends Component {
       stripeCustomerFetched,
     } = this.props;
 
-    console.log('speculatedTransactionMaybe', speculatedTransactionMaybe);
-
     // Since the listing data is already given from the ListingPage
     // and stored to handle refreshes, it might not have the possible
     // deleted or closed information in it. If the transaction
@@ -767,10 +765,6 @@ export class CheckoutPageComponent extends Component {
     const isLoading = !this.state.dataLoaded || speculateTransactionInProgress;
 
     const { listing, transaction, orderData } = this.state.pageData;
-
-    console.log('listing', listing);
-    console.log('transaction', transaction);
-    console.log('orderData', orderData);
 
     const existingTransaction = ensureTransaction(transaction);
     const speculatedTransaction = ensureTransaction(speculatedTransactionMaybe, {}, null);
@@ -871,8 +865,6 @@ export class CheckoutPageComponent extends Component {
     const txBookingMaybe = tx.booking?.id
       ? { booking: ensureBooking(tx.booking), dateType: DATE_TYPE_DATE }
       : {};
-
-    console.log('XXXXXXX', tx);
 
     const breakdown =
       tx.id && tx.attributes.lineItems?.length > 0 ? (
