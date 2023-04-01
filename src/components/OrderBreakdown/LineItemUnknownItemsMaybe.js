@@ -40,7 +40,7 @@ const LineItemUnknownItemsMaybe = props => {
         });
 
         return (
-          <div key={shoppingCartItem?.listing?.id?.uuid}>
+          <div key={shoppingCartItem?.listing?.id?.uuid + "_" + i.toString()}>
             <div className={css.lineItem}>
               <span className={css.itemLabel}>
                 <a href={`/l/${shoppingCartItem?.title.replace(' ', '-')}/${shoppingCartItem?.id}`}>
