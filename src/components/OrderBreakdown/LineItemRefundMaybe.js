@@ -1,4 +1,5 @@
 import React from 'react';
+import { bool } from 'prop-types';
 import { FormattedMessage, intlShape } from '../../util/reactIntl';
 import Decimal from 'decimal.js';
 import { formatMoney } from '../../util/currency';
@@ -8,6 +9,7 @@ import {
   propTypes,
   LINE_ITEM_CUSTOMER_COMMISSION,
   LINE_ITEM_PROVIDER_COMMISSION,
+  LINE_ITEM_SHIPPING_FEE
 } from '../../util/types';
 
 import css from './OrderBreakdown.module.css';
@@ -41,12 +43,23 @@ const isCommission = lineItem => {
 const nonCommissionReversalLineItems = lineItems => {
   return lineItems.filter(item => !isCommission(item) && item.reversal);
 };
+const filterOutCustomerShippingFeeLineItems = lineItems => {
+  return lineItems.filter(item => item.code !== LINE_ITEM_SHIPPING_FEE);
+};
 
 const LineItemRefundMaybe = props => {
-  const { lineItems, intl } = props;
+  const { lineItems, intl, isProvider } = props;
 
   // all non-commission, reversal line items
-  const refundLineItems = nonCommissionReversalLineItems(lineItems);
+  let refundLineItems = nonCommissionReversalLineItems(lineItems);
+
+  // filter lineItems for provider case : need to remove customer shipping-participation
+  if (isProvider) {
+    // const shippingFeeLineItem = lineItems.find(
+    //   item => item.code === LINE_ITEM_SHIPPING_FEE && !item.reversal
+    // );
+    refundLineItems = filterOutCustomerShippingFeeLineItems(refundLineItems);
+  }
 
   const refund = lineItemsTotal(refundLineItems);
 
@@ -65,6 +78,7 @@ const LineItemRefundMaybe = props => {
 LineItemRefundMaybe.propTypes = {
   lineItems: propTypes.lineItems.isRequired,
   intl: intlShape.isRequired,
+  isProvider: bool.isRequired,
 };
 
 export default LineItemRefundMaybe;

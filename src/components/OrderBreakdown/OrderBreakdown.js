@@ -137,7 +137,7 @@ export const OrderBreakdownComponent = props => {
         userRole={userRole}
         intl={intl}
       />
-      <LineItemRefundMaybe lineItems={lineItems} intl={intl} />
+      <LineItemRefundMaybe lineItems={lineItems} isProvider={isProvider} intl={intl} />
 
       <LineItemCustomerCommissionMaybe lineItems={lineItems} isCustomer={isCustomer} intl={intl} />
       <LineItemCustomerCommissionRefundMaybe
