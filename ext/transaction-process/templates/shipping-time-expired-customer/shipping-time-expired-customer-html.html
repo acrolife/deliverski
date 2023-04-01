@@ -5,15 +5,21 @@
 
     {{#eq "shipping" protected-data.deliveryMethod}}
     <p>
-      Malheureusement votre commande concernant "{{listing.title}}" a été
-      annulée car {{provider.display-name}} ne l'a pas envoyée à temps. Vous serez
-      intégralement remboursé.
+      Malheureusement il semble que votre commande concernant "{{listing.title}}" ait été
+      annulée car {{provider.display-name}} ne l'aurait pas envoyée à temps.       
+    </p>
+    <p>.
+      Envoyez s'il-vous-plaît une copie de ce courriel à support@marmott.co , 
+      nous prendrons grand soin de traiter votre requête au plus vite !
+      Vous pouvez demander à être intégralement remboursé si le problème provient du restaurateur.
+    </p>
+      
     </p>
     {{else}}
     <p>
-      Malheureusement votre commande concernant "{{listing.title}}" a été
-      annulée car vous n'avez pas récupéré votre commande à temps auprès de
-      {{provider.display-name}}. Vous serez intégralement remboursé.
+      Votre commande concernant "{{listing.title}}" n'a pas été récupérée à temps. 
+      <!-- Vous serez intégralement remboursé. -->
+      Contactez {{provider.display-name}} par message dans votre Marmott' inbox !
     </p>
     {{/eq}}
 
@@ -26,7 +32,7 @@
 
     <p>Meilleures salutations,<br />La team {{marketplace.name}} </p>
 
-    <p><small>Vous avez reçu ce mail car vous êtes membre de {{marketplace.name}}. Si vous ne souhaitez plus recevoir d&#x27;emails de notre part, merci de contacter les administrateurs de {{marketplace.name}} sous la rubrique "contact" de notre site web https://playground.marmott.co</small></p>
+    <p><small>Vous avez reçu ce mail car vous êtes membre de {{marketplace.name}}. Si vous ne souhaitez plus recevoir d&#x27;emails de notre part, merci de contacter les administrateurs de {{marketplace.name}} sous la rubrique "contact" de notre site web https://www.marmott.co</small></p>
 
     <hr />
 
@@ -35,17 +41,22 @@
     {{#with transaction}}
     <h3>Your order has expired</h3>
 
-    {{#eq "shipping" protected-data.deliveryMethod}}
+    {{#eq "shipping" protected-data.deliveryMethod}}   
     <p>
-      Unfortunately your order for {{listing.title}} was canceled as
-      {{provider.display-name}} did not ship the item on time. You will be
-      refunded fully.
+      Unfortunately it seems your order for {{listing.title}} has been canceled as
+      {{provider.display-name}} would not have shipped the item on time.       
+      <!-- You will be refunded fully. -->
     </p>
+    <p>
+      Please send a copy of this email to support@marmott.co to dispute the order, 
+      we'll take great care of your request !
+      You can request a full refund if the issue is the restaurant's responsability
+    </p>      
     {{else}}
     <p>
-      Unfortunately your order for {{listing.title}} was canceled as you did not
-      pick it up on time from {{provider.display-name}}. You will be refunded
-      fully.
+      Your order {{listing.title}} has not been collected on time 
+      Please contact {{provider.display-name}} by message in you Marmott' inbox.
+      <!-- You will be refunded fully. -->
     </p>
     {{/eq}}
 
@@ -58,6 +69,6 @@
 
     <p>Best regards,<br />The {{marketplace.name}} team</p>
 
-    <p><small>You have received this email notification because you are a member of {{marketplace.name}}. If you no longer wish to receive these emails, please contact {{marketplace.name}} team, in the section "contact” on our website https://playground.marmott.co</small></p>
+    <p><small>You have received this email notification because you are a member of {{marketplace.name}}. If you no longer wish to receive these emails, please contact {{marketplace.name}} team, in the section "contact” on our website https://www.marmott.co</small></p>
   </body>
 </html>

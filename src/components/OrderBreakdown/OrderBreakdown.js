@@ -28,6 +28,7 @@ import LineItemUnknownItemsMaybe from './LineItemUnknownItemsMaybe';
 import css from './OrderBreakdown.module.css';
 
 export const OrderBreakdownComponent = props => {
+
   const {
     rootClassName,
     className,
@@ -137,7 +138,7 @@ export const OrderBreakdownComponent = props => {
         userRole={userRole}
         intl={intl}
       />
-      <LineItemRefundMaybe lineItems={lineItems} intl={intl} />
+      <LineItemRefundMaybe lineItems={lineItems} isProvider={isProvider} intl={intl} />
 
       <LineItemCustomerCommissionMaybe lineItems={lineItems} isCustomer={isCustomer} intl={intl} />
       <LineItemCustomerCommissionRefundMaybe

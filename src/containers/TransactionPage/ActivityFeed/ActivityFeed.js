@@ -138,7 +138,7 @@ const resolveTransitionMessage = (
   const preparationTime = providerPublicData.preparationTime;
   const mealIsReadyTime = providerPublicData.mealIsReadyTime;
   const deliveryTime = providerPublicData.deliveryTime;
-  const deliveryFromAddress = providerPublicData.deliveryFromAddress;
+  const pickupAddress = providerPublicData.pickupAddress;
 
   switch (currentTransition) {
     case TRANSITION_CONFIRM_PAYMENT:
@@ -161,7 +161,7 @@ const resolveTransitionMessage = (
       ) : (
         <FormattedMessage
           id="ActivityFeed.transitionAcceptPickup"
-          values={{ preparationTime, mealIsReadyTime, deliveryFromAddress }}
+          values={{ preparationTime, mealIsReadyTime, pickupAddress }}
         />
       );
     case TRANSITION_DECLINE:

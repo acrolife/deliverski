@@ -40,6 +40,7 @@ const LineItemUnknownItemsMaybe = props => {
         });
 
         return (
+          // <div key={shoppingCartItem?.listing?.id?.uuid + "_" + i.toString()}>
           <div key={shoppingCartItem?.listing?.id?.uuid}>
             <div className={css.lineItem}>
               <span className={css.itemLabel}>

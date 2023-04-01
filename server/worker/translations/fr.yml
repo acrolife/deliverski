@@ -7,7 +7,7 @@ push:
       heading: Commande confirmée!
       content: |
         Temps de préparation estimé: { preparationTime } min.
-        Notification de mise à jour { mealIsReadyTime } min avant le retrait à { deliveryFromAddress }.
+        Notification de mise à jour { mealIsReadyTime } min avant le retrait à { pickupAddress }.
     shipping:
       heading: Commande confirmée!
       content: |
@@ -42,7 +42,7 @@ sms:
       heading: Commande confirmée!
       content: |
         Temps de préparation estimé: { preparationTime } min.
-        Notification de mise à jour { mealIsReadyTime } min avant le retrait à { deliveryFromAddress }.
+        Notification de mise à jour { mealIsReadyTime } min avant le retrait à { pickupAddress }.
     shipping:
       heading: Commande confirmée!
       content: |

@@ -7,7 +7,7 @@ push:
       heading: Your order has been confirmed!
       content: |
         Estimated preparation time: { preparationTime } min.
-        Update to come { mealIsReadyTime } min before pickup at { deliveryFromAddress }.
+        Update to come { mealIsReadyTime } min before pickup at { pickupAddress }.
     shipping:
       heading: Order confirmed!
       content: |
@@ -27,8 +27,7 @@ push:
     pickup:
       heading: Marmott' Update!
       content: |
-        Your meal will be ready for pickup in { mealIsReadyTime }
-        minutes.
+        Your meal will be ready for pickup in { mealIsReadyTime } min.
     shipping:
       heading: Marmott' Update!
       content: |
@@ -43,7 +42,7 @@ sms:
       heading: Your order has been confirmed!
       content: |
         Estimated preparation time: { preparationTime } min.
-        Update to come { mealIsReadyTime } min before pickup at { deliveryFromAddress }.
+        Update to come { mealIsReadyTime } min before pickup at { pickupAddress }.
     shipping:
       heading: Order confirmed!
       content: |
