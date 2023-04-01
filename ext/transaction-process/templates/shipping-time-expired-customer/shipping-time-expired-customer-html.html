@@ -11,9 +11,9 @@
     </p>
     {{else}}
     <p>
-      Malheureusement votre commande concernant "{{listing.title}}" a été
-      annulée car {{provider.display-name}} n'a pas validé la commande à temps. 
-      Vous serez intégralement remboursé.
+      Malheureusement votre commande concernant "{{listing.title}}" n'a pas été récupérée à temps. 
+      <!-- Vous serez intégralement remboursé. -->
+      Contactez {{provider.display-name}} par message dans votrre Marmott' inbox !
     </p>
     {{/eq}}
 
@@ -43,9 +43,9 @@
     </p>
     {{else}}
     <p>
-      Unfortunately your order {{listing.title}} was canceled because {{provider.display-name}} didn't validate the order on time. 
-      You will be refunded
-      fully.
+      Unfortunately your order {{listing.title}} has not been collected on time 
+      Please contact {{provider.display-name}} by message in you Marmott' inbox.
+      <!-- You will be refunded fully. -->
     </p>
     {{/eq}}
 
