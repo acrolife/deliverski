@@ -12,8 +12,8 @@
     {{else}}
     <p>
       Malheureusement votre commande concernant "{{listing.title}}" a été
-      annulée car vous n'avez pas récupéré votre commande à temps auprès de
-      {{provider.display-name}}. Vous serez intégralement remboursé.
+      annulée car {{provider.display-name}} n'a pas validé la commande à temps. 
+      Vous serez intégralement remboursé.
     </p>
     {{/eq}}
 
@@ -43,8 +43,8 @@
     </p>
     {{else}}
     <p>
-      Unfortunately your order for {{listing.title}} was canceled as you did not
-      pick it up on time from {{provider.display-name}}. You will be refunded
+      Unfortunately your order {{listing.title}} was canceled because {{provider.display-name}} didn't validate the order on time. 
+      You will be refunded
       fully.
     </p>
     {{/eq}}
