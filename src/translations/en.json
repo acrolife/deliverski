@@ -1207,7 +1207,7 @@
   "TransactionPanel.pickupInfoHeading": "Pickup address",
   "TransactionPanel.pickupInfoPhone": "Phone number: {phoneNumber}",
   "TransactionPanel.orderPreauthorizedInfo": "Restaurant {providerName} has been notified about your request.",
-  "TransactionPanel.orderPreauthorizedSubtitle": "order \"{listingLink}\" requested ✅",
+  "TransactionPanel.orderPreauthorizedSubtitle": "Order \"{listingLink}\" requested ✅",
   "TransactionPanel.orderPreauthorizedTitle": "Well done {customerName} 😉, ",
   "TransactionPanel.saleCanceledTitle": "The order from {customerName} has been canceled",
   "TransactionPanel.saleDeclinedTitle": "The request from {customerName}, \"{listingLink}\", has been declined.",

@@ -1206,7 +1206,7 @@
   "TransactionPanel.pickupInfoHeading": "Adresse de retrait",
   "TransactionPanel.pickupInfoPhone": "Mobile: {phoneNumber}",
   "TransactionPanel.orderPreauthorizedInfo": "Le restaurant {providerName} a été notifié de votre demande.",
-  "TransactionPanel.orderPreauthorizedSubtitle": "requête de \"{listingLink}\" passée ✅",
+  "TransactionPanel.orderPreauthorizedSubtitle": "Requête de \"{listingLink}\" passée ✅",
   "TransactionPanel.orderPreauthorizedTitle": "Bien joué {customerName} 😉, ",
   "TransactionPanel.saleCanceledTitle": "La commande de {customerName} a été annulée",
   "TransactionPanel.saleDeclinedTitle": "La commande de  {customerName}, \"{listingLink}\", has been declined.",
