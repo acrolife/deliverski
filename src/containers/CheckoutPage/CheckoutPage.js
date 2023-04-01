@@ -140,7 +140,7 @@ const bookingDatesMaybe = bookingDates => {
 const getErrorMessages = (listingNotFound, initiateOrderError, speculateTransactionError) => {
   let listingNotFoundErrorMessage = null;
   let initiateOrderErrorMessage = null;
-  let speculateErrorMessage = null;  
+  let speculateErrorMessage = null;
 
   const isAmountTooLowError = isTransactionInitiateAmountTooLowError(initiateOrderError);
   const isChargeDisabledError = isTransactionChargeDisabledError(initiateOrderError);
@@ -533,7 +533,7 @@ export class CheckoutPageComponent extends Component {
     if (shippingDetails) {
       protectedData.shippingDetails = shippingDetails;
     }
-   
+
     if (deliveryMethod === 'pickup' && pickupAddress) {
       protectedData.restaurantAddressPlainText = pickupAddress;
     }
@@ -745,7 +745,7 @@ export class CheckoutPageComponent extends Component {
       stripeCustomerFetched,
     } = this.props;
 
-    console.log('speculatedTransactionMaybe', speculatedTransactionMaybe)
+    console.log('speculatedTransactionMaybe', speculatedTransactionMaybe);
 
     // Since the listing data is already given from the ListingPage
     // and stored to handle refreshes, it might not have the possible
@@ -768,11 +768,11 @@ export class CheckoutPageComponent extends Component {
 
     const { listing, transaction, orderData } = this.state.pageData;
 
-    console.log('listing', listing)
-    console.log('transaction', transaction)
-    console.log('orderData', orderData)
+    console.log('listing', listing);
+    console.log('transaction', transaction);
+    console.log('orderData', orderData);
 
-    const existingTransaction = ensureTransaction(transaction);    
+    const existingTransaction = ensureTransaction(transaction);
     const speculatedTransaction = ensureTransaction(speculatedTransactionMaybe, {}, null);
     const currentListing = ensureListing(listing);
     const currentAuthor = ensureUser(currentListing.author);
@@ -781,7 +781,7 @@ export class CheckoutPageComponent extends Component {
     const restaurantName = currentAuthor.attributes.profile.publicData
       ? currentAuthor.attributes.profile.publicData.restaurantName
       : null;
-    
+
     /*
     const restaurantAddress = null; // currentAuthor.attributes.profile.publicData?.restaurantAddress;
     if (restaurantAddress) {
@@ -870,9 +870,9 @@ export class CheckoutPageComponent extends Component {
     tx.deliveryMethod = deliveryMethod;
     const txBookingMaybe = tx.booking?.id
       ? { booking: ensureBooking(tx.booking), dateType: DATE_TYPE_DATE }
-      : {};    
+      : {};
 
-    console.log('XXXXXXX', tx)
+    console.log('XXXXXXX', tx);
 
     const breakdown =
       tx.id && tx.attributes.lineItems?.length > 0 ? (

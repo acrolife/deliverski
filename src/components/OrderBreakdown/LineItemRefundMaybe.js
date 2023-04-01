@@ -9,7 +9,7 @@ import {
   propTypes,
   LINE_ITEM_CUSTOMER_COMMISSION,
   LINE_ITEM_PROVIDER_COMMISSION,
-  LINE_ITEM_SHIPPING_FEE
+  LINE_ITEM_SHIPPING_FEE,
 } from '../../util/types';
 
 import css from './OrderBreakdown.module.css';

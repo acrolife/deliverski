@@ -245,8 +245,6 @@ export const validPhoneNumber = (
   message,
   messageNoCountry = 'Missing country calling code: please use +33, not 0033'
 ) => value => {
-
-  
   if (!value || value === '') {
     return VALID;
   }
@@ -263,14 +261,14 @@ export const validPhoneNumber = (
 
   // console.log("phoneNumber", phoneNumber(value, options))
 
-  const testOOIndic = value.slice(0,2) == "00"
-  let valueOOIndicReplaced = value
+  const testOOIndic = value.slice(0, 2) == '00';
+  let valueOOIndicReplaced = value;
   if (testOOIndic) {
     // valueOOIndicReplaced = "+" + value.slice(2)
     return messageNoCountry;
   }
 
-  const phoneNumberResult = phoneNumber(valueOOIndicReplaced, options)
+  const phoneNumberResult = phoneNumber(valueOOIndicReplaced, options);
 
   // console.log("valueOOIndicReplaced", valueOOIndicReplaced)
 

@@ -28,7 +28,6 @@ import LineItemUnknownItemsMaybe from './LineItemUnknownItemsMaybe';
 import css from './OrderBreakdown.module.css';
 
 export const OrderBreakdownComponent = props => {
-
   const {
     rootClassName,
     className,

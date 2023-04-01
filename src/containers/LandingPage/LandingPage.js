@@ -41,9 +41,9 @@ const LandingPageComponent = props => {
     }
   }, [props.userProviders]);
 
-  const isLoggedIn = !!currentUser;  
+  const isLoggedIn = !!currentUser;
 
-  // TODO this need to be properly recode in this file and 
+  // TODO this need to be properly recode in this file and
   // src/containers/LandingPage/SectionFilteredSearches/SectionFilteredSearches.js
   // src/containers/LandingPage/SectionHero/SectionHero.js
   // isProduction = true was used to set a placeholder on the prod template, now we dont need it anylonger,
@@ -65,7 +65,6 @@ const LandingPageComponent = props => {
   // console.log("incl playground", anonicalRootURL.includes('playground'))
   // console.log("incl sandbox", anonicalRootURL.includes('sandbox'))
   */
- 
 
   /* Example
   // Thumbnail image for the search "card"
