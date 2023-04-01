@@ -8,7 +8,7 @@
   "ActivityFeed.ownTransitionShipped": "The order is out for delivery.",
   "ActivityFeed.ownTransitionDisputed": "The order state is now \"disputed\".",
   "ActivityFeed.transitionPurchased": "Your order has been placed.",
-  "ActivityFeed.expiredAccept": "Your order has been canceled for missing the restaurant's answer, sorry :-( Please send a message here, or order again !",
+  "ActivityFeed.expiredAccept": "Your order has been canceled for missing the restaurant's answer, sorry 😔 Please send a message here, or order again !",
   "ActivityFeed.transitionAccept": "Restaurant { displayName } confirmed your order.",
   "ActivityFeed.transitionAcceptPickup": "Order confirmed 😋 The preparation is approx. { preparationTime } min. Update to come { mealIsReadyTime } min before pickup at { pickupAddress }!",
   "ActivityFeed.transitionAcceptShipping": "Order confirmed 😋 The preparation will take approx. { preparationTime } min. Update to come { deliveryTime } min before the courier knocks your door.",

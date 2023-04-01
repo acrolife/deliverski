@@ -140,7 +140,7 @@ const bookingDatesMaybe = bookingDates => {
 const getErrorMessages = (listingNotFound, initiateOrderError, speculateTransactionError) => {
   let listingNotFoundErrorMessage = null;
   let initiateOrderErrorMessage = null;
-  let speculateErrorMessage = null;
+  let speculateErrorMessage = null;  
 
   const isAmountTooLowError = isTransactionInitiateAmountTooLowError(initiateOrderError);
   const isChargeDisabledError = isTransactionChargeDisabledError(initiateOrderError);
@@ -745,6 +745,8 @@ export class CheckoutPageComponent extends Component {
       stripeCustomerFetched,
     } = this.props;
 
+    console.log('speculatedTransactionMaybe', speculatedTransactionMaybe)
+
     // Since the listing data is already given from the ListingPage
     // and stored to handle refreshes, it might not have the possible
     // deleted or closed information in it. If the transaction
@@ -765,7 +767,12 @@ export class CheckoutPageComponent extends Component {
     const isLoading = !this.state.dataLoaded || speculateTransactionInProgress;
 
     const { listing, transaction, orderData } = this.state.pageData;
-    const existingTransaction = ensureTransaction(transaction);
+
+    console.log('listing', listing)
+    console.log('transaction', transaction)
+    console.log('orderData', orderData)
+
+    const existingTransaction = ensureTransaction(transaction);    
     const speculatedTransaction = ensureTransaction(speculatedTransactionMaybe, {}, null);
     const currentListing = ensureListing(listing);
     const currentAuthor = ensureUser(currentListing.author);
@@ -863,7 +870,9 @@ export class CheckoutPageComponent extends Component {
     tx.deliveryMethod = deliveryMethod;
     const txBookingMaybe = tx.booking?.id
       ? { booking: ensureBooking(tx.booking), dateType: DATE_TYPE_DATE }
-      : {};
+      : {};    
+
+    console.log('XXXXXXX', tx)
 
     const breakdown =
       tx.id && tx.attributes.lineItems?.length > 0 ? (
