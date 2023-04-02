@@ -26,6 +26,8 @@ import css from './OrderPanel.module.css';
 // This defines when ModalInMobile shows content as Modal
 const MODAL_BREAKPOINT = 1023;
 
+let locale
+
 const priceData = (price, intl) => {
   if (price && price.currency === config.currency) {
     const formattedPrice = formatMoney(intl, price);
@@ -46,6 +48,7 @@ const openOrderModal = (isOwnListing, isClosed, history, location) => {
     const { pathname, search, state } = location;
     const searchString = `?${stringify({ ...parse(search), orderOpen: true })}`;
     history.push(`${pathname}${searchString}`, state);
+    locale = pathname.split('/')[1]
   }
 };
 
@@ -54,6 +57,7 @@ const closeOrderModal = (history, location) => {
   const searchParams = omit(parse(search), 'orderOpen');
   const searchString = `?${stringify(searchParams)}`;
   history.push(`${pathname}${searchString}`, state);
+  locale = pathname.split('/')[1]
 };
 
 const OrderPanel = props => {
@@ -237,6 +241,7 @@ const OrderPanel = props => {
             currentUser={currentUser}
             history={history}
             isRestaurantOnHold={isRestaurantOnHold}
+            locale={locale}
           />
         ) : null}
       </ModalInMobile>

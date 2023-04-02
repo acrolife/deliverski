@@ -11,7 +11,7 @@ import { metaTagProps } from '../../util/seo';
 import { canonicalRoutePath } from '../../util/routes';
 
 import { CookieConsent } from '../../components';
-import { MarmottIsBorn } from '../../components';
+// import { MarmottIsBorn } from '../../components';
 
 import facebookImage from '../../assets/marmottFacebook-1200x630.jpg';
 import twitterImage from '../../assets/marmottTwitter-600x314.jpg';
@@ -212,10 +212,10 @@ class PageComponent extends Component {
             {schemaArrayJSONString.replace(/</g, '\\u003c')}
           </script>
         </Helmet>
-        <div className={css.centerDiv}>
+        {/* <div className={css.centerDiv}>
           <MarmottIsBorn />
-        </div>
-        {/* <CookieConsent /> */}
+        </div> */}
+        <CookieConsent />
 
         <div
           className={css.content}

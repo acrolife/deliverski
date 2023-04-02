@@ -32,9 +32,6 @@ const sdk = sharetribeSdk.createInstance({
   clientId: process.env.REACT_APP_SHARETRIBE_SDK_CLIENT_ID,
 });
 
-// Manage path redirection and locale
-const locale = config.locale;
-const localePath = locale ? `/${locale}` : '';
 
 const renderForm = formRenderProps => {
   const {
@@ -65,7 +62,11 @@ const renderForm = formRenderProps => {
     setSameVendorModalOpen,
     emptyCart,
     setEmptyCart,
+    locale,
   } = formRenderProps;
+
+  // Manage path redirection and locale
+  const localePath = locale ? `/${locale}` : '';
 
   // Opens cart message modal
   const handleSVModalOpen = () => {
@@ -114,8 +115,9 @@ const renderForm = formRenderProps => {
   // In case quantity and deliveryMethod are missing, focus on that select-input.
   // Otherwise continue with the default handleSubmit function.
   const handleFormSubmit = e => {
-    const restaurant = listing ? listing.attributes?.publicData?.restaurant : false;
+    const restaurant = listing ? listing.attributes?.publicData?.restaurant : false;    
     const redirectPathToRestaurantSpace = `${localePath}/s?pub_restaurant=${restaurant}`;
+
     // Previous implementation of redirection
     // const hostIdOfFirstItem = currentShopCartUnwrapped.length > 0 ? currentShopCartUnwrapped[0].listing.author.id.uuid : false;
     if (currentUser) {
@@ -675,6 +677,7 @@ const ProductOrderForm = props => {
     shippingEnabled,
     isRestaurantOnHold,
     listingId,
+    locale,
   } = props;
 
   // Should not happen for listings that go through EditListingWizard.
@@ -739,6 +742,7 @@ ProductOrderForm.defaultProps = {
   isOwnListing: false,
   lineItems: null,
   fetchLineItemsError: null,
+  locale: null,
 };
 
 ProductOrderForm.propTypes = {
@@ -763,6 +767,7 @@ ProductOrderForm.propTypes = {
 
   // other
   onContactUser: func,
+  locale: string,
 };
 
 export default ProductOrderForm;
