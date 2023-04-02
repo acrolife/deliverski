@@ -223,7 +223,7 @@ export class ProfilePageComponent extends Component {
           {isProvider ? (
             <FormattedMessage
               id="ProfilePage.desktopHeadingRestaurant"
-              values={{ name: restaurantName }}
+              values={{ name: restaurantName, linebreak: <br />  }}
             />
           ) : (
             <FormattedMessage id="ProfilePage.desktopHeading" values={{ name: displayName }} />

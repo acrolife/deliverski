@@ -118,14 +118,17 @@ const SectionHero = props => {
             )}
           </h2>
         )}
-        {!isProduction && (
+        <br/>
+        <br/>
+        <br/>
+        {/* {!isProduction && (
           <NamedLink
             name="SearchPage"
             className={isProduction ? css.heroButtonPromo : css.heroButton}
           >
             <FormattedMessage id="SectionHero.browseButton" />
           </NamedLink>
-        )}
+        )} */}
         {isProduction && restaurantsMailtoMarmott}
         {isProduction && playgroundButton}
       </div>
